@@ -6,8 +6,9 @@
 	- `install.sh`
 - Install packages
 	- `brew.sh`
-	- `mas.sh`
 	- `brew-cask.sh`
+	- `mas.sh`
+	- `upgrade.sh`
 	- `npm.sh`
 	- `gem.sh`
 	- `pip.sh`

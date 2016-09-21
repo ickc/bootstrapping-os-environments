@@ -5,4 +5,3 @@
 
 # install node & npm
 brew install node
-npm install npm -g
