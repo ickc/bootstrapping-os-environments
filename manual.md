@@ -1,0 +1,26 @@
+# No cli install
+
+- Safari Preview
+- Chrome Canary
+- Nvidia Driver Manager
+- iOS Font Maker
+- ColorMunki Photo
+- Logos
+- SMARTReporter
+- CHM Reader
+- Cisco AnyConnect - openconnect installed: Open client for Cisco AnyConnect VPN
+- Davinci Resolve
+- mathematica
+- tsmuxerGUI
+- Brother ControlCenter (DCP-7065 DN)
+- ti connect
+- Remoate Camera Control
+- MurGaa Auto Clicker
+- MultiMarkdown Composer
+- Window Tidy
+- OneDrive
+- OS-X-SAT-SMART-Driver
+- hdapm
+- BT747
+- WD Drive Utility: check cask
+- Markdown quicklook
