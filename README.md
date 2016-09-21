@@ -1,7 +1,8 @@
 # The Scripts
 
-- Export lists of installed things on old Mac
-	- `list-installed-packages.sh </FOLDER/>`: put a bunch of txt into the folder
+- On the old Mac:
+	- `list-installed-packages.sh </FOLDER/>`: Export lists of installed things into `FOLDER`
+	- `download.sh`: download `gnuize`
 - Install brew and npm
 	- `install.sh`
 - Install packages
