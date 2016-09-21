@@ -9,3 +9,6 @@ sudo xcodebuild -license
 
 # install node & npm
 brew install node
+
+# install mas cli
+brew install mas

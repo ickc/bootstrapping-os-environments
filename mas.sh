@@ -23,3 +23,5 @@ mas install 720669838 # iThoughtsX
 mas install 784801555 # Microsoft OneNote
 mas install 823766827 # OneDrive
 mas install 865500966 # feedly
+mas install 488566438 # aText
+open -a /Applications/aText.app # open aText first. Later when brew cask install aText, the license will be "transferred"

@@ -14,7 +14,6 @@ brew install enca
 brew install smartmontools
 brew install gdrive
 brew install imagemagick
-brew install mas
 brew install mp4v2
 brew install pdf2svg
 brew install potrace
