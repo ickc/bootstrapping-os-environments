@@ -15,6 +15,9 @@ pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
 # upgrade brew packages (not including brew-cask)
 brew update && brew upgrade && brew cleanup && brew doctor
 
+# cleanup downloaded files (cask do not support upgrade yet)
+brew cask cleanup
+
 # upgrade Mac App Store apps
 mas upgrade
 

@@ -23,7 +23,7 @@ brew cask install dropbox
 brew cask install google-drive
 brew cask install github-desktop
 brew cask install duet
-brew cask install sophos-anti-virus-home-edition
+# brew cask install sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # brew cask install skype
 # brew cask install steam
 
@@ -78,3 +78,6 @@ brew cask install wacom-intuos-tablet # check if it is this or `brew cask instal
 brew cask install switchresx
 # brew cask install paragon-ntfs # Seagate version??
 # brew cask install karabiner # equals to Keyremap4Macbook
+
+# run installer
+open -a '/usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app'
