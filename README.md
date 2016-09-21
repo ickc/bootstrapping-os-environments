@@ -1,4 +1,22 @@
-# No cli install
+# The Scripts
+
+- Export lists of installed things on old Mac
+	- `list-installed-packages.sh </FOLDER/>`: put a bunch of txt into the folder
+- Install brew and npm
+	- `install.sh`
+- Install packages
+	- `brew.sh`
+	- `mas.sh`
+	- `brew-cask.sh`
+	- `npm.sh`
+	- `gem.sh`
+	- `pip.sh`
+- upgrade package installers
+	- `upgrade.sh`
+
+# No Cli Install
+
+Manual install these:
 
 - Safari Preview
 - Chrome Canary
@@ -7,7 +25,6 @@
 - ColorMunki Photo
 - Logos
 - SMARTReporter
-- CHM Reader
 - Cisco AnyConnect - openconnect installed: Open client for Cisco AnyConnect VPN
 - Davinci Resolve
 - mathematica
@@ -18,7 +35,6 @@
 - MurGaa Auto Clicker
 - MultiMarkdown Composer
 - Window Tidy
-- OneDrive
 - OS-X-SAT-SMART-Driver
 - hdapm
 - BT747
