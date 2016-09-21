@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gem install jekyllb
+gem install jekyll

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+mas signin
 mas install 1000808993 # Coca
 mas install 1014850245 # Monit
 mas install 404010395 # TextWrangler

@@ -6,13 +6,13 @@
 - Install brew and npm
 	- `install.sh`
 - Install packages
-	- `brew.sh`
 	- `brew-cask.sh`
-	- `mas.sh`
-	- `upgrade.sh`
-	- `npm.sh`
-	- `gem.sh`
-	- `pip.sh`
+	- `brew.sh`
+		- `mas.sh`
+		- `upgrade.sh`
+			- `npm.sh`
+			- `gem.sh`
+			- `pip.sh`
 - upgrade package installers
 	- `upgrade.sh`
 
