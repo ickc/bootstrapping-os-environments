@@ -1,6 +1,14 @@
 #!/bin/bash
 
-# brew cask
+# prepare sudo for pkg
+sudo -v
+
+# runtime
+brew cask install xquartz
+brew cask install java
+brew cask install flash
+# brew cask install silverlight
+# brew cask install playonmac
 
 # license required
 brew cask install microsoft-office
@@ -70,10 +78,3 @@ brew cask install wacom-intuos-tablet # check if it is this or `brew cask instal
 brew cask install switchresx
 # brew cask install paragon-ntfs # Seagate version??
 # brew cask install karabiner # equals to Keyremap4Macbook
-
-# runtime
-brew cask install java
-brew cask install flash
-brew cask install xquartz
-# brew cask install silverlight
-# brew cask install playonmac
