@@ -79,5 +79,13 @@ brew cask install switchresx
 # brew cask install paragon-ntfs # Seagate version??
 # brew cask install karabiner # equals to Keyremap4Macbook
 
+# QuickLook
+brew cask install ttscoff-mmd-quicklook
+brew cask install invisorql # display video metadata instead of playing it
+brew cask install epubquicklook
+
+# Others
+brew cask install markdown-service-tools # mac Services for markdown editing
+
 # run installer
 open -a '/usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app'

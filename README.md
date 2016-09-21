@@ -26,23 +26,23 @@ Manual install these:
 
 - Safari Preview
 - Chrome Canary
-- Nvidia Driver Manager
+- Nvidia Driver Manager @waiting(cask)
 - iOS Font Maker
-- ColorMunki Photo
-- Logos
+- ColorMunki Photo @waiting(cask)
+- Logos @waiting(cask)
 - SMARTReporter
 - Cisco AnyConnect - openconnect installed: Open client for Cisco AnyConnect VPN
-- Davinci Resolve
-- mathematica
+- Davinci Resolve @manual(behindRegistrationWall)
+- mathematica @manual(behindRegistrationWall)
 - tsmuxerGUI
 - Brother ControlCenter (DCP-7065 DN)
 - ti connect
 - Remoate Camera Control
 - MurGaa Auto Clicker
-- MultiMarkdown Composer
+- MultiMarkdown Composer @manual(requireMAS)
 - Window Tidy
 - OS-X-SAT-SMART-Driver
 - hdapm
 - BT747
 - WD Drive Utility: check cask
-- Markdown quicklook
+- Markdown quicklook @cask(ttscoff-mmd-quicklook)
