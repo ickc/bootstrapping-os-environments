@@ -11,6 +11,7 @@ brew cask install flash
 # brew cask install playonmac
 
 # license required
+brew cask install logos
 brew cask install microsoft-office
 brew cask install adobe-creative-cloud
 brew cask install vmware-fusion
@@ -68,6 +69,7 @@ brew cask install calibre
 
 # hardware related
 brew cask install openzfs
+brew cask install nvidia-web-driver
 brew cask install cuda
 brew cask install cuda-z
 brew cask install intel-power-gadget
@@ -76,6 +78,7 @@ brew cask install logitech-options
 brew cask install logitech-gaming-software
 brew cask install wacom-intuos-tablet # check if it is this or `brew cask install wacom-intuos-pro-tablet`
 brew cask install switchresx
+brew cask install colormunki-photo
 # brew cask install paragon-ntfs # Seagate version??
 # brew cask install karabiner # equals to Keyremap4Macbook
 
