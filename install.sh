@@ -12,3 +12,6 @@ brew install node
 
 # install mas cli
 brew install mas
+
+# alternative way of getting gem
+# brew install brew-gem
