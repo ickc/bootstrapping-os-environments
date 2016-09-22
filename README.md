@@ -24,8 +24,6 @@ On the freshly installed Mac:
 
 Manual install these:
 
-- Safari Preview
-- Chrome Canary
 - Nvidia Driver Manager @waiting(cask)
 - iOS Font Maker
 - ColorMunki Photo @waiting(cask)
@@ -36,12 +34,12 @@ Manual install these:
 - mathematica @manual(behindRegistrationWall)
 - tsmuxerGUI
 - Brother ControlCenter (DCP-7065 DN)
-- ti connect
+- ti connect @cancel
 - Remoate Camera Control
 - MurGaa Auto Clicker
 - MultiMarkdown Composer @manual(requireMAS)
-- Window Tidy
-- OS-X-SAT-SMART-Driver
+- Window Tidy @replaceby(spectacle)
+- OS-X-SAT-SMART-Driver @unsign
 - hdapm
 - BT747
 - WD Drive Utility: check cask
