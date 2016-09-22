@@ -2,7 +2,7 @@
 
 On the old Mac:
 
-- `list-installed-packages.sh </FOLDER/>`: Export lists of installed things into `FOLDER`
+- `list-installed-packages.sh </FOLDER/>`: Export lists of installed things into `FOLDER` [^listPackages]
 - `download.sh`: download `gnuize`
 
 On the freshly installed Mac:
@@ -19,6 +19,8 @@ On the freshly installed Mac:
 			- `pip.sh`
 - upgrade package installers
 	- `upgrade.sh`
+
+[^listPackages]: This is for future reference only. The scripts below does not use this information. The idea is to use these files to keep track of what was installed before and update the scripts manually if needed.
 
 # No Cli Install
 
