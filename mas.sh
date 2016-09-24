@@ -10,7 +10,7 @@ mas install 409183694 # Keynote
 mas install 409201541 # Pages
 mas install 409203825 # Numbers
 mas install 424182884 # CHM Reader
-mas install 424281111 # TaskPaper
+# mas install 424281111 # TaskPaper # doesn't work on macOS Sierra because of the use of OS X cocoa garbage collection memory management
 mas install 425264550 # Blackmagic Disk Speed Test
 mas install 425424353 # The Unarchiver
 mas install 447430809 # Jettison
