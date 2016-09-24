@@ -32,7 +32,7 @@ Manual install these:
 - SMARTReporter
 - tsmuxerGUI
 - Brother ControlCenter (DCP-7065 DN)
-- MultiMarkdown Composer @beta
+- MultiMarkdown Composer @waiting(caskroom/homebrew-versions)
 - hdapm
 - BT747
 - OS-X-SAT-SMART-Driver @unsign
