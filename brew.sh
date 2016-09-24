@@ -17,6 +17,7 @@ brew install mp4v2
 brew install pdf2svg
 brew install potrace
 brew install tree
+brew install exiftool
 brew install doxygen # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
 
 # install GNU-ize
