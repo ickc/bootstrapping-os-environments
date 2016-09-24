@@ -26,23 +26,20 @@ On the freshly installed Mac:
 
 Manual install these:
 
-- Nvidia Driver Manager @waiting(cask)
-- iOS Font Maker
-- ColorMunki Photo @waiting(cask)
-- Logos @waiting(cask)
-- SMARTReporter
-- Cisco AnyConnect - openconnect installed: Open client for Cisco AnyConnect VPN
 - Davinci Resolve @manual(behindRegistrationWall)
 - mathematica @manual(behindRegistrationWall)
+- iOS Font Maker
+- SMARTReporter
 - tsmuxerGUI
 - Brother ControlCenter (DCP-7065 DN)
-- ti connect @cancel
-- Remoate Camera Control
-- MurGaa Auto Clicker
-- MultiMarkdown Composer @manual(requireMAS)
-- Window Tidy @replaceby(spectacle)
-- OS-X-SAT-SMART-Driver @unsign
+- MultiMarkdown Composer @beta
 - hdapm
 - BT747
-- WD Drive Utility: check cask
-- Markdown quicklook @cask(ttscoff-mmd-quicklook)
+- OS-X-SAT-SMART-Driver @unsign
+- Remoate Camera Control @cancel
+- MurGaa Auto Clicker @cancel
+- ti connect @cancel
+- WD Drive Utility @cancel
+- Cisco AnyConnect - @replacedby(openconnect)
+- Window Tidy @replaceby(spectacle)
+- Markdown quicklook @replacedby(ttscoff-mmd-quicklook)
