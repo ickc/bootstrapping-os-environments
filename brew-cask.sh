@@ -13,10 +13,9 @@ brew cask install flash
 # license required
 brew cask install logos
 brew cask install microsoft-office
-brew cask install adobe-creative-cloud
 brew cask install vmware-fusion
 brew cask install atext
-brew cask install textmate
+brew cask install textmate && echo 'export EDITOR="/usr/local/bin/mate -w"' >> ~/.bashrc
 brew cask install papers
 
 # services
@@ -97,4 +96,4 @@ brew cask install safari-technology-preview
 brew cask install google-chrome-canary
 
 # run installer
-open -a '/usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app'
+brew cask install adobe-creative-cloud && open -a '/usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app'
