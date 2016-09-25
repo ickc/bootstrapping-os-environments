@@ -15,7 +15,7 @@ brew cask install logos
 brew cask install microsoft-office
 brew cask install vmware-fusion
 brew cask install atext
-brew cask install textmate && echo 'export EDITOR="/usr/local/bin/mate -w"' >> ~/.bashrc
+brew cask install textmate && echo 'export EDITOR="/usr/local/bin/mate -w"' >> ~/.bash_profile
 brew cask install papers
 
 # services
