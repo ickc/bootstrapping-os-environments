@@ -25,6 +25,17 @@ On the freshly installed Mac:
 
 # No Cli Install
 
+Manual Settings:
+
+- Terminal:
+	- default solarized
+	- change font to Consolas
+	- change cursor to `|` and blink  
+- TextMate:  
+	- install Solarized bundle
+	- choose theme
+	- set font to Consolas
+
 Manual install these:
 
 - Davinci Resolve @manual(behindRegistrationWall)
