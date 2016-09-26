@@ -3,7 +3,6 @@
 On the old Mac:
 
 - `list-installed-packages.sh </FOLDER/>`: Export lists of installed things into `FOLDER` [^listPackages]
-- `download.sh`: download `gnuize`
 
 On the freshly installed Mac:
 
@@ -12,6 +11,7 @@ On the freshly installed Mac:
 - Install packages
 	- `mas.sh`
 		- `brew-cask.sh`
+			- `download.sh`
 		- `brew-cask-fonts.sh`
 	- `brew.sh`
 		- `upgrade.sh`

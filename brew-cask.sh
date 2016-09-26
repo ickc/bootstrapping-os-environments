@@ -15,8 +15,9 @@ brew cask install logos
 brew cask install microsoft-office
 brew cask install vmware-fusion
 brew cask install atext
-brew cask install textmate && echo 'export EDITOR="/usr/local/bin/mate -w"' >> ~/.bash_profile
+brew cask install textmate
 brew cask install papers
+brew cask install adobe-creative-cloud
 
 # services
 brew cask install dropbox
@@ -94,6 +95,3 @@ brew cask install spectacle # windows manager
 brew tap caskroom/versions
 brew cask install safari-technology-preview
 brew cask install google-chrome-canary
-
-# run installer
-brew cask install adobe-creative-cloud && open -a '/usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app'
