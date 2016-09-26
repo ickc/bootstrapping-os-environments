@@ -16,11 +16,6 @@ git clone git://github.com/tomislav/osx-terminal.app-colors-solarized.git
 open 'osx-terminal.app-colors-solarized/Solarized Light.terminal'
 open 'osx-terminal.app-colors-solarized/Solarized Dark.terminal'
 
-# Solarized Textmate
-git clone git://github.com/deplorableword/textmate-solarized.git
-mv 'textmate-solarized/Solarized (dark).tmTheme' ~/Library/Application\ Support/TextMate/Managed/Bundles/Themes.tmbundle/Themes/
-mv 'textmate-solarized/Solarized (light).tmTheme' ~/Library/Application\ Support/TextMate/Managed/Bundles/Themes.tmbundle/Themes/
-
 # download [GNU-ize Mac OS X El Capitan](https://gist.github.com/clayfreeman/2a5e54577bcc033e2f00)
 git clone git@github.com:2a5e54577bcc033e2f00.git
 2a5e54577bcc033e2f00/gnuize.sh && brew linkapps python
