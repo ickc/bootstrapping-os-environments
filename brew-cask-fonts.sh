@@ -26,12 +26,7 @@ brew cask install font-tex-gyre-schola
 brew cask install font-tex-gyre-termes
 brew cask install font-tex-gyre-heros
 brew cask install font-tex-gyre-pagella-math
-# brew cask install font-cwtex-q # @waiting(aprroval)
-# brew cask install font-cwtex-q-fangsong
-# brew cask install font-cwtex-q-hei
-# brew cask install font-cwtex-q-kai
-# brew cask install font-cwtex-q-ming
-# brew cask install font-cwtex-q-yuan
+brew cask install font-cwtex-q
 
 # Sil
 brew cask install font-gentium-plus

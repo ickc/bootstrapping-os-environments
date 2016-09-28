@@ -17,11 +17,14 @@ mas install 447430809 # Jettison
 mas install 497799835 # Xcode
 mas install 529456740 # CheatSheet
 mas install 555293879 # KyPass Companion
-mas install 593294811 # MultiMarkdown Composer
 mas install 682658836 # GarageBand
 mas install 720669838 # iThoughtsX
 mas install 784801555 # Microsoft OneNote
 mas install 823766827 # OneDrive
 mas install 865500966 # feedly
 mas install 488566438 # aText
-open -a /Applications/aText.app # open aText first. Later when brew cask install aText, the license will be "transferred"
+mas install 593294811 # MultiMarkdown Composer
+
+# open applications to transfer license to non-mas version
+open -a /Applications/aText.app
+open -a /Applications/MultiMarkdown\ Composer.app

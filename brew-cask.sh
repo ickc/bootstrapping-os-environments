@@ -90,8 +90,11 @@ brew cask install epubquicklook
 # Others
 brew cask install markdown-service-tools # mac Services for markdown editing
 brew cask install spectacle # windows manager
+brew cask install detexify
 
 # homebrew-cask-versions
 brew tap caskroom/versions
 brew cask install safari-technology-preview
 brew cask install google-chrome-canary
+brew cask install multimarkdown-composer
+brew cask install multimarkdown-composer-pro
