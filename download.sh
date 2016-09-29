@@ -20,5 +20,8 @@ open 'osx-terminal.app-colors-solarized/Solarized Dark.terminal'
 git clone git@github.com:2a5e54577bcc033e2f00.git
 2a5e54577bcc033e2f00/gnuize.sh && brew linkapps python
 
+# Safari extension
+wget http://cdn3.brettterpstra.com/downloads/TabLinks.2.0.zip && unzip TabLinks.2.0.zip && open TabLinks.safariextz
+
 cd ..
 rm -rf temp

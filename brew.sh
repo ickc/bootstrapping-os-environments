@@ -17,4 +17,5 @@ brew install pdf2svg
 brew install potrace
 brew install tree
 brew install exiftool
+brew install wget
 brew install doxygen # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
