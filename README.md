@@ -35,6 +35,8 @@ Manual Settings:
 	- install Solarized bundle
 	- choose theme
 	- set font to Consolas
+- Safari extension:
+	- Tablinks: `%w. [%t](%u)%b`
 
 Manual install these:
 
