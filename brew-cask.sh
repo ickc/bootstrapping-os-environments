@@ -15,6 +15,7 @@ brew cask install logos
 brew cask install microsoft-office
 brew cask install vmware-fusion
 brew cask install atext
+brew cask install multimarkdown-composer
 brew cask install textmate
 brew cask install papers
 brew cask install adobe-creative-cloud
@@ -96,5 +97,5 @@ brew cask install detexify
 brew tap caskroom/versions
 brew cask install safari-technology-preview
 brew cask install google-chrome-canary
-brew cask install multimarkdown-composer
+brew cask install multimarkdown-composer-beta
 brew cask install multimarkdown-composer-pro
