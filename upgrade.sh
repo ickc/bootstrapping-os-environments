@@ -6,8 +6,8 @@ npm install npm -g
 npm update -g
 
 # upgrade pip
-pip install -U pip setuptools
-pip3 install -U pip setuptools wheel
+pip install -U pip # setuptools should be installed by default
+pip3 install -U pip # setuptools wheel should be installed by default
 # upgrade pip packages
 pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
 pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
