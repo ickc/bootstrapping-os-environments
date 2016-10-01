@@ -17,7 +17,7 @@ open 'osx-terminal.app-colors-solarized/Solarized Light.terminal'
 open 'osx-terminal.app-colors-solarized/Solarized Dark.terminal'
 
 # [GNU-ize Mac OS X El Capitan](https://gist.github.com/clayfreeman/2a5e54577bcc033e2f00)
-git submodule update --init --recursive
+git submodule update
 submodule/gnuize.sh && brew linkapps python
 
 # Safari extension
