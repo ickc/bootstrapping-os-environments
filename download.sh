@@ -21,7 +21,7 @@ git submodule update
 submodule/gnuize.sh && brew linkapps python
 
 # Safari extension
-wget http://cdn3.brettterpstra.com/downloads/TabLinks.2.0.zip && unzip TabLinks.2.0.zip && open TabLinks.safariextz
+wget http://cdn3.brettterpstra.com/downloads/TabLinks.2.0.zip && unzip TabLinks.2.0.zip && mv TabLinks.safariextz ../ # "open" doesn't work
 
 cd ..
 rm -rf temp

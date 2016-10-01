@@ -36,7 +36,8 @@ Manual Settings:
 	- choose theme
 	- set font to Consolas
 - Safari extension:
-	- Tablinks: `%w. [%t](%u)%b`
+	- Manually install
+		- Tablinks: `%w. [%t](%u)%b` (currently won't work)
 
 Manual install these:
 
@@ -46,7 +47,6 @@ Manual install these:
 - SMARTReporter
 - tsmuxerGUI
 - Brother ControlCenter (DCP-7065 DN)
-- MultiMarkdown Composer @waiting(caskroom/homebrew-versions)
 - hdapm
 - BT747
 - OS-X-SAT-SMART-Driver @unsign
@@ -55,5 +55,4 @@ Manual install these:
 - ti connect @cancel
 - WD Drive Utility @cancel
 - Cisco AnyConnect - @replacedby(openconnect)
-- Window Tidy @replaceby(spectacle)
 - Markdown quicklook @replacedby(ttscoff-mmd-quicklook)
