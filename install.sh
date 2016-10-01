@@ -2,7 +2,7 @@
 
 # install xcode
 xcode-select --install
-# sudo xcodebuild -license accept # the cli only tool do not require this!
+sudo xcodebuild -license accept
 
 # install brew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
