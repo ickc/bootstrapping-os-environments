@@ -16,9 +16,9 @@ git clone git://github.com/tomislav/osx-terminal.app-colors-solarized.git
 open 'osx-terminal.app-colors-solarized/Solarized Light.terminal'
 open 'osx-terminal.app-colors-solarized/Solarized Dark.terminal'
 
-# download [GNU-ize Mac OS X El Capitan](https://gist.github.com/clayfreeman/2a5e54577bcc033e2f00)
-git clone git@github.com:2a5e54577bcc033e2f00.git
-2a5e54577bcc033e2f00/gnuize.sh && brew linkapps python
+# [GNU-ize Mac OS X El Capitan](https://gist.github.com/clayfreeman/2a5e54577bcc033e2f00)
+git submodule update --init --recursive
+submodule/gnuize.sh && brew linkapps python
 
 # Safari extension
 wget http://cdn3.brettterpstra.com/downloads/TabLinks.2.0.zip && unzip TabLinks.2.0.zip && open TabLinks.safariextz
