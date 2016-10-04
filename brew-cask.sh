@@ -83,10 +83,12 @@ brew cask install colormunki-photo
 # brew cask install paragon-ntfs # Seagate version??
 # brew cask install karabiner # equals to Keyremap4Macbook
 
-# QuickLook
+# QuickLook and mdimport
 brew cask install ttscoff-mmd-quicklook
 brew cask install invisorql # display video metadata instead of playing it
 brew cask install epubquicklook
+brew cask install markdownmdimporter
+brew cask install epubmdimporter
 
 # Others
 brew cask install markdown-service-tools # mac Services for markdown editing
