@@ -9,7 +9,6 @@ On the freshly installed Mac:
 - remove sleep image: `sleep.sh`
 - Install package managers: `install.sh`
 - Install packages
-	- `gnuize.sh`
 	- `mas.sh`
 		- `brew-cask.sh`
 			- `download.sh`
