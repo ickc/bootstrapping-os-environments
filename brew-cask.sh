@@ -6,7 +6,7 @@ sudo -v
 # runtime
 brew cask install xquartz
 brew cask install java
-brew cask install flash
+brew cask install flash-player
 # brew cask install silverlight
 # brew cask install playonmac
 
@@ -25,6 +25,7 @@ brew cask install dropbox
 brew cask install google-drive
 brew cask install github-desktop
 brew cask install duet
+brew cask install avast
 # brew cask install sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # brew cask install skype
 # brew cask install steam
