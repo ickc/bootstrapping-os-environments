@@ -8,3 +8,4 @@ pip install -U matplotlib
 pip install -U nose
 pip install -U pandas
 pip install -U sympy
+pip install -U Cython
