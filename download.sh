@@ -17,7 +17,8 @@ open 'osx-terminal.app-colors-solarized/Solarized Light.terminal'
 open 'osx-terminal.app-colors-solarized/Solarized Dark.terminal'
 
 # Safari extension
-wget http://cdn3.brettterpstra.com/downloads/TabLinks.2.0.zip && unzip TabLinks.2.0.zip && mv TabLinks.safariextz ../ # "open" doesn't work
+wget http://cdn3.brettterpstra.com/instapaperbeyond/TabLinks.safariextz && open TabLinks.safariextz
+
 
 cd ..
 rm -rf temp

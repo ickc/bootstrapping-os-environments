@@ -37,7 +37,7 @@ Manual Settings:
 	- set font to Consolas
 - Safari extension:
 	- Manually install
-		- Tablinks: `%w. [%t](%u)%b` (currently won't work)
+		- Tablinks: `%w. [%t](%u)%b`
 
 Manual install these:
 
