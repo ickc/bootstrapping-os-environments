@@ -31,7 +31,3 @@ gem update --system
 
 # update cabal
 cabal update
-
-# anaconda
-conda update conda
-conda update anaconda
