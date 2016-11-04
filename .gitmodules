@@ -1,0 +1,3 @@
+[submodule "submodule/gnuize"]
+	path = submodule/gnuize
+	url = https://gist.github.com/ickc/3a9600fabb9fc9cef7d1ae981afc6810
