@@ -1,4 +1,4 @@
-gnuize.sh: submodule/gnuize.sh
+gnuize.sh: submodule/gnuize/gnuize.sh
 	cp $< $@
 	chmod +x $@
 
