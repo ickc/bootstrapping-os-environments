@@ -9,3 +9,4 @@ pip install -U nose
 pip install -U pandas
 pip install -U sympy
 pip install -U cython
+pip install -U jupyter
