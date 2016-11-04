@@ -18,4 +18,3 @@ brew install tree
 brew install exiftool
 brew install wget
 brew install doxygen # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
-brew install icu4c && ln -s $(brew list icu4c | grep bin/uconv) /usr/local/bin/ # unicode handling, e.g. normalization
