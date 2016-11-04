@@ -4,7 +4,7 @@
 ## open Adobe CC installer downloaded by brew cask
 open -a '/usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app'
 ## Set Textmate as default text editor in Terminal
-echo 'export EDITOR="/usr/local/bin/mate -w"' >> ~/.bash_profile
+echo 'export EDITOR="/usr/local/bin/mate -w"' >> $HOME/.bash_profile
 
 # create temp folder for downloads
 cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

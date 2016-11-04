@@ -17,10 +17,10 @@ brew install node
 brew install mas
 
 # install cabal for haskell
-brew install ghc cabal-install && printf "%s\n" "" "# cabal PATH" "export PATH=\"~/.cabal/bin:\$PATH\"" >> ~/.bash_profile
+brew install ghc cabal-install && printf "%s\n" "" "# cabal PATH" "export PATH=\"$HOME/.cabal/bin:\$PATH\"" >> $HOME/.bash_profile
 
 # install anaconda
-brew cask install anaconda && printf "%s\n" "" "# anaconda PATH" "export PATH=\"~/anaconda3/bin:\$PATH\"" >> ~/.bash_profile
+brew cask install anaconda && printf "%s\n" "" "# anaconda PATH" "export PATH=\"$HOME/anaconda3/bin:\$PATH\"" >> $HOME/.bash_profile
 
 # alternative way of getting gem
 # brew install brew-gem
