@@ -18,6 +18,7 @@ On the freshly installed Mac:
 			- `npm.sh`
 			- `gem.sh`
 			- `pip.sh`
+			- `cabal.sh`
 - upgrade package installers
 	- `upgrade.sh`
 
