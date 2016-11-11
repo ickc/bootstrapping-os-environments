@@ -10,3 +10,5 @@ pip install -U pandas
 pip install -U sympy
 pip install -U cython
 pip install -U jupyter && printf "%s\n" "c.NotebookApp.browser = '/Applications/Firefox.app/Contents/MacOS/firefox-bin %s'" > $HOME/.jupyter/jupyter_notebook_config.py
+pip install -U seaborn
+pip install -U moviepy
