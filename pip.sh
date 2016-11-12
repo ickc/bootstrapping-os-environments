@@ -17,3 +17,4 @@ pip install -U terminaltables
 pip install -U astropy
 pip install -U openpyxl
 pip install -U pillow
+pip install -U pyyaml
