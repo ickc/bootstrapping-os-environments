@@ -1,6 +1,7 @@
 #!/bin/bash
 
 pip install -U pandocfilters
+pip install -U panflute
 pip install -U ipython
 pip install -U numpy
 pip install -U scipy
@@ -18,3 +19,4 @@ pip install -U astropy
 pip install -U openpyxl
 pip install -U pillow
 pip install -U pyyaml
+pip install -U autopep8
