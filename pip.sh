@@ -20,3 +20,4 @@ pip install -U openpyxl
 pip install -U pillow
 pip install -U pyyaml
 pip install -U autopep8
+pip install -U pytest
