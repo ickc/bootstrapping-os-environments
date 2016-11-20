@@ -21,3 +21,7 @@ pip install -U pillow
 pip install -U pyyaml
 pip install -U autopep8
 pip install -U pytest
+pip install -U pyflakes
+pip install -U flake8
+pip install -U hacking
+pip install -U pylint
