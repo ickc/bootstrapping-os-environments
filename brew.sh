@@ -4,7 +4,7 @@
 brew install python3 && brew linkapps python3
 brew install pypy
 brew install pypy3
-brew install ruby && echo 'export PATH=$(brew --prefix ruby)/bin:$PATH' >> $HOME/.bash_profile #[Small but very useful tip on using jekyll on macosx when you use hoembrew · Issue #1504 · jekyll/jekyll](https://github.com/jekyll/jekyll/issues/1504)
+brew install ruby && printf "%s\n" "" '# homebrew' 'export PATH=$(brew --prefix ruby)/bin:$PATH' >> $HOME/.bash_profile #[Small but very useful tip on using jekyll on macosx when you use hoembrew · Issue #1504 · jekyll/jekyll](https://github.com/jekyll/jekyll/issues/1504)
 # brew install rbenv && rbenv init
 brew install parallel
 brew install multimarkdown
