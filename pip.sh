@@ -25,3 +25,4 @@ pip install -U pyflakes
 pip install -U flake8
 pip install -U hacking
 pip install -U pylint
+pip install -U sphinx
