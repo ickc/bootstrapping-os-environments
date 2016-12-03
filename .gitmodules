@@ -1,0 +1,3 @@
+[submodule "submodule"]
+	path = submodule
+	url = https://gist.github.com/clayfreeman/2a5e54577bcc033e2f00
