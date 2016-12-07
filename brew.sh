@@ -22,3 +22,4 @@ brew install wget
 brew install doxygen # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
 brew install pandoc pandoc-citeproc
 brew install closure-compiler
+brew install unoconv # convert emf to pdf
