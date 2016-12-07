@@ -23,3 +23,4 @@ brew install doxygen # brew doctor will complain it is missing. I wonder why it 
 brew install pandoc pandoc-citeproc
 brew install closure-compiler
 brew install unoconv # convert emf to pdf
+brew install tidy-html5
