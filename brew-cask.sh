@@ -34,6 +34,7 @@ brew cask install avast
 brew cask install mactex
 brew cask install atom
 brew cask install pycharm
+brew cask install libreoffice
 # brew cask install manuscripts
 # brew cask install marked
 # brew cask install macdown
