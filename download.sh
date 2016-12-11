@@ -7,7 +7,7 @@ open -a '/usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installe
 printf "%s\n" "" '# Textmate' 'export EDITOR="/usr/local/bin/mate -w"' >> $HOME/.bash_profile
 
 # create temp folder for downloads
-cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 mkdir -p temp
 cd temp
 
