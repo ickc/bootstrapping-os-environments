@@ -1,4 +1,4 @@
-gnuize.sh: submodule/gnuize.sh
+macOS/gnuize.sh: submodule/gnuize.sh
 	cp $< $@
 	chmod +x $@
 
@@ -9,4 +9,4 @@ update:
 	git submodule update --recursive --remote
 
 clean:
-	rm -f gnuize.sh
+	rm -f macOS/gnuize.sh
