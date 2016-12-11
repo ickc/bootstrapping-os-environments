@@ -1,0 +1,14 @@
+openssh-server
+python-pip
+texlive
+pandoc
+exfat-fuse
+exfat-utils
+# Hardware Acceleration for VMWare
+driconf
+gsmartcontrol
+lm-sensors
+atom
+caffeine
+samba
+zfs
