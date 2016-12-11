@@ -1,0 +1,6 @@
+imageoptim-cli
+mathjax-node
+uglify-js
+cssnano-cli
+csso
+html-minifier

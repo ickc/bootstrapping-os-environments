@@ -1,0 +1,46 @@
+# Coca
+1000808993
+# Monit
+1014850245
+# TextWrangler
+404010395
+# Kindle
+405399194
+# iMovie
+408981434
+# Keynote
+409183694
+# Pages
+409201541
+# Numbers
+409203825
+# CHM Reader
+424182884
+# TaskPaper # doesn't work on macOS Sierra because of the use of OS X cocoa garbage collection memory management
+# 424281111
+# Blackmagic Disk Speed Test
+425264550
+# The Unarchiver
+425424353
+# Jettison
+447430809
+# Xcode
+497799835
+# CheatSheet
+529456740
+# KyPass Companion
+555293879
+# GarageBand
+682658836
+# iThoughtsX
+720669838
+# Microsoft OneNote
+784801555
+# OneDrive
+823766827
+# feedly
+865500966
+# aText
+488566438
+# MultiMarkdown Composer
+593294811

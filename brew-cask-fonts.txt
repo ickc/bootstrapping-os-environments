@@ -1,0 +1,47 @@
+font-charter
+font-et-book
+font-hanazono-mincho
+font-input
+# Fira
+font-fira-sans
+font-fira-mono
+font-fira-code
+font-fira-mono-for-powerline
+# TeX
+font-computer-modern
+font-latin-modern
+font-latin-modern-math
+font-tex-gyre-adventor
+font-tex-gyre-bonum
+font-tex-gyre-chorus
+font-tex-gyre-cursor
+font-tex-gyre-pagella
+font-tex-gyre-schola
+font-tex-gyre-termes
+font-tex-gyre-heros
+font-tex-gyre-pagella-math
+font-cwtex-q
+# Sil
+font-gentium-plus
+font-charis-sil
+font-ezra-sil
+font-namdhinggo-sil
+font-andika
+font-scheherazade
+# Hebrew
+font-cardo
+# Adobe
+font-source-serif-pro
+font-source-sans-pro
+font-source-code-pro
+# same as Google's Noto Sans CJK
+font-source-han-sans
+font-source-han-code-jp
+# Microsoft
+font-microsoft-cleartype-family
+# manual
+# CYBERBIT FONT
+# MathJax-TeX-fonts-otf
+# SetoFont
+# HanWang Zhuyin ruby fonts
+# Doulos SIL

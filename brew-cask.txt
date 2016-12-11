@@ -1,0 +1,92 @@
+# runtime ################################################################
+xquartz
+java
+flash-player
+# silverlight
+# playonmac
+# license required ################################################################
+logos
+microsoft-office
+vmware-fusion
+# multimarkdown-composer
+textmate
+papers
+adobe-creative-cloud
+# services ################################################################
+dropbox
+google-drive
+github-desktop
+duet
+avast
+# sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
+# skype
+# steam
+# text ################################################################
+mactex
+atom
+pycharm
+libreoffice
+# manuscripts
+# marked
+# macdown
+# browser ################################################################
+google-chrome
+firefox
+# media ################################################################
+keka
+inkscape
+adobe-dng-converter
+imageoptim
+imagealpha
+handbrake
+vlc
+makemkv
+kodi
+# mplayerx
+# small utilities ################################################################
+desktoputility
+disk-inventory-x
+dupeguru
+filezilla
+sdformatter
+appcleaner
+namechanger
+itsycal
+calibre
+# google-earth
+# stellarium
+# nimble
+# blue-jeans-launcher
+# superduper
+# hardware related ################################################################
+openzfs
+nvidia-web-driver
+cuda
+cuda-z
+intel-power-gadget
+gfxcardstatus
+logitech-options
+logitech-gaming-software
+# check if it is this or `wacom-intuos-pro-tablet`
+wacom-intuos-tablet
+switchresx
+colormunki-photo
+# paragon-ntfs # Seagate version??
+# karabiner # equals to Keyremap4Macbook
+# QuickLook and mdimport ################################################################
+ttscoff-mmd-quicklook
+# display video metadata instead of playing it
+invisorql
+epubquicklook
+markdownmdimporter
+epubmdimporter
+# Others ################################################################
+# mac Services for markdown editing ################################################################
+markdown-service-tools
+# windows manager ################################################################
+spectacle
+detexify
+# homebrew-cask-versions ################################################################
+safari-technology-preview
+google-chrome-canary
+multimarkdown-composer-pro
