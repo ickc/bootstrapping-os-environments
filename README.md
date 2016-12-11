@@ -2,7 +2,7 @@
 
 On the old Mac:
 
-- `list-installed-packages.sh </FOLDER/>`: Export lists of installed things into `FOLDER` [^listPackages]
+- `list-installed-packages.sh </FOLDER/>`: Export lists of installed things into `FOLDER`[^listPackages]
 
 On the freshly installed Mac:
 
