@@ -12,3 +12,4 @@ atom
 caffeine
 samba
 zfs
+haskell-platform
