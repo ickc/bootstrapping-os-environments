@@ -25,3 +25,7 @@ closure-compiler
 # convert emf to pdf
 unoconv
 tidy-html5
+# 2 way sync
+unison
+# Chinese Traditional <-> Simplified
+opencc
