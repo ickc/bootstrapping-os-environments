@@ -1,5 +1,6 @@
 imageoptim-cli
 mathjax-node
+pkra/mathjax-node-page
 uglify-js
 cssnano-cli
 csso
