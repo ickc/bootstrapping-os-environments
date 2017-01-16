@@ -30,3 +30,4 @@ unison
 # Chinese Traditional <-> Simplified
 opencc
 epubcheck
+p7zip
