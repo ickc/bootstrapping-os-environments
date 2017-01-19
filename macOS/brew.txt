@@ -32,3 +32,4 @@ opencc
 epubcheck
 p7zip
 msitools
+cmake
