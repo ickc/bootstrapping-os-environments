@@ -24,3 +24,4 @@ flake8
 hacking
 pylint
 sphinx
+pythonpy
