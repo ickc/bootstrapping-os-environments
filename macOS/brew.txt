@@ -33,3 +33,4 @@ epubcheck
 p7zip
 msitools
 cmake
+gcc@5
