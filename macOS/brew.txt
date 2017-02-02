@@ -34,3 +34,5 @@ p7zip
 msitools
 cmake
 gcc
+# instrumentation framework for building dynamic analysis tool
+valgrind
