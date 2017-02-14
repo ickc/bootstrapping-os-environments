@@ -25,3 +25,4 @@ hacking
 pylint
 sphinx
 pythonpy
+keras
