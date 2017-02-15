@@ -36,3 +36,4 @@ cmake
 gcc
 # instrumentation framework for building dynamic analysis tool
 valgrind
+open-mpi
