@@ -21,6 +21,7 @@ avast
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
 # steam
+nomachine
 # text ################################################################
 mactex
 atom
