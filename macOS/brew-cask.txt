@@ -61,6 +61,7 @@ calibre
 # superduper
 # hardware related ################################################################
 openzfs
+osxfuse
 nvidia-web-driver
 cuda
 cuda-z
