@@ -16,6 +16,7 @@ adobe-creative-cloud
 dropbox
 google-drive
 github-desktop
+gitkraken
 duet
 avast
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
