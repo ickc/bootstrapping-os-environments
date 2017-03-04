@@ -12,3 +12,6 @@ brew install homebrew/fuse/sshfs
 
 # overriding Mac App Store's version
 brew cask install --force atext multimarkdown-composer-beta
+
+# CUDA PATH
+printf "%s\n" "" "# CUDA" 'export PATH="'$(echo /Developer/NVIDIA/CUDA-*.*/bin)':$PATH"' >> $HOME/.bash_profile
