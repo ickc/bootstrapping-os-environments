@@ -38,3 +38,5 @@ valgrind
 # open-mpi
 mpich
 llvm
+# GNU Scientific Library
+gsl
