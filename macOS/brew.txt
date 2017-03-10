@@ -35,8 +35,6 @@ msitools
 cmake
 # instrumentation framework for building dynamic analysis tool
 valgrind
-# open-mpi
-mpich
 llvm
 # GNU Scientific Library
 gsl
