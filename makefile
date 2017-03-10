@@ -1,6 +1,5 @@
 macOS/gnuize.sh: submodule/gnuize.sh
-	cp $< $@
-	chmod +x $@
+	ln -s $< $@
 
 # Submodule
 init:
