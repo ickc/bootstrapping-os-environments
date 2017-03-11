@@ -16,5 +16,5 @@ haskell-platform
 sshfs
 cuda
 cmake
-gcc
+gccgo-6
 python-gpgme
