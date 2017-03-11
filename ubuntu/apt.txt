@@ -13,3 +13,7 @@ caffeine
 samba
 zfs
 haskell-platform
+sshfs
+cuda
+cmake
+gcc
