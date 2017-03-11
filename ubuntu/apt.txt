@@ -14,7 +14,7 @@ samba
 zfs
 haskell-platform
 sshfs
-cuda
+nvidia-cuda-toolkit
 cmake
 gccgo-6
 python-gpgme
