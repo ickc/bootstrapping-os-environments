@@ -26,6 +26,7 @@ nomachine
 # text ################################################################
 mactex
 atom
+aquamacs
 pycharm
 libreoffice
 # manuscripts
