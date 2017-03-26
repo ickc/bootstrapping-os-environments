@@ -1,6 +1,7 @@
 python3
 pypy
 pypy3
+pyqt5
 ruby
 # rbenv && rbenv init
 parallel

@@ -9,6 +9,7 @@ pandas
 sympy
 cython
 jupyter
+qtconsole
 seaborn
 moviepy
 tabulate
