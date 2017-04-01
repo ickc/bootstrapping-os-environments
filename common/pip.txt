@@ -51,3 +51,10 @@ pytz
 simplegeneric
 six
 traitlets
+
+quaternionarray
+numexpr
+healpy
+pykg-config
+pyephem
+setuptools
