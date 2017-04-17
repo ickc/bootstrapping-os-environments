@@ -1,6 +1,6 @@
 openssh-server
 python-pip
-texlive
+texlive-full
 pandoc
 exfat-fuse
 exfat-utils
@@ -8,13 +8,31 @@ exfat-utils
 driconf
 gsmartcontrol
 lm-sensors
+psensor
+smartmontools
 atom
 caffeine
 samba
 zfs
+# zfsutils-linux
 haskell-platform
+# stack
 sshfs
 nvidia-cuda-toolkit
 cmake
 gccgo-6
 python-gpgme
+# displaycal
+# compizconfig-settings-manager
+dstat
+sysstat
+# WD Green HDD config
+idle3-tools
+kodi
+tree
+# lame
+# build-essential
+# libffi-dev
+# libav-tools
+libimage-exiftool-perl
+tmux
