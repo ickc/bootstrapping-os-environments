@@ -23,6 +23,8 @@ avast
 # skype
 # steam
 nomachine
+# video conference
+zoomus
 # text ################################################################
 mactex
 atom
