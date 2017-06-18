@@ -4,6 +4,7 @@
 sudo -v
 
 brew tap caskroom/versions
+brew tap caskroom/drivers
 
 # grep -v invert the search. i.e. all lines including # are considered as "comments"
 grep -v '#' brew-cask.txt | xargs brew cask install
