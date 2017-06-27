@@ -63,6 +63,7 @@ calibre
 # nimble
 # blue-jeans-launcher
 # superduper
+clover-configurator
 # hardware related ################################################################
 openzfs
 osxfuse
