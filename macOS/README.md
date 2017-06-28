@@ -42,6 +42,7 @@ Manual Settings:
 
 Manual install these:
 
+- [Sophos Antivirus](https://home.sophos.com/install/25032820d057eecb3e35f151a371114d/b82de6901f33736f4e43e37d013e0795)
 - Davinci Resolve @manual(behindRegistrationWall)
 - mathematica @manual(behindRegistrationWall)
 - iOS Font Maker
