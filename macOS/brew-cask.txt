@@ -64,6 +64,8 @@ calibre
 # blue-jeans-launcher
 # superduper
 clover-configurator
+keepassxc
+keeweb
 # hardware related ################################################################
 openzfs
 osxfuse
