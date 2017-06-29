@@ -8,7 +8,7 @@ sudo xcodebuild -license accept
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # GNU-ize: it will override your bash profile!
-./gnuize.sh
+../submodule/gnuize.sh
 
 # install node & npm
 brew install node
