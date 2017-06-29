@@ -70,7 +70,7 @@ keeweb
 openzfs
 osxfuse
 nvidia-web-driver
-cuda
+# cuda
 cuda-z
 intel-power-gadget
 gfxcardstatus
