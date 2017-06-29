@@ -18,7 +18,7 @@ google-drive
 github-desktop
 gitkraken
 duet
-avast
+# avast
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
 # steam
