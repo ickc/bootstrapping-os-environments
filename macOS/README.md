@@ -59,3 +59,18 @@ Manual install these:
 - WD Drive Utility @cancel
 - Cisco AnyConnect - @replacedby(openconnect)
 - Markdown quicklook @replacedby(ttscoff-mmd-quicklook)
+
+## Intel Distribution of Python
+
+Install Python3 from <https://registrationcenter.intel.com/Download.aspx?ProductID=2807&EmailID=khcheung%40berkeley.edu&Sequence=1956894&DefaultBld=n>.
+
+Add this in the `.bash_profile`:
+
+```bash
+# Intel distribution for Python
+PATH="$PATH:/opt/intel/intelpython35/bin"
+```
+
+Run `../common/conda.sh`. Change the environment name if neccessary.
+
+Run `../common/pip.sh` if neccessary under this environment.
