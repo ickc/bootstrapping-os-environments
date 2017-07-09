@@ -20,6 +20,7 @@ pyflakes
 flake8
 pylint
 sphinx
+ipyparallel
 
 decorator
 ephem
