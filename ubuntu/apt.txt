@@ -36,3 +36,4 @@ tree
 # libav-tools
 libimage-exiftool-perl
 tmux
+haskell-stack
