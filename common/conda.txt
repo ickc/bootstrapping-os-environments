@@ -27,7 +27,6 @@ ephem
 funcsigs
 h5py
 mock
-mpi4py
 path.py
 pbr
 pexpect
