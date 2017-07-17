@@ -1,6 +1,6 @@
 #!/bin/bash
 
-conda create -n idp3 -c intel intelpython2_core python=3
+conda create -n idp3 -c intel intelpython3_core python=3
 
 . activate idp3
 
