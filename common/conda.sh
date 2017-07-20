@@ -25,9 +25,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 OPTIND=1
 
 # Initialize parameters
-version=2
+version=3
 channel=defaults
-prefix=ab
+prefix=all
 path2conda="$DIR/conda.txt"
 path2pip="$DIR/pip.txt"
 mpi=None
