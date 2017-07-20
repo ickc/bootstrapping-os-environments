@@ -14,7 +14,7 @@ where:
 	-p	prefix of the name of environment. Default: %s
 	-C	path to a file that contains the list of conda packages to be installed. Default: %s
 	-P	path to a file that contains the list of pip packages to be installed. Default: %s
-	-m	custom version of mpi4py if sepecified. e.g. mpich to use mpich from the mpi4py channel; cray to custom build using cray compiler.
+	-m	custom version of mpi4py if sepecified. e.g. mpich/openmpi to use mpich/openmpi from the mpi4py channel; cray to custom build using cray compiler.
 "
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -70,6 +70,9 @@ fi
 
 ########################################################################
 
+# for pyslalib
+conda config --append channels kadrlica
+
 # create conda env
 if [[ $channel == 'intel' ]]; then
 	conda create -n "$name" -c "$channel" intelpython${version}_core python=$version -y
@@ -84,8 +87,8 @@ grep -v '#' "$path2conda" | xargs conda install -c "$channel" -y
 # pip
 pip install -Ur "$path2pip"
 # mpich
-if [[ $mpi == mpich ]]; then
-	conda install -c mpi4py mpi4py mpich -y
+if [[ $mpi == mpich || $mpi == openmpi ]]; then
+	conda install -c mpi4py mpi4py $mpi -y
 elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	tempDir="$HOME/.mpi4py/" #TODO
 	mpi4pyVersion="2.0.0" #TODO
@@ -104,7 +107,6 @@ elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	python setup.py build_exe --mpicc="$(which cc) -dynamic"
 	python setup.py install
 	python setup.py install_exe
-	rm -r $tempDir #TODO
 else
 	conda install -c "$channel" mpi4py -y
 fi
