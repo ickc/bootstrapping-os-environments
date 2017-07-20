@@ -45,5 +45,3 @@ traitlets
 
 numexpr
 setuptools
-
-ipyparallel
