@@ -42,3 +42,6 @@ llvm
 # GNU Scientific Library
 gsl
 sshfs
+# GPS
+gpsbabel
+watch
