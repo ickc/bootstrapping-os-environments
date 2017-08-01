@@ -12,3 +12,4 @@ quaternionarray
 healpy
 pykg-config
 pyephem
+gpxpy
