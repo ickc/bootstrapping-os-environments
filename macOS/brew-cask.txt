@@ -101,3 +101,4 @@ safari-technology-preview
 google-chrome-canary
 multimarkdown-composer-pro
 whatsapp
+anaconda

@@ -14,3 +14,5 @@ brew cask install --force atext multimarkdown-composer-beta
 
 # CUDA PATH
 printf "%s\n" "" "# CUDA" 'export PATH="'$(echo /Developer/NVIDIA/CUDA-*.*/bin)':$PATH"' >> $HOME/.bash_profile
+# conda PATH
+printf "%s\n" "" "# conda" 'export PATH=/usr/local/anaconda3/bin:"$PATH"' >> $HOME/.bash_profile
