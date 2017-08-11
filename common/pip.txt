@@ -1,6 +1,3 @@
 panflute
-hacking
-ipython-genutils
-
 quaternionarray
 pykg-config
