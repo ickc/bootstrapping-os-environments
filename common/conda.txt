@@ -45,3 +45,17 @@ traitlets
 
 numexpr
 setuptools
+
+keras
+tensorflow
+healpy
+# conda-forge
+moviepy
+autopep8
+gpxpy
+# astropy
+pyephem
+# rogerramos
+terminaltables
+# bioconda
+pythonpy

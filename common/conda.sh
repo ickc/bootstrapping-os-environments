@@ -72,8 +72,14 @@ fi
 
 # for healpy & weave
 conda config --append channels conda-forge
+# for pyephem
+conda config --append channels astropy
+# for pythonpy
+conda config --append channels bioconda
 # for pyslalib
 conda config --append channels kadrlica
+# for terminaltables
+conda config --append channels rogerramos
 
 # create conda env
 if [[ $channel == 'intel' ]]; then

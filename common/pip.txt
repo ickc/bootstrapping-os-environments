@@ -1,15 +1,6 @@
 panflute
-moviepy
-terminaltables
-autopep8
 hacking
-pythonpy
-keras
-tensorflow
-healpy
 ipython-genutils
+
 quaternionarray
-healpy
 pykg-config
-pyephem
-gpxpy
