@@ -1,7 +1,6 @@
 ipykernel
 
 pandocfilters
-ipython
 numpy
 scipy
 matplotlib

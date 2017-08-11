@@ -94,6 +94,12 @@ if [[ -e "$path2conda" ]]; then
 else
 	printf "%s\n" "$path2conda not found. Skipped."
 fi
+# ipython. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
+conda install -c defaults ipython -y
+# weave
+if [[ $version == 2 ]]; then
+	conda install weave -y
+fi
 # pyslalib
 if [[ $(uname) == Darwin || $version == 3 ]]; then
 	pip install -U pyslalib || exit 1
