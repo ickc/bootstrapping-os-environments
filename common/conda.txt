@@ -36,7 +36,6 @@ pickleshare
 Pillow
 ptyprocess
 pyparsing
-pySLALIB
 python-dateutil
 pytz
 simplegeneric
