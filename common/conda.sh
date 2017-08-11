@@ -5,7 +5,7 @@ if [[ $DEBUG ]]; then
 	set -x
 fi
 
-usage="./$(basename "$0") [-h] [-v version] [-c channel] [-p prefix] --- create conda environments
+usage="${BASH_SOURCE[0]} [-h] [-v version] [-c channel] [-p prefix] [-C conda-path] [-P pip-path] [-m mpi] --- create conda environments
 
 where:
 	-h	show this help message
@@ -70,49 +70,66 @@ fi
 
 ########################################################################
 
+# for healpy & weave
+conda config --append channels conda-forge
 # for pyslalib
 conda config --append channels kadrlica
 
 # create conda env
 if [[ $channel == 'intel' ]]; then
-	conda create -n "$name" -c "$channel" intelpython${version}_core python=$version -y
+	conda create -n "$name" -c "$channel" intelpython${version}_core python=$version -y || exit 1
 else
-	conda create -n "$name" -c "$channel" python=$version -y
+	conda create -n "$name" -c "$channel" python=$version -y || exit 1
 fi
 
-. activate "$name"
+. activate "$name" || exit 1
 
 # conda
-grep -v '#' "$path2conda" | xargs conda install -c "$channel" -y
+if [[ -e "$path2conda" ]]; then
+	grep -v '#' "$path2conda" | xargs conda install -c "$channel" -y || exit 1
+else
+	printf "%s\n" "$path2conda not found. Skipped."
+fi
+# pyslalib
+if [[ $(uname) == Darwin || $version == 3 ]]; then
+	pip install -U pyslalib || exit 1
+else
+	# for linux, python 2
+	conda install -c kadrlica pyslalib -y || exit 1
+fi
 # pip
-pip install -Ur "$path2pip"
+if [[ -e "$path2pip" ]]; then
+	pip install -Ur "$path2pip" || exit 1
+else
+	printf "%s\n" "$path2pip not found. Skipped."
+fi
 # mpich
 if [[ $mpi == mpich || $mpi == openmpi ]]; then
-	conda install -c mpi4py mpi4py $mpi -y
+	conda install -c mpi4py mpi4py $mpi -y || exit 1
 elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
-	tempDir="$HOME/.mpi4py/" #TODO
+	tempDir="$SCRATCH/opt/mpi4py/$name/" #TODO: where? Check $SCRATCH
 	mpi4pyVersion="2.0.0" #TODO
 	mpiName="mpi4py-$mpi4pyVersion"
 
-	mkdir -p $tempDir && cd $tempDir
-	wget -O - https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -xvzf -
+	mkdir -p $tempDir && cd $tempDir || exit 1
+	wget -O - https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -xvzf - || exit 1
 	cd $mpiName
 
 	module swap PrgEnv-intel PrgEnv-gnu
 	if [[ $NERSC_HOST == "cori" ]]; then
-		python setup.py build --mpicc=$(which cc)
+		python setup.py build --mpicc=$(which cc) || exit 1
 	elif [[ $NERSC_HOST == "edison" ]]; then
-		LDFLAGS="-shared" python setup.py build --mpicc=$(which cc)
+		LDFLAGS="-shared" python setup.py build --mpicc=$(which cc) || exit 1
 	fi
-	python setup.py build_exe --mpicc="$(which cc) -dynamic"
-	python setup.py install
-	python setup.py install_exe
+	python setup.py build_exe --mpicc="$(which cc) -dynamic" || exit 1
+	python setup.py install || exit 1
+	python setup.py install_exe || exit 1
 else
-	conda install -c "$channel" mpi4py -y
+	conda install -c "$channel" mpi4py -y || exit 1
 fi
 
 # iPython kernel
-python -m ipykernel install --user --name "$name" --display-name "${name^^}"
+python -m ipykernel install --user --name "$name" --display-name "${name^^}" || exit 1
 
 # install jupyter widget extension
-jupyter nbextension enable --py --sys-prefix widgetsnbextension
+jupyter nbextension enable --py --sys-prefix widgetsnbextension || exit 1
