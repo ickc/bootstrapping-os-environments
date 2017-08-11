@@ -45,10 +45,10 @@ traitlets
 numexpr
 setuptools
 
-keras
-tensorflow
-healpy
 # conda-forge
+tensorflow
+keras
+healpy
 moviepy
 autopep8
 gpxpy
