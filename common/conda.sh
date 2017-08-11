@@ -78,8 +78,6 @@ conda config --append channels astropy
 conda config --append channels bioconda
 # for pyslalib
 conda config --append channels kadrlica
-# for terminaltables
-conda config --append channels rogerramos
 
 # create conda env
 if [[ $channel == 'intel' ]]; then
