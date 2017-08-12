@@ -76,6 +76,8 @@ conda config --append channels conda-forge
 conda config --append channels astropy
 # for pythonpy
 conda config --append channels bioconda
+# for quaternion
+conda config --append channels moble
 # for pyslalib
 conda config --append channels kadrlica
 

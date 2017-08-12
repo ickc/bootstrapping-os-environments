@@ -44,6 +44,8 @@ traitlets
 numexpr
 setuptools
 
+numba
+
 # conda-forge
 tensorflow
 keras
@@ -55,3 +57,5 @@ gpxpy
 pyephem
 # bioconda
 pythonpy
+# moble
+quaternion
