@@ -102,3 +102,4 @@ google-chrome-canary
 multimarkdown-composer-pro
 whatsapp
 anaconda
+nteract
