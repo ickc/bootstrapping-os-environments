@@ -141,7 +141,7 @@ else
 fi
 
 # iPython kernel
-python -m ipykernel install --user --name "$name" --display-name "${name^^}" || exit 1
+python -m ipykernel install --user --name "$name" --display-name "$name" || exit 1
 
 # install jupyter widget extension
 jupyter nbextension enable --py --sys-prefix widgetsnbextension || exit 1
