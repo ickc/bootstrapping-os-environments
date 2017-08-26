@@ -28,11 +28,12 @@ On the freshly installed Mac:
 
 Manual Settings:
 
+- bash
+	- `sudo sh -c 'echo "/usr/local/bin/bash" >> /etc/shells' && chsh -s /usr/local/bin/bash`
 - Terminal:
 	- default solarized
 	- change font to Consolas
 	- change cursor to `|` and blink
-	- "Shell open with" `/usr/local/bin/bash`
 - TextMate:  
 	- install Solarized bundle
 	- choose theme
