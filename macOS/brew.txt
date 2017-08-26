@@ -1,8 +1,4 @@
 # programming
-python3
-pypy
-pypy3
-pyqt5
 ruby
 clang-format
 # rbenv && rbenv init
