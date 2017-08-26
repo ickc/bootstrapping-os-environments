@@ -37,7 +37,7 @@ font-source-code-pro
 # same as Google's Noto Sans CJK
 font-source-han-sans
 font-source-han-code-jp
-# Microsoft
+# Microsoft, from pljoska
 font-microsoft-cleartype-family
 # manual
 # CYBERBIT FONT
