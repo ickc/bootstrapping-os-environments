@@ -31,7 +31,8 @@ Manual Settings:
 - Terminal:
 	- default solarized
 	- change font to Consolas
-	- change cursor to `|` and blink  
+	- change cursor to `|` and blink
+	- "Shell open with" `/usr/local/bin/bash`
 - TextMate:  
 	- install Solarized bundle
 	- choose theme
