@@ -42,5 +42,3 @@ sshfs
 gpsbabel
 watch
 minimal-racket
-# for badblocks
-e2fsprogs
