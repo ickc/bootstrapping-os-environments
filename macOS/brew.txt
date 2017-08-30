@@ -42,3 +42,5 @@ sshfs
 gpsbabel
 watch
 minimal-racket
+# e.g. avprobe
+libav
