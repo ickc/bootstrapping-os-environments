@@ -17,6 +17,7 @@ openpyxl
 pillow
 pyyaml
 pytest
+pytest-cov
 pyflakes
 flake8
 pylint
