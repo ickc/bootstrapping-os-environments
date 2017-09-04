@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gem install jekyll travis
+gem install jekyll travis bundler
