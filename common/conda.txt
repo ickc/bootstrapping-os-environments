@@ -6,6 +6,7 @@ scipy
 matplotlib
 nose
 pandas
+pytables
 sympy
 cython
 jupyter
