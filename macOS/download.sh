@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # post brew-cask.sh
 ## open Adobe CC installer downloaded by brew cask

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 sudo rm -rf /var/vm/sleepimage
 sudo pmset hibernatemode 0

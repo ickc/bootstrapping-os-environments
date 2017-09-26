@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 brew tap caskroom/fonts
 # Microsoft Fonts
