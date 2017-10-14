@@ -1,5 +1,5 @@
 macOS/gnuize.sh: submodule/gnuize.sh
-	ln -s $< $@
+	rm $@ && ln -s ../$< $@
 
 # Submodule
 init:
