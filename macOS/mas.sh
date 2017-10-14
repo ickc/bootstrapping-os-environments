@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-mas signin
+mas signin &&
 
-grep -v '#' mas.txt | xargs mas install
+grep -v '#' mas.txt | xargs mas install &&
 
 # open applications to transfer license to non-mas version
 open -a /Applications/aText.app
