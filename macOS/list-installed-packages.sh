@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd "$@"
+mkdir -p "$@" && cd "$@"
 
 # Mac App Stores Only
 mas list > mas.txt
