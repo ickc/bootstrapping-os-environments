@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
 # install xcode
-xcode-select --install &&
-sudo xcodebuild -license accept &&
+# the first time it runs, the process ends here
+# the second time it runs, this command fails and proceed to next
+xcode-select --install ||
 
 # install brew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &&
 
 # GNU-ize
-../submodule/gnuize.sh &&
+../submodule/gnuize.sh
 
 # install node, npm, mas cli
 brew install node mas
