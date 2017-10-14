@@ -40,7 +40,5 @@ gsl
 sshfs
 # GPS
 gpsbabel
-watch
-minimal-racket
 # e.g. avprobe
 libav
