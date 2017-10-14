@@ -1,5 +1,3 @@
 panflute
 pantable
 yaml2cli
-quaternionarray
-pykg-config
