@@ -9,7 +9,6 @@ healpy
 cython
 # useful but not dependent on these
 ipykernel
-jupyter
 ipyparallel
 pytest
 pytest-cov

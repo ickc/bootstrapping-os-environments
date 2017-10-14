@@ -9,7 +9,6 @@ pandas
 pytables
 sympy
 cython
-jupyter
 qtconsole
 seaborn
 tabulate
