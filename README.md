@@ -10,6 +10,10 @@ These scripts provided an automated way to repeat what you did to the OSes. When
 
 For example, even something like editing a bash profile, rather than editing it directly (or backing it up), scripts are written to edit the bash profile instead so it is also automated.
 
+# `conda.sh`
+
+`conda.sh` becomes a more mature tool, at the same time losing some generality. See [`common/conda/README.md`](common/conda/README.md).
+
 # Todo
 
 - seperate the boilerplate and the custom `.txt` files for personalisation. This should be easier for forks.
