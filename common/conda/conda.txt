@@ -1,0 +1,20 @@
+scipy
+astropy
+h5py
+matplotlib
+tornado
+nose
+ephem
+healpy
+cython
+# useful but not dependent on these
+ipykernel
+jupyter
+ipyparallel
+pytest
+pytest-cov
+numba
+quaternion
+pandas
+pytables
+seaborn
