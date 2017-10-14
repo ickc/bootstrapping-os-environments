@@ -26,9 +26,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 OPTIND=1
 
 # Initialize parameters
-version=3
+version=2
 channel=defaults
-prefix=all
+prefix=ab
 condaInstallPath=None
 path2conda="$DIR/conda.txt"
 path2pip="$DIR/pip.txt"
@@ -130,6 +130,8 @@ fi
 if [[ $channel == 'intel' ]]; then
 	# ipython. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
 	conda_install "$name" -c defaults ipython -y
+	# Intel's scipy 0.19 has caused me some problem
+	conda_install "$name" -c intel 'scipy<0.19' -y
 fi
 # weave
 if [[ $version == 2 ]]; then
