@@ -69,3 +69,6 @@ Manual install these:
 - SetoFont
 - HanWang Zhuyin ruby fonts
 
+# Todo
+
+Consolidate `~/.bash_profile` modification and add `/usr/local/sbin` to `PATH`.
