@@ -32,8 +32,6 @@ epubcheck
 p7zip
 msitools
 cmake
-# instrumentation framework for building dynamic analysis tool
-valgrind
 llvm
 # GNU Scientific Library
 gsl
@@ -42,3 +40,5 @@ sshfs
 gpsbabel
 # e.g. avprobe
 libav
+# instrumentation framework for building dynamic analysis tool
+valgrind
