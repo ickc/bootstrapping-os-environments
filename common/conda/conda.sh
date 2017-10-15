@@ -98,6 +98,8 @@ conda_install () {
 conda config --append channels intel
 # for healpy & weave
 conda config --append channels conda-forge
+# for pythonpy
+conda config --append channels bioconda
 # for quaternion
 conda config --append channels moble
 # for pyslalib
