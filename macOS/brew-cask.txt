@@ -13,7 +13,7 @@ papers
 adobe-creative-cloud
 # services ################################################################
 dropbox
-google-drive
+google-backup-and-sync
 github-desktop
 gitkraken
 duet
@@ -68,7 +68,7 @@ appcleaner
 namechanger
 itsycal
 calibre
-adobe-digital-editions2
+# adobe-digital-editions2
 google-earth-pro
 stellarium
 # Wolfram alpha on menu bar
