@@ -16,4 +16,4 @@ mas upgrade
 update_rubygems && gem update --system
 
 # update cabal
-cabal update
+# cabal update
