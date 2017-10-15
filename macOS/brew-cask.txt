@@ -69,7 +69,6 @@ keepassxc
 keeweb
 # hardware related ################################################################
 openzfs
-osxfuse
 gdisk
 nvidia-web-driver
 cuda
