@@ -5,3 +5,5 @@ uglify-js
 cssnano-cli
 csso
 html-minifier
+bundler
+grunt
