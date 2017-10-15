@@ -61,3 +61,11 @@ Manual install these:
 - WD Drive Utility @cancel
 - Cisco AnyConnect - @replacedby(openconnect)
 - Markdown quicklook @replacedby(ttscoff-mmd-quicklook)
+
+## Fonts
+
+- CYBERBIT FONT
+- MathJax-TeX-fonts-otf
+- SetoFont
+- HanWang Zhuyin ruby fonts
+

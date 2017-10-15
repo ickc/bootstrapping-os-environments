@@ -40,8 +40,3 @@ font-source-han-sans
 font-source-han-code-jp
 # Microsoft, from pljoska
 font-microsoft-cleartype-family
-# manual
-# CYBERBIT FONT
-# MathJax-TeX-fonts-otf
-# SetoFont
-# HanWang Zhuyin ruby fonts
