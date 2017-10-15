@@ -26,6 +26,7 @@ font-gentium-plus
 font-charis-sil
 font-ezra-sil
 font-namdhinggo-sil
+font-doulos-sil
 font-andika
 font-scheherazade
 # Hebrew
@@ -44,4 +45,3 @@ font-microsoft-cleartype-family
 # MathJax-TeX-fonts-otf
 # SetoFont
 # HanWang Zhuyin ruby fonts
-# Doulos SIL
