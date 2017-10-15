@@ -27,7 +27,7 @@ nomachine
 # video conference
 # zoomus
 # blue-jeans-launcher
-amazon-music
+# amazon-music
 spotify
 sling
 # text ################################################################
