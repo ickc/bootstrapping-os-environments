@@ -3,6 +3,9 @@
 # prepare sudo for pkg
 sudo -v &&
 
+# this can be done after gnuize.sh, but I put it here because it requires sudo
+sudo sh -c 'echo "/usr/local/bin/bash" >> /etc/shells' && chsh -s /usr/local/bin/bash
+
 brew tap caskroom/versions &&
 brew tap caskroom/drivers &&
 

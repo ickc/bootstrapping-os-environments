@@ -29,8 +29,6 @@ On the freshly installed Mac:
 
 Manual Settings:
 
-- bash
-	- `sudo sh -c 'echo "/usr/local/bin/bash" >> /etc/shells' && chsh -s /usr/local/bin/bash`
 - Terminal:
 	- default solarized
 	- change font to Consolas
