@@ -1,6 +1,6 @@
 font-charter
 font-et-book
-font-hanazono-mincho
+font-hanamina
 font-input
 # Fira
 font-fira-sans
