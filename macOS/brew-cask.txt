@@ -1,6 +1,5 @@
 # runtime ################################################################
 xquartz
-java
 flash-player
 # silverlight
 # playonmac

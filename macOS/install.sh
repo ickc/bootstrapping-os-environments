@@ -13,3 +13,6 @@ xcode-select --install ||
 
 # install node, npm, mas cli
 brew install node mas
+
+# needed by closure-compiler
+brew cask install java
