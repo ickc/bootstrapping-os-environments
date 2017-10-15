@@ -14,5 +14,5 @@ xcode-select --install ||
 # install node, npm, mas cli
 brew install node mas ruby
 
-# needed by closure-compiler, sshfs
-brew cask install java osxfuse
+# first 2 needed by closure-compiler, sshfs respectively
+brew cask install java osxfuse anaconda

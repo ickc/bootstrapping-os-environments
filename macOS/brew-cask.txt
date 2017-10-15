@@ -111,4 +111,3 @@ detexify
 safari-technology-preview
 google-chrome-canary
 # multimarkdown-composer-pro
-anaconda
