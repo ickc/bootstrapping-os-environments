@@ -3,6 +3,7 @@
 On the old Mac:
 
 - `list-installed-packages.sh </FOLDER/>`: Export lists of installed things into `FOLDER`[^listPackages]
+- Alternatively, `list-update.sh` will print out packages you're using but not included in the scripts here.
 
 On the freshly installed Mac:
 
@@ -68,7 +69,3 @@ Manual install these:
 - MathJax-TeX-fonts-otf
 - SetoFont
 - HanWang Zhuyin ruby fonts
-
-# Todo
-
-Consolidate `~/.bash_profile` modification and add `/usr/local/sbin` to `PATH`.
