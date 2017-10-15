@@ -7,17 +7,17 @@ On the old Mac:
 On the freshly installed Mac:
 
 - remove sleep image: `sleep.sh`
-- Install package managers: `install.sh`
+- Install package managers: `install.sh` (run this twice)
 - Install packages
 	- `mas.sh`
 		- `brew-cask.sh`
+    		- `brew-cask-fonts.sh`
 			- `download.sh`
-		- `brew-cask-fonts.sh`
 	- `brew.sh`
 		- `upgrade.sh`
 			- `npm.sh`
 			- `gem.sh`
-			- `conda.sh`
+			- `conda-install.sh`
 			- `cabal.sh`
 - upgrade package installers
 	- `upgrade.sh`
