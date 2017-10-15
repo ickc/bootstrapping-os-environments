@@ -1,5 +1,4 @@
 # programming
-ruby
 clang-format
 # rbenv && rbenv init
 parallel

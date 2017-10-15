@@ -12,7 +12,7 @@ xcode-select --install ||
 ../submodule/gnuize.sh
 
 # install node, npm, mas cli
-brew install node mas
+brew install node mas ruby
 
 # needed by closure-compiler, sshfs
 brew cask install java osxfuse
