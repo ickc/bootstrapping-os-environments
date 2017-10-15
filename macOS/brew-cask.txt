@@ -1,13 +1,12 @@
 # runtime ################################################################
 xquartz
-flash-player
+# flash-player
 # silverlight
 # playonmac
 # license required ################################################################
 logos
 microsoft-office
 vmware-fusion
-# multimarkdown-composer
 textmate
 papers
 adobe-creative-cloud
@@ -20,18 +19,21 @@ duet
 # avast
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
+whatsapp
 # steam
 nomachine
 # video conference
-zoomus
+# zoomus
+# blue-jeans-launcher
 # text ################################################################
 mactex
 atom
-aquamacs
-pycharm
+# aquamacs
+nteract
+# pycharm
 libreoffice
 # manuscripts
-# marked
+marked
 # macdown
 # browser ################################################################
 google-chrome
@@ -45,7 +47,7 @@ imagealpha
 handbrake
 vlc
 makemkv
-kodi
+# kodi
 # mplayerx
 # small utilities ################################################################
 desktoputility
@@ -58,11 +60,11 @@ namechanger
 itsycal
 calibre
 # google-earth
-# stellarium
-# nimble
-# blue-jeans-launcher
+stellarium
+# Wolfram alpha on menu bar
+nimble
 # superduper
-clover-configurator
+# clover-configurator
 keepassxc
 keeweb
 # hardware related ################################################################
@@ -70,7 +72,7 @@ openzfs
 osxfuse
 gdisk
 nvidia-web-driver
-# cuda
+cuda
 cuda-z
 intel-power-gadget
 gfxcardstatus
@@ -92,14 +94,12 @@ markdownmdimporter
 epubmdimporter
 # Others ################################################################
 # mac Services for markdown editing ################################################################
-markdown-service-tools
+# markdown-service-tools
 # windows manager ################################################################
 spectacle
 detexify
 # homebrew-cask-versions ################################################################
 safari-technology-preview
 google-chrome-canary
-multimarkdown-composer-pro
-whatsapp
+# multimarkdown-composer-pro
 anaconda
-nteract
