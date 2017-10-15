@@ -6,7 +6,7 @@ mkdir -p "$@" && cd "$@"
 mas list > mas.txt
 
 # Applications (including Mac App Stores')
-ls /Applications > applicatio-ls.txt
+ls /Applications > applications-ls.txt
 tree -L 2 /Applications > applications-tree.txt
 
 # Safari extensions
