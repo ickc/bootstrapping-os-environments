@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
 # prepare sudo for pkg
-sudo -v
+sudo -v &&
 
-brew tap caskroom/versions
-brew tap caskroom/drivers
+brew tap caskroom/versions caskroom/drivers &&
 
-# grep -v invert the search. i.e. all lines including # are considered as "comments"
 grep -v '#' brew-cask.txt | xargs brew cask install
 
 # overriding Mac App Store's version
-brew cask install --force atext multimarkdown-composer-beta
+brew cask install --force atext
 
 # CUDA PATH
 printf "%s\n" "" "# CUDA" 'export PATH="'$(echo /Developer/NVIDIA/CUDA-*.*/bin)':$PATH"' >> $HOME/.bash_profile
