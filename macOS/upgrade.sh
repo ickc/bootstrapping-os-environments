@@ -25,7 +25,6 @@ brew cask cleanup
 mas upgrade
 
 # upgrade gems
-gem install rubygems-update
 update_rubygems
 gem update --system
 
