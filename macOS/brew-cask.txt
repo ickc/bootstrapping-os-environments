@@ -5,6 +5,7 @@ xquartz
 # playonmac
 # license required ################################################################
 logos
+# microsoft-office-2011
 microsoft-office
 vmware-fusion
 textmate
@@ -16,6 +17,7 @@ google-drive
 github-desktop
 gitkraken
 duet
+astropad
 # avast
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
@@ -25,12 +27,18 @@ nomachine
 # video conference
 # zoomus
 # blue-jeans-launcher
+amazon-music
+spotify
+sling
 # text ################################################################
 mactex
 atom
 # aquamacs
 nteract
 # pycharm
+# eclipse-cpp
+# rstudio
+# racket
 libreoffice
 # manuscripts
 marked
@@ -49,6 +57,7 @@ vlc
 makemkv
 # kodi
 # mplayerx
+invisor-lite
 # small utilities ################################################################
 desktoputility
 disk-inventory-x
@@ -59,7 +68,8 @@ appcleaner
 namechanger
 itsycal
 calibre
-# google-earth
+adobe-digital-editions2
+google-earth-pro
 stellarium
 # Wolfram alpha on menu bar
 nimble
