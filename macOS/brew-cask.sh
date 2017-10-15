@@ -3,7 +3,8 @@
 # prepare sudo for pkg
 sudo -v &&
 
-brew tap caskroom/versions caskroom/drivers &&
+brew tap caskroom/versions &&
+brew tap caskroom/drivers &&
 
 grep -v '#' brew-cask.txt | xargs brew cask install
 
