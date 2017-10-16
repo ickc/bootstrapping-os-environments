@@ -43,7 +43,6 @@ Manual Settings:
 
 Manual install these:
 
-- CUDA @temp
 - [Sophos Antivirus](https://home.sophos.com/install/25032820d057eecb3e35f151a371114d/b82de6901f33736f4e43e37d013e0795) @manual(behindRegistrationWall)
 - Davinci Resolve @manual(behindRegistrationWall)
 - mathematica @manual(behindRegistrationWall)
@@ -54,7 +53,7 @@ Manual install these:
 - hdapm
 - BT747
 - OS-X-SAT-SMART-Driver @unsign
-- Remoate Camera Control @cancel
+- Remote Camera Control @cancel
 - MurGaa Auto Clicker @cancel
 - ti connect @cancel
 - WD Drive Utility @cancel
