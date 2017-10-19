@@ -183,5 +183,4 @@ else
 	conda_install "$name" -c "$channel" mpi4py -y || exit 1
 fi
 
-# iPython kernel (seems that it should be installed using the root conda env.)
-. activate root && python -m ipykernel install --user --name "$name" --display-name "$name" || exit 1
+python -m ipykernel install --user --name "$name" --display-name "$name" || exit 1
