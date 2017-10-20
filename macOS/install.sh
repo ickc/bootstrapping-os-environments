@@ -8,11 +8,16 @@ xcode-select --install ||
 # install brew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &&
 
+# mas
+brew install mas
+# install Xcode before gnuize, because aescrypt-packetizer requires Xcode
+mas install 497799835
+
 # GNU-ize
 ../submodule/gnuize.sh
 
-# install node, npm, mas cli
-brew install node mas ruby
+# install node, npm
+brew install node ruby
 
 printf "%s\n" "" '# Ruby from homebrew' 'export PATH=$(brew --prefix ruby)/bin:$PATH' >> $HOME/.bash_profile #[Small but very useful tip on using jekyll on macosx when you use hoembrew · Issue #1504 · jekyll/jekyll](https://github.com/jekyll/jekyll/issues/1504)
 

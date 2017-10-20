@@ -31,8 +31,6 @@
 # CheatSheet
 529456740
 
-# Xcode
-# 497799835
 # GarageBand
 # 682658836
 # iMovie
