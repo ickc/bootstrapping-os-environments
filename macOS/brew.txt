@@ -41,3 +41,4 @@ gpsbabel
 libav
 # instrumentation framework for building dynamic analysis tool
 valgrind
+shellcheck
