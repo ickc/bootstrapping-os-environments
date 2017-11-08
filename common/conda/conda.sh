@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# xtrace if DEBUG
-if [[ $DEBUG ]]; then
-	set -x
-fi
-
 usage="${BASH_SOURCE[0]} [-h] [-v version] [-c channel] [-n name] [-p conda PATH] [-C conda-path] [-P pip-path] [-m mpi] --- create conda environments
 
 where:
