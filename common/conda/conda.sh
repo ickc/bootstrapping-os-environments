@@ -153,19 +153,15 @@ fi
 if [[ $mpi == mpich || $mpi == openmpi ]]; then
 	conda_install "$name" -c mpi4py mpi4py $mpi -y || exit 1
 elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
-	if [[ "$condaInstallPath" != None ]]; then
-		tempDir="$SCRATCH/opt/mpi4py/$name/" #TODO: where? Check $SCRATCH
-	else
-		tempDir="$condaInstallPath/$name/mpi4py"
-	fi
+	tempDir="$HOME/.mpi4py/$name/"
 	mpi4pyVersion="2.0.0" #TODO
 	mpiName="mpi4py-$mpi4pyVersion"
 
-	mkdir -p $tempDir && cd $tempDir || exit 1
-	wget -O - https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -xvzf - || exit 1
+	mkdir -p "$tempDir" && cd "$tempDir" || exit 1
+	wget -qO- https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -xzf - || exit 1
 	cd $mpiName
 
-	module swap PrgEnv-intel PrgEnv-gnu
+	module swap PrgEnv-intel PrgEnv-cray
 	if [[ $NERSC_HOST == "cori" ]]; then
 		python setup.py build --mpicc=$(which cc) || exit 1
 	elif [[ $NERSC_HOST == "edison" ]]; then
@@ -174,6 +170,14 @@ elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	python setup.py build_exe --mpicc="$(which cc) -dynamic" || exit 1
 	python setup.py install || exit 1
 	python setup.py install_exe || exit 1
+	if [[ "$condaInstallPath" != None ]]; then
+		# back to original dir.
+		cd "$condaInstallPath"
+	else
+		# cd to somewhere before rm tempDir
+		cd "$HOME"
+	fi
+	rm -rf "$tempDir"
 else
 	conda_install "$name" -c "$channel" mpi4py -y || exit 1
 fi
