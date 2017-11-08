@@ -124,17 +124,11 @@ if [[ -e "$path2conda" ]]; then
 else
 	printf "%s\n" "$path2conda not found. Skipped."
 fi
-if [[ $channel == 'intel' ]]; then
-	# ipython. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
-	conda_install "$name" -c defaults ipython -y
-	# Intel's scipy 0.19 has caused me some problem
-	conda_install "$name" -c intel 'scipy<0.19' -y
-fi
 # weave
 if [[ $version == 2 ]]; then
 	conda_install "$name" weave -y
 	# Backport of the functools module from Python 3.2.3 for use on 2.7
-	conda_install "$name" functools32 -y
+	conda_install "$name" -c "$channel" functools32 -y
 fi
 # pyslalib
 if [[ $(uname) == Darwin || $version == 3 ]]; then
@@ -180,6 +174,11 @@ elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	rm -rf "$tempDir"
 else
 	conda_install "$name" -c "$channel" mpi4py -y || exit 1
+fi
+
+if [[ $channel == 'intel' ]]; then
+	# ipython. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
+	conda_install "$name" -c defaults ipython -y
 fi
 
 python -m ipykernel install --user --name "$name" --display-name "$name" || exit 1
