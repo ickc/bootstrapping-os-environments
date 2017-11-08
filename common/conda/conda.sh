@@ -161,7 +161,7 @@ elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	wget -qO- https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -xzf - || exit 1
 	cd $mpiName
 
-	module swap PrgEnv-intel PrgEnv-cray
+	module swap PrgEnv-intel PrgEnv-gnu
 	if [[ $NERSC_HOST == "cori" ]]; then
 		python setup.py build --mpicc=$(which cc) || exit 1
 	elif [[ $NERSC_HOST == "edison" ]]; then
