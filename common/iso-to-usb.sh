@@ -4,30 +4,54 @@
 PATHNAME="$@"
 PATHNAMEWOEXT=${PATHNAME%.*}
 EXT=${PATHNAME##*.}
-# ext="${EXT,,}" #This does not work on Mac's default, old version of, bash.
 
 # Convert iso to dmg
-if [[ $EXT != "dmg" ]]
-then
-	hdiutil convert "$PATHNAME" -format UDRW -o "$PATHNAMEWOEXT.dmg"
+if [[ $EXT != "dmg" && $(uname) == Darwin ]]; then
+	filename="$PATHNAMEWOEXT.dmg"
+	hdiutil convert "$PATHNAME" -format UDRW -o "$filename"
+else
+	filename="$PATHNAME"
 fi
 
 # get disk#
-diskutil list
-
-read -p "What's the disk number?" dkno
-if ! [[ "$dkno" =~ ^[0-9]+$ ]]
-then
-    echo "Disk number should be integers only."
-	exit 1
+if [[ $(uname) == Darwin ]]; then
+	diskutil list
+	while true; do
+		read -p "What's the disk number?" dkno
+		if [[ "$dkno" =~ ^[0-9]+$ ]]; then
+			break
+		else
+			echo "Disk number should be integers only."
+		fi
+	done
+	diskname=disk$dkno
+else
+	lsblk
+	while true; do
+		read -p "What's the disk label?" dklb
+		if [[ "$dklb" =~ ^[a-z]$ ]]; then
+			break
+		else
+			echo "Disk number should be alphabets only."
+		fi
+	done
+	diskname=sd$dklb
 fi
 
 # clone
 while true; do
-    read -p "Do you wish to burn the iso to disk$dkno? (Y/n)" yn
-    case $yn in
-        [Yy]* ) diskutil unmountDisk /dev/disk$dkno && sudo dd if="$PATHNAMEWOEXT.dmg" of=/dev/rdisk$dkno bs=1M; break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
+	read -p "Do you wish to burn the iso to $diskname? (Y/n)" yn
+	if [[ $(uname) == Dariwn ]]; then
+		case $yn in
+			[Yy]* ) diskutil unmountDisk /dev/$diskname && sudo dd if="$filename" of=/dev/r$diskname status=progress bs=1M && sync; break;;
+			[Nn]* ) exit;;
+			* ) echo "Please answer yes or no.";;
+		esac
+	else
+		case $yn in
+			[Yy]* ) sudo umount /dev/$diskname && sudo dd if="$filename" of=/dev/$diskname status=progress bs=1M && sync; break;;
+			[Nn]* ) exit;;
+			* ) echo "Please answer yes or no.";;
+		esac
+	fi
 done
