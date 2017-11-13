@@ -3,7 +3,7 @@
 printf '=%.0s' {1..72} && echo
 
 echo Consider add the following to mas.txt:
-mas list | xargs -i -n1 bash -c 'if ! grep -q ${0%% *} mas.txt; then echo $0; fi' {}
+mas list | xargs -i -n1 bash -c 'cat install.sh mas.txt | if ! grep -q ${0%% *} -; then echo $0; fi' {}
 
 printf '=%.0s' {1..72} && echo
 
