@@ -3,7 +3,9 @@
 # install xcode
 # the first time it runs, the process ends here
 # the second time it runs, this command fails and proceed to next
-xcode-select --install || sudo xcodebuild -license accept
+xcode-select --install
+
+sudo xcodebuild -license accept
 
 # install brew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &&
