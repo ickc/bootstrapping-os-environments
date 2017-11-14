@@ -14,7 +14,7 @@ adobe-creative-cloud
 # services ################################################################
 dropbox
 google-backup-and-sync
-github-desktop
+github-beta
 gitkraken
 duet
 astropad
@@ -80,8 +80,8 @@ keeweb
 # hardware related ################################################################
 # openzfs
 gdisk
-cuda
 nvidia-web-driver
+nvidia-cuda
 cuda-z
 intel-power-gadget
 gfxcardstatus
