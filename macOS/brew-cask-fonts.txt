@@ -1,5 +1,5 @@
 font-charter
-# font-et-book
+font-et-book
 font-hanamina
 font-input
 # Fira
