@@ -130,6 +130,7 @@ if [[ $version == 2 ]]; then
 	# Backport of the functools module from Python 3.2.3 for use on 2.7
 	conda_install "$name" -c "$channel" functools32 -y
 fi
+conda install -c "$channel" pip -y
 # pyslalib
 if [[ $(uname) == Darwin || $version == 3 ]]; then
 	pip install -U pyslalib || exit 1
