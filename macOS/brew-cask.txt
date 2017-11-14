@@ -80,10 +80,10 @@ keeweb
 # hardware related ################################################################
 # openzfs
 gdisk
-# nvidia-web-driver
 cuda
+nvidia-web-driver
 cuda-z
-# intel-power-gadget
+intel-power-gadget
 gfxcardstatus
 logitech-options
 logitech-gaming-software
