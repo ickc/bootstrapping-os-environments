@@ -34,13 +34,13 @@ cmake
 llvm
 # GNU Scientific Library
 gsl
-sshfs
+# sshfs
 # GPS
-gpsbabel
+# gpsbabel
 # e.g. avprobe
-libav
+# libav
 # instrumentation framework for building dynamic analysis tool
-valgrind
+# valgrind
 shellcheck
 automake
 vitorgalvao/tiny-scripts/cask-repair
