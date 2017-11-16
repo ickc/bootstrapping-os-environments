@@ -44,3 +44,4 @@ gsl
 shellcheck
 automake
 vitorgalvao/tiny-scripts/cask-repair
+go
