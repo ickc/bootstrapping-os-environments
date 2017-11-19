@@ -45,6 +45,8 @@ traitlets
 numexpr
 setuptools
 
+psutil
+
 numba
 
 # conda-forge
