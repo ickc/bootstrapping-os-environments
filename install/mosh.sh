@@ -13,15 +13,16 @@ cd "$TEMPDIR" &&
 wget -qO- https://mosh.org/mosh-$VERSION.tar.gz | tar -xzf - &&
 cd mosh-$VERSION &&
 if [[ -n $NERSC_HOST ]]; then
-	module swap PrgEnv-intel PrgEnv-gnu &&
-	module load protobuf/2.6.1 &&
-	protobuf_CFLAGS="-I$C_INCLUDE_PATH" protobuf_LIBS="-L$LD_LIBRARY_PATH" CC=cc CXX=CC ./configure --prefix="$PREFIX" || exit 1
+	# module load gcc/7.1.0 &&
+	module load intel &&
+	module load protobuf/3.0.0 &&
+	protobuf_CFLAGS="-I$C_INCLUDE_PATH" protobuf_LIBS="-L$LD_LIBRARY_PATH" CC=icc CXX=icpc ./configure --prefix="$PREFIX" --disable-client || exit 1
 else
 	./configure --prefix="$PREFIX" || exit 1
 fi
 
-make -j $P &&
-make install -j $P
+make V=1 -j $P &&
+make V=1 install -j $P
 
 rm -rf "$TEMPDIR" &&
 
