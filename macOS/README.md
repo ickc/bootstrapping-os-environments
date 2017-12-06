@@ -8,7 +8,7 @@ On the old Mac:
 On the freshly installed Mac:
 
 - remove sleep image: `sleep.sh`
-- Install package managers: `install.sh` (run this twice)
+- Install package managers: `install.sh` (make sure iCloud is signed in for `mas`, wait for Xcode installation finished before Return on command line)
 - Install packages
 	- `mas.sh`
 		- `brew-cask.sh`
