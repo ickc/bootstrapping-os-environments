@@ -22,6 +22,7 @@ astropad
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
 whatsapp
+slack
 # steam
 nomachine
 # video conference
