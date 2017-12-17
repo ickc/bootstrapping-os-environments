@@ -41,7 +41,7 @@ fi
 # clone
 while true; do
 	read -p "Do you wish to burn the iso to $diskname? (Y/n)" yn
-	if [[ $(uname) == Dariwn ]]; then
+	if [[ $(uname) == Darwin ]]; then
 		case $yn in
 			[Yy]* ) diskutil unmountDisk /dev/$diskname && sudo dd if="$filename" of=/dev/r$diskname status=progress bs=1M && sync; break;;
 			[Nn]* ) exit;;
