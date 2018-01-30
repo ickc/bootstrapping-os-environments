@@ -178,9 +178,7 @@ else
 	conda_install "$name" -c conda-forge mpi4py -y || exit 1
 fi
 
-if [[ $channel == 'intel' ]]; then
-	# ipython. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
-	conda_install "$name" -c defaults ipython -y
-fi
+# Don't install ipython from intel channel. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
+conda_install "$name" -c defaults ipython -y
 
 python -m ipykernel install --user --name "$name" --display-name "$name" || exit 1
