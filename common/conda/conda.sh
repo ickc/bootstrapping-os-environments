@@ -149,7 +149,7 @@ if [[ $mpi == mpich || $mpi == openmpi ]]; then
 	conda_install "$name" -c mpi4py mpi4py $mpi -y || exit 1
 elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	tempDir="$HOME/.mpi4py/$name/"
-	mpi4pyVersion="2.0.0" #TODO
+	mpi4pyVersion="3.0.0" #TODO
 	mpiName="mpi4py-$mpi4pyVersion"
 
 	mkdir -p "$tempDir" && cd "$tempDir" || exit 1
@@ -174,7 +174,8 @@ elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	fi
 	rm -rf "$tempDir"
 else
-	conda_install "$name" -c "$channel" mpi4py -y || exit 1
+	# TODO: as of time of writing, only conda-forge has mpi4py 3.0.0
+	conda_install "$name" -c conda-forge mpi4py -y || exit 1
 fi
 
 if [[ $channel == 'intel' ]]; then
