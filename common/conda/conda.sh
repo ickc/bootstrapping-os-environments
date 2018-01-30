@@ -180,5 +180,7 @@ fi
 
 # Don't install ipython from intel channel. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
 conda_install "$name" -c defaults ipython -y
+# update pickleshare to prevent `ImportError: cannot import name path`
+conda_install "$name" -c "$channel" pickleshare -y
 
 python -m ipykernel install --user --name "$name" --display-name "$name" || exit 1
