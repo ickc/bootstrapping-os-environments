@@ -1,3 +1,4 @@
 panflute
 pantable
 yaml2cli
+pyslalib

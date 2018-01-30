@@ -97,8 +97,6 @@ conda config --append channels conda-forge
 conda config --append channels bioconda
 # for quaternion
 conda config --append channels moble
-# for pyslalib
-conda config --append channels kadrlica
 
 # enter the conda prefix dir for installing
 if [[ "$condaInstallPath" != None ]]; then
@@ -131,13 +129,6 @@ if [[ $version == 2 ]]; then
 	conda_install "$name" -c "$channel" functools32 -y
 fi
 conda install -c "$channel" pip -y
-# pyslalib
-if [[ $(uname) == Darwin || $version == 3 ]]; then
-	pip install -U pyslalib || exit 1
-else
-	# for linux, python 2
-	conda_install "$name" -c kadrlica pyslalib -y || exit 1
-fi
 # pip
 if [[ -e "$path2pip" ]]; then
 	pip install -Ur "$path2pip" || exit 1
