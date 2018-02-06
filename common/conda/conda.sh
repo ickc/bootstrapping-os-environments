@@ -114,7 +114,7 @@ fi
 if [[ "$condaInstallPath" == None ]]; then
     . activate "$name" || exit 1
 else
-	. "$condaInstallPath/$name/bin/activate" "$condaInstallPath/$name" || exit 1
+	. activate "$condaInstallPath/$name" || exit 1
 fi
 
 # conda
