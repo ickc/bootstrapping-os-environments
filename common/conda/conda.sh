@@ -110,7 +110,12 @@ else
 	conda_create "$name" -c "$channel" python=$version -y || exit 1
 fi
 
-. activate "$name" || exit 1
+
+if [[ "$condaInstallPath" == None ]]; then
+    . activate "$name" || exit 1
+else
+	. "$condaInstallPath/$name/bin/activate" "$condaInstallPath/$name" || exit 1
+fi
 
 # conda
 if [[ -e "$path2conda" ]]; then
