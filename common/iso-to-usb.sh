@@ -49,7 +49,7 @@ while true; do
 		esac
 	else
 		case $yn in
-			[Yy]* ) sudo umount /dev/$diskname && sudo dd if="$filename" of=/dev/$diskname status=progress bs=1M && sync; break;;
+			[Yy]* ) sudo dd if="$filename" of=/dev/$diskname status=progress bs=1M && sync; break;;
 			[Nn]* ) exit;;
 			* ) echo "Please answer yes or no.";;
 		esac
