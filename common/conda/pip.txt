@@ -1,1 +1,2 @@
 pyslalib
+yaml2cli
