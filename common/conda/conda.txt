@@ -18,3 +18,7 @@ pandas
 pytables
 seaborn
 psutil
+statsmodels
+future
+scikit-learn
+bokeh
