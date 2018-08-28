@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 usage="${BASH_SOURCE[0]} [-h] [-v version] [-c channel] [-n name] [-p conda PATH] [-C conda-path] [-P pip-path] [-m mpi] --- create conda environments
 
 where:
@@ -89,32 +91,33 @@ conda_install () {
 
 ########################################################################
 
-# make intel's priority later than defaults
-conda config --append channels intel
-# for healpy & weave
+# TODO: this is stateful and changes the user preference
+if [[ $channel == 'intel' ]]; then
+	conda config --prepend channels intel
+	conda config --append channels defaults
+else
+	conda config --prepend channels defaults
+	conda config --append channels intel
+fi
 conda config --append channels conda-forge
-# for pythonpy
-conda config --append channels bioconda
-# for quaternion
-conda config --append channels moble
 
 # enter the conda prefix dir for installing
 if [[ "$condaInstallPath" != None ]]; then
-	mkdir -p "$condaInstallPath" && cd "$condaInstallPath" || exit 1
+	mkdir -p "$condaInstallPath" && cd "$condaInstallPath"
 fi
 
 # create conda env
 if [[ $channel == 'intel' ]]; then
-	conda_create "$name" -c "$channel" intelpython${version}_core python=$version -y || exit 1
+	conda_create "$name" -c "$channel" intelpython${version}_core python=$version -y
 else
-	conda_create "$name" -c "$channel" python=$version -y || exit 1
+	conda_create "$name" -c "$channel" python=$version -y
 fi
 
 
 if [[ "$condaInstallPath" == None ]]; then
-    . activate "$name" || exit 1
+    . activate "$name"
 else
-	. activate "$condaInstallPath/$name" || exit 1
+	. activate "$condaInstallPath/$name"
 fi
 
 # conda
@@ -123,44 +126,47 @@ if [[ -e "$path2conda" ]]; then
 	temp=$(grep -v '#' "$path2conda")
 	# flatten them to be space-separated
 	temp=$(echo $temp)
-	conda_install "$name" -c "$channel" "$temp" -y || exit 1
+	conda_install "$name" -c "$channel" "$temp" pip -y
 else
 	printf "%s\n" "$path2conda not found. Skipped."
 fi
-# weave
+
+# Python 2 only
 if [[ $version == 2 ]]; then
-	conda_install "$name" weave -y
-	# Backport of the functools module from Python 3.2.3 for use on 2.7
-	conda_install "$name" -c "$channel" functools32 -y
+	conda_install "$name" -c "$channel" weave functools32 futures subprocess32 weakref -y
 fi
-conda install -c "$channel" pip -y
+
+# pip, and update pickleshare to prevent `ImportError: cannot import name path`
+conda_install "$name" -c "$channel" pip pickleshare -y
 # pip
 if [[ -e "$path2pip" ]]; then
-	pip install -Ur "$path2pip" || exit 1
+	pip install -Ur "$path2pip"
 else
 	printf "%s\n" "$path2pip not found. Skipped."
 fi
+
 # mpich
 if [[ $mpi == mpich || $mpi == openmpi ]]; then
-	conda_install "$name" -c mpi4py mpi4py $mpi -y || exit 1
+	conda_install "$name" -c mpi4py mpi4py $mpi -y
 elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
+	# TODO: better choice of this tempdir
 	tempDir="$HOME/.mpi4py/$name/"
 	mpi4pyVersion="3.0.0" #TODO
 	mpiName="mpi4py-$mpi4pyVersion"
 
-	mkdir -p "$tempDir" && cd "$tempDir" || exit 1
-	wget -qO- https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -xzf - || exit 1
+	mkdir -p "$tempDir" && cd "$tempDir"
+	wget -qO- https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -xzf -
 	cd $mpiName
 
 	module swap PrgEnv-intel PrgEnv-gnu
 	if [[ $NERSC_HOST == "cori" ]]; then
-		python setup.py build --mpicc=$(which cc) || exit 1
+		python setup.py build --mpicc=$(which cc)
 	elif [[ $NERSC_HOST == "edison" ]]; then
-		LDFLAGS="-shared" python setup.py build --mpicc=$(which cc) || exit 1
+		LDFLAGS="-shared" python setup.py build --mpicc=$(which cc)
 	fi
-	python setup.py build_exe --mpicc="$(which cc) -dynamic" || exit 1
-	python setup.py install || exit 1
-	python setup.py install_exe || exit 1
+	python setup.py build_exe --mpicc="$(which cc) -dynamic"
+	python setup.py install
+	python setup.py install_exe
 	if [[ "$condaInstallPath" != None ]]; then
 		# back to original dir.
 		cd "$condaInstallPath"
@@ -171,12 +177,10 @@ elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	rm -rf "$tempDir"
 else
 	# TODO: as of time of writing, only conda-forge has mpi4py 3.0.0
-	conda_install "$name" -c conda-forge mpi4py -y || exit 1
+	conda_install "$name" -c intel mpi4py -y
 fi
 
 # Don't install ipython from intel channel. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
-conda_install "$name" -c defaults ipython -y
-# update pickleshare to prevent `ImportError: cannot import name path`
-conda_install "$name" -c "$channel" pickleshare -y
+# conda_install "$name" -c defaults ipython -y
 
-python -m ipykernel install --user --name "$name" --display-name "$name" || exit 1
+python -m ipykernel install --user --name "$name" --display-name "$name"
