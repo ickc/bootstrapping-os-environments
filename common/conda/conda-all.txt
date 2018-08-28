@@ -49,16 +49,39 @@ psutil
 
 numba
 
-# conda-forge
+statsmodels
+imageio
+coverage
+pandoc
+pypandoc
+mpmath
+markdown
+markdown2
+future
+datashader
+scikit-learn
+scikit-image
+requests
+opencv
+dask
+distributed
+multipledispatch
+uncertainties
+nbconvert
+tensorflow
+holoviews
+bokeh
+
+tornado
+
 tensorflow
 keras
+
 healpy
 moviepy
 autopep8
 gpxpy
-# astropy
+
 pyephem
-# bioconda
-pythonpy
-# moble
+
 quaternion
