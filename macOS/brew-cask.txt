@@ -33,6 +33,7 @@ spotify
 sling
 # text ################################################################
 mactex
+visual-studio-code
 atom
 # aquamacs
 nteract
