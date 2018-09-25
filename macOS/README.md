@@ -2,8 +2,8 @@
 
 On the old Mac:
 
-- `list-installed-packages.sh </FOLDER/>`: Export lists of installed things into `FOLDER`[^listPackages]
-- Alternatively, `list-update.sh` will print out packages you're using but not included in the scripts here.
+- Use `list-update.sh` to print out packages you're using but not included in the scripts here.
+- Optionally, use `list-installed-packages.sh </FOLDER/>`: to export lists of installed things into `FOLDER` for future references
 
 On the freshly installed Mac:
 
@@ -23,8 +23,6 @@ On the freshly installed Mac:
 			- `cabal.sh`
 - upgrade package installers
 	- `upgrade.sh`
-
-[^listPackages]: This is for future reference only. The scripts below does not use this information. The idea is to use these files to keep track of what was installed before and update the scripts manually if needed.
 
 # No Cli Install
 
