@@ -3,7 +3,7 @@ mathjax-node
 pkra/mathjax-node-page
 uglify-js
 cssnano-cli
-csso
+csso-cli
 html-minifier
 bundler
 grunt
