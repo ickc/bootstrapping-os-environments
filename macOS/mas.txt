@@ -4,6 +4,8 @@
 488566438
 # MultiMarkdown Composer v4
 1275176220
+# TaskPaper
+1090940630
 
 # Keynote
 409183694
@@ -30,11 +32,29 @@
 425424353
 # CheatSheet
 529456740
+# Speedtest
+1153157709
+# Spark
+1176895641
+# Deliveries
+924726344
+# FullContact
+1094748271
 
 # GarageBand
 # 682658836
 # iMovie
 # 408981434
+# Final Cut Pro
+424389933
+# Motion
+434290957
+# MainStage 3
+634159523
+# Logic Pro X
+634148309
+# Compressor
+424390742
 
 # CHM Reader
 # 424182884
@@ -45,7 +65,12 @@
 
 # KyPass Companion
 # 555293879
-# TaskPaper # doesn't work on macOS Sierra because of the use of OS X cocoa garbage collection memory management
-# 424281111
 # Jettison
 # 447430809
+
+# 1Blocker
+1107421413
+# Furiganify
+1151320968
+# PiPifier
+1160374471
