@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 # example
-# ./macOS-to-usb.sh /Applications/Install\ macOS\ High\ Sierra.app /Volumes/Install\ macOS\ High\ Sierra 
+# ./macOS-to-usb.sh /Applications/Install\ macOS\ Mojave.app /Volumes/USB
 
-sudo "$1/Contents/Resources/createinstallmedia" --volume "$2" --applicationpath "$1"
+sudo "$1/Contents/Resources/createinstallmedia" \
+    --volume "$2" \
+    --nointeraction \
+    --downloadassets
