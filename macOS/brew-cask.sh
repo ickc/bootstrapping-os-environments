@@ -1,24 +1,22 @@
 #!/usr/bin/env bash
 
 # prepare sudo for pkg
-sudo -v &&
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# this can be done after gnuize.sh, but I put it here because it requires sudo
-sudo sh -c 'echo "/usr/local/bin/bash" >> /etc/shells' && chsh -s /usr/local/bin/bash
+brew tap caskroom/versions
+brew tap caskroom/drivers
 
-brew tap caskroom/versions &&
-brew tap caskroom/drivers &&
-
-grep -v '#' brew-cask.txt | xargs brew cask install &&
+# run once a time because it is not uncommon for some casks to be failed to install
+# for example just because it occassionally cannot download something
+# make sure to check the output log to see if needed by run again
+grep -v '#' brew-cask.txt | xargs -n1 brew cask install
 
 # overriding Mac App Store's version
-brew cask install --force atext &&
+brew cask install --force atext
 
 cat << EOF >> $HOME/.bash_profile
 
 # CUDA
 export PATH=":\$PATH:$(echo /Developer/NVIDIA/CUDA-*.*/bin)"
-
-# Textmate
-export EDITOR="/usr/local/bin/mate -w"
 EOF
