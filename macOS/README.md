@@ -42,16 +42,16 @@ Manual Settings:
 
 Manual install these:
 
-- [Sophos Antivirus](https://home.sophos.com/install/25032820d057eecb3e35f151a371114d/b82de6901f33736f4e43e37d013e0795) @manual(behindRegistrationWall)
-- Davinci Resolve @manual(behindRegistrationWall)
+- [Sophos Antivirus](https://home.sophos.com/install/25032820d057eecb3e35f151a371114d/b82de6901f33736f4e43e37d013e0795) @manual(behindRegistrationWall) @cancel
+- System Center EndPoint Protection from Berkeley Software Central?
+- Davinci Resolve @manual(behindRegistrationWall) @cancel
 - mathematica @manual(behindRegistrationWall)
-- iOS Font Maker
-- SMARTReporter
-- tsmuxerGUI
+- iOS Font Maker @cancel
+- tsmuxerGUI @cancel
 - Brother ControlCenter (DCP-7065 DN)
-- hdapm
-- BT747
-- OS-X-SAT-SMART-Driver @unsign
+- hdapm @cancel
+- BT747 @cancel
+- [OS-X-SAT-SMART-Driver](https://binaryfruit.com/drivedx/usb-drive-support)
 - Remote Camera Control @cancel
 - MurGaa Auto Clicker @cancel
 - ti connect @cancel
