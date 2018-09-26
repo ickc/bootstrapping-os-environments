@@ -126,18 +126,18 @@ if [[ -e "$path2conda" ]]; then
 	temp=$(grep -v '#' "$path2conda")
 	# flatten them to be space-separated
 	temp=$(echo $temp)
-	conda_install "$name" -c "$channel" "$temp" pip -y
+	conda_install "$name" "$temp" pip -y
 else
 	printf "%s\n" "$path2conda not found. Skipped."
 fi
 
 # Python 2 only
 if [[ $version == 2 ]]; then
-	conda_install "$name" -c "$channel" weave functools32 futures subprocess32 weakref -y
+	conda_install "$name" weave functools32 futures subprocess32 backports.weakref pathlib2 -y
 fi
 
 # pip, and update pickleshare to prevent `ImportError: cannot import name path`
-conda_install "$name" -c "$channel" pip pickleshare -y
+conda_install "$name" pip pickleshare -y
 # pip
 if [[ -e "$path2pip" ]]; then
 	pip install -Ur "$path2pip"
