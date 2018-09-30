@@ -2,6 +2,7 @@ font-charter
 font-et-book
 font-hanamina
 font-input
+font-fontawesome
 # Fira
 font-fira-sans
 font-fira-mono
