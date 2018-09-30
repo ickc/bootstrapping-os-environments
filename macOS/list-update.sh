@@ -19,3 +19,8 @@ printf '=%.0s' {1..72} && echo
 
 echo Consider add the following to npm.txt:
 ls $(npm root -g) | xargs -i -n1 bash -c 'cat ../common/npm.txt | if ! grep -q $0 -; then echo $0; fi' {}
+
+printf '=%.0s' {1..72} && echo
+
+echo Consider add the following to code.txt:
+code --list-extensions 2>/dev/null | xargs -i -n1 bash -c 'cat ../common/code.txt | if ! grep -q $0 -; then echo $0; fi' {}
