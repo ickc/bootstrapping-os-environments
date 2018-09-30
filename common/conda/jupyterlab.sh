@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-# create environment jupyterlab for using in jupyterhub
+set -e
 
-conda create -n jupyterlab python=3.6 jupyterlab jupyterhub jupyterthemes -y &&
-. activate jupyterlab &&
-jupyter labextension install @jupyterlab/hub-extension
+path2txt="$(dirname "${BASH_SOURCE[0]}")/jupyterlab.txt"
+
+# create environment jupyterlab for using in jupyterhub
+conda create -n jupyterlab -c intel python=3 jupyterlab jupyterhub jupyterthemes -y
+. activate jupyterlab
+
+temp=$(grep -v '#' "$path2txt")
+# flatten them to be space-separated
+temp=$(echo $temp)
+jupyter labextension install $temp
