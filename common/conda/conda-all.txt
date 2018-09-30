@@ -85,3 +85,5 @@ gpxpy
 pyephem
 
 quaternion
+
+cufflinks-py
