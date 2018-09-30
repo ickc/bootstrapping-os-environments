@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# usage: ./make-service.sh
+# usage: ./jupyterlab-make-service.sh
 # env var PYTHONPATH will be used
 # assumes the directory this script is residing does not need escape
 # create a /usr/lib/systemd/system/jupyterhub.service s.t.
