@@ -1,0 +1,12 @@
+DougFinke.vscode-pandoc
+ban.spellright
+coolbear.systemd-unit-file
+donjayamanne.jupyter
+fabiospampinato.vscode-todo-plus
+GrapeCity.gc-excelviewer
+jithurjacob.nbpreviewer
+mechatroner.rainbow-csv
+mrmlnc.vscode-apache
+ms-python.python
+rafaelmaiolla.remote-vscode
+timonwong.shellcheck
