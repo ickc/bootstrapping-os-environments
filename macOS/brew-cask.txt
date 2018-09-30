@@ -14,7 +14,7 @@ adobe-creative-cloud
 # services ################################################################
 dropbox
 google-backup-and-sync
-github-beta
+github
 gitkraken
 duet
 astropad
