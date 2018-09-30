@@ -133,7 +133,7 @@ fi
 
 # Python 2 only
 if [[ $version == 2 ]]; then
-	conda_install "$name" weave functools32 futures subprocess32 backports.weakref pathlib2 -y
+	conda_install "$name" weave functools32 futures subprocess32 backports.weakref backports.functools_lru_cache backports_abc pathlib2 -y
 fi
 
 # pip, and update pickleshare to prevent `ImportError: cannot import name path`
