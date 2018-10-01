@@ -87,3 +87,4 @@ pyephem
 quaternion
 
 cufflinks-py
+folium
