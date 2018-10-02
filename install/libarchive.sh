@@ -15,4 +15,9 @@ cd libarchive-$VERSION &&
 make -j $P &&
 make install -j $P
 
-rm -rf "$TEMPDIR"
+rm -rf "$TEMPDIR" &&
+
+echo '# export these PATH'
+echo export PATH="$PREFIX/bin:\$PATH"
+echo export LD_LIBRARY_PATH=$PREFIX/lib:\$LD_LIBRARY_PATH"
+echo export MANPATH="$PREFIX/share/man:\$MANPATH"
