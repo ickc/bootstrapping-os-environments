@@ -1,39 +1,59 @@
-openssh-server
-python-pip
-texlive-full
-pandoc
+# 4kvideodownloader # manual
+# atom # manual
+# bsdtar
+caffeine
+# cifs-utils # samba
+# cmake
+# code # manual
+# compizconfig-settings-manager
+# displaycal # manual
+# driconf # Hardware Acceleration for VMWare
+# dropbox # manual
+dstat
+# emby-server # manual
 exfat-fuse
 exfat-utils
-# Hardware Acceleration for VMWare
-driconf
+# fonts-cwtex-kai
+# gnome-color-manager # related to ArgyllCMS
 gsmartcontrol
-lm-sensors
-psensor
-smartmontools
-atom
-caffeine
-samba
-zfs
-# zfsutils-linux
-haskell-platform
-# stack
-sshfs
-nvidia-cuda-toolkit
-cmake
-gccgo-6
-python-gpgme
-# displaycal
-# compizconfig-settings-manager
-dstat
-sysstat
-# WD Green HDD config
-idle3-tools
+# haskell-platform
+# haskell-stack
+htop
+idle3-tools # WD Green HDD config
+# intel-linux-graphics-installer # manual
+iotop
+# isomaster
 kodi
-tree
 # lame
-# build-essential
-# libffi-dev
-# libav-tools
 libimage-exiftool-perl
+lm-sensors
+mosh
+neofetch
+nfs-kernel-server
+# nvidia-cuda-toolkit
+opencc
+openssh-server
+# p7zip-full
+pandoc
+pandoc-citeproc
+parallel
+# ppa-purge
+psensor
+# python-gpgme # manual
+python-pip
+# python3-multibootusb # manual
+samba
+smartmontools
+sshfs
+# stack # manual
+sysstat # includes iostat
+# texlive-full
 tmux
-haskell-stack
+tree
+vainfo # video acceleration
+vlc
+# xorriso
+xsel
+# zerotier-one # manual
+zfsutils-linux
+zsh
