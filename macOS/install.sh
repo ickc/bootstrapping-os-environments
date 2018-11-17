@@ -21,7 +21,7 @@ mas install 497799835
 # install node, npm
 brew install node ruby
 
-printf "%s\n" "" '# Ruby from homebrew' 'export PATH=$(brew --prefix ruby)/bin:$PATH' >> $HOME/.bash_profile #[Small but very useful tip on using jekyll on macosx when you use hoembrew · Issue #1504 · jekyll/jekyll](https://github.com/jekyll/jekyll/issues/1504)
+printf "%s\n" "" '# Ruby from homebrew' 'export PATH="/usr/local/opt/ruby/bin:$PATH"' >> $HOME/.bash_profile #[Small but very useful tip on using jekyll on macosx when you use hoembrew · Issue #1504 · jekyll/jekyll](https://github.com/jekyll/jekyll/issues/1504)
 
 gem install rubygems-update
 
@@ -29,5 +29,5 @@ gem install rubygems-update
 brew cask install java osxfuse anaconda
 
 # conda PATH
-# this is a better approach since you can always deactivate it and uses defaults bin for example
-printf "%s\n" "" "# conda" '. /usr/local/anaconda3/bin/activate root' >> $HOME/.bash_profile
+# put it to the end that expose activate but not override others
+printf "%s\n" "" "# conda" 'PATH="$PATH:/usr/local/anaconda3/bin"' >> $HOME/.bash_profile
