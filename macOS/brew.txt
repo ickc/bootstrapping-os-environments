@@ -49,3 +49,15 @@ htop
 mosh
 tmux
 wakeonlan
+# htop alternatives
+glances
+# du alternatives
+ncdu
+# ls alternatives
+exa
+# file manager and its dependencies
+ranger
+w3m
+lynx
+highlight
+atool
