@@ -1,5 +1,6 @@
 # 4kvideodownloader # manual
 # atom # manual
+atool
 # bsdtar
 caffeine
 # cifs-utils # samba
@@ -11,23 +12,29 @@ caffeine
 # dropbox # manual
 dstat
 # emby-server # manual
+# exa # manual
 exfat-fuse
 exfat-utils
 # fonts-cwtex-kai
+glances
 # gnome-color-manager # related to ArgyllCMS
 gsmartcontrol
 # haskell-platform
 # haskell-stack
+highlight
 htop
 idle3-tools # WD Green HDD config
 # intel-linux-graphics-installer # manual
 iotop
 # isomaster
+keepassxc
 kodi
 # lame
 libimage-exiftool-perl
 lm-sensors
+lynx
 mosh
+ncdu
 neofetch
 nfs-kernel-server
 # nvidia-cuda-toolkit
@@ -42,6 +49,7 @@ psensor
 # python-gpgme # manual
 python-pip
 # python3-multibootusb # manual
+ranger
 samba
 smartmontools
 sshfs
