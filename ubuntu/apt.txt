@@ -37,6 +37,7 @@ mosh
 ncdu
 neofetch
 nfs-kernel-server
+nodejs
 # nvidia-cuda-toolkit
 opencc
 openssh-server
