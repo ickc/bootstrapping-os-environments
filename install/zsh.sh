@@ -1,4 +1,4 @@
-#!/bin/sh​
+#!/usr/bin/env bash
 
 VERSION=${VERSION:-5.5.1}
 DOWNLOADDIR=${DOWNLOADDIR:-"$HOME/.zsh"}
