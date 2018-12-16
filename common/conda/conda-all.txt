@@ -96,3 +96,9 @@ lxml
 beautifulsoup4
 plotly
 nltk
+ipywidgets
+folium
+pypdf2
+line_profiler
+snakeviz
+libiconv
