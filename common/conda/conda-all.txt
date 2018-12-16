@@ -80,6 +80,7 @@ keras
 healpy
 moviepy
 autopep8
+pycodestyle
 gpxpy
 
 pyephem
@@ -88,3 +89,10 @@ quaternion
 
 cufflinks-py
 folium
+twine
+github3.py
+pygithub
+lxml
+beautifulsoup4
+plotly
+nltk
