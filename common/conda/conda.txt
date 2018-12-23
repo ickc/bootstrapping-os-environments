@@ -12,7 +12,7 @@ ipykernel
 ipyparallel
 pytest
 pytest-cov
-numba
+'numba>=0.41'
 quaternion
 pandas
 pytables

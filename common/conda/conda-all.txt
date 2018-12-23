@@ -47,7 +47,7 @@ setuptools
 
 psutil
 
-numba
+'numba>=0.41'
 
 statsmodels
 imageio
