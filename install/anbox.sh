@@ -14,7 +14,7 @@ sudo modprobe binder_linux
 # debug
 ls -1 /dev/{ashmem,binder}
 
-sudo snap install --devmode --beta anbox
+snap install --devmode --beta anbox
 
 # debug
 snap info anbox
