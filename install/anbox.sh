@@ -25,7 +25,7 @@ git clone git@github.com:geeks-r-us/anbox-playstore-installer.git
 cd anbox-playstore-installer
 
 sudo apt install wget lzip unzip squashfs-tools -y
-sed -i 's/^OPENGAPPS_RELEASEDATE.*$/OPENGAPPS_RELEASEDATE="20181214"/' install-playstore.sh
+sed -i 's/^OPENGAPPS_RELEASEDATE.*$/OPENGAPPS_RELEASEDATE="20181229"/' install-playstore.sh
 sudo ./install-playstore.sh
 
 anbox.appmgr
