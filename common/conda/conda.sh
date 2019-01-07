@@ -83,9 +83,9 @@ conda_create () {
 
 conda_install () {
 	if [[ "$condaInstallPath" == None ]]; then
-		conda install -n $@ || conda upgrade -n $@
+		conda install -n "$name" -y $@ || conda upgrade -n "$name" -y $@
 	else
-		conda install -p $@ || conda upgrade -p $@
+		conda install -p "$name" -y $@ || conda upgrade -p "$name" -y $@
 	fi
 }
 
@@ -120,24 +120,26 @@ else
 	. activate "$condaInstallPath/$name"
 fi
 
+conda_install -c mjuric pyslalib
+
 # conda
 if [[ -e "$path2conda" ]]; then
 	# load names of packages
 	temp=$(grep -v '#' "$path2conda")
 	# flatten them to be space-separated
 	temp=$(echo $temp)
-	conda_install "$name" "$temp" pip -y
+	conda_install "$temp" pip
 else
 	printf "%s\n" "$path2conda not found. Skipped."
 fi
 
 # Python 2 only
 if [[ $version == 2 ]]; then
-	conda_install "$name" weave functools32 futures subprocess32 backports.weakref backports.functools_lru_cache backports_abc pathlib2 -y
+	conda_install weave functools32 futures subprocess32 backports.weakref backports.functools_lru_cache backports_abc pathlib2
 fi
 
 # pip, and update pickleshare to prevent `ImportError: cannot import name path`
-conda_install "$name" pip pickleshare -y
+conda_install pip pickleshare
 # pip
 if [[ -e "$path2pip" ]]; then
 	pip install -Ur "$path2pip"
@@ -147,7 +149,7 @@ fi
 
 # mpich
 if [[ $mpi == mpich || $mpi == openmpi ]]; then
-	conda_install "$name" -c mpi4py mpi4py $mpi -y
+	conda_install -c mpi4py mpi4py $mpi
 elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	# TODO: better choice of this tempdir
 	tempDir="$HOME/.mpi4py/$name/"
@@ -176,11 +178,10 @@ elif [[ $mpi == cray && -n $NERSC_HOST ]]; then
 	fi
 	rm -rf "$tempDir"
 else
-	# TODO: as of time of writing, only conda-forge has mpi4py 3.0.0
-	conda_install "$name" -c intel mpi4py -y
+	conda_install -c intel mpi4py
 fi
 
 # Don't install ipython from intel channel. See https://software.intel.com/en-us/forums/intel-distribution-for-python/topic/704018
-# conda_install "$name" -c defaults ipython -y
+# conda_install -c defaults ipython
 
 python -m ipykernel install --user --name "$name" --display-name "$name"

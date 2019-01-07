@@ -1,2 +1,1 @@
-pyslalib
 yaml2cli
