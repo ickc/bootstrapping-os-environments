@@ -13,6 +13,12 @@
 409201541
 # Numbers
 409203825
+# Word
+462054704
+# Excel
+462058435
+# PowerPoint
+462062816
 # Microsoft OneNote
 784801555
 # OneDrive

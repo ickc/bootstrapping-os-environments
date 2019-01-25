@@ -6,7 +6,7 @@ xquartz
 # license required ################################################################
 logos
 # microsoft-office-2011
-microsoft-office
+# microsoft-office
 vmware-fusion
 textmate
 papers
