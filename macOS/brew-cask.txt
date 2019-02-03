@@ -80,7 +80,7 @@ nimble
 keepassxc
 keeweb
 # hardware related ################################################################
-# openzfs
+openzfs
 gdisk
 nvidia-web-driver
 nvidia-cuda
