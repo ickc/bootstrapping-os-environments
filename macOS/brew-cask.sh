@@ -4,8 +4,8 @@
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-brew tap caskroom/versions
-brew tap caskroom/drivers
+brew tap homebrew/cask-versions
+brew tap homebrew/cask-drivers
 
 # run once a time because it is not uncommon for some casks to be failed to install
 # for example just because it occassionally cannot download something
