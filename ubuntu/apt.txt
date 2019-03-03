@@ -42,8 +42,8 @@ nodejs
 opencc
 openssh-server
 # p7zip-full
-pandoc
-pandoc-citeproc
+# pandoc
+# pandoc-citeproc
 parallel
 # ppa-purge
 psensor
