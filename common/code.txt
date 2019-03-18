@@ -1,7 +1,6 @@
 DougFinke.vscode-pandoc
 ban.spellright
 coolbear.systemd-unit-file
-donjayamanne.jupyter
 fabiospampinato.vscode-todo-plus
 GrapeCity.gc-excelviewer
 jithurjacob.nbpreviewer
