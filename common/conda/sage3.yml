@@ -1,0 +1,9 @@
+name: sage
+channels:
+  # this must be the first
+  - conda-forge
+  - intel
+  - defaults
+dependencies:
+  # or just sage if you don't care versions
+  - sage=8.3=py36_3

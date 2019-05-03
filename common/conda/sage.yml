@@ -1,0 +1,8 @@
+name: sage
+channels:
+  # this must be the first
+  - conda-forge
+  - intel
+  - defaults
+dependencies:
+  - sage
