@@ -4,12 +4,12 @@ set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-conda env create -f "$DIR/sage.yml" -f
+conda env create -f "$DIR/sage.yml"
 
-. activate sage
+. activate sage2
 
 # sagemath kernel
-jupyter kernelspec install --user $(dirname $(which sage))/../share/jupyter/kernels/sagemath
+jupyter kernelspec install --user $(dirname $(which sage))/../share/jupyter/kernels/sagemath --name sagemath2
 
 # ipython kernel
-python -m ipykernel install --user --name sage
+python -m ipykernel install --user --name sage2

@@ -1,4 +1,4 @@
-name: sage
+name: sage3
 channels:
   # this must be the first
   - conda-forge

@@ -1,8 +1,8 @@
-name: sage
+name: sage2
 channels:
   # this must be the first
   - conda-forge
   - intel
   - defaults
 dependencies:
-  - sage
+  - sage=8.3=py27_3
