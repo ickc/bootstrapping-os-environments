@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 # install class on all *-(defaults|intel) conda environments
+# set INSTALLDIR to customize where the git repo is located
 # can be invoked repeatedly to update
+# before running this script, an environment with Cython is needed
+# to be loaded first
 
 set -e
 
@@ -23,10 +26,16 @@ git clone "$url" class || (cd class && git pull)
 # compile
 cd class
 make clean
-if [[ $(uname) == Darwin ]]; then
-    make -j$(nproc) OPTFLAG='-Ofast -ffast-math -march=native' CC=gcc-8
+
+# use icc if exist
+if hash icc 2>/dev/null; then
+    make -j$(nproc) OPTFLAG='-Ofast -ffast-math -march=native' CC=icc OMPFLAG='-mp -mp=nonuma -mp=allcores -g'
 else
-    make -j$(nproc) OPTFLAG='-Ofast -ffast-math -march=native'
+    if [[ $(uname) == Darwin ]]; then
+        make -j$(nproc) OPTFLAG='-Ofast -ffast-math -march=native' CC=gcc-8
+    else
+        make -j$(nproc) OPTFLAG='-Ofast -ffast-math -march=native'
+    fi
 fi
 
 # install in all conda environments that ends in -defaults or -intel
