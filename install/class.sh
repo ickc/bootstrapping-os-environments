@@ -26,6 +26,7 @@ git clone "$url" class || (cd class && git reset --hard && git clean -d -f && gi
 
 # compile
 cd class
+make clean
 
 if [[ $(uname) == Darwin ]]; then
     make -j$(nproc) OPTFLAG='-Ofast -ffast-math -march=native' CC=gcc-8
