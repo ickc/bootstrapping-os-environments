@@ -10,6 +10,11 @@ set -e
 
 url="git@github.com:lesgourg/class_public.git"
 
+print_log(){
+	eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
+	printf "$@\n"
+}
+
 # set install directory
 if [[ -n $NERSC_HOST ]]; then
     defaultDir=/global/common/software/polar/git
@@ -22,10 +27,12 @@ NPROC="${NPROC:-$(nproc)}"
 mkdir -p "$INSTALLDIR"
 
 # obtain class
+print_log "installing in $INSTALLDIR"
 cd "$INSTALLDIR"
 git clone "$url" class || (cd class && git reset --hard && git clean -d -f && git pull)
 
 # compile
+print_log "Compiling with $NPROC processors"
 cd class
 make clean
 
@@ -38,6 +45,8 @@ fi
 # install in all conda environments that ends in -defaults or -intel
 cd python
 for i in $(grep -E -- '-(defaults|intel)' ~/.conda/environments.txt); do
-    . activate $i
-    pip install .
+	print_log "Install in Python at $i"
+    . activate "$i"
+	# allow this to fail in some environments
+	python setup.py install || true
 done
