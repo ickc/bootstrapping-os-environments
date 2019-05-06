@@ -10,3 +10,4 @@ ms-python.python
 rafaelmaiolla.remote-vscode
 timonwong.shellcheck
 samuelcolvin.jinjahtml
+ms-vscode-remote.remote-ssh
