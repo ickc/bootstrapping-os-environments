@@ -70,6 +70,7 @@ scikit-learn
 scikit-image
 requests
 requests-oauthlib
+requests-futures
 opencv
 dask
 distributed
@@ -112,3 +113,4 @@ snakeviz
 libiconv
 
 cytoolz
+conda
