@@ -16,11 +16,18 @@ astropy
 openpyxl
 pillow
 pyyaml
+yamlloader
+ujson
+xmltodict
+zeep
 pytest
 pytest-cov
 pyflakes
 flake8
 pylint
+bandit
+mypy
+pydocstyle
 sphinx
 ipyparallel
 
@@ -62,6 +69,7 @@ datashader
 scikit-learn
 scikit-image
 requests
+requests-oauthlib
 opencv
 dask
 distributed
@@ -102,3 +110,5 @@ pypdf2
 line_profiler
 snakeviz
 libiconv
+
+cytoolz
