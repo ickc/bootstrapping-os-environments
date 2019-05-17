@@ -1,5 +1,4 @@
 panflute
 pantable
 yaml2cli
-pyotp
 tco
