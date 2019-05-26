@@ -8,7 +8,5 @@ path2txt="$(dirname "${BASH_SOURCE[0]}")/jupyterlab.txt"
 conda create -n jupyterlab -c defaults python=3 jupyterlab jupyterhub jupyterthemes 'pyzmq>=17' nodejs -y
 . activate jupyterlab
 
-temp=$(grep -v '#' "$path2txt")
-# flatten them to be space-separated
-temp=$(echo $temp)
-jupyter labextension install $temp
+temp=($(grep -v '#' "$path2txt"))
+jupyter labextension install "${temp[@]}"
