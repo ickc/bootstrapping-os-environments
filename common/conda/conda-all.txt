@@ -96,7 +96,7 @@ pyephem
 
 quaternion
 
-cufflinks-py
+python-cufflinks
 folium
 twine
 github3.py
