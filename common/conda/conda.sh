@@ -138,6 +138,8 @@ if [[ $version == 2 ]]; then
 	conda_install weave functools32 futures subprocess32 backports.weakref backports.functools_lru_cache backports_abc pathlib2
 fi
 
+[[ $(uname) == Darwin ]] && conda_install python.app
+
 # pip, and update pickleshare to prevent `ImportError: cannot import name path`
 conda_install pip pickleshare
 # pip

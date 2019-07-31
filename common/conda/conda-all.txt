@@ -117,7 +117,6 @@ pyotp
 
 bidict
 fire
-python.app
 qrcode
 terminaltables
 cytoolz
