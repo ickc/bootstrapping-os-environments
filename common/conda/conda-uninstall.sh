@@ -10,7 +10,7 @@ if [[ ! -d "$environment" ]]; then
     exit 1
 fi
 
-[[ -n $NERSC_HOST ]] && module load python/3.6-anaconda-5.2
+[[ -n $NERSC_HOST ]] && module load python/3.7-anaconda-2019.07
 
 echo "removing environment $environment..."
 conda remove -p "$environment" --all -y
