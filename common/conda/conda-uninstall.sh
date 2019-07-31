@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# e.g. find /global/common/software/polar/.conda/envs -maxdepth 1 -name '*20190730*' -exec ./conda-uninstall.sh {} \;
+
 set -e
 
 environment="$1"
