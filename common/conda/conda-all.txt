@@ -127,3 +127,5 @@ boltons
 gooey
 arrow
 emcee
+colorama
+cachetools
