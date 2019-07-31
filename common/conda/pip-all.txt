@@ -2,3 +2,5 @@ panflute
 pantable
 yaml2cli
 tco
+defopt
+glom

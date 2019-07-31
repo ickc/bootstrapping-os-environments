@@ -7,12 +7,13 @@ nose
 ephem
 healpy
 cython
-# useful but not dependent on these
+
+
 ipykernel
 ipyparallel
 pytest
 pytest-cov
-'numba>=0.41'
+numba
 quaternion
 pandas
 pytables

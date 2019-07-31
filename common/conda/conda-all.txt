@@ -40,7 +40,6 @@ path.py
 pbr
 pexpect
 pickleshare
-Pillow
 ptyprocess
 pyparsing
 python-dateutil
@@ -54,7 +53,7 @@ setuptools
 
 psutil
 
-'numba>=0.41'
+numba
 
 statsmodels
 imageio
@@ -115,3 +114,14 @@ libiconv
 cytoolz
 conda
 pyotp
+
+bidict
+fire
+python.app
+qrcode
+terminaltables
+cytoolz
+pyotp
+requests-futures
+boltons
+gooey

@@ -36,6 +36,7 @@ dependencies:
 - nbconvert
 - nltk
 - nose
+- numba
 - numexpr
 - numpy
 - opencv
