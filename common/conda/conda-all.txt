@@ -125,3 +125,5 @@ pyotp
 requests-futures
 boltons
 gooey
+arrow
+emcee
