@@ -4,7 +4,7 @@ import argparse
 import platform
 import sys
 
-__version__ = '0.1'
+__version__ = '0.1.1'
 
 
 def filter_line(line):
@@ -55,6 +55,11 @@ def cook_yaml(
             'backports_abc',
             'pathlib2'
         ]
+        # conda cannot resolve subprocess32 and mypy in python2
+        try:
+            dict_['dependencies'].remove('mypy')
+        except ValueError:
+            pass
 
     if mpi == 'cray':
         print('Install mpi4py compiled using Cray compiler from cray-mpi4py.sh', file=sys.stderr)
