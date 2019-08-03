@@ -4,7 +4,7 @@ import argparse
 import platform
 import sys
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 
 def filter_line(line):
@@ -24,12 +24,12 @@ def cook_yaml(
     channel='defaults',
     name='ab',
     prefix=None,
-    conda_path='conda.txt',
-    pip_path='pip.txt',
+    conda_paths=['conda.txt'],
+    pip_paths=['pip.txt'],
     mpi=None
 ):
-    conda_envs = read_env(conda_path)
-    pip_envs = read_env(pip_path)
+    conda_envs = sum((read_env(conda_path) for conda_path in conda_paths), [])
+    pip_envs = sum((read_env(pip_path) for pip_path in pip_paths), [])
 
     dict_ = dict()
 
@@ -53,7 +53,8 @@ def cook_yaml(
             'backports.weakref',
             'backports.functools_lru_cache',
             'backports_abc',
-            'pathlib2'
+            'pathlib2',
+            'funcsigs',
         ]
         # conda cannot resolve subprocess32 and mypy in python2
         try:
@@ -94,10 +95,10 @@ def cli():
                         help='prefix of the name of environment. Default: ab')
     parser.add_argument('-p', '--prefix',
                         help="Full path to conda environment prefix. If not specified, conda's default will be used.")
-    parser.add_argument('-C', '--conda-txt',
-                        help="path to a file that contains the list of conda packages to be installed.")
-    parser.add_argument('-P', '--pip-txt',
-                        help="path to a file that contains the list of pip packages to be installed.")
+    parser.add_argument('-C', '--conda-txt', nargs='+',
+                        help="path to a file that contains the list of conda packages to be installed. Can be more than 1.")
+    parser.add_argument('-P', '--pip-txt', nargs='+',
+                        help="path to a file that contains the list of pip packages to be installed. Can be more than 1.")
     parser.add_argument('-m', '--mpi',
                         help="custom version of mpi4py if sepecified. e.g. mpich/openmpi to use mpich/openmpi from the mpi4py channel; cray to custom build using cray compiler.")
 
@@ -111,8 +112,8 @@ def cli():
         channel=args.channel,
         name=args.name,
         prefix=args.prefix,
-        conda_path=args.conda_txt,
-        pip_path=args.pip_txt,
+        conda_paths=args.conda_txt,
+        pip_paths=args.pip_txt,
         mpi=args.mpi,
     )
     try:
