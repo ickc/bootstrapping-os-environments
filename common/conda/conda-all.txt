@@ -1,3 +1,7 @@
+mjuric::pyslalib
+pip
+pickleshare
+
 ipykernel
 
 pandocfilters

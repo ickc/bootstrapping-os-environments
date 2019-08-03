@@ -1,3 +1,7 @@
+mjuric::pyslalib
+pip
+pickleshare
+
 scipy
 astropy
 h5py
@@ -7,7 +11,6 @@ nose
 ephem
 healpy
 cython
-
 
 ipykernel
 ipyparallel
