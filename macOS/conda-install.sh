@@ -1,21 +1,45 @@
 #!/usr/bin/env bash
 
+set -e
+
+path2ReproducibleOsEnvironments="$HOME/git/source/reproducible-os-environments"
+
+conda_script_path="$path2ReproducibleOsEnvironments/common/conda/conda.py"
+conda_path="$path2ReproducibleOsEnvironments/common/conda/conda.txt"
+conda_all_path="$path2ReproducibleOsEnvironments/common/conda/conda-all.txt"
+pip_path="$path2ReproducibleOsEnvironments/common/conda/pip.txt"
+pip_all_path="$path2ReproducibleOsEnvironments/common/conda/pip-all.txt"
+
+date=$(date +%Y%m%d)
+
 # install conda environments
 
 # ab2-defaults
-../common/conda/conda.sh &&
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "ab" -C "$conda_path" -P "$pip_path"
+conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 # ab2-intel
-../common/conda/conda.sh -c intel &&
-# ab3-defaults
-../common/conda/conda.sh -v 3 &&
-# ab3-intel
-../common/conda/conda.sh -c intel -v 3 &&
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "ab" -C "$conda_path" -P "$pip_path" -c intel
+conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 
 # all2-defaults
-../common/conda/conda.sh -n all -C ../common/conda/conda-all.txt -P ../common/conda/pip-all.txt &&
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "all" -C "$conda_all_path" -P "$pip_all_path"
+conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 # all2-intel
-../common/conda/conda.sh -n all -C ../common/conda/conda-all.txt -P ../common/conda/pip-all.txt -c intel &&
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "all" -C "$conda_all_path" -P "$pip_all_path" -c intel
+conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
+
+# ab3-defaults
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "ab" -C "$conda_path" -P "$pip_path" -v 3
+conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
+# ab3-intel
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "ab" -C "$conda_path" -P "$pip_path" -c intel -v 3
+conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
+
 # all3-defaults
-../common/conda/conda.sh -n all -C ../common/conda/conda-all.txt -P ../common/conda/pip-all.txt -v 3 &&
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "all" -C "$conda_all_path" -P "$pip_all_path" -v 3
+conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 # all3-intel
-../common/conda/conda.sh -n all -C ../common/conda/conda-all.txt -P ../common/conda/pip-all.txt -c intel -v 3
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "all" -C "$conda_all_path" -P "$pip_all_path" -c intel -v 3
+conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
+
+rm -f "$path2ReproducibleOsEnvironments/temp.yml"
