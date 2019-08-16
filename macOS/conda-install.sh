@@ -10,7 +10,7 @@ conda_all_path="$path2ReproducibleOsEnvironments/common/conda/conda-all.txt"
 pip_path="$path2ReproducibleOsEnvironments/common/conda/pip.txt"
 pip_all_path="$path2ReproducibleOsEnvironments/common/conda/pip-all.txt"
 
-date=$(date +%Y%m%d)
+. activate
 
 # install conda environments
 
@@ -43,3 +43,12 @@ conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 
 rm -f "$path2ReproducibleOsEnvironments/temp.yml"
+
+# iterate over each conda environment
+
+conda info --env | grep -v -E '#|root' - | grep -E '(defaults|intel)' - | cut -d' ' -f1 | xargs -i bash -c '
+    for name do
+        conda activate "$name"
+        python -m ipykernel install --user --name "$name" --display-name "$name"
+        conda deactivate
+    done' bash {}
