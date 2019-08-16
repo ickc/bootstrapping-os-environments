@@ -17,6 +17,6 @@ done
 diskutil partitionDisk "/dev/disk$dkno" GPT JHFS+ "$2" 100%
 
 sudo "$1/Contents/Resources/createinstallmedia" \
-    --volume "$2" \
+    --volume "/Volumes/$2" \
     --nointeraction \
     --downloadassets
