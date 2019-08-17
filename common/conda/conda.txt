@@ -2,6 +2,7 @@ mjuric::pyslalib
 healpy
 quaternion
 ephem
+nose
 
 pip
 pickleshare
