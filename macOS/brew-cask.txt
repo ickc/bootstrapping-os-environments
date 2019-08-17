@@ -93,6 +93,7 @@ logitech-gaming-software
 wacom-intuos-tablet
 switchresx
 colormunki-photo
+asix-ax88179
 # paragon-ntfs # Seagate version??
 # karabiner # equals to Keyremap4Macbook
 # scansnap-manager-ix500 # scanner for Gradescope
