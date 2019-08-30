@@ -17,7 +17,10 @@ if [[ -n $NERSC_HOST ]]; then
     module unload libfabric || true
 
     python setup.py build --mpicc="$(which cc) -shared" && python setup.py install
-    python setup.py build_exe --mpicc="$(which cc) -dynamic" && python setup.py install_exe
+    # this is not needed
+    # c.f. https://mpi4py.readthedocs.io/en/stable/appendix.html#mpi-enabled-python-interpreter
+    # also, https://docs.nersc.gov/programming/libraries/hdf5/h5py/
+    # python setup.py build_exe --mpicc="$(which cc) -dynamic" && python setup.py install_exe
 else
     # on lpc, mpi4py from conda's intel channel is used
     python setup.py build && python setup.py install
