@@ -44,7 +44,6 @@ dependencies:
 - pandas
 - pandoc
 - pandocfilters
-- panflute
 - path.py
 - pexpect
 - pickleshare
