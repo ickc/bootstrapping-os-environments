@@ -82,9 +82,6 @@ keeweb
 # hardware related ################################################################
 openzfs
 gdisk
-nvidia-web-driver
-nvidia-cuda
-cuda-z
 intel-power-gadget
 gfxcardstatus
 logitech-options

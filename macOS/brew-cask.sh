@@ -14,9 +14,4 @@ grep -v '#' brew-cask.txt | xargs -n1 brew cask install
 
 # overriding Mac App Store's version
 brew cask install --force atext
-
-cat << EOF >> $HOME/.bash_profile
-
-# CUDA
-export PATH=":\$PATH:$(echo /Developer/NVIDIA/CUDA-*.*/bin)"
-EOF
+    
