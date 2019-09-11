@@ -1,0 +1,31 @@
+# also available in ubuntu
+exfat-fuse
+exfat-utils
+glances
+highlight
+htop
+iotop
+kodi
+lynx
+mosh
+ncdu
+neofetch
+nfs-kernel-server
+nodejs
+parallel
+psensor
+python-pip
+ranger
+samba
+smartmontools
+sshfs
+sysstat
+tmux
+tree
+vainfo
+vlc
+lm-sensors
+zsh
+git
+# raspbian only
+rpi-eeprom
