@@ -66,3 +66,4 @@ xsel
 # zerotier-one # manual
 zfsutils-linux
 zsh
+git
