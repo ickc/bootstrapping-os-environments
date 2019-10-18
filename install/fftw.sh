@@ -3,10 +3,10 @@
 set -e
 
 # optionally override these with env. var.
-TEMPDIR="${TEMPDIR-"$HOME/21cmfast/fftw"}"
-P=${P-$(getconf _NPROCESSORS_ONLN)}
+P=${P-$(($(getconf _NPROCESSORS_ONLN) / 2))}
 VERSION=${VERSION-3.3.8}
-PREFIX="${PREFIX-"$HOME/21cmfast/local"}"
+PREFIX="${PREFIX-"$HOME/scratch/local/toast-gnu-fftw"}"
+TEMPDIR="${TEMPDIR-"$PREFIX/git"}"
 
 print_log(){
 	eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
@@ -23,7 +23,14 @@ print_log configure
 
 cd fftw-$VERSION
 # CC=icc
-CFLAGS='-Ofast -ffast-math -march=native' ./configure --enable-float --enable-openmp --prefix=$PREFIX --enable-avx512
+if [[ $(uname) == Darwin ]]; then
+	echo "You may need to patch it. See https://github.com/FFTW/fftw3/issues/136"
+	CC=gcc-9
+else
+	CC=gcc
+fi
+# CC=$CC CFLAGS='-Ofast -ffast-math -march=native' ./configure --enable-float --enable-openmp --prefix=$PREFIX --enable-avx2
+cmake . -DCMAKE_C_COMPILER=gcc-9 -DCMAKE_CXX_COMPILER=g++-9 -DENABLE_THREADS=ON -DENABLE_OPENMP=ON -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX
 
 print_log make
 
