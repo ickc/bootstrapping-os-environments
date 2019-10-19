@@ -5,8 +5,8 @@ set -e
 # optionally override these with env. var.
 P=${P-$(($(getconf _NPROCESSORS_ONLN) / 2))}
 VERSION=${VERSION-3.3.8}
-PREFIX="${PREFIX-"$HOME/scratch/local/toast-gnu-fftw"}"
-TEMPDIR="${TEMPDIR-"$PREFIX/git"}"
+PREFIX="${PREFIX-"$SCRATCH/local/toast-gnu/compile"}"
+TEMPDIR="${TEMPDIR-"$SCRATCH/local/toast-gnu/git"}"
 
 print_log(){
 	eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
@@ -39,7 +39,7 @@ make install
 
 print_log cleanup
 
-rm -rf "$TEMPDIR"
+# rm -rf "$TEMPDIR"
 
 echo '# export these PATH'
 # echo export PATH="$PREFIX/bin:\$PATH"
