@@ -24,7 +24,8 @@ print_log configure
 cd fftw-$VERSION
 # CC=icc
 if [[ $(uname) == Darwin ]]; then
-	echo "You may need to patch it. See https://github.com/FFTW/fftw3/issues/136"
+	echo "I'm patching it according to https://github.com/FFTW/fftw3/issues/136"
+	sed -i 's/target_link_libraries (\${fftw3_lib}_omp \${fftw3_lib})/target_link_libraries (\${fftw3_lib}_omp \${fftw3_lib})\n\ttarget_link_libraries (\${fftw3_lib}_omp \${OpenMP_C_FLAGS})/g' CMakeLists.txt
 	CC=gcc-9
 else
 	CC=gcc
@@ -37,8 +38,7 @@ print_log make
 make -j $P
 make install
 
-print_log cleanup
-
+# print_log cleanup
 # rm -rf "$TEMPDIR"
 
 echo '# export these PATH'
