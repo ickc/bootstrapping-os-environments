@@ -10,7 +10,8 @@ brew update && brew upgrade && brew cleanup && brew doctor
 mas upgrade
 
 # upgrade gems
-update_rubygems && gem update --system
+# update_rubygems
+gem update --system
 
 # update cabal
 # cabal update
