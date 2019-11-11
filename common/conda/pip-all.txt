@@ -3,4 +3,4 @@ pantable
 tco
 defopt
 glom
-acor
+# acor
