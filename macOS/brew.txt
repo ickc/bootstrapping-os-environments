@@ -4,24 +4,24 @@ clang-format
 parallel
 multimarkdown
 # Open client for Cisco AnyConnect VPN
-openconnect
+# openconnect
 enca
 smartmontools
 gdrive
-imagemagick
+# imagemagick
 mp4v2
-pdf2svg
+# pdf2svg
 potrace
 tree
 exiftool
 wget
 # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
 doxygen
-pandoc
-pandoc-citeproc
+# pandoc
+# pandoc-citeproc
 closure-compiler
 # convert emf to pdf
-unoconv
+# unoconv
 tidy-html5
 # 2 way sync
 unison
@@ -29,7 +29,7 @@ unison
 opencc
 epubcheck
 p7zip
-msitools
+# msitools
 cmake
 llvm
 # GNU Scientific Library
@@ -44,13 +44,13 @@ gsl
 shellcheck
 automake
 vitorgalvao/tiny-scripts/cask-repair
-go
+# go
 htop
 mosh
 tmux
 wakeonlan
 # htop alternatives
-glances
+# glances
 # du alternatives
 ncdu
 # ls alternatives
@@ -61,4 +61,4 @@ w3m
 lynx
 highlight
 atool
-neofetch
+# neofetch
