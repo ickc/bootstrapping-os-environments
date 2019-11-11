@@ -4,7 +4,7 @@ set -e
 
 # TODO: better choice of this tempdir
 tempDir="$HOME/.mpi4py/"
-mpi4pyVersion="3.0.2" #TODO
+mpi4pyVersion="3.0.3" #TODO
 mpiName="mpi4py-$mpi4pyVersion"
 
 mkdir -p "$tempDir" && cd "$tempDir"
