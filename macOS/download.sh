@@ -2,7 +2,7 @@
 
 # post brew-cask.sh
 ## open Adobe CC installer downloaded by brew cask
-open -a '/usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app'
+open -a "~/.homebrew/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app"
 
 # create temp folder for downloads
 cd "$( dirname "${BASH_SOURCE[0]}" )"
