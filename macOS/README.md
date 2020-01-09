@@ -21,6 +21,7 @@ On the freshly installed Mac:
 			- `gem.sh`
 			- `conda-install.sh`
 			- `cabal.sh`
+	- `port.sh`
 - upgrade package installers
 	- `upgrade.sh`
 
