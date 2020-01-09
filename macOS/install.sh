@@ -3,8 +3,6 @@
 # TODO: use heredoc to define bash functions ml_brew, ml_port
 
 # install xcode
-# the first time it runs, the process ends here
-# the second time it runs, this command fails and proceed to next
 xcode-select --install
 
 sudo xcodebuild -license accept
@@ -24,7 +22,6 @@ bash -c "$(curl https://raw.githubusercontent.com/ickc/sman/master/install.sh)"
 mkdir ~/.homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ~/.homebrew &&
 
 export PATH="$HOME/.homebrew/bin:$PATH"
-
 printf "%s\n" "" '# homebrew' 'export PATH="$HOME/.homebrew/bin:$PATH"' >> $HOME/.bash_profile
 
 # port
@@ -40,6 +37,9 @@ brew install mas
 # install Xcode before gnuize, because aescrypt-packetizer requires Xcode
 mas install 497799835
 
+# may be needed again after Xcode is installed?
+sudo xcodebuild -license accept
+
 # GNU-ize
 # TODO ../submodule/gnuize.sh
 ../../GNU-ize/gnuize.sh -p ~/.homebrew
@@ -47,6 +47,7 @@ mas install 497799835
 # install node, npm
 brew install node ruby
 
+export PATH="~/.homebrew/opt/ruby/bin:$PATH"
 printf "%s\n" "" '# Ruby from homebrew' 'export PATH="~/.homebrew/opt/ruby/bin:$PATH"' >> $HOME/.bash_profile #[Small but very useful tip on using jekyll on macosx when you use hoembrew · Issue #1504 · jekyll/jekyll](https://github.com/jekyll/jekyll/issues/1504)
 
 gem install rubygems-update
