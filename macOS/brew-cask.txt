@@ -30,7 +30,7 @@ nomachine
 # blue-jeans-launcher
 # amazon-music
 spotify
-sling
+# sling
 # text ################################################################
 mactex
 visual-studio-code
@@ -64,7 +64,7 @@ invisor-lite
 desktoputility
 disk-inventory-x
 dupeguru
-filezilla
+# filezilla
 sdformatter
 appcleaner
 namechanger
@@ -87,7 +87,7 @@ gfxcardstatus
 logitech-options
 logitech-gaming-software
 # check if it is this or `wacom-intuos-pro-tablet`
-wacom-intuos-tablet
+# wacom-intuos-tablet
 switchresx
 colormunki-photo
 asix-ax88179
