@@ -41,3 +41,6 @@ font-source-han-sans
 font-source-han-code-jp
 # Microsoft, from pljoska
 font-microsoft-cleartype-family
+font-meslo-nerd-font
+# font-consolas-for-powerline
+# font-meslo-for-powerline

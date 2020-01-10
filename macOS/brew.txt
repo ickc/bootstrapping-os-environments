@@ -62,3 +62,19 @@ lynx
 highlight
 atool
 # neofetch
+
+clamav
+ffmpeg
+fftw
+ghostscript
+github-release
+gnupg
+iperf3
+lapack
+nmap
+openblas
+sshuttle
+testdisk
+youtube-dl
+# ifuse # FUSE module for iOS devices
+imageoptim-cli

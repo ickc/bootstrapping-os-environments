@@ -67,3 +67,11 @@ gooey
 arrow
 emcee
 colorama
+
+bandit
+dateparser
+geopy
+pydocstyle
+python-slugify
+xlrd
+sphinxcontrib-napoleon

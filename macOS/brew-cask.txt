@@ -113,3 +113,20 @@ google-chrome-canary
 # multimarkdown-composer-pro
 # networking
 zerotier-one
+
+# android-platform-tools
+dash
+franz
+# horndis
+hwsensors
+imaging-edge
+# musescore
+rawtherapee
+svgcleaner
+# tuxguitar
+visual-studio-code-insiders
+# webplotdigitizer
+# zotero
+# bookends
+# guitar-pro
+# texpad
