@@ -4,7 +4,7 @@ set -e
 
 path2ReproducibleOsEnvironments="$HOME/git/source/reproducible-os-environments"
 
-conda_script_path="$path2ReproducibleOsEnvironments/common/conda/conda.py"
+conda_script_path="$path2ReproducibleOsEnvironments/common/conda/conda_env.py"
 conda_path="$path2ReproducibleOsEnvironments/common/conda/conda.txt"
 conda_all_path="$path2ReproducibleOsEnvironments/common/conda/conda-all.txt"
 pip_path="$path2ReproducibleOsEnvironments/common/conda/pip.txt"
