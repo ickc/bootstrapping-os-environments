@@ -4,3 +4,4 @@ macOS/gnuize.sh
 .pytest_cache/
 .vscode/
 *.pyc
+.ipynb_checkpoints/
