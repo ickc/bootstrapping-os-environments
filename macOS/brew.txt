@@ -64,16 +64,16 @@ atool
 # neofetch
 
 # clamav
-ffmpeg
-fftw
+# ffmpeg
+# fftw
 ghostscript
 github-release
-gnupg
+# gnupg
 iperf3
 lapack
 nmap
 openblas
-sshuttle
+# sshuttle
 testdisk
 youtube-dl
 # ifuse # FUSE module for iOS devices
