@@ -63,7 +63,7 @@ highlight
 atool
 # neofetch
 
-clamav
+# clamav
 ffmpeg
 fftw
 ghostscript
