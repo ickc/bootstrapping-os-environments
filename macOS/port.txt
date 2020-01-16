@@ -74,3 +74,4 @@ lynx
 highlight
 atool
 neofetch
+sshuttle
