@@ -67,3 +67,7 @@ xsel
 zfsutils-linux
 zsh
 git
+
+curl
+ffmpeg
+transmission-cli
