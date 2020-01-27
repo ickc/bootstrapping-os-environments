@@ -71,3 +71,4 @@ git
 curl
 ffmpeg
 transmission-cli
+acpi
