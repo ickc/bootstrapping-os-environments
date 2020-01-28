@@ -2,6 +2,10 @@
 
 # TODO: use heredoc to define bash functions ml_brew, ml_port
 
+# sudo loop
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
 # install xcode
 xcode-select --install
 
