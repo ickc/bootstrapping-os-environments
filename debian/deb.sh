@@ -1,12 +1,22 @@
 #!/usr/bin/env bash
 
+set -e
+
+mkdir -p deb
+
 # windscribe
-wget https://windscribe.com/install/desktop/linux_deb_x64 -O windscribe_linux_deb_x64.deb &&
-	sudo apt install ./windscribe_linux_deb_x64.deb -y
+wget https://windscribe.com/install/desktop/linux_deb_x64 -O deb/windscribe_linux_deb_x64.deb
+sudo apt install deb/windscribe_linux_deb_x64.deb -y
 
 # zero-tier
 curl -s https://install.zerotier.com/ | sudo bash
 
 # pandoc
-wget https://github.com/jgm/pandoc/releases/download/2.9.1.1/pandoc-2.9.1.1-1-amd64.deb -O pandoc.deb &&
-	sudo apt install ./pandoc.deb -y
+downloadUrl="https://github.com$(curl -L https://github.com/jgm/pandoc/releases/latest | grep -o '/jgm/pandoc/releases/download/.*-amd64\.deb')"
+
+wget "$downloadUrl" -O deb/pandoc.deb
+sudo apt install deb/pandoc.deb -y
+
+tree deb
+echo Cleaning up...
+rm -rf deb
