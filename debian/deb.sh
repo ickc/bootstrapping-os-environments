@@ -17,6 +17,12 @@ downloadUrl="https://github.com$(curl -L https://github.com/jgm/pandoc/releases/
 wget "$downloadUrl" -O deb/pandoc.deb
 sudo apt install ./deb/pandoc.deb -y
 
+# vscode
+downloadUrl="$(curl -L https://update.code.visualstudio.com/api/update/linux-deb-x64/insider/VERSION | grep -o '[^"]*.deb')"
+
+wget "$downloadUrl" -O deb/vscode.deb
+sudo apt install ./deb/vscode.deb -y
+
 tree deb
 echo Cleaning up...
 rm -rf deb
