@@ -23,6 +23,11 @@ downloadUrl="$(curl -L https://update.code.visualstudio.com/api/update/linux-deb
 wget "$downloadUrl" -O deb/vscode.deb
 sudo apt install ./deb/vscode.deb -y
 
+# miniconda
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O deb/Miniconda3-latest-Linux-x86_64.sh
+chmod +x deb/Miniconda3-latest-Linux-x86_64.sh
+bash deb/Miniconda3-latest-Linux-x86_64.sh -b
+
 tree deb
 echo Cleaning up...
 rm -rf deb
