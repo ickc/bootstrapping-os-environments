@@ -64,6 +64,7 @@ go
 htop
 mosh
 tmux
+tmux-pasteboard
 wakeonlan
 glances
 ncdu
@@ -75,3 +76,4 @@ highlight
 atool
 neofetch
 sshuttle
+ffmpeg +gpl2 +gpl3 +nonfree
