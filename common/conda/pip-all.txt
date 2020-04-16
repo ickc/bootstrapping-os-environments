@@ -7,3 +7,4 @@ glom
 ics
 mypy-extensions
 # pockets
+flatten-dict
