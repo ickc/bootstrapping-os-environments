@@ -17,6 +17,7 @@ PY2_PACKAGES = [
     'backports_abc',
     'pathlib2',
     'funcsigs',
+    'pathlib2',
 ]
 
 
