@@ -1,5 +1,9 @@
+# https://github.com/jupyter-widgets/ipywidgets
 @jupyter-widgets/jupyterlab-manager
-@jupyterlab/hub-extension
-@jupyterlab/plotly-extension
+# https://plotly.com/python/getting-started/#jupyter-notebook-support
+jupyterlab-plotly
+plotlywidget
+# https://github.com/holoviz/pyviz_comms
 @pyviz/jupyterlab_pyviz
-jupyterlab_bokeh
+# https://github.com/bokeh/jupyter_bokeh
+@bokeh/jupyter_bokeh
