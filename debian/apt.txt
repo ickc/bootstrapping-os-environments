@@ -13,8 +13,8 @@ caffeine
 dstat
 # emby-server # manual
 # exa # manual
-exfat-fuse
-exfat-utils
+# exfat-fuse
+# exfat-utils
 # fonts-cwtex-kai
 glances
 # gnome-color-manager # related to ArgyllCMS
@@ -72,3 +72,16 @@ curl
 ffmpeg
 transmission-cli
 acpi
+
+bat
+libbluray-bdj
+mediainfo
+nmap
+
+# for sanoid
+debhelper
+libcapture-tiny-perl
+libconfig-inifiles-perl
+pv
+lzop
+mbuffer
