@@ -85,3 +85,5 @@ libconfig-inifiles-perl
 pv
 lzop
 mbuffer
+
+alacritty
