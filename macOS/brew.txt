@@ -60,6 +60,7 @@ ranger
 w3m
 lynx
 highlight
+bat
 atool
 # neofetch
 
