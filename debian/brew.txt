@@ -22,7 +22,7 @@ bat
 atool
 ghostscript
 iperf3
-nmap
 
 git
 nano
+neofetch
