@@ -5,8 +5,15 @@ set -e
 mkdir -p deb
 
 # windscribe
-wget https://windscribe.com/install/desktop/linux_deb_x64 -O deb/windscribe_linux_deb_x64.deb
-sudo apt install ./deb/windscribe_linux_deb_x64.deb -y
+case "$(uname -sm)" in
+   Linux\ x86_64)  downloadUrl=https://windscribe.com/install/desktop/linux_deb_x64 ;;
+   Linux\ i*86)    downloadUrl=https://windscribe.com/install/desktop/linux_deb_x86 ;;
+   Linux\ arm*)    downloadUrl=https://windscribe.com/install/desktop/linux_deb_arm ;;
+   Linux\ aarch64) downloadUrl=https://windscribe.com/install/desktop/linux_deb_arm ;;
+esac
+
+wget "$downloadUrl" -O deb/windscribe.deb
+sudo apt install ./deb/windscribe.deb -y
 
 # zero-tier
 curl -s https://install.zerotier.com/ | sudo bash
