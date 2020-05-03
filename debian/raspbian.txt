@@ -1,6 +1,6 @@
 # also available in ubuntu
-exfat-fuse
-exfat-utils
+# exfat-fuse
+# exfat-utils
 glances
 highlight
 htop
