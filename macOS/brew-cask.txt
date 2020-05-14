@@ -105,7 +105,7 @@ epubmdimporter
 # mac Services for markdown editing ################################################################
 # markdown-service-tools
 # windows manager ################################################################
-spectacle
+rectangle
 detexify
 # homebrew-cask-versions ################################################################
 safari-technology-preview
