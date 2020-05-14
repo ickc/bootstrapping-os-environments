@@ -3,7 +3,7 @@
 atool
 # bsdtar
 caffeine
-# cifs-utils # samba
+cifs-utils
 # cmake
 # code # manual
 # compizconfig-settings-manager
