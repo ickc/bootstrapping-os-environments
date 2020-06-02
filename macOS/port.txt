@@ -49,7 +49,7 @@ wget
 doxygen
 pandoc
 pandoc-citeproc
-# unison
+unison
 opencc
 epubcheck
 p7zip
@@ -68,14 +68,26 @@ tmux-pasteboard
 wakeonlan
 glances
 ncdu
-# exa
+exa
 ranger
 w3m
 lynx
 highlight
+bat
 atool
 neofetch
 sshuttle
 ffmpeg +gpl2 +gpl3 +nonfree
+
 gpgme
 port_cutleaves
+
+tidy
+ghostscript
+iperf3
+nmap
+testdisk
+youtube-dl
+annie
+mediainfo
+MediaInfo-gui

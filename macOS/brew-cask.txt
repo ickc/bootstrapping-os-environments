@@ -132,5 +132,5 @@ svgcleaner
 # texpad
 alacritty
 kitty
-mediainfo
+# mediainfo
 mpv

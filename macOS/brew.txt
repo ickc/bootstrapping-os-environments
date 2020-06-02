@@ -1,20 +1,20 @@
 # programming
 clang-format
 # rbenv && rbenv init
-parallel
+# parallel
 # multimarkdown
 # Open client for Cisco AnyConnect VPN
 # openconnect
-enca
-smartmontools
+# enca
+# smartmontools
 # gdrive
 # imagemagick
 # mp4v2
 # pdf2svg
 # potrace
-tree
-exiftool
-wget
+# tree
+# exiftool
+# wget
 # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
 # doxygen
 # pandoc
@@ -22,16 +22,16 @@ wget
 # closure-compiler
 # convert emf to pdf
 # unoconv
-tidy-html5
+# tidy-html5
 # 2 way sync
-unison
+# unison
 # Chinese Traditional <-> Simplified
-opencc
-epubcheck
-p7zip
+# opencc
+# epubcheck
+# p7zip
 # msitools
-cmake
-llvm
+# cmake
+# llvm
 # GNU Scientific Library
 # gsl
 # sshfs
@@ -41,42 +41,42 @@ llvm
 # libav
 # instrumentation framework for building dynamic analysis tool
 # valgrind
-shellcheck
-automake
+# shellcheck
+# automake
 vitorgalvao/tiny-scripts/cask-repair
 # go
-htop
-mosh
-tmux
-wakeonlan
+# htop
+# mosh
+# tmux
+# wakeonlan
 # htop alternatives
 # glances
 # du alternatives
-ncdu
+# ncdu
 # ls alternatives
-exa
+# exa
 # file manager and its dependencies
-ranger
-w3m
-lynx
-highlight
-bat
-atool
+# ranger
+# w3m
+# lynx
+# highlight
+# bat
+# atool
 # neofetch
 
 # clamav
 # ffmpeg
 # fftw
-ghostscript
+# ghostscript
 # gnupg
-iperf3
+# iperf3
 # lapack
-nmap
+# nmap
 # openblas
 # sshuttle
-testdisk
-youtube-dl
+# testdisk
+# youtube-dl
 # ifuse # FUSE module for iOS devices
 imageoptim-cli
-annie
-media-info
+# annie
+# media-info
