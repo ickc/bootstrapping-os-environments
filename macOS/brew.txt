@@ -2,24 +2,24 @@
 clang-format
 # rbenv && rbenv init
 parallel
-multimarkdown
+# multimarkdown
 # Open client for Cisco AnyConnect VPN
 # openconnect
 enca
 smartmontools
-gdrive
+# gdrive
 # imagemagick
-mp4v2
+# mp4v2
 # pdf2svg
-potrace
+# potrace
 tree
 exiftool
 wget
 # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
-doxygen
+# doxygen
 # pandoc
 # pandoc-citeproc
-closure-compiler
+# closure-compiler
 # convert emf to pdf
 # unoconv
 tidy-html5
@@ -33,7 +33,7 @@ p7zip
 cmake
 llvm
 # GNU Scientific Library
-gsl
+# gsl
 # sshfs
 # GPS
 # gpsbabel
@@ -70,9 +70,9 @@ atool
 ghostscript
 # gnupg
 iperf3
-lapack
+# lapack
 nmap
-openblas
+# openblas
 # sshuttle
 testdisk
 youtube-dl
