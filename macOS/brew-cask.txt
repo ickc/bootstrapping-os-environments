@@ -130,3 +130,7 @@ visual-studio-code-insiders
 # bookends
 # guitar-pro
 # texpad
+alacritty
+kitty
+mediainfo
+mpv
