@@ -13,9 +13,9 @@ papers
 adobe-creative-cloud
 # services ################################################################
 dropbox
-google-backup-and-sync
+# google-backup-and-sync
 github
-gitkraken
+# gitkraken
 duet
 astropad
 # avast
@@ -23,20 +23,20 @@ astropad
 # skype
 whatsapp
 slack
-# steam
-nomachine
+steam
+# nomachine
 # video conference
 # zoomus
 # blue-jeans-launcher
 # amazon-music
-spotify
+# spotify
 # sling
 # text ################################################################
 mactex
-visual-studio-code
-atom
+visual-studio-code-insiders
+# atom
 # aquamacs
-nteract
+# nteract
 # pycharm
 # eclipse-cpp
 # rstudio
@@ -68,29 +68,29 @@ dupeguru
 sdformatter
 appcleaner
 namechanger
-itsycal
+# itsycal
 calibre
 # adobe-digital-editions2
-google-earth-pro
+# google-earth-pro
 stellarium
 # Wolfram alpha on menu bar
-nimble
+# nimble
 # superduper
 # clover-configurator
 keepassxc
-keeweb
+# keeweb
 # hardware related ################################################################
 openzfs
-gdisk
+# gdisk
 intel-power-gadget
 gfxcardstatus
 logitech-options
 logitech-gaming-software
 # check if it is this or `wacom-intuos-pro-tablet`
 # wacom-intuos-tablet
-switchresx
+# switchresx
 colormunki-photo
-asix-ax88179
+# asix-ax88179
 # paragon-ntfs # Seagate version??
 # karabiner # equals to Keyremap4Macbook
 # scansnap-manager-ix500 # scanner for Gradescope
@@ -108,15 +108,16 @@ epubmdimporter
 rectangle
 detexify
 # homebrew-cask-versions ################################################################
-safari-technology-preview
+# safari-technology-preview
 google-chrome-canary
 # multimarkdown-composer-pro
 # networking
 zerotier-one
 
 # android-platform-tools
+
 dash
-franz
+# franz
 # horndis
 hwsensors
 imaging-edge
@@ -124,7 +125,6 @@ imaging-edge
 rawtherapee
 svgcleaner
 # tuxguitar
-visual-studio-code-insiders
 # webplotdigitizer
 # zotero
 # bookends
