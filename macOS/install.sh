@@ -38,15 +38,9 @@ printf "%s\n" "" '# port' 'export PATH="/opt/local/bin:$PATH"' >> $HOME/.bash_pr
 
 # mas
 brew install mas
-# install Xcode before gnuize, because aescrypt-packetizer requires Xcode
-mas install 497799835
 
 # may be needed again after Xcode is installed?
 sudo xcodebuild -license accept
-
-# GNU-ize
-# TODO ../submodule/gnuize.sh
-../../GNU-ize/gnuize.sh -p ~/.homebrew
 
 # install node, npm
 brew install node ruby

@@ -1,5 +1,4 @@
 .DS_Store
-macOS/gnuize.sh
 .mypy_cache/
 .pytest_cache/
 .vscode/
