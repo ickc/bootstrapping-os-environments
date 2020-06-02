@@ -78,3 +78,5 @@ testdisk
 youtube-dl
 # ifuse # FUSE module for iOS devices
 imageoptim-cli
+annie
+media-info
