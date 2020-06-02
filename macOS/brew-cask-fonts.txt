@@ -7,7 +7,7 @@ font-fontawesome
 font-fira-sans
 font-fira-mono
 font-fira-code
-font-fira-mono-for-powerline
+# font-fira-mono-for-powerline
 # TeX
 font-computer-modern
 font-latin-modern
@@ -41,6 +41,7 @@ font-source-han-sans
 font-source-han-code-jp
 # Microsoft, from pljoska
 font-microsoft-cleartype-family
-font-meslo-nerd-font
+# font-meslo-nerd-font
 # font-consolas-for-powerline
 # font-meslo-for-powerline
+font-firacode-nerd-font
