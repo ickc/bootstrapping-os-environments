@@ -91,3 +91,4 @@ youtube-dl
 annie
 mediainfo
 MediaInfo-gui
+mpich
