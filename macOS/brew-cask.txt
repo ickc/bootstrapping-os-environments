@@ -9,7 +9,6 @@ logos
 # microsoft-office
 vmware-fusion
 textmate
-papers
 adobe-creative-cloud
 # services ################################################################
 dropbox
