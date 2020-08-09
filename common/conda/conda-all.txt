@@ -75,3 +75,6 @@ pydocstyle
 python-slugify
 xlrd
 sphinxcontrib-napoleon
+
+html5lib
+pymediainfo
