@@ -85,6 +85,7 @@ intel-power-gadget
 gfxcardstatus
 logitech-options
 logitech-gaming-software
+logitech-unifying
 # check if it is this or `wacom-intuos-pro-tablet`
 # wacom-intuos-tablet
 # switchresx
@@ -132,3 +133,6 @@ alacritty
 kitty
 # mediainfo
 mpv
+resxtreme
+# geekbench
+# ios-app-signer
