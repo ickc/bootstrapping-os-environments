@@ -21,12 +21,12 @@ font-tex-gyre-schola
 font-tex-gyre-termes
 font-tex-gyre-heros
 font-tex-gyre-pagella-math
-font-cwtex-q
+# font-cwtex-q
 # Sil
 font-gentium-plus
 font-charis-sil
 font-ezra-sil
-font-namdhinggo-sil
+# font-namdhinggo-sil
 font-doulos-sil
 font-andika
 font-scheherazade
