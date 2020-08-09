@@ -7,7 +7,12 @@ On the old Mac:
 
 On the freshly installed Mac:
 
-- remove sleep image: `sleep.sh`
+- In System Preferences, Sharing, activate remote ssh.
+- Generate SSH key and add it to GitHub.
+- In command line, run e.g. `make` to trigger CLT install.
+	- Install [dotfiles](https://github.com/ickc/dotfiles), which requires the CLT.
+- Install ssh-dir.
+- remove sleep image (may already be the default): `sleep.sh`
 - symlink iCloud Documents to have a simpler path: `ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Documents" "$HOME/iCloud"`
 - Install package managers: `install.sh` (make sure iCloud is signed in for `mas`, wait for Xcode installation finished before Return on command line)
 - Install Cocoa emacs emulation `install-cocoa-emacs-emulation.sh`
