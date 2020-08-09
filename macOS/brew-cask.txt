@@ -136,3 +136,4 @@ mpv
 resxtreme
 # geekbench
 # ios-app-signer
+# licecap
