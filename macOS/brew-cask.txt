@@ -84,7 +84,7 @@ openzfs
 intel-power-gadget
 gfxcardstatus
 logitech-options
-logitech-gaming-software
+logitech-g-hub
 logitech-unifying
 # check if it is this or `wacom-intuos-pro-tablet`
 # wacom-intuos-tablet
