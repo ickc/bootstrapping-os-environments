@@ -80,3 +80,5 @@ vitorgalvao/tiny-scripts/cask-repair
 imageoptim-cli
 # annie
 # media-info
+tdewolff/tap/minify
+cjbassi/ytop/ytop
