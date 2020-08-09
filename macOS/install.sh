@@ -19,7 +19,6 @@ MACPORTS_OS_VERSION=10.15-Catalina
 curl "https://distfiles.macports.org/MacPorts/MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg" --output "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
 sudo installer -pkg "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg" -target /
 rm -f "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
-printf "%s\n" "" '# port' 'export PATH="/opt/local/bin:$PATH"' >> $HOME/.bash_profile
 
 # mas
 brew install mas
