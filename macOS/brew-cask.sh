@@ -12,7 +12,5 @@ brew tap homebrew/cask-drivers
 # make sure to check the output log to see if needed by run again
 grep -v '#' brew-cask.txt | xargs -n1 brew cask install
 
-# open once to transfer license
-open -a /Applications/aText.app
 mas uninstall 488566438
 brew cask install atext
