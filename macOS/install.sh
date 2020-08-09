@@ -9,6 +9,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # install xcode
 xcode-select --install
 
+mas install 497799835
 sudo xcodebuild -license accept
 
 # install brew
