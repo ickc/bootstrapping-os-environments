@@ -22,7 +22,7 @@ On the freshly installed Mac:
     		- `brew-cask-fonts.sh`
 			- `download.sh`
 	- `brew.sh`
-		- `upgrade.sh`
+		- `upgrade.sh` (optional)
 			- `npm.sh`
 			- `gem.sh`
 			- `conda-install.sh`
