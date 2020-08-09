@@ -37,7 +37,7 @@
 # Amphetamine
 937984704
 # Monit
-1014850245
+# 1014850245
 # Blackmagic Disk Speed Test
 425264550
 # The Unarchiver
@@ -51,7 +51,7 @@
 # Deliveries
 924726344
 # FullContact
-1094748271
+# 1094748271
 
 # GarageBand
 # 682658836
