@@ -6,11 +6,8 @@
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# install xcode
+# install xcode command line tools
 xcode-select --install
-
-mas install 497799835
-sudo xcodebuild -license accept
 
 # install brew
 mkdir ~/.homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ~/.homebrew &&
@@ -26,6 +23,9 @@ printf "%s\n" "" '# port' 'export PATH="/opt/local/bin:$PATH"' >> $HOME/.bash_pr
 
 # mas
 brew install mas
+# macport needs xcode
+mas install 497799835
+sudo xcodebuild -license accept
 
 # install node, npm
 brew install node ruby
