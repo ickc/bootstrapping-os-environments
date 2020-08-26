@@ -27,17 +27,17 @@ conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 
 # ab3-defaults
-"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "ab" -C "$conda_path" -P "$pip_path" -v 3
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "ab" -C "$conda_path" -P "$pip_path" -v 3.8
 conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 # ab3-intel
-"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "ab" -C "$conda_path" -P "$pip_path" -c intel -v 3
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "ab" -C "$conda_path" -P "$pip_path" -c intel -v 3.8
 conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 
 # all3-defaults
-"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "all" -C "$conda_path" "$conda_all_path" -P "$pip_path" "$pip_all_path" -v 3
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "all" -C "$conda_path" "$conda_all_path" -P "$pip_path" "$pip_all_path" -v 3.8
 conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 # all3-intel
-"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "all" -C "$conda_path" "$conda_all_path" -P "$pip_path" "$pip_all_path" -c intel -v 3
+"$conda_script_path" -o "$path2ReproducibleOsEnvironments/temp.yml" -n "all" -C "$conda_path" "$conda_all_path" -P "$pip_path" "$pip_all_path" -c intel -v 3.8
 conda env create -f "$path2ReproducibleOsEnvironments/temp.yml"
 
 rm -f "$path2ReproducibleOsEnvironments/temp.yml"
