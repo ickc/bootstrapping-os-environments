@@ -1,3 +1,4 @@
+mkl
 # mjuric::pyslalib
 conda-forge::healpy
 conda-forge::quaternion
