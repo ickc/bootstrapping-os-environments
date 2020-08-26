@@ -19,7 +19,7 @@ setuptools
 
 imageio
 coverage
-conda-forge::pandoc
+conda-forge::pandoc=2.9
 conda-forge::panflute
 pypandoc
 mpmath
