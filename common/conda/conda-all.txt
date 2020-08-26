@@ -62,7 +62,7 @@ conda-forge::pyotp
 conda-forge::bidict
 conda-forge::fire
 conda-forge::qrcode
-conda-forge::terminaltables
+# conda-forge::terminaltables # incompat to py38
 conda-forge::boltons
 conda-forge::gooey
 arrow
