@@ -5,7 +5,7 @@ import os
 import platform
 import sys
 
-__version__ = '0.2'
+__version__ = '0.2.1'
 
 PY2_PACKAGES = [
     'weave',
@@ -34,7 +34,7 @@ def read_env(path):
 
 
 def cook_yaml(
-    python_version=2,
+    python_version='3',
     channel='defaults',
     name='ab',
     prefix=None,
@@ -55,10 +55,11 @@ def cook_yaml(
         dict_['dependencies'] += ['python.app']
 
     # python_version
+    python_version_major = python_version[0]
     dict_['dependencies'].append(f'python={python_version}')
     if channel == 'intel':
-        dict_['dependencies'].append(f'intelpython{python_version}_core')
-    if python_version == 2:
+        dict_['dependencies'].append(f'intelpython{python_version_major}_core')
+    if python_version_major == 2:
         dict_['dependencies'] += PY2_PACKAGES
         # conda cannot resolve subprocess32 and mypy in python2
         try:
@@ -79,7 +80,7 @@ def cook_yaml(
     })
 
     # name
-    dict_['name'] = f'{name}{python_version}-{channel}' + ('' if mpi is None else f'-{mpi}')
+    dict_['name'] = f'{name}{python_version_major}-{channel}' + ('' if mpi is None else f'-{mpi}')
     # prefix
     if prefix:
         dict_['prefix'] = os.path.join(prefix, dict_['name'])
@@ -91,8 +92,8 @@ def cli():
 
     parser.add_argument('-o', '--yaml', type=argparse.FileType('w'), default=sys.stdout,
                         help="Output YAML.")
-    parser.add_argument('-v', '--version', type=int, default=2,
-                        help='python version. 2 or 3. Default: 2')
+    parser.add_argument('-v', '--version', type=str, default='3',
+                        help='python version. 2, 3, or 3.x. Default: 3')
     parser.add_argument('-c', '--channel', default='defaults',
                         help='conda channel. e.g. intel, defaults. Default: defaults')
     parser.add_argument('-n', '--name', default='ab',
