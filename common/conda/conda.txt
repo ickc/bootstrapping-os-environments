@@ -1,6 +1,6 @@
 mjuric::pyslalib
-healpy
-quaternion
+conda-forge::healpy
+conda-forge::quaternion
 ephem
 nose
 
