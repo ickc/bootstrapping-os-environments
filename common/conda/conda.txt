@@ -1,5 +1,5 @@
-# mjuric::pyslalib # incompat to py38
-# conda-forge::healpy # incompat to py38
+# mjuric::pyslalib
+conda-forge::healpy
 conda-forge::quaternion
 ephem
 nose
