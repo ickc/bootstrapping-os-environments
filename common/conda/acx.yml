@@ -5,6 +5,7 @@ dependencies:
 - anaconda
 - arrow
 - astropy
+- autopep8
 - beautifulsoup4
 - bokeh
 - colorama
@@ -20,6 +21,7 @@ dependencies:
 - future
 - h5py
 - holoviews
+- html5lib
 - imageio
 - ipykernel
 - ipyparallel
@@ -39,7 +41,6 @@ dependencies:
 - numba
 - numexpr
 - numpy
-- opencv
 - pandas
 - pandocfilters
 - panflute
@@ -49,6 +50,7 @@ dependencies:
 - plotly
 - psutil
 - pycodestyle
+- pydocstyle
 - pylint
 - pytables
 - pytest
