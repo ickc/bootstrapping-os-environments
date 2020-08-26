@@ -3,3 +3,4 @@ tco
 # acor
 ics
 mypy-extensions
+PyMuPDF
