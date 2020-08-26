@@ -1,10 +1,5 @@
-panflute
 pantable
 tco
-defopt
-glom
 # acor
 ics
 mypy-extensions
-# pockets
-flatten-dict

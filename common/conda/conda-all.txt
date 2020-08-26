@@ -20,6 +20,7 @@ setuptools
 imageio
 coverage
 conda-forge::pandoc
+conda-forge::panflute
 pypandoc
 mpmath
 markdown
@@ -78,3 +79,7 @@ conda-forge::sphinxcontrib-napoleon
 
 html5lib
 conda-forge::pymediainfo
+conda-forge::defopt
+conda-forge::glom
+# conda-forge::pockets
+conda-forge::flatten-dict
