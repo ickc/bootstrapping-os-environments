@@ -53,12 +53,12 @@ inkscape
 adobe-dng-converter
 imageoptim
 imagealpha
-handbrake
+# handbrake
 vlc
 makemkv
 # kodi
 # mplayerx
-invisor-lite
+# invisor-lite
 # small utilities ################################################################
 desktoputility
 disk-inventory-x
@@ -71,7 +71,7 @@ namechanger
 calibre
 # adobe-digital-editions2
 # google-earth-pro
-stellarium
+# stellarium
 # Wolfram alpha on menu bar
 # nimble
 # superduper
@@ -84,7 +84,8 @@ openzfs
 intel-power-gadget
 gfxcardstatus
 logitech-options
-logitech-gaming-software
+logitech-g-hub
+logitech-unifying
 # check if it is this or `wacom-intuos-pro-tablet`
 # wacom-intuos-tablet
 # switchresx
@@ -93,12 +94,12 @@ logitech-gaming-software
 # karabiner # equals to Keyremap4Macbook
 # scansnap-manager-ix500 # scanner for Gradescope
 # QuickLook and mdimport ################################################################
-ttscoff-mmd-quicklook
+# ttscoff-mmd-quicklook
 # display video metadata instead of playing it
-invisorql
-epubquicklook
-markdownmdimporter
-epubmdimporter
+# invisorql
+# epubquicklook
+# markdownmdimporter
+# epubmdimporter
 # Others ################################################################
 # mac Services for markdown editing ################################################################
 # markdown-service-tools
@@ -132,3 +133,7 @@ alacritty
 kitty
 # mediainfo
 mpv
+resxtreme
+# geekbench
+# ios-app-signer
+# licecap

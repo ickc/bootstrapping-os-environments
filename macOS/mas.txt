@@ -1,5 +1,5 @@
 # Xcode
-497799835
+# 497799835
 # iThoughtsX
 720669838
 # aText
@@ -37,7 +37,7 @@
 # Amphetamine
 937984704
 # Monit
-1014850245
+# 1014850245
 # Blackmagic Disk Speed Test
 425264550
 # The Unarchiver
@@ -51,7 +51,7 @@
 # Deliveries
 924726344
 # FullContact
-1094748271
+# 1094748271
 
 # GarageBand
 # 682658836
@@ -103,3 +103,17 @@
 1477385213
 # Notability
 736189492
+# Strongbox
+1270075435
+# Drafts
+1435957248
+# Tab Switcher
+1406718335
+# Rakuten Cash Back
+1451893560
+# EasyRes
+688211836
+# Monosnap
+540348655
+# Right Click
+1364038646

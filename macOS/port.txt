@@ -39,7 +39,7 @@ multimarkdown
 openconnect
 enca
 smartmontools
-imagemagick
+ImageMagick
 mp4v2
 pdf2svg
 potrace
@@ -77,7 +77,7 @@ bat
 atool
 neofetch
 sshuttle
-ffmpeg +gpl2 +gpl3 +nonfree
+# ffmpeg +gpl2 +gpl3 +nonfree
 
 gpgme
 port_cutleaves
@@ -86,7 +86,7 @@ tidy
 ghostscript
 iperf3
 nmap
-testdisk
+# testdisk
 youtube-dl
 annie
 mediainfo

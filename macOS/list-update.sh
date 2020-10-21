@@ -17,7 +17,7 @@ port installed requested | grep -oP '^  ([^@]*)' | xargs -i -n1 bash -c 'cat por
 printline
 
 echo Consider add the following to brew.txt:
-brew leaves | xargs -i -n1 bash -c 'cat gnuize.sh install.sh brew.sh brew.txt | if ! grep -q $0 -; then echo $0; fi' {}
+brew leaves | xargs -i -n1 bash -c 'cat install.sh brew.sh brew.txt | if ! grep -q $0 -; then echo $0; fi' {}
 
 printline
 

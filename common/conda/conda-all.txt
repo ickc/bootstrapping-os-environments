@@ -1,6 +1,6 @@
-yamlloader
+conda-forge::yamlloader
 xmltodict
-zeep
+conda-forge::zeep
 
 pandocfilters
 numpy
@@ -19,7 +19,8 @@ setuptools
 
 imageio
 coverage
-conda-forge::pandoc
+conda-forge::pandoc=2.9
+conda-forge::panflute
 pypandoc
 mpmath
 markdown
@@ -29,21 +30,21 @@ scikit-image
 requests
 requests-oauthlib
 requests-futures
-opencv
+conda-forge::opencv
 dask
 distributed
 multipledispatch
-uncertainties
+conda-forge::uncertainties
 nbconvert
 holoviews
 
 autopep8
 pycodestyle
-gpxpy
+conda-forge::gpxpy
 
-python-cufflinks
+conda-forge::python-cufflinks
 twine
-github3.py
+conda-forge::github3.py
 pygithub
 lxml
 beautifulsoup4
@@ -56,22 +57,29 @@ libiconv
 
 cytoolz
 conda
-pyotp
+conda-forge::pyotp
 
-bidict
-fire
-qrcode
-terminaltables
-boltons
-gooey
+conda-forge::bidict
+conda-forge::fire
+conda-forge::qrcode
+conda-forge::terminaltables
+conda-forge::boltons
+conda-forge::gooey
 arrow
-emcee
+conda-forge::emcee
 colorama
 
-bandit
+conda-forge::bandit
 dateparser
-geopy
+conda-forge::geopy
 pydocstyle
 python-slugify
 xlrd
-sphinxcontrib-napoleon
+conda-forge::sphinxcontrib-napoleon
+
+html5lib
+conda-forge::pymediainfo
+conda-forge::defopt
+conda-forge::glom
+# conda-forge::pockets
+conda-forge::flatten-dict

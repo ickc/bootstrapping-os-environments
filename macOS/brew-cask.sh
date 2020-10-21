@@ -12,6 +12,5 @@ brew tap homebrew/cask-drivers
 # make sure to check the output log to see if needed by run again
 grep -v '#' brew-cask.txt | xargs -n1 brew cask install
 
-# overriding Mac App Store's version
-brew cask install --force atext
-    
+mas uninstall 488566438
+brew cask install atext
