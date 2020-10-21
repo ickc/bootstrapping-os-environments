@@ -2,9 +2,12 @@
 
 # optionally override these with env. var.
 TEMPDIR="${TEMPDIR-"$SCRATCH/.libarchive"}"
-P=${P-$(getconf _NPROCESSORS_ONLN)}
 VERSION=${VERSION-3.3.2}
 PREFIX="${PREFIX-"$PBCOMMON/local"}"
+
+# c.f. https://stackoverflow.com/a/23378780/5769446
+P="${P-$([ $(uname) = 'Darwin' ] && sysctl -n hw.physicalcpu_max || lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)}"
+echo "Using $P processes..."
 
 mkdir -p "$TEMPDIR" &&
 cd "$TEMPDIR" &&

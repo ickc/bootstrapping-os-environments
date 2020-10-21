@@ -4,9 +4,12 @@ set -e
 
 # optionally override these with env. var.
 TEMPDIR="${TEMPDIR-"$HOME/21cmfast/gsl"}"
-P=${P-$(getconf _NPROCESSORS_ONLN)}
 VERSION=${VERSION-latest}
 PREFIX="${PREFIX-"$HOME/21cmfast/local"}"
+
+# c.f. https://stackoverflow.com/a/23378780/5769446
+P="${P-$([ $(uname) = 'Darwin' ] && sysctl -n hw.physicalcpu_max || lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)}"
+echo "Using $P processes..."
 
 print_log(){
 	eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
