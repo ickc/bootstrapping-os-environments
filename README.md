@@ -1,5 +1,7 @@
 # Description
 
+Disclaimer: this is written for me, and at best served as a starting point for you. It is not documented. Good starting point would be to tailor the `*.txt` files to packages you want to install on your machines. A better design probably would be to separate install scripts and config files (`*.txt`) in different repo.
+
 Setup macOS or Ubuntu in scripts so that it is repeatable and automatic.
 
 Scripts to automate installations of softwares after a freshly installed OS — macOS or Ubuntu.
