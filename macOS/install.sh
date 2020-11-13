@@ -1,7 +1,9 @@
 #!/usr/bin/env zsh
 
+set -e
+
 # sudo loop
-sudo -v
+sudo xcodebuild -license accept
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # helpers ##############################################################
