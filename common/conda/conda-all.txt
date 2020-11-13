@@ -21,6 +21,7 @@ imageio
 coverage
 conda-forge::pandoc=2.9
 conda-forge::panflute
+click
 pypandoc
 mpmath
 markdown
@@ -40,13 +41,15 @@ holoviews
 
 autopep8
 pycodestyle
+flake8
+conda-forge::flake8-pyi
+black
 conda-forge::gpxpy
 
 conda-forge::python-cufflinks
 twine
 conda-forge::github3.py
 pygithub
-lxml
 beautifulsoup4
 plotly
 nltk
@@ -65,7 +68,7 @@ conda-forge::qrcode
 conda-forge::terminaltables
 conda-forge::boltons
 conda-forge::gooey
-arrow
+conda-forge::arrow
 conda-forge::emcee
 colorama
 
@@ -75,6 +78,7 @@ conda-forge::geopy
 pydocstyle
 python-slugify
 xlrd
+conda-forge::sphinx_bootstrap_theme
 conda-forge::sphinxcontrib-napoleon
 
 html5lib
@@ -83,3 +87,35 @@ conda-forge::defopt
 conda-forge::glom
 # conda-forge::pockets
 conda-forge::flatten-dict
+
+# johnnydep dependencies
+conda-forge::anytree
+cachetools
+distlib
+conda-forge::oyaml
+packaging
+pkginfo
+conda-forge::structlog
+tabulate
+toml
+wheel
+
+# ics dependencies
+python-dateutil
+six
+conda-forge::tatsu
+
+# pygments-style-solarized dependencies
+pygments
+
+# readability-lxml dependencies
+chardet
+cssselect
+lxml
+
+# pandasgui dependencies
+ipython
+pyqt
+appdirs
+conda-forge::dacite
+conda-forge::pynput

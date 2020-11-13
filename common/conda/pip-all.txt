@@ -3,4 +3,9 @@ tco
 # acor
 ics
 mypy-extensions
-PyMuPDF
+pymupdf
+
+data-science-types
+pygments-style-solarized
+readability-lxml
+pandasgui
