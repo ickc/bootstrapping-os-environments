@@ -78,7 +78,7 @@ calibre
 keepassxc
 # keeweb
 # hardware related ################################################################
-openzfs
+# openzfs
 # gdisk
 intel-power-gadget
 gfxcardstatus
