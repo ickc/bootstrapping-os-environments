@@ -22,7 +22,7 @@ brew leaves | xargs -i -n1 bash -c 'cat install.sh brew.sh brew.txt | if ! grep 
 printline
 
 echo Consider add the following to brew-cask.txt:
-brew cask list | xargs -i -n1 bash -c 'cat install.sh brew-cask.sh brew-cask.txt brew-cask-fonts.txt | if ! grep -q $0 -; then echo $0; fi' {}
+brew list --cask | xargs -i -n1 bash -c 'cat install.sh brew-cask.sh brew-cask.txt brew-cask-fonts.txt | if ! grep -q $0 -; then echo $0; fi' {}
 
 printline
 
