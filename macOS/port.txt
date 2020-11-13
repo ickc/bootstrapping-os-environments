@@ -93,3 +93,5 @@ annie
 mediainfo
 MediaInfo-gui
 mpich
+bfg
+jq
