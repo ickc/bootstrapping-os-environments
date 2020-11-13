@@ -4,7 +4,7 @@ xquartz
 # silverlight
 # playonmac
 # license required ################################################################
-logos
+# logos
 # microsoft-office-2011
 # microsoft-office
 vmware-fusion
@@ -83,6 +83,7 @@ openzfs
 # gdisk
 intel-power-gadget
 gfxcardstatus
+# logitech-gaming-software
 logitech-options
 logitech-g-hub
 logitech-unifying
@@ -109,6 +110,7 @@ detexify
 # homebrew-cask-versions ################################################################
 # safari-technology-preview
 google-chrome-canary
+chromium
 # multimarkdown-composer-pro
 # networking
 zerotier-one
@@ -137,3 +139,11 @@ resxtreme
 # geekbench
 # ios-app-signer
 # licecap
+# cool-retro-term
+# hyper
+# papers3
+# osxfuse
+# multipass
+# powerpanel
+# signal
+# tor-browser

@@ -44,4 +44,5 @@ font-microsoft-cleartype-family
 # font-meslo-nerd-font
 # font-consolas-for-powerline
 # font-meslo-for-powerline
-font-fira-code-nerd-font
+font-firacode-nerd-font
+font-hasklug-nerd-font

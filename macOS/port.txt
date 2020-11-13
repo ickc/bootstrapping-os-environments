@@ -61,6 +61,7 @@ gpsbabel
 shellcheck
 automake
 go
+julia
 htop
 mosh
 tmux
