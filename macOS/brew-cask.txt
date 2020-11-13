@@ -147,3 +147,4 @@ resxtreme
 # powerpanel
 # signal
 # tor-browser
+oracle-jdk
