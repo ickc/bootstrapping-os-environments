@@ -32,5 +32,4 @@ export PATH="~/.homebrew/opt/ruby/bin:$PATH"
 
 gem install rubygems-update
 
-# java needed by closure-compiler
-brew cask install java anaconda
+brew cask install anaconda oracle-jdk
