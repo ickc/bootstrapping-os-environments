@@ -20,7 +20,6 @@ On the freshly installed Mac:
 - Install packages
 	- `mas.sh`
 		- `brew-cask.sh`
-    		- `brew-cask-fonts.sh`
 	- `brew.sh`
 		- `upgrade.sh` (optional)
 			- `npm.sh`
