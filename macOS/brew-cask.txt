@@ -120,7 +120,7 @@ dash
 # franz
 # horndis
 hwsensors
-imaging-edge
+# imaging-edge
 # musescore
 rawtherapee
 svgcleaner
