@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# example
+# examples
 # ./macOS-to-usb.sh /Applications/Install\ macOS\ Mojave.app USB
+# ./macOS-to-usb.sh '/Applications/Install macOS Big Sur.app' USB
 
 # get disk#
 diskutil list
