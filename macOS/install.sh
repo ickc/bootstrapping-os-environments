@@ -24,8 +24,7 @@ print_line () {
 print_double_line
 echo "install homebrew..."
 # install brew
-mkdir ~/.homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ~/.homebrew &&
-export PATH="$HOME/.homebrew/bin:$PATH"
+mkdir ~/.homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ~/.homebrew
 
 print_double_line
 echo "install macports..."
@@ -45,9 +44,9 @@ rm -f "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
 # cd ..
 # rm -rf MacPorts-${MACPORTS_VERSION}*
 # rm -rf macports-base
-export PATH="/opt/local/bin:$PATH"
-sudo port -v selfupdate
+sudo /opt/local/bin/port -v selfupdate
 
+export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/opt/ruby/bin:$PATH"
 print_double_line
 echo "install mas..."
 # mas
@@ -57,7 +56,6 @@ print_double_line
 echo "install node and ruby..."
 # install node, npm
 brew install node ruby
-export PATH="~/.homebrew/opt/ruby/bin:$PATH"
 
 print_line
 echo 'update gem...'
