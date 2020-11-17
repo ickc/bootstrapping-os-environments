@@ -48,14 +48,8 @@ sudo /opt/local/bin/port -v selfupdate
 
 export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/opt/ruby/bin:$PATH"
 print_double_line
-echo "install mas..."
-# mas
-brew install mas
-
-print_double_line
-echo "install node and ruby..."
-# install node, npm
-brew install node ruby
+echo "install mas, node and ruby..."
+brew install mas node ruby
 
 print_line
 echo 'update gem...'
