@@ -15,8 +15,8 @@ On the freshly installed Mac:
 - Install ssh-dir.
 - remove sleep image (may already be the default): `sleep.sh`
 - symlink iCloud Documents to have a simpler path: `ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Documents" "$HOME/iCloud"`
-- Install package managers: `install.sh`
 - Install Cocoa emacs emulation `install-cocoa-emacs-emulation.sh`
+- Install package managers: `install.sh`
 - Install packages
 	- `mas.sh`
 		- `brew-cask.sh`
