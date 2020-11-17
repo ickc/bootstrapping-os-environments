@@ -45,6 +45,7 @@ rm -f "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
 # cd ..
 # rm -rf MacPorts-${MACPORTS_VERSION}*
 # rm -rf macports-base
+export PATH="/opt/local/bin:$PATH"
 sudo port -v selfupdate
 
 print_double_line
