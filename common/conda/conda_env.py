@@ -5,7 +5,7 @@ import os
 import platform
 import sys
 
-__version__ = '0.2.1'
+__version__ = '0.3'
 
 PY2_PACKAGES = [
     'weave',
@@ -40,7 +40,8 @@ def cook_yaml(
     prefix=None,
     conda_paths=['conda.txt'],
     pip_paths=['pip.txt'],
-    mpi=None
+    mpi=None,
+    pypy=False,
 ):
     conda_envs = sum((read_env(conda_path) for conda_path in conda_paths), [])
     pip_envs = sum((read_env(pip_path) for pip_path in pip_paths), [])
@@ -48,7 +49,11 @@ def cook_yaml(
     dict_ = dict()
 
     # channel
-    dict_['channels'] = ['intel', 'defaults', 'conda-forge'] if channel == 'intel' else ['defaults', 'conda-forge']
+    dict_['channels'] = {
+        'conda-forge': ['conda-forge'],
+        'defaults': ['defaults', 'conda-forge'],
+        'intel': ['intel', 'defaults', 'conda-forge'],
+    }[channel]
 
     dict_['dependencies'] = conda_envs
     if platform.system() == 'Darwin':
@@ -56,7 +61,10 @@ def cook_yaml(
 
     # python_version
     python_version_major = python_version[0]
-    dict_['dependencies'].append(f'python={python_version}')
+    if pypy:
+        dict_['dependencies'] += ['pypy', f'pypy{python_version}']
+    else:
+        dict_['dependencies'].append(f'python={python_version}')
     if channel == 'intel':
         dict_['dependencies'].append(f'intelpython{python_version_major}_core')
     if python_version_major == 2:
@@ -80,7 +88,7 @@ def cook_yaml(
     })
 
     # name
-    dict_['name'] = f'{name}{python_version_major}-{channel}' + ('' if mpi is None else f'-{mpi}')
+    dict_['name'] = f'{name}{"".join(python_version.split("."))}-{channel}' + ('' if mpi is None else f'-{mpi}')
     # prefix
     if prefix:
         dict_['prefix'] = os.path.join(prefix, dict_['name'])
@@ -94,6 +102,8 @@ def cli():
                         help="Output YAML.")
     parser.add_argument('-v', '--version', type=str, default='3',
                         help='python version. 2, 3, or 3.x. Default: 3')
+    parser.add_argument('--pypy', action='store_true',
+                        help='install pypy, install CPython if not specified')
     parser.add_argument('-c', '--channel', default='defaults',
                         help='conda channel. e.g. intel, defaults. Default: defaults')
     parser.add_argument('-n', '--name', default='ab',
@@ -120,6 +130,7 @@ def cli():
         conda_paths=args.conda_txt,
         pip_paths=args.pip_txt,
         mpi=args.mpi,
+        pypy=args.pypy,
     )
     try:
         import yaml
