@@ -17,14 +17,13 @@ clang-format
 # wget
 # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
 # doxygen
-# pandoc
-# pandoc-citeproc
+pandoc
 # closure-compiler
 # convert emf to pdf
 # unoconv
 # tidy-html5
 # 2 way sync
-# unison
+unison
 # Chinese Traditional <-> Simplified
 # opencc
 # epubcheck
@@ -36,12 +35,12 @@ clang-format
 # gsl
 # sshfs
 # GPS
-# gpsbabel
+gpsbabel
 # e.g. avprobe
 # libav
 # instrumentation framework for building dynamic analysis tool
 # valgrind
-# shellcheck
+shellcheck
 # automake
 vitorgalvao/tiny-scripts/cask-repair
 # go

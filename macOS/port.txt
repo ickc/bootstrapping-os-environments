@@ -11,7 +11,7 @@ gzip
 less
 m4
 nano
-openssh
+# openssh
 rsync
 screen
 unzip
@@ -47,9 +47,8 @@ tree
 exiftool
 wget
 doxygen
-pandoc
-pandoc-citeproc
-unison
+# pandoc
+# unison
 opencc
 epubcheck
 p7zip
@@ -57,8 +56,8 @@ cmake
 # llvm
 gsl
 # sshfs
-gpsbabel
-shellcheck
+# gpsbabel
+# shellcheck
 automake
 go
 julia
@@ -72,7 +71,7 @@ ncdu
 exa
 ranger
 w3m
-lynx
+# lynx
 highlight
 bat
 atool
@@ -91,7 +90,7 @@ nmap
 youtube-dl
 annie
 mediainfo
-MediaInfo-gui
+# MediaInfo-gui
 mpich
 bfg
 jq
