@@ -26,7 +26,6 @@ pypandoc
 mpmath
 markdown
 markdown2
-datashader
 scikit-image
 requests
 requests-oauthlib
@@ -67,7 +66,6 @@ conda-forge::fire
 conda-forge::qrcode
 conda-forge::terminaltables
 conda-forge::boltons
-conda-forge::gooey
 conda-forge::arrow
 conda-forge::emcee
 colorama
@@ -118,4 +116,3 @@ ipython
 pyqt
 appdirs
 conda-forge::dacite
-conda-forge::pynput
