@@ -88,7 +88,7 @@ conda-forge::glom
 # conda-forge::pockets
 conda-forge::flatten-dict
 
-# johnnydep dependencies
+#* johnnydep dependencies
 conda-forge::anytree
 cachetools
 distlib
@@ -100,20 +100,20 @@ tabulate
 toml
 wheel
 
-# ics dependencies
+#* ics dependencies
 python-dateutil
 six
 conda-forge::tatsu
 
-# pygments-style-solarized dependencies
+#* pygments-style-solarized dependencies
 pygments
 
-# readability-lxml dependencies
+#* readability-lxml dependencies
 chardet
 cssselect
 lxml
 
-# pandasgui dependencies
+#* pandasgui dependencies
 ipython
 pyqt
 appdirs
