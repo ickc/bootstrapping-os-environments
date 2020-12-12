@@ -116,3 +116,4 @@ ipython
 pyqt
 appdirs
 conda-forge::dacite
+mypy_extensions

@@ -2,7 +2,6 @@ pantable
 tco
 # acor
 ics
-mypy-extensions
 pymupdf
 
 data-science-types
