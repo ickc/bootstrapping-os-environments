@@ -1,10 +1,4 @@
 pantable
-tco
-# acor
 ics
 pymupdf
-
-data-science-types
-pygments-style-solarized
-readability-lxml
 pandasgui
