@@ -39,7 +39,7 @@ def cook_yaml(
     name='ab',
     prefix=None,
     conda_paths=['conda.txt'],
-    pip_paths=['pip.txt'],
+    pip_paths=[],
     mpi=None,
     pypy=False,
 ):
