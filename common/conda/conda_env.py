@@ -5,7 +5,7 @@ import os
 import platform
 import sys
 
-__version__ = '0.3'
+__version__ = '0.4'
 
 PY2_PACKAGES = [
     'weave',
@@ -76,12 +76,15 @@ def cook_yaml(
             pass
 
     if mpi == 'cray':
-        print('Install mpi4py compiled using Cray compiler from cray-mpi4py.sh', file=sys.stderr)
+        print('Please run cray-mpi4py.sh to install mpi4py compiled using Cray compiler.', file=sys.stderr)
+    elif mpi == 'external':
+        # https://conda-forge.org/docs/user/tipsandtricks.html?highlight=hpc#using-external-message-passing-interface-mpi-libraries
+        dict_['dependencies'].append('mpich=3.3.*=external_*')
     elif mpi in ('mpich', 'openmpi'):
-        dict_['dependencies'].append(f'mpi4py::{mpi}')
-        dict_['dependencies'].append('mpi4py::mpi4py')
+        dict_['dependencies'].append(mpi)
     else:
-        dict_['dependencies'].append('mpi4py')
+        raise ValueError(f'Unknown mpi choice {mpi}.')
+    dict_['dependencies'].append('mpi4py')
 
     dict_['dependencies'].append({
         'pip': pip_envs
@@ -115,7 +118,7 @@ def cli():
     parser.add_argument('-P', '--pip-txt', nargs='+',
                         help="path to a file that contains the list of pip packages to be installed. Can be more than 1.")
     parser.add_argument('-m', '--mpi',
-                        help="custom version of mpi4py if sepecified. e.g. mpich/openmpi to use mpich/openmpi from the mpi4py channel; cray to custom build using cray compiler.")
+                        help="custom version of mpi4py if sepecified. Valid options: mpich/openmpi; external for using external mpich 3.3.x; cray for custom build using cray compiler.")
 
     parser.add_argument('-V', action='version',
                         version='%(prog)s {}'.format(__version__))
