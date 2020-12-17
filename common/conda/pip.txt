@@ -1,4 +1,3 @@
 pantable
-ics
 pymupdf
 pandasgui
