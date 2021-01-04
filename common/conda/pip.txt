@@ -1,4 +1,3 @@
-pantable
 pymupdf
 # see https://github.com/conda-forge/staged-recipes/pull/13237
 pandasgui
