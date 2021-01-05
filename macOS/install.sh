@@ -25,12 +25,6 @@ print_line () {
 ########################################################################
 
 print_double_line
-echo "install homebrew..."
-# install brew
-sudo mkdir -p "$HOMEBREW_PREFIX" && sudo chown "$USER" "$HOMEBREW_PREFIX" && sudo chgrp staff "$HOMEBREW_PREFIX"
-curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C "$HOMEBREW_PREFIX"
-
-print_double_line
 echo "install macports..."
 # port: update from https://www.macports.org/install.php
 # prebuild binaries
@@ -49,6 +43,12 @@ rm -f "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
 # rm -rf MacPorts-${MACPORTS_VERSION}*
 # rm -rf macports-base
 sudo /opt/local/bin/port -v selfupdate
+
+print_double_line
+echo "install homebrew..."
+# install brew
+sudo mkdir -p "$HOMEBREW_PREFIX" && sudo chown "$USER" "$HOMEBREW_PREFIX" && sudo chgrp staff "$HOMEBREW_PREFIX"
+curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C "$HOMEBREW_PREFIX"
 
 export PATH="$HOMEBREW_PREFIX/bin:$PATH"
 print_double_line
