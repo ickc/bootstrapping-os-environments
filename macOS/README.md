@@ -25,6 +25,8 @@ On the freshly installed Mac:
 	- `brew.sh`
 	- `port.sh`
 	- `conda-install.sh`
+	- `jupyterlab.sh`
+		- `jupyterlab-chrome.sh`
 - upgrade package installers
 	- `upgrade.sh`
 
