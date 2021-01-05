@@ -13,19 +13,18 @@ On the freshly installed Mac:
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles), which requires the CLT.
 - Install ssh-dir.
+- Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/reproducible-os-environments.git; cd reproducible-os-environments/macOS`
 - remove sleep image (may already be the default): `sleep.sh`
 - symlink iCloud Documents to have a simpler path: `ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Documents" "$HOME/iCloud"`
 - Install Cocoa emacs emulation `install-cocoa-emacs-emulation.sh`
 - Install package managers: `install.sh`
-- Install packages
+- restart shell for the new PATH to take effect
+- Install packages (sub-level indicates depending on higher levels executed first)
 	- `mas.sh`
 		- `brew-cask.sh`
 	- `brew.sh`
 		- `upgrade.sh` (optional)
-			- `npm.sh`
-			- `gem.sh`
 			- `conda-install.sh`
-			- `cabal.sh`
 	- `port.sh`
 - upgrade package installers
 	- `upgrade.sh`
