@@ -96,3 +96,5 @@ bfg
 jq
 
 xorg-server
+lilypond
+MacPorts
