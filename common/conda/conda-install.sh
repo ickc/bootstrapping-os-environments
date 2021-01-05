@@ -41,7 +41,7 @@ conda env create -f temp.yml
 
 # pypy36-conda-forge
 # ./conda_env.py -o temp.yml -n "pypy" -C conda.txt conda-all.txt pip.txt -v 3.6 --pypy -c conda-forge
-conda env create -f pypy36-conda-forge.yml
+# conda env create -f pypy36-conda-forge.yml
 
 rm -f temp.yml
 
