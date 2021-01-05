@@ -27,7 +27,7 @@ print_line () {
 print_double_line
 echo "install homebrew..."
 # install brew
-sudo mkdir -p "$HOMEBREW_PREFIX" && sudo chown "$USER" "$HOMEBREW_PREFIX" && sudo chgrp "$USER" "$HOMEBREW_PREFIX"
+sudo mkdir -p "$HOMEBREW_PREFIX" && sudo chown "$USER" "$HOMEBREW_PREFIX" && sudo chgrp staff "$HOMEBREW_PREFIX"
 curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C "$HOMEBREW_PREFIX"
 
 print_double_line
