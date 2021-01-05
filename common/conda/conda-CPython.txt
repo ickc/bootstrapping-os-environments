@@ -1,7 +1,7 @@
-conda-forge::healpy
-conda-forge::pyslalib
+healpy
+pyslalib
 #* pandasgui dependencies
-conda-forge::pynput
+pynput
 aiohttp
 bump2version
 chardet

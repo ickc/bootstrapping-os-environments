@@ -1,5 +1,5 @@
 mkl
-conda-forge::quaternion
+quaternion
 ephem
 nose
 
