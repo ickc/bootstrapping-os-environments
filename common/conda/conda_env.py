@@ -5,7 +5,7 @@ import os
 import platform
 import sys
 
-__version__ = '0.4.1'
+__version__ = '0.4'
 
 PY2_PACKAGES = [
     'weave',
@@ -42,18 +42,15 @@ def cook_yaml(
     pip_paths=[],
     mpi=None,
     pypy=False,
-    channel_priority='strict',
 ):
     conda_envs = sum((read_env(conda_path) for conda_path in conda_paths), [])
     pip_envs = sum((read_env(pip_path) for pip_path in pip_paths), [])
 
-    dict_ = {
-        'channel_priority': channel_priority,
-    }
+    dict_ = dict()
 
     # channel
     dict_['channels'] = {
-        'conda-forge': ['conda-forge', 'defaults'],
+        'conda-forge': ['conda-forge'],
         'defaults': ['defaults', 'conda-forge'],
         'intel': ['intel', 'defaults', 'conda-forge'],
     }[channel]
@@ -122,8 +119,6 @@ def cli():
                         help="path to a file that contains the list of pip packages to be installed. Can be more than 1.")
     parser.add_argument('-m', '--mpi',
                         help="custom version of mpi4py if sepecified. Valid options: mpich/openmpi; external for using external mpich 3.3.x; cray for custom build using cray compiler.")
-    parser.add_argument('--channel-priority',
-                        help="set channel_priority in conda: Accepts values of 'strict', 'flexible', and 'disabled'.", type=str, default='strict')
 
     parser.add_argument('-V', action='version',
                         version='%(prog)s {}'.format(__version__))
@@ -139,7 +134,6 @@ def cli():
         pip_paths=args.pip_txt,
         mpi=args.mpi,
         pypy=args.pypy,
-        channel_priority=args.channel_priority,
     )
     try:
         import yaml
