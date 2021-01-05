@@ -57,7 +57,7 @@ brew install mas
 
 print_double_line
 echo 'install oracle-jdk...'
-brew cask install oracle-jdk
+brew install --cask oracle-jdk
 
 print_double_line
 echo 'install mamba-forge...'
