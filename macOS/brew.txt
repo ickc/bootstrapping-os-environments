@@ -35,7 +35,7 @@ unison
 # gsl
 # sshfs
 # GPS
-gpsbabel
+# gpsbabel
 # e.g. avprobe
 # libav
 # instrumentation framework for building dynamic analysis tool
