@@ -2,7 +2,7 @@ name: jupyterlab
 channels:
   - conda-forge
   - defaults
-channel_priority: True
+# channel_priority: True
 dependencies:
   - python=3.9
   - jupyterlab<3
