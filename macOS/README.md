@@ -23,9 +23,8 @@ On the freshly installed Mac:
 	- `mas.sh`
 		- `brew-cask.sh`
 	- `brew.sh`
-		- `upgrade.sh` (optional)
-			- `conda-install.sh`
 	- `port.sh`
+	- `conda-install.sh`
 - upgrade package installers
 	- `upgrade.sh`
 
