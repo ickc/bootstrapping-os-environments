@@ -36,7 +36,7 @@ emacs
 
 parallel
 multimarkdown
-openconnect
+# openconnect
 enca
 smartmontools
 ImageMagick
@@ -87,7 +87,7 @@ ghostscript
 iperf3
 nmap
 # testdisk
-youtube-dl
+# youtube-dl
 annie
 mediainfo
 # MediaInfo-gui
@@ -97,4 +97,3 @@ jq
 
 xorg-server
 lilypond
-MacPorts
