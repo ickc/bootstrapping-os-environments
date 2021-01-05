@@ -2,8 +2,11 @@
 
 set -e
 
-MACPORTS_VERSION=2.6.4
-MACPORTS_OS_VERSION=11.0-BigSur
+MACPORTS_VERSION=2.6.4_1
+MACPORTS_OS_VERSION=11-BigSur
+# TODO: on next macOS major upgrade we should move to /opt/homebrew and create a dedicated homebrew user account to manage this
+HOMEBREW_PREFIX="$HOME/.homebrew"
+CONDA_PREFIX="$HOME/.mambaforge"
 
 # sudo loop
 sudo xcodebuild -license accept
@@ -24,7 +27,8 @@ print_line () {
 print_double_line
 echo "install homebrew..."
 # install brew
-mkdir ~/.homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ~/.homebrew
+sudo mkdir -p "$HOMEBREW_PREFIX" && sudo chown "$USER" "$HOMEBREW_PREFIX" && sudo chgrp "$USER" "$HOMEBREW_PREFIX"
+curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C "$HOMEBREW_PREFIX"
 
 print_double_line
 echo "install macports..."
@@ -46,15 +50,17 @@ rm -f "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
 # rm -rf macports-base
 sudo /opt/local/bin/port -v selfupdate
 
-export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/opt/ruby/bin:$PATH"
+export PATH="$HOMEBREW_PREFIX/bin:$PATH"
 print_double_line
-echo "install mas, node and ruby..."
-brew install mas node ruby
-
-print_line
-echo 'update gem...'
-gem install rubygems-update
+echo "install mas..."
+brew install mas
 
 print_double_line
-echo 'install anaconda and oracle-jdk...'
-brew cask install anaconda oracle-jdk
+echo 'install oracle-jdk...'
+brew cask install oracle-jdk
+
+print_double_line
+echo 'install mamba-forge...'
+curl https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-MacOSX-x86_64.sh --location --output Mambaforge-MacOSX-x86_64.sh
+chmod +x Mambaforge-MacOSX-x86_64.sh
+./Mambaforge-MacOSX-x86_64.sh -b -s -p "$CONDA_PREFIX"
