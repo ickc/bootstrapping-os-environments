@@ -2,13 +2,13 @@
 
 set -e
 
-path2txt="$(dirname "${BASH_SOURCE[0]}")/jupyterlab.txt"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # create environment jupyterlab for using in jupyterhub
-conda create -n jupyterlab -c conda-forge python=3 jupyterlab jupyterhub -y
+conda env create -f "$DIR/jupyterlab.yml"
 . activate jupyterlab
 
-temp=($(grep -v '#' "$path2txt"))
+temp=($(grep -v '#' "$DIR/jupyterlab.txt"))
 
 # https://plotly.com/python/getting-started/#jupyterlab-support-python-35
 export NODE_OPTIONS=--max-old-space-size=4096
