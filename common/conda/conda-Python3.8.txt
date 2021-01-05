@@ -1,5 +1,3 @@
-#* py37 only
-# mjuric::pyslalib
 numba
 datashader
 conda-forge::gooey
