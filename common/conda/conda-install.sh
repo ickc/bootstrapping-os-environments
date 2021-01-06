@@ -8,39 +8,62 @@ cd "$DIR"
 # install conda environments
 
 # ab2-defaults
-# ./conda_env.py -o temp.yml -n "ab" -C conda.txt
+# ./conda_env.py -o temp.yml -m mpich -n "ab" -C conda.txt
 # conda env create -f temp.yml
 # ab2-intel
-# ./conda_env.py -o temp.yml -n "ab" -C conda.txt -c intel
+# ./conda_env.py -o temp.yml -m mpich -n "ab" -C conda.txt -c intel
 # conda env create -f temp.yml
 
 # all2-defaults
-# ./conda_env.py -o temp.yml -n "all" -C conda.txt conda-all.txt conda-CPython.txt pip.txt
+# ./conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt
 # conda env create -f temp.yml
 # all2-intel
-# ./conda_env.py -o temp.yml -n "all" -C conda.txt conda-all.txt conda-CPython.txt pip.txt -c intel
+# ./conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt -c intel
 # conda env create -f temp.yml
 
 # ab38-defaults
-# ./conda_env.py -o temp.yml -n "ab" -C conda.txt -v 3.8
+# ./conda_env.py -o temp.yml -m mpich -n "ab" -C conda.txt -v 3.8
 # conda env create -f temp.yml
 # ab37-intel
-# ./conda_env.py -o temp.yml -n "ab" -C conda.txt -c intel -v 3.7
+# ./conda_env.py -o temp.yml -m mpich -n "ab" -C conda.txt -c intel -v 3.7
 # conda env create -f temp.yml
 
 # all38-defaults
-./conda_env.py -o temp.yml -n "all" -C conda.txt conda-all.txt conda-CPython.txt conda-Python3.8.txt pip.txt -v 3.8
+./conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt conda-Python3.8.txt -v 3.8
 conda env create -f temp.yml
 # all37-intel
-./conda_env.py -o temp.yml -n "all" -C conda.txt conda-all.txt conda-CPython.txt conda-Python3.8.txt pip.txt -c intel -v 3.7
+./conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt conda-Python3.8.txt -c intel -v 3.7
 conda env create -f temp.yml
 
 # all39-defaults
-./conda_env.py -o temp.yml -n "all" -C conda.txt conda-all.txt conda-CPython.txt pip.txt -v 3.9
+./conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt -v 3.9
 conda env create -f temp.yml
 
+# pip39-defaults
+./conda_env.py -o temp.yml -n "pip" -P pip.txt -v 3.9
+conda env create -f temp.yml
+
+# these bare envs are for tox
+
+# bare35-defaults
+./conda_env.py -o temp.yml -n "bare" -v 3.5
+conda env create -f temp.yml
+
+# bare36-defaults
+./conda_env.py -o temp.yml -n "bare" -v 3.6
+conda env create -f temp.yml
+
+# bare-pypy27-conda-forge
+./conda_env.py -o temp.yml -n "bare-pypy" -v 2.7 --pypy -c conda-forge
+conda env create -f temp.yml
+
+# bare-pypy36-conda-forge
+./conda_env.py -o temp.yml -n "bare-pypy" -v 3.6 --pypy -c conda-forge
+conda env create -f temp.yml
+
+
 # pypy36-conda-forge
-# ./conda_env.py -o temp.yml -n "pypy" -C conda.txt conda-all.txt pip.txt -v 3.6 --pypy -c conda-forge
+# ./conda_env.py -o temp.yml -m mpich -n "pypy" -C conda.txt conda-all.txt -v 3.6 --pypy -c conda-forge
 # conda env create -f pypy36-conda-forge.yml
 
 rm -f temp.yml
