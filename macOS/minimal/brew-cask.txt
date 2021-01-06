@@ -9,3 +9,4 @@ chromium
 hwsensors
 kitty
 resxtreme
+zoom
