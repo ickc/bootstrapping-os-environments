@@ -32,7 +32,7 @@ cd "$DIR"
 ./conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt conda-Python3.8.txt -v 3.8
 mamba env create -f temp.yml
 # all37-intel
-./conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt conda-Python3.8.txt -c intel -v 3.7
+./conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt -c intel -v 3.7
 mamba env create -f temp.yml
 
 # all39-defaults
