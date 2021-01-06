@@ -91,7 +91,7 @@ nmap
 annie
 mediainfo
 # MediaInfo-gui
-mpich
+# mpich
 bfg
 jq
 
