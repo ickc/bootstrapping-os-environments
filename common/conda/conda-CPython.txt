@@ -1,5 +1,4 @@
 healpy
-pyslalib
 #* pandasgui dependencies
 pynput
 aiohttp
