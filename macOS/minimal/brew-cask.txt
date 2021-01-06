@@ -1,0 +1,11 @@
+microsoft-office
+visual-studio-code
+google-chrome
+firefox
+keka
+intel-power-gadget
+rectangle
+chromium
+hwsensors
+kitty
+resxtreme
