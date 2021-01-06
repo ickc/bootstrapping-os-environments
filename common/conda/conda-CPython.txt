@@ -1,6 +1,4 @@
 healpy
-#* pandasgui dependencies
-pynput
 aiohttp
 bump2version
 chardet
