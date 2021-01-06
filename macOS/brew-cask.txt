@@ -7,11 +7,11 @@ xquartz
 # logos
 # microsoft-office-2011
 # microsoft-office
-vmware-fusion
+# vmware-fusion
 textmate
 adobe-creative-cloud
 # services ################################################################
-dropbox
+# dropbox
 # google-backup-and-sync
 github
 # gitkraken
@@ -21,7 +21,7 @@ astropad
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
 slack
-steam
+# steam
 # nomachine
 # video conference
 # zoomus
@@ -31,7 +31,8 @@ steam
 # sling
 # text ################################################################
 mactex
-visual-studio-code-insiders
+# visual-studio-code-insiders
+visual-studio-code
 # atom
 # aquamacs
 # nteract
@@ -49,7 +50,7 @@ firefox
 # media ################################################################
 keka
 inkscape
-adobe-dng-converter
+# adobe-dng-converter
 imageoptim
 imagealpha
 # handbrake
@@ -59,9 +60,9 @@ makemkv
 # mplayerx
 # invisor-lite
 # small utilities ################################################################
-desktoputility
-disk-inventory-x
-dupeguru
+# desktoputility
+# disk-inventory-x
+# dupeguru
 # filezilla
 sdformatter
 appcleaner
@@ -81,11 +82,11 @@ keepassxc
 # openzfs
 # gdisk
 intel-power-gadget
-gfxcardstatus
+# gfxcardstatus
 # logitech-gaming-software
 logitech-options
 logitech-g-hub
-logitech-unifying
+# logitech-unifying
 # check if it is this or `wacom-intuos-pro-tablet`
 # wacom-intuos-tablet
 # switchresx
@@ -108,7 +109,7 @@ rectangle
 detexify
 # homebrew-cask-versions ################################################################
 # safari-technology-preview
-google-chrome-canary
+# google-chrome-canary
 chromium
 # multimarkdown-composer-pro
 # networking
@@ -116,13 +117,13 @@ zerotier-one
 
 # android-platform-tools
 
-dash
+# dash
 # franz
 # horndis
 hwsensors
 # imaging-edge
 # musescore
-rawtherapee
+# rawtherapee
 svgcleaner
 # tuxguitar
 # webplotdigitizer
@@ -130,7 +131,7 @@ svgcleaner
 # bookends
 # guitar-pro
 # texpad
-alacritty
+# alacritty
 kitty
 # mediainfo
 mpv
