@@ -29,9 +29,9 @@ def read_env(path):
 def cook_yaml(
     python_version='3',
     channel='defaults',
-    name='ab',
+    name='all',
     prefix=None,
-    conda_paths=['conda.txt'],
+    conda_paths=[],
     pip_paths=[],
     mpi=None,
     pypy=False,
@@ -75,9 +75,12 @@ def cook_yaml(
         dict_['dependencies'].append('mpich=3.3.*=external_*')
     elif mpi in ('mpich', 'openmpi'):
         dict_['dependencies'].append(mpi)
+    elif mpi is None:
+        pass
     else:
         raise ValueError(f'Unknown mpi choice {mpi}.')
-    dict_['dependencies'].append('mpi4py')
+    if mpi is not None:
+        dict_['dependencies'].append('mpi4py')
 
     if pip_envs:
         dict_['dependencies'].append({
@@ -99,20 +102,20 @@ def cli():
                         help="Output YAML.")
     parser.add_argument('-v', '--version', type=str, default='3',
                         help='python version. 2, 3, or 3.x. Default: 3')
-    parser.add_argument('--pypy', action='store_true',
-                        help='install pypy, install CPython if not specified')
     parser.add_argument('-c', '--channel', default='defaults',
                         help='conda channel. e.g. intel, defaults. Default: defaults')
-    parser.add_argument('-n', '--name', default='ab',
-                        help='prefix of the name of environment. Default: ab')
+    parser.add_argument('-n', '--name', default='all',
+                        help='prefix of the name of environment. Default: all')
     parser.add_argument('-p', '--prefix',
                         help="Full path to conda environment prefix. If not specified, conda's default will be used.")
     parser.add_argument('-C', '--conda-txt', nargs='+',
-                        help="path to a file that contains the list of conda packages to be installed. Can be more than 1.")
+                        help="path to a file that contains the list of conda packages to be installed. Can be more than 1.", default=[])
     parser.add_argument('-P', '--pip-txt', nargs='+',
-                        help="path to a file that contains the list of pip packages to be installed. Can be more than 1.")
+                        help="path to a file that contains the list of pip packages to be installed. Can be more than 1.", default=[])
     parser.add_argument('-m', '--mpi',
                         help="custom version of mpi4py if sepecified. Valid options: mpich/openmpi; external for using external mpich 3.3.x; cray for custom build using cray compiler.")
+    parser.add_argument('--pypy', action='store_true',
+                        help='install pypy, install CPython if not specified')
 
     parser.add_argument('-V', action='version',
                         version='%(prog)s {}'.format(__version__))
