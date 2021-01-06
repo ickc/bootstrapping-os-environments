@@ -70,9 +70,29 @@ rm -f temp.yml
 
 # iterate over each conda environment
 
-    conda info --env | grep -v -E '#|root' - | grep -E '(defaults|intel|conda-forge)' - | cut -d' ' -f1 | xargs -i bash -c '
+    conda info --env | grep -v -E '#|base' - | grep -E '(defaults|intel|conda-forge)' - | cut -d' ' -f1 | xargs -i bash -c '
         for name do
             . activate "$name"
             python -m ipykernel install --user --name "$name" --display-name "$name"
             conda deactivate
         done' bash {}
+
+conda info --env | grep -v -E '#|base' - | grep -E '^(all|pip)' - | cut -d' ' -f1 | xargs -i bash -c '
+    for name do
+        . activate "$name"
+        case "$name" in
+        *-defaults)
+            cp condarc/defaults.yml "$CONDA_PREFIX/.condarc"
+            ;;
+        *-conda-forge)
+            cp condarc/conda-forge.yml "$CONDA_PREFIX/.condarc"
+            ;;
+        *-intel)
+            cp condarc/intel.yml "$CONDA_PREFIX/.condarc"
+            ;;
+        pip*)
+            cp condarc/pip.yml "$CONDA_PREFIX/.condarc"
+            ;;
+        esac
+        conda deactivate
+    done' bash {}
