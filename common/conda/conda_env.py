@@ -5,7 +5,7 @@ import os
 import platform
 import sys
 
-__version__ = '0.4'
+__version__ = '0.5'
 
 PY2_PACKAGES = [
     'weave',
@@ -21,16 +21,9 @@ PY2_PACKAGES = [
 ]
 
 
-def filter_line(line):
-    line = line.strip()
-    if line.startswith('#'):
-        line = ''
-    return line
-
-
 def read_env(path):
     with open(path, 'r') as f:
-        return list(filter(None, map(filter_line, f)))
+        return [line_ for line in f if (line_ := line.strip()) and not line_.startswith('#')]
 
 
 def cook_yaml(
@@ -86,12 +79,13 @@ def cook_yaml(
         raise ValueError(f'Unknown mpi choice {mpi}.')
     dict_['dependencies'].append('mpi4py')
 
-    dict_['dependencies'].append({
-        'pip': pip_envs
-    })
+    if pip_envs:
+        dict_['dependencies'].append({
+            'pip': pip_envs
+        })
 
     # name
-    dict_['name'] = f'{name}{"".join(python_version.split("."))}-{channel}' + ('' if mpi is None else f'-{mpi}')
+    dict_['name'] = f'{name}{"".join(python_version.split("."))}-{channel}'
     # prefix
     if prefix:
         dict_['prefix'] = os.path.join(prefix, dict_['name'])
