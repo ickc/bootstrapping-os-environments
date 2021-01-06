@@ -15,7 +15,7 @@ fi
 [[ -n $NERSC_HOST ]] && module load python/3.7-anaconda-2019.07
 
 echo "removing environment $environment..."
-conda remove -p "$environment" --all -y
+mamba remove -p "$environment" --all -y
 
 echo "removing its record in $HOME/.conda/environments.txt..."
 mv "$HOME/.conda/environments.txt" "$HOME/.conda/environments.txt.backup"

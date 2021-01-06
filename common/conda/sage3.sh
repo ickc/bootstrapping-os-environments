@@ -4,7 +4,7 @@ set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-conda env create -f "$DIR/sage3.yml"
+mamba env create -f "$DIR/sage3.yml"
 
 . activate sage3
 
