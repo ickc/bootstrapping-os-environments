@@ -14,4 +14,4 @@ brew tap homebrew/cask-fonts
 cat brew-cask.txt brew-cask-fonts.txt | grep -v '#' | xargs -n1 brew install --cask
 
 mas uninstall 488566438
-brew cask install atext
+brew install --cask atext
