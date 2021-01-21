@@ -61,6 +61,9 @@ mamba env create -f temp.yml
 ./conda_env.py -o temp.yml -n "bare-pypy" -v 3.6 --pypy -c conda-forge
 mamba env create -f temp.yml
 
+# bare-pypy37-conda-forge
+./conda_env.py -o temp.yml -n "bare-pypy" -v 3.7 --pypy -c conda-forge
+mamba env create -f temp.yml
 
 # pypy36-conda-forge
 # ./conda_env.py -o temp.yml -m mpich -n "pypy" -C conda.txt conda-all.txt -v 3.6 --pypy -c conda-forge
