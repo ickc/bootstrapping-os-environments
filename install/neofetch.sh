@@ -17,3 +17,6 @@ cd neofetch-*
 
 export PREFIX
 make install
+
+cd ..
+rm -rf neofetch-* "$filename"
