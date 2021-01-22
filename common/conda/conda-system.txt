@@ -4,7 +4,6 @@ parallel
 tmux
 
 tree
-exiftool
 wget
 curl
 tidy-html5
@@ -15,8 +14,6 @@ mosh
 glances
 ncdu
 exa
-w3m
-lynx
 ghostscript
 ffmpeg
 
