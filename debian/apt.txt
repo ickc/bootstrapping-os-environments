@@ -8,7 +8,6 @@ iotop
 sysstat # includes iostat
 htop
 ncdu
-bottom
 s-tui
 ranger
 ## ranger dep https://github.com/ranger/ranger
