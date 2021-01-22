@@ -1,7 +1,28 @@
-# 4kvideodownloader # manual
-# atom # manual
+ranger
+# ranger dep https://github.com/ranger/ranger
+python3-chardet
+caca-utils
+imagemagick
+ffmpegthumbnailer
+bat
 atool
-# bsdtar
+# atool depends on these already
+# unrar
+# p7zip-full
+# unzip
+lynx
+w3m
+elinks
+poppler-utils
+mupdf-tools
+calibre
+transmission-cli
+mediainfo
+libimage-exiftool-perl
+odt2txt
+jq
+fontforge-nox
+
 caffeine
 cifs-utils
 # cmake
@@ -30,9 +51,7 @@ iotop
 keepassxc
 kodi
 # lame
-libimage-exiftool-perl
 lm-sensors
-lynx
 mosh
 ncdu
 neofetch
@@ -41,7 +60,6 @@ nodejs
 # nvidia-cuda-toolkit
 opencc
 openssh-server
-# p7zip-full
 # pandoc
 # pandoc-citeproc
 parallel
@@ -50,7 +68,6 @@ psensor
 # python-gpgme # manual
 python3-pip
 # python3-multibootusb # manual
-ranger
 samba
 smartmontools
 sshfs
@@ -73,12 +90,9 @@ git
 
 curl
 ffmpeg
-transmission-cli
 acpi
 
-bat
 libbluray-bdj
-mediainfo
 nmap
 
 # for sanoid
@@ -89,19 +103,14 @@ pv
 lzop
 mbuffer
 
-alacritty
-
 iperf3
 
 bottom
 s-tui
 
-imagemagick
-
 # github
 hub
 
-jq
 lilypond
 
 f3
@@ -131,6 +140,3 @@ mpich
 mkvtoolnix
 
 mpv
-
-sudo apt-get install libtiff5-dev libtesseract-dev tesseract-ocr-eng build-essential cmake pkg-config
-sudo snap install vobsub2srt
