@@ -9,7 +9,6 @@ sudo apt -y full-upgrade
 
 sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:team-xbmc/ppa -y
-sudo add-apt-repository ppa:mmstick76/alacritty -y
 sudo apt-get update -qq
 
 xargs -a <(sed -E 's/^([^# ]*).*$/\1/g' apt.txt) -r -- sudo apt-get install -qq
