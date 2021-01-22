@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 GH_SHORT=ClementTsang/bottom
 
 url="https://github.com/$GH_SHORT/releases/latest"
@@ -10,3 +12,5 @@ filename="${downloadUrl##*/}"
 wget "$downloadUrl"
 
 sudo dpkg -i "$filename"
+
+rm -f "$filename"
