@@ -1,14 +1,24 @@
-# resource monitors
+## starts with ## for comments
+## starts with # for commented packages
+## optional inline comment after package name with #
+
+## resource monitors
 dstat
+iotop
+sysstat # includes iostat
+htop
+ncdu
+bottom
+s-tui
 ranger
-# ranger dep https://github.com/ranger/ranger
+## ranger dep https://github.com/ranger/ranger
 python3-chardet
 caca-utils
 imagemagick
 ffmpegthumbnailer
 bat
 atool
-# atool depends on these already
+## atool depends on these already
 # unrar
 # p7zip-full
 # unzip
@@ -25,7 +35,7 @@ odt2txt
 jq
 fontforge-nox
 glances
-# glances dep https://github.com/nicolargo/glances
+## glances dep https://github.com/nicolargo/glances
 python3-psutil
 python3-bottle
 hddtemp
@@ -35,125 +45,82 @@ python3-pysnmp4
 python3-pystache
 python3-zeroconf
 
-# system
+## system
 caffeine
-# compizconfig-settings-manager
+gnome-shell-extensions
+gnome-tweak-tool
 
-# shell
-exa
-
-# filesystem
-cifs-utils
-
-# build
-cmake
-
-# font
-fonts-cwtex-kai
-
-
-
-
-
-# gnome-color-manager # related to ArgyllCMS
-gsmartcontrol
-# haskell-platform
-# haskell-stack
-highlight
-htop
-idle3-tools # WD Green HDD config
-# intel-linux-graphics-installer # manual
-iotop
-# isomaster
-keepassxc
-kodi
-# lame
-lm-sensors
-mosh
-ncdu
+## shell
 neofetch
-nfs-kernel-server
-nodejs
-# nvidia-cuda-toolkit
-opencc
+exa
 openssh-server
-# pandoc
-# pandoc-citeproc
-parallel
-# ppa-purge
-psensor
-# python-gpgme # manual
-python3-pip
-# python3-multibootusb # manual
-samba
-smartmontools
-sshfs
-# stack # manual
-sysstat # includes iostat
-
-# https://tex.stackexchange.com/a/504566/73420
-texlive
-
+mosh
 tmux
 tree
-vainfo # video acceleration
-vlc
-# xorriso
 xsel
-# zerotier-one # manual
-zfsutils-linux
 zsh
-git
-
 curl
-ffmpeg
+git
+hub # github
+
+## command line utils
+opencc
+texlive # https://tex.stackexchange.com/a/504566/73420
+lilypond
+gitit
+graphviz
+
+## filesystem
+cifs-utils
+samba
+# sshfs
+zfsutils-linux
+cryptsetup # for manually unlock full disk encrypted drives
+
+## programming
+cmake
+mpich
+parallel
+
+## font
+fonts-cwtex-kai
+fonts-linuxlibertine
+
+## hardware
+gsmartcontrol
+idle3-tools # WD Green HDD config
+lm-sensors
+psensor
+smartmontools
+vainfo # video acceleration
 acpi
+f3
+fancontrol
+hardinfo
+input-utils # for lsinput
 
+## GUI
+keepassxc
+
+## Video
+ffmpeg
 libbluray-bdj
-nmap
+kodi
+vlc
+mkvtoolnix # mkvinfo
+mpv
 
-# for sanoid
+## network
+nmap
+iperf3
+wakeonlan
+ifenslave
+ethtool
+
+## for sanoid
 debhelper
 libcapture-tiny-perl
 libconfig-inifiles-perl
 pv
 lzop
 mbuffer
-
-iperf3
-
-bottom
-s-tui
-
-# github
-hub
-
-lilypond
-
-f3
-fancontrol
-hardinfo
-# for lsinput
-input-utils
-
-fonts-linuxlibertine
-gitit
-graphviz
-
-gnome-shell-extensions
-gnome-tweak-tool
-
-# for manually unlock full disk encrypted drives
-cryptsetup
-
-wakeonlan
-# routing and ehternet
-ifenslave
-ethtool
-
-mpich
-
-# mkvinfo
-mkvtoolnix
-
-mpv
