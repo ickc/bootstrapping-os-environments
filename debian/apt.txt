@@ -101,6 +101,7 @@ input-utils # for lsinput
 ## GUI
 keepassxc
 chromium-browser
+google-chrome-stable # in pop OS's repo. May need more steps on Ubuntu: https://linuxhint.com/install_google_chrome_ubuntu_ppa/
 
 ## Video
 ffmpeg
