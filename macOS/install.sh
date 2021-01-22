@@ -6,7 +6,7 @@ MACPORTS_VERSION=2.6.4_1
 MACPORTS_OS_VERSION=11-BigSur
 # TODO: on next macOS major upgrade we should move to /opt/homebrew and create a dedicated homebrew user account to manage this
 HOMEBREW_PREFIX="$HOME/.homebrew"
-CONDA_PREFIX="$HOME/.mambaforge"
+CONDA_PREFIX="${CONDA_PREFIX:-"$HOME/.mambaforge"}"
 
 # sudo loop
 sudo xcodebuild -license accept
@@ -61,6 +61,5 @@ brew install --cask oracle-jdk
 
 print_double_line
 echo 'install mamba-forge...'
-curl https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-MacOSX-x86_64.sh --location --output Mambaforge-MacOSX-x86_64.sh
-chmod +x Mambaforge-MacOSX-x86_64.sh
-./Mambaforge-MacOSX-x86_64.sh -b -s -p "$CONDA_PREFIX"
+export CONDA_PREFIX
+../install/mamba.sh
