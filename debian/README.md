@@ -15,3 +15,7 @@ On the freshly installed computer:
 	- `apt.sh` / `raspbian.sh`
 	- `brew.sh` (optional)
 	- `deb.sh`
+		- `conda activate`
+			- `conda-install.sh`
+			- `jupyterlab.sh`
+				- `jupyterlab-chrome.sh`
