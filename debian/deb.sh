@@ -2,39 +2,34 @@
 
 set -e
 
-mkdir -p deb
+# helpers ##############################################################
 
-# windscribe
-case "$(uname -sm)" in
-   Linux\ x86_64)  downloadUrl=https://windscribe.com/install/desktop/linux_deb_x64 ;;
-   Linux\ i*86)    downloadUrl=https://windscribe.com/install/desktop/linux_deb_x86 ;;
-   Linux\ arm*)    downloadUrl=https://windscribe.com/install/desktop/linux_deb_arm ;;
-   Linux\ aarch64) downloadUrl=https://windscribe.com/install/desktop/linux_deb_arm ;;
-esac
+print_double_line () {
+    eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
+}
 
-wget "$downloadUrl" -O deb/windscribe.deb
-sudo apt install ./deb/windscribe.deb -y
+print_line () {
+    eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
+}
 
-# zero-tier
-curl -s https://install.zerotier.com/ | sudo bash
+########################################################################
 
-# pandoc
-downloadUrl="https://github.com$(curl -L https://github.com/jgm/pandoc/releases/latest | grep -o '/jgm/pandoc/releases/download/.*-amd64\.deb')"
+print_double_line
+echo "install bottom..."
+../install/bottom.sh
 
-wget "$downloadUrl" -O deb/pandoc.deb
-sudo apt install ./deb/pandoc.deb -y
+print_double_line
+echo "install mamba..."
+../install/mamba.sh
 
-# vscode
-downloadUrl="$(curl -L https://update.code.visualstudio.com/api/update/linux-deb-x64/insider/VERSION | grep -o '[^"]*.deb')"
+print_double_line
+echo "install vscode..."
+../install/vscode.sh
 
-wget "$downloadUrl" -O deb/vscode.deb
-sudo apt install ./deb/vscode.deb -y
+print_double_line
+echo "install windscribe..."
+../install/windscribe.sh
 
-# miniconda
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O deb/Miniconda3-latest-Linux-x86_64.sh
-chmod +x deb/Miniconda3-latest-Linux-x86_64.sh
-bash deb/Miniconda3-latest-Linux-x86_64.sh -b
-
-tree deb
-echo Cleaning up...
-rm -rf deb
+print_double_line
+echo "install zerotier..."
+../install/zerotier.sh
