@@ -18,27 +18,27 @@ ffmpeg
 
 ranger-fm
 # ranger dep
-chardet
-python-bidi
+chardet >=4
+python-bidi >=0.4.2
 imagemagick
 bat
 p7zip
 tar
 unzip
 sed
-lynx
+# lynx
 w3m
 poppler
 mupdf
 exiftool
 jq
 
-glances
+glances >=3
 # glances dep
 psutil
-bottle
+bottle >=0.12.18
 netifaces
-py-cpuinfo
+py-cpuinfo >=7
 pysnmp
 pystache
 zeroconf
