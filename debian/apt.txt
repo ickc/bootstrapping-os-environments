@@ -56,7 +56,10 @@ smartmontools
 sshfs
 # stack # manual
 sysstat # includes iostat
-# texlive-full
+
+# https://tex.stackexchange.com/a/504566/73420
+texlive
+
 tmux
 tree
 vainfo # video acceleration
@@ -87,3 +90,47 @@ lzop
 mbuffer
 
 alacritty
+
+iperf3
+
+bottom
+s-tui
+
+imagemagick
+
+# github
+hub
+
+jq
+lilypond
+
+f3
+fancontrol
+hardinfo
+# for lsinput
+input-utils
+
+fonts-linuxlibertine
+gitit
+graphviz
+
+gnome-shell-extensions
+gnome-tweak-tool
+
+# for manually unlock full disk encrypted drives
+cryptsetup
+
+wakeonlan
+# routing and ehternet
+ifenslave
+ethtool
+
+mpich
+
+# mkvinfo
+mkvtoolnix
+
+mpv
+
+sudo apt-get install libtiff5-dev libtesseract-dev tesseract-ocr-eng build-essential cmake pkg-config
+sudo snap install vobsub2srt
