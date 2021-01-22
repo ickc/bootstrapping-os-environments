@@ -1,3 +1,5 @@
+# resource monitors
+dstat
 ranger
 # ranger dep https://github.com/ranger/ranger
 python3-chardet
@@ -22,22 +24,37 @@ libimage-exiftool-perl
 odt2txt
 jq
 fontforge-nox
-
-caffeine
-cifs-utils
-# cmake
-# code # manual
-# compizconfig-settings-manager
-# displaycal # manual
-# driconf # Hardware Acceleration for VMWare
-# dropbox # manual
-dstat
-# emby-server # manual
-# exa # manual
-# exfat-fuse
-# exfat-utils
-# fonts-cwtex-kai
 glances
+# glances dep https://github.com/nicolargo/glances
+python3-psutil
+python3-bottle
+hddtemp
+python3-netifaces
+python3-cpuinfo
+python3-pysnmp4
+python3-pystache
+python3-zeroconf
+
+# system
+caffeine
+# compizconfig-settings-manager
+
+# shell
+exa
+
+# filesystem
+cifs-utils
+
+# build
+cmake
+
+# font
+fonts-cwtex-kai
+
+
+
+
+
 # gnome-color-manager # related to ArgyllCMS
 gsmartcontrol
 # haskell-platform
