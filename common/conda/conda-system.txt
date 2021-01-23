@@ -1,4 +1,5 @@
 git
+hub
 nano
 parallel
 tmux
@@ -6,15 +7,17 @@ tmux
 tree
 wget
 curl
-tidy-html5
+# tidy-html5
 shellcheck
 pandoc
 htop
+s-tui
 mosh
 ncdu
 exa
 ghostscript
 ffmpeg
+graphviz
 
 ranger-fm
 # ranger dep
