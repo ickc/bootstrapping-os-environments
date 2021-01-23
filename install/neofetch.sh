@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 PREFIX=${PREFIX:-/global/common/software/polar/local}
 
 GH_SHORT=dylanaraps/neofetch
