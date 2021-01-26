@@ -8,3 +8,5 @@ grep -v '#' port.txt | xargs sudo port install
 
 # configure git after macports's git is installed
 git config --global pull.rebase false
+
+sudo port load smartmontools
