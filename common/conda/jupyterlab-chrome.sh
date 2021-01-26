@@ -2,6 +2,7 @@
 
 . activate jupyterlab
 
+mkdir -p ~/.jupyter
 : > ~/.jupyter/jupyter_notebook_config.py
 
 if [[ $(uname) == Darwin ]]; then
