@@ -12,7 +12,9 @@ if [[ ! -d "$environment" ]]; then
     exit 1
 fi
 
-[[ -n $NERSC_HOST ]] && module load python/3.7-anaconda-2019.07
+if [[ -n $NERSC_HOST ]]; then
+    alias mamba=/usr/common/software/python/3.8-anaconda-2020.11/bin/mamba
+fi
 
 echo "removing environment $environment..."
 mamba remove -p "$environment" --all -y
@@ -21,5 +23,11 @@ echo "removing its record in $HOME/.conda/environments.txt..."
 mv "$HOME/.conda/environments.txt" "$HOME/.conda/environments.txt.backup"
 grep -v "$environment" "$HOME/.conda/environments.txt.backup" > "$HOME/.conda/environments.txt"
 
-echo "removing jupyter kernel in $HOME/.local/share/jupyter/kernels/${environment##*/}..."
-rm -rf "$HOME/.local/share/jupyter/kernels/${environment##*/}"
+if [[ $(uname) == Darwin ]]; then
+    kernel_prefix="$HOME/Library/Jupyter/kernels"
+else
+    kernel_prefix="$HOME/.local/share/jupyter/kernels"
+fi
+
+echo "removing jupyter kernel in $kernel_prefix/${environment##*/}..."
+rm -rf "$kernel_prefix/${environment##*/}"
