@@ -92,6 +92,10 @@ annie
 mediainfo
 # MediaInfo-gui
 # mpich
+mpich-gcc10
+fftw-3
+cfitsio
+SuiteSparse
 bfg
 jq
 
