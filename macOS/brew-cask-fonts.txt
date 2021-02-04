@@ -14,11 +14,14 @@ font-latin-modern
 font-latin-modern-math
 font-tex-gyre-adventor
 font-tex-gyre-bonum
+font-tex-gyre-bonum-math
 font-tex-gyre-chorus
 font-tex-gyre-cursor
 font-tex-gyre-pagella
 font-tex-gyre-schola
+font-tex-gyre-schola-math
 font-tex-gyre-termes
+font-tex-gyre-termes-math
 font-tex-gyre-heros
 font-tex-gyre-pagella-math
 # font-cwtex-q
