@@ -3,16 +3,14 @@
 . activate jupyterlab
 
 mkdir -p ~/.jupyter
-: > ~/.jupyter/jupyter_notebook_config.py
+: > ~/.jupyter/jupyter_lab_config.py
 
 if [[ $(uname) == Darwin ]]; then
-cat << 'EOF' >> ~/.jupyter/jupyter_notebook_config.py
-c.LabApp.browser = '"/Applications/Chromium.app/Contents/MacOS/Chromium" --app=%s'
-c.NotebookApp.use_redirect_file = False
+cat << 'EOF' >> ~/.jupyter/jupyter_lab_config.py
+c.LabApp.browser = '"/Applications/Chromium.app/Contents/MacOS/Chromium" -incognito --app=%s'
 EOF
 else
-cat << 'EOF' >> ~/.jupyter/jupyter_notebook_config.py
-c.LabApp.browser = 'chromium-browser --app=%s'
-c.NotebookApp.use_redirect_file = False
+cat << 'EOF' >> ~/.jupyter/jupyter_lab_config.py
+c.LabApp.browser = 'chromium-browser -incognito --app=%s'
 EOF
 fi
