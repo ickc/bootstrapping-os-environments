@@ -1,5 +1,5 @@
 # https://github.com/jupyter-widgets/ipywidgets
-@jupyter-widgets/jupyterlab-manager
+# @jupyter-widgets/jupyterlab-manager
 # https://plotly.com/python/getting-started/#jupyter-notebook-support
 jupyterlab-plotly
 plotlywidget
