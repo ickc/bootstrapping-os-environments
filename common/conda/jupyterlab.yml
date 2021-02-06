@@ -13,3 +13,4 @@ dependencies:
   # for jupyterlab>=3
   - jupyterlab_widgets
   - pyviz_comms
+  - ipympl
