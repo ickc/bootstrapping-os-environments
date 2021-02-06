@@ -4,6 +4,6 @@
 jupyterlab-plotly
 plotlywidget
 # https://github.com/holoviz/pyviz_comms
-@pyviz/jupyterlab_pyviz
+# @pyviz/jupyterlab_pyviz
 # https://github.com/bokeh/jupyter_bokeh
-@bokeh/jupyter_bokeh
+# @bokeh/jupyter_bokeh

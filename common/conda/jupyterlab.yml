@@ -5,10 +5,11 @@ channels:
 # channel_priority: True
 dependencies:
   - python=3.9
-  - jupyterlab<3
+  - jupyterlab>=3
   - jupyterhub
   - ipywidgets
   - jupyter_bokeh
+  - nodejs >=15
   # for jupyterlab>=3
-  # - jupyterlab_widgets
-  # - pyviz_comms
+  - jupyterlab_widgets
+  - pyviz_comms
