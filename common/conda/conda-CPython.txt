@@ -22,3 +22,5 @@ toml
 tox
 watchdog
 wheel
+numba::numba >=0.53.0rc1
+gooey
