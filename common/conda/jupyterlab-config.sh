@@ -6,12 +6,12 @@ mkdir -p ~/.jupyter
 
 if [[ $(uname) == Darwin ]]; then
 cat << 'EOF' > ~/.jupyter/jupyter_lab_config.py
-c.LabApp.browser = '"/Applications/Chromium.app/Contents/MacOS/Chromium" -incognito --app=%s'
+c.ServerApp.browser = '"/Applications/Chromium.app/Contents/MacOS/Chromium" -incognito --app=%s'
 c.ServerApp.iopub_data_rate_limit = 10000000000
 EOF
 else
 cat << 'EOF' > ~/.jupyter/jupyter_lab_config.py
-c.LabApp.browser = 'chromium-browser -incognito --app=%s'
+c.ServerApp.browser = 'chromium-browser -incognito --app=%s'
 c.ServerApp.iopub_data_rate_limit = 10000000000
 EOF
 fi
