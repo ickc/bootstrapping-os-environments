@@ -89,6 +89,7 @@ flatten-dict
 
 johnnydep
 
+ics
 datashader
 
 pygments-style-solarized
