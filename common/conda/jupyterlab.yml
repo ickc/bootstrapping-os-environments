@@ -9,7 +9,7 @@ dependencies:
   - jupyterhub
   - ipywidgets
   - jupyter_bokeh
-  - nodejs >=15
+  - nodejs >=14
   # for jupyterlab>=3
   - jupyterlab_widgets
   - pyviz_comms
