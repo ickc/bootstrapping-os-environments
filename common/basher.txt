@@ -1,0 +1,2 @@
+dylanaraps/neofetch
+ickc/dautil-sh
