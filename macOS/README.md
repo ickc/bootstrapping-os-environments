@@ -20,6 +20,7 @@ On the freshly installed Mac:
 - Install package managers: `install.sh`
 - restart shell for the new PATH to take effect
 - Install packages (sub-level indicates depending on higher levels executed first)
+	- `../install/basher.sh`
 	- `mas.sh`
 		- `brew-cask.sh`
 	- `brew.sh`
