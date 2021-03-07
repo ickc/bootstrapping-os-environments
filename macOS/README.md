@@ -28,7 +28,7 @@ On the freshly installed Mac:
 	- `conda activate`
 		- `conda-install.sh`
 		- `jupyterlab.sh`
-			- `jupyterlab-chrome.sh`
+			- `jupyterlab-config.sh`
 - upgrade package installers
 	- `upgrade.sh`
 
