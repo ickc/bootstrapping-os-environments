@@ -56,7 +56,7 @@ cmake
 # llvm
 gsl
 # sshfs
-gpsbabel
+# gpsbabel
 # shellcheck
 automake
 go
