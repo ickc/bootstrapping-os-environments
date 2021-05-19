@@ -12,15 +12,12 @@ wget -qO- https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -x
 cd $mpiName
 
 if [[ -n $NERSC_HOST ]]; then
-    module swap PrgEnv-intel PrgEnv-gnu
+    # https://docs.nersc.gov/development/languages/python/parallel-python/
+    module swap PrgEnv-${PE_ENV,,} PrgEnv-gnu
     module unload craype-hugepages2M
     module unload libfabric || true
 
-    python setup.py build --mpicc="$(which cc) -shared" && python setup.py install
-    # this is not needed
-    # c.f. https://mpi4py.readthedocs.io/en/stable/appendix.html#mpi-enabled-python-interpreter
-    # also, https://docs.nersc.gov/programming/libraries/hdf5/h5py/
-    # python setup.py build_exe --mpicc="$(which cc) -dynamic" && python setup.py install_exe
+    MPICC="cc -shared" pip install --no-binary=mpi4py mpi4py
 else
     # * see https://bitbucket.org/mpi4py/mpi4py/issues/143/build-failure-with-openmpi
     cat << EOF > conf/sysconfigdata-conda-user.py
