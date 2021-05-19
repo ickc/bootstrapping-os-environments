@@ -11,6 +11,10 @@ ujson
 pylint
 mypy
 sphinx
+sphinxcontrib-apidoc
+sphinxcontrib-contentui
+tox
+tox-conda
 
 decorator
 
@@ -20,8 +24,10 @@ setuptools
 imageio
 coverage
 pandoc
+pandoc-crossref
 panflute
 pantable
+pancritic
 click
 pypandoc
 mpmath
@@ -107,3 +113,34 @@ yaml2cli
 tco
 acor
 data-science-types
+
+wolframclient
+
+numba_quaternion
+
+bpytop
+feedgen
+fastai::ghapi
+ghp-import
+ipympl
+parsl
+tikzplotlib
+urlpath
+
+openpyxl
+schema
+
+toast
+libsharp
+pysm3
+quaternionarray
+
+contextily
+descartes
+folium
+geojson
+geopandas
+googlemaps
+kml2geojson
+routingpy
+tzwhere

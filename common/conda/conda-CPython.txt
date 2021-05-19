@@ -22,5 +22,6 @@ toml
 tox
 watchdog
 wheel
-numba::numba >=0.53.0rc1
+numba::numba
 gooey
+make_arq

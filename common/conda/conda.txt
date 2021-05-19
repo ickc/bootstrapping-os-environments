@@ -17,6 +17,8 @@ ipyparallel
 
 pytest
 pytest-cov
+pytest-mpi
+pytest-parallel
 
 pandas
 pytables
@@ -26,3 +28,6 @@ statsmodels
 future
 scikit-learn
 bokeh
+
+map_parallel
+dautilpy
