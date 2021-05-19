@@ -118,7 +118,6 @@ wolframclient
 
 numba_quaternion
 
-bpytop
 feedgen
 fastai::ghapi
 ghp-import
