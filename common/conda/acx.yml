@@ -2,25 +2,25 @@ name: acx
 channels:
 - defaults
 dependencies:
+- aiohttp
 - anaconda
 - appdirs
 - arrow
 - astropy
 - autopep8
 - beautifulsoup4
+- black
 - bokeh
 - chardet
 - click
 - colorama
 - conda
 - coverage
-- cssselect
 - cython
 - cytoolz
 - dask
 - datashader
 - decorator
-- distlib
 - distributed
 - ephem
 - flake8
@@ -34,8 +34,6 @@ dependencies:
 - ipython
 - ipywidgets
 - libiconv
-- line_profiler
-- lxml
 - markdown
 - markdown2
 - matplotlib
@@ -43,14 +41,14 @@ dependencies:
 - mpmath
 - multipledispatch
 - mypy
+- mypy_extensions
 - nbconvert
 - nltk
 - nose
 - numba
 - numexpr
 - numpy
-- opencv
-- packaging
+- openpyxl
 - pandas
 - pandoc
 - pandocfilters
@@ -58,7 +56,6 @@ dependencies:
 - pickleshare
 - pillow
 - pip
-- pkginfo
 - plotly
 - psutil
 - pycodestyle
@@ -77,12 +74,11 @@ dependencies:
 - scipy
 - seaborn
 - setuptools
-- six
-- snakeviz
 - sphinx
 - statsmodels
 - sympy
 - toml
 - ujson
+- watchdog
 - wheel
 - xlrd
