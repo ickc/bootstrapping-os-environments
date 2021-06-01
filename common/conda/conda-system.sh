@@ -2,14 +2,19 @@
 
 set -e
 
-PREFIX=${PREFIX:-/global/common/software/polar/.conda/envs/system39-conda-forge}
-BINDIR=${BINDIR:-/global/common/software/polar/local/bin}
+# * Define PREFIX if you want to install in a conda prefix instead
+# PREFIX=
+BINDIR=${BINDIR:-~/.local/bin}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 
 ./conda_env.py -o temp.yml -n system -C conda-system.txt -v 3.9 -c conda-forge
-mamba env create -f temp.yml -p "$PREFIX"
+if [[ -z ${PREFIX+x}]]; then
+    mamba env create -f temp.yml -n system39-conda-forge -y
+else
+    mamba env create -f temp.yml -p "$PREFIX"
+fi
 rm -f temp.yml
 
 mkdir -p "$BINDIR"
