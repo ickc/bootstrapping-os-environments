@@ -13,7 +13,8 @@ cd "$DIR"
 if [[ -z ${PREFIX+x} ]]; then
     ENV_NAME=system39-conda-forge
     mamba env create -f temp.yml -n "$ENV_NAME"
-    PREFIX="$HOME/.conda/envs/$ENV_NAME"
+    . activate "$ENV_NAME"
+    PREFIX="$CONDA_PREFIX"
 else
     mamba env create -f temp.yml -p "$PREFIX"
 fi
