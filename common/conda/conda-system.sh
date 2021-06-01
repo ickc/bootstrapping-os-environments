@@ -11,7 +11,9 @@ cd "$DIR"
 
 ./conda_env.py -o temp.yml -n system -C conda-system.txt -v 3.9 -c conda-forge
 if [[ -z ${PREFIX+x} ]]; then
-    mamba env create -f temp.yml -n system39-conda-forge
+    ENV_NAME=system39-conda-forge
+    mamba env create -f temp.yml -n "$ENV_NAME"
+    PREFIX="$HOME/.conda/envs/$ENV_NAME"
 else
     mamba env create -f temp.yml -p "$PREFIX"
 fi
@@ -19,5 +21,5 @@ rm -f temp.yml
 
 mkdir -p "$BINDIR"
 while read line; do
-    ln -s "$PREFIX/bin/$line" "$BINDIR"
+    ln -sf "$PREFIX/bin/$line" "$BINDIR"
 done < conda-system-link.txt
