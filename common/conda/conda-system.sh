@@ -12,6 +12,7 @@ cd "$DIR"
 mamba env create -f temp.yml -p "$PREFIX"
 rm -f temp.yml
 
+mkdir -p "$BINDIR"
 while read line; do
     ln -s "$PREFIX/bin/$line" "$BINDIR"
 done < conda-system-link.txt
