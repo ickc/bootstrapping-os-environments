@@ -10,7 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 
 ./conda_env.py -o temp.yml -n system -C conda-system.txt -v 3.9 -c conda-forge
-if [[ -z ${PREFIX+x}]]; then
+if [[ -z ${PREFIX+x} ]]; then
     mamba env create -f temp.yml -n system39-conda-forge -y
 else
     mamba env create -f temp.yml -p "$PREFIX"
