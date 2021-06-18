@@ -83,9 +83,12 @@ def cook_yaml(
         dict_['dependencies'].append('mpi4py')
 
     if pip_envs:
-        dict_['dependencies'].append({
-            'pip': pip_envs
-        })
+        dict_['dependencies'] += [
+            'pip',
+            {
+                'pip': pip_envs
+            },
+        ]
 
     # name
     dict_['name'] = f'{name}{"".join(python_version.split("."))}-{channel}'
