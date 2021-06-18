@@ -17,7 +17,7 @@ case "$(uname -sm)" in
     ;;
 esac
 
-curl "$downloadUrl" --location --output Mambaforge.sh
+curl -L "$downloadUrl" --location --output Mambaforge.sh
 
 chmod +x Mambaforge.sh
 
