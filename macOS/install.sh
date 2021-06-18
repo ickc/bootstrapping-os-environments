@@ -2,7 +2,7 @@
 
 set -e
 
-MACPORTS_VERSION=2.6.4_1
+MACPORTS_VERSION=2.7.1
 MACPORTS_OS_VERSION=11-BigSur
 # TODO: on next macOS major upgrade we should move to /opt/homebrew and create a dedicated homebrew user account to manage this
 HOMEBREW_PREFIX="$HOME/.homebrew"
@@ -28,7 +28,7 @@ print_double_line
 echo "install macports..."
 # port: update from https://www.macports.org/install.php
 # prebuild binaries
-curl "https://distfiles.macports.org/MacPorts/MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg" --output "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
+curl -L "https://github.com/macports/macports-base/releases/download/v${MACPORTS_VERSION}/MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg" --output "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
 sudo installer -pkg "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg" -target /
 rm -f "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
 # build from source
@@ -63,3 +63,7 @@ print_double_line
 echo 'install mamba-forge...'
 export CONDA_PREFIX
 ../install/mamba.sh
+
+print_double_line
+echo 'install basher...'
+../common/basher.sh
