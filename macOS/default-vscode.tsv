@@ -4,6 +4,7 @@ com.microsoft.VSCode	public.yaml	editor
 com.microsoft.VSCode	net.daringfireball.markdown	editor
 com.microsoft.VSCode	com.apple.property-list	editor
 com.microsoft.VSCode	public.tab-separated-values-text	editor
+com.microsoft.VSCode	public.python-script	editor
 com.microsoft.VSCode	public.shell-script	editor
 com.microsoft.VSCode	public.script	editor
 com.microsoft.VSCode	public.source-code	editor
