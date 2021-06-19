@@ -7,15 +7,15 @@ On the old computer:
 
 On the freshly installed computer:
 
-- `sudo apt install openssh-server zsh && chsh -s /bin/zsh`
+- `sudo apt install openssh-server zsh tmux curl && chsh -s /bin/zsh`
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles).
 - Install ssh-dir.
-- Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/reproducible-os-environments.git || git clone https://github.com/ickc/reproducible-os-environments.git; cd reproducible-os-environments/macOS`
-	- `apt.sh` / `raspbian.sh`
+- Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/reproducible-os-environments.git || git clone https://github.com/ickc/reproducible-os-environments.git; cd reproducible-os-environments/debian`
 	- `brew.sh` (optional)
-	- `deb.sh`
-		- `conda activate`
-			- `conda-install.sh`
-			- `jupyterlab.sh`
-				- `jupyterlab-chrome.sh`
+	- `apt.sh` / `raspbian.sh`
+		- `deb.sh`
+			- `conda activate`
+				- `conda-install.sh`
+					- `jupyterlab.sh`
+						- `jupyterlab-chrome.sh`
