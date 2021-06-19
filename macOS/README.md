@@ -26,8 +26,8 @@ On the freshly installed Mac:
 	- `port.sh`
 	- `conda activate`
 		- `conda-install.sh`
-		- `jupyterlab.sh`
-			- `jupyterlab-config.sh`
+			- `jupyterlab.sh`
+				- `jupyterlab-config.sh`
 - upgrade package installers
 	- `upgrade.sh`
 
