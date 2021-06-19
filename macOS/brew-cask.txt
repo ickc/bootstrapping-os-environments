@@ -4,7 +4,7 @@ xquartz
 # silverlight
 # playonmac
 # license required ################################################################
-# logos
+logos
 # microsoft-office-2011
 # microsoft-office
 # vmware-fusion
