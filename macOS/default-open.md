@@ -1,0 +1,26 @@
+# How-to
+
+## Determine a handler
+
+e.g. VLC
+
+1. Find an example file, right click, "Get Info", "Open with:", choose VLC, then "Change all..."
+2. `duti -x mp4` shows that the handler is `org.videolan.vlc`.
+
+## Determine kMDItemContentType
+
+This will not work over samba:
+
+1. Find an example file,
+2. `mdls -name kMDItemContentType $FILENAME`
+
+## List existing handlers
+
+```bash
+defaults read com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers
+```
+
+# References
+
+- [System-Declared Uniform Type Identifiers](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259-SW1)
+- [moretension/duti: A command-line tool to select default applications for document types and URL schemes on Mac OS X](https://github.com/moretension/duti)

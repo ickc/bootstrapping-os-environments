@@ -9,3 +9,4 @@ com.microsoft.VSCode	public.python-script	all
 com.microsoft.VSCode	public.shell-script	all
 com.microsoft.VSCode	public.script	all
 com.microsoft.VSCode	public.source-code	all
+org.videolan.vlc	public.movie	all
