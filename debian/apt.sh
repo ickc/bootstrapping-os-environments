@@ -5,7 +5,7 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 
 sudo apt-get update -qq
-sudo apt -y full-upgrade
+sudo apt -y upgrade
 
 sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:team-xbmc/ppa -y
