@@ -20,6 +20,29 @@ This will not work over samba:
 defaults read com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers
 ```
 
+## Dynamic type identifier
+
+For those files that has Dynamic type identifier starting with `dyn.`, associate with file extension instead:
+
+
+```bash
+# default-open.sh
+defaults write ~/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure.plist LSHandlers -array-add \
+"{
+    LSHandlerContentTag = ${ext};
+    LSHandlerContentTagClass = 'public.filename-extension';
+    LSHandlerPreferredVersions =             {
+        LSHandlerRoleAll = '-';
+    };
+    LSHandlerRoleAll = 'com.microsoft.vscode';
+}"
+```
+
+Note:
+
+- Use UTI when available, and fall back to extension based method.
+- Same method can actually be used for UTI as well. Consider migrating to this s.t. `duti` is not needed.
+
 # References
 
 - [System-Declared Uniform Type Identifiers](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259-SW1)
