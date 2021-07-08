@@ -9,4 +9,5 @@ com.microsoft.VSCode	public.shell-script	all
 com.microsoft.VSCode	public.script	all
 com.microsoft.VSCode	public.source-code	all
 com.microsoft.VSCode	org.python.restructuredtext	all
+com.microsoft.VSCode	public.comma-separated-values-text	all
 org.videolan.vlc	kUTTypeAudioVisual​Content	all
