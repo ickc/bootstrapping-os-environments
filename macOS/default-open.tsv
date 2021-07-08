@@ -9,4 +9,4 @@ com.microsoft.VSCode	public.shell-script	all
 com.microsoft.VSCode	public.script	all
 com.microsoft.VSCode	public.source-code	all
 com.microsoft.VSCode	org.python.restructuredtext	all
-org.videolan.vlc	public.movie	all
+org.videolan.vlc	kUTTypeAudioVisual​Content	all
