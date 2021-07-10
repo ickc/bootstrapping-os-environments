@@ -12,6 +12,9 @@ CONDA_PREFIX="${CONDA_PREFIX:-"$HOME/.mambaforge"}"
 sudo xcodebuild -license accept
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# install xcode command line tools
+xcode-select --install
+
 # helpers ##############################################################
 
 print_double_line () {
