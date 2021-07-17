@@ -47,3 +47,5 @@ Note:
 
 - [System-Declared Uniform Type Identifiers](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259-SW1)
 - [moretension/duti: A command-line tool to select default applications for document types and URL schemes on Mac OS X](https://github.com/moretension/duti)
+    - [duti documentation](http://duti.sourceforge.net/documentation.php)
+- [ickc/apple-uti-data: Parse Apple UTI table to usable data structure and dump to YAML.](https://github.com/ickc/apple-uti-data)
