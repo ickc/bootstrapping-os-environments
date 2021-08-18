@@ -1,4 +1,5 @@
 com.microsoft.VSCode	org.python.restructuredtext	all
+com.microsoft.VSCode	public.json	all
 # public.audiovisual-content
 org.videolan.vlc	public.audiovisual-content	all
 org.videolan.vlc	com.adobe.flash.video	all
