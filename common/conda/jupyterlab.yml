@@ -10,7 +10,8 @@ dependencies:
   - ipywidgets
   - jupyter_bokeh
   - jupyterlab-geojson
-  - jupyterlab-katex
+  # - jupyterlab-katex
+  - jupyterlab-mathjax3
   - jupytext
   # for jupyterlab>=3
   - jupyterlab_widgets
