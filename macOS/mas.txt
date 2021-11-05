@@ -42,8 +42,6 @@
 425264550
 # The Unarchiver
 425424353
-# CheatSheet
-529456740
 # Speedtest
 1153157709
 # Spark
