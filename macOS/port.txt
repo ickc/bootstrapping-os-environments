@@ -62,6 +62,7 @@ automake
 go
 julia
 htop
+bpytop
 mosh
 tmux
 tmux-pasteboard
@@ -101,3 +102,7 @@ jq
 
 xorg-server
 lilypond
+
+libimobiledevice
+stack
+uncrustify
