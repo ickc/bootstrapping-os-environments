@@ -29,6 +29,8 @@ slack
 # amazon-music
 # spotify
 # sling
+authy
+discord
 # text ################################################################
 mactex
 # visual-studio-code-insiders
@@ -50,6 +52,7 @@ firefox
 # media ################################################################
 keka
 inkscape
+gimp
 # adobe-dng-converter
 imageoptim
 imagealpha
@@ -78,6 +81,7 @@ calibre
 # clover-configurator
 keepassxc
 # keeweb
+cheatsheet
 # hardware related ################################################################
 # openzfs
 # gdisk
