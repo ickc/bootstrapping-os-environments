@@ -143,3 +143,10 @@ googlemaps
 kml2geojson
 routingpy
 tzwhere
+
+# numba optional dependencies
+tbb
+jinja2
+cffi
+intel-openmp
+numba::icc_rt
