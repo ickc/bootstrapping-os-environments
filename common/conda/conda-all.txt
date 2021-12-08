@@ -144,7 +144,22 @@ kml2geojson
 routingpy
 tzwhere
 
-# numba optional dependencies
+bpytop
+cairocffi
+custom-inherit
+jupytext
+makefun
+nbsphinx
+palettable
+pannb
+pickle-compat
+py-cpuinfo
+pygraphviz
+pyment
+pytest-xdist
+types-pyyaml
+
+#* numba optional dependencies
 tbb
 jinja2
 cffi
