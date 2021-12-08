@@ -1,4 +1,4 @@
-common/conda/conda-list-update.ipynb
+*.ipynb
 dist/
 setup.py
 *.egg-info/
