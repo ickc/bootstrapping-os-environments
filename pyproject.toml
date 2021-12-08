@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "bsos"
 version = "0.1.0"
-description = "bsos—just a naive cookiecutter to boostrap Python project"
+description = "bsos—bootstraping OS environments"
 license = "BSD-3-Clause"
 keywords = [
 ]
