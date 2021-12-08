@@ -72,7 +72,7 @@ conda_list = dict(zip((env.name for env in envs), map_parallel(CondaList, envs))
 conda_list
 
 # %%
-conda_packages = set().union(*(set(env.user_installed_packages) for env in conda_list.values()))
+conda_packages: set[str] = set().union(*(set(env.user_installed_packages) for env in conda_list.values()))  # type: ignore[assignment]
 len(conda_packages)
 conda_all = (
     parse_config("conda.txt") | parse_config("conda-all.txt") | parse_config("conda-CPython.txt")
@@ -95,7 +95,7 @@ list(map(print, sorted(conda_all - conda_packages)));
 # # pip
 
 # %%
-pip_packages = set().union(*(set(env.filter_channel("pypi")) for env in conda_list.values()))
+pip_packages: set[str] = set().union(*(set(env.filter_channel("pypi")) for env in conda_list.values()))  # type: ignore[assignment]
 pip_all = parse_config("pip.txt")
 
 # %% [markdown]
@@ -165,19 +165,19 @@ for version in versions:
         n_packages[(version, os_)] = get_df(version, os_).shape[0]
 
 # %%
-df_n_packages = pd.Series(n_packages).unstack()
+df_n_packages = pd.Series(n_packages).unstack()  # type:ignore[attr-defined,arg-type] # stub limitation
 df_n_packages
 
 # %%
-df_tidy = pd.Series(n_packages).to_frame("n_packages").reset_index()
-df_tidy.columns = ["version", "os", "n_packages"]
+df_tidy = pd.Series(n_packages).to_frame("n_packages").reset_index()  # type:ignore[arg-type] # stub limitation
+df_tidy.columns = ["version", "os", "n_packages"]  # type:ignore[assignment] # stub limitation
 px.line(df_tidy, x="version", y="n_packages", color="os")
 
 # %%
 version = "3.9"
 for os_ in ("linux", "osx"):
     df = get_df(version, os_)
-    print(f"These packages are listed in txt but not supported by Anaconda on platform {os_}:\n", conda_all - set(df.index.values))
+    print(f"These packages are listed in txt but not supported by Anaconda on platform {os_}:\n", conda_all - set(df.index.values))  # type:ignore[arg-type] # stub limitation
 
 # %% [markdown]
 # # Intersection of Anaconda supported packages
@@ -206,7 +206,6 @@ len(conda_filtered), len(conda_filtered_mac), len(
 
 # %%
 conda_filtered.update({"anaconda", "panflute", "cytoolz"})
-conda_filtered = sorted(conda_filtered)
 len(conda_filtered)
 
 # %%
@@ -216,7 +215,7 @@ with open("acx.yml", "w") as f:
             (
                 ("name", "acx"),
                 ("channels", ["defaults"]),
-                ("dependencies", conda_filtered),
+                ("dependencies", sorted(conda_filtered)),
             )
         ),
         f,
