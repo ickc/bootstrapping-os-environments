@@ -11,10 +11,12 @@ dependencies:
 - beautifulsoup4
 - black
 - bokeh
+- cffi
 - chardet
 - click
 - colorama
 - conda
+- cookiecutter
 - coverage
 - cython
 - cytoolz
@@ -29,10 +31,12 @@ dependencies:
 - holoviews
 - html5lib
 - imageio
+- intel-openmp
 - ipykernel
 - ipyparallel
 - ipython
 - ipywidgets
+- jinja2
 - libiconv
 - markdown
 - markdown2
@@ -50,7 +54,6 @@ dependencies:
 - numpy
 - openpyxl
 - pandas
-- pandoc
 - pandocfilters
 - panflute
 - pickleshare
@@ -66,7 +69,9 @@ dependencies:
 - pytables
 - pytest
 - pytest-cov
+- pytest-xdist
 - python-dateutil
+- python-slugify
 - pyyaml
 - requests
 - scikit-image
@@ -74,9 +79,11 @@ dependencies:
 - scipy
 - seaborn
 - setuptools
+- snakeviz
 - sphinx
 - statsmodels
 - sympy
+- tbb
 - toml
 - ujson
 - watchdog
