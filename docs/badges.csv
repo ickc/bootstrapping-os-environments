@@ -1,0 +1,24 @@
+docs,"[![Documentation Status](https://readthedocs.org/projects/bsos/badge/?version=latest)](https://bsos.readthedocs.io/en/latest/?badge=latest&style=plastic)
+[![Documentation Status](https://github.com/ickc/bsos/workflows/GitHub%20Pages/badge.svg)](https://ickc.github.io/bsos)"
+tests,"![GitHub Actions](https://github.com/ickc/bsos/workflows/Python%20package/badge.svg)
+[![Coverage Status](https://codecov.io/gh/ickc/bsos/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/github/ickc/bsos)
+<!--[![Coverage Status](https://coveralls.io/repos/ickc/bsos/badge.svg?branch=master&service=github)](https://coveralls.io/r/ickc/bsos)-->
+
+[![Codacy Code Quality Status](https://img.shields.io/codacy/grade/078ebc537c5747f68c1d4ad3d3594bbf.svg)](https://www.codacy.com/app/ickc/bsos)
+[![Scrutinizer Status](https://img.shields.io/scrutinizer/quality/g/ickc/bsos/master.svg)](https://scrutinizer-ci.com/g/ickc/bsos/)
+[![CodeClimate Quality Status](https://codeclimate.com/github/ickc/bsos/badges/gpa.svg)](https://codeclimate.com/github/ickc/bsos)"
+package,"[![Supported versions](https://img.shields.io/pypi/pyversions/bsos.svg)](https://pypi.org/project/bsos)
+[![Supported implementations](https://img.shields.io/pypi/implementation/bsos.svg)](https://pypi.org/project/bsos)
+[![PyPI Wheel](https://img.shields.io/pypi/wheel/bsos.svg)](https://pypi.org/project/bsos)
+
+[![PyPI Package latest release](https://img.shields.io/pypi/v/bsos.svg)](https://pypi.org/project/bsos)
+[![GitHub Releases](https://img.shields.io/github/tag/ickc/bsos.svg?label=github+release)](https://github.com/ickc/bsos/releases)
+[![Development Status](https://img.shields.io/pypi/status/bsos.svg)](https://pypi.python.org/pypi/bsos/)
+[![Downloads](https://img.shields.io/pypi/dm/bsos.svg)](https://pypi.python.org/pypi/bsos/)
+
+[![Commits since latest release](https://img.shields.io/github/commits-since/ickc/bsos/v0.1.0.svg)](https://github.com/ickc/bsos/compare/v0.1.0...master)
+![License](https://img.shields.io/pypi/l/bsos.svg)"
+conda-forge,"[![Conda Recipe](https://img.shields.io/badge/recipe-bsos-green.svg)](https://anaconda.org/conda-forge/bsos)
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/bsos.svg)](https://anaconda.org/conda-forge/bsos)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/bsos.svg)](https://anaconda.org/conda-forge/bsos)
+[![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/bsos.svg)](https://anaconda.org/conda-forge/bsos)"
