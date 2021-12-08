@@ -9,7 +9,7 @@ BINDIR=${BINDIR:-~/.local/bin}
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 
-./conda_env.py -o temp.yml -n system -C conda-system.txt -v 3.9 -c conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -n system -C conda-system.txt -v 3.9 -c conda-forge
 if [[ -z ${PREFIX+x} ]]; then
     ENV_NAME=system39-conda-forge
     mamba env create -f temp.yml -n "$ENV_NAME"

@@ -87,8 +87,8 @@ docs = [
     "pantable",
 ]
 
-# [tool.poetry.scripts]
-# bsos = 'bsos:cli'
+[tool.poetry.scripts]
+conda_env = 'bsos.conda_env:cli'
 
 [tool.coverage.paths]
 source = [
