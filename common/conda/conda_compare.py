@@ -2,23 +2,23 @@
 
 from pathlib import Path
 
-import yaml
 import defopt
+import yaml
 
-__version__ = '0.1'
+__version__ = "0.1"
 
 
 def get_dep(path: Path):
     with open(path) as f:
         data = yaml.load(f, Loader=yaml.CSafeLoader)
     # ignoring pip dependencies
-    return {dep.split('::')[0].split('=')[0] for dep in data['dependencies'] if type(dep) is str}
+    return {dep.split("::")[0].split("=")[0] for dep in data["dependencies"] if type(dep) is str}
 
 
 def print_diff(path1, path2, dep1, dep2):
-    print('=' * 80)
-    print(f'Packages in {path1} and not in {path2}:')
-    print('-' * 80)
+    print("=" * 80)
+    print(f"Packages in {path1} and not in {path2}:")
+    print("-" * 80)
     for i in dep1 - dep2:
         print(i)
 

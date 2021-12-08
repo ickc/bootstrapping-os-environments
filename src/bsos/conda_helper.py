@@ -1,21 +1,20 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from pathlib import Path
+import json
 import subprocess  # nosec
-from functools import partial
+from dataclasses import dataclass
+from functools import cached_property, partial
 from logging import getLogger
+from pathlib import Path
+from shutil import which
 from typing import Generator, Iterable, Sequence
 
-import psutil
 import numpy as np
 import pandas as pd
-import json
-from conda.cli.python_api import run_command, Commands
+import psutil
+from conda.cli.python_api import Commands, run_command
 from conda.history import History
 from map_parallel import map_parallel
-from shutil import which
-from functools import cached_property
 
 logger = getLogger(__name__)
 
@@ -31,7 +30,6 @@ del temp
 
 
 class CondaPath:
-
     def __init__(self):
         #: Base directory of conda installation.
         #: E.g. ~/.mambaforge
@@ -47,6 +45,7 @@ class CondaPath:
 
 class CondaRun:
     """Run conda commands using conda API."""
+
     command: str = ""
     default_args: Sequence[str] = ("--json",)
     log_returncode = logger.warning
@@ -106,7 +105,7 @@ class CondaInfo(CondaRun):
 
     def envs(self, sub_env_only: bool = False) -> list[Path]:
         """Obtain all conda environment paths.
-        
+
         :param sub_env_only: if True, include sub-environments under base conda directory only.
             This excludes base/root conda environment and other prefix environments."""
         res = self.data["envs"]
@@ -121,6 +120,7 @@ class CondaInfoSubprocess(CondaRunSubprocess, CondaInfo):
 
 class CondaList(CondaRun):
     """Conda list a prefix."""
+
     command: str = Commands.LIST
     default_args: Sequence[str] = ("--json", "--prefix")
 
@@ -176,6 +176,7 @@ class AnacondaSupport:
 
     This should be updated often as Anaconda's webpages evolved.
     """
+
     version: str
     os: str
 
@@ -231,9 +232,7 @@ def conda_check_compat_python_version_args(
             version,
         ]
         if len(channels) != 1 or channels[0] != "conda-forge":
-            logger.warning(
-                "channels should be set to conda-forge only for pypy, continue..."
-            )
+            logger.warning("channels should be set to conda-forge only for pypy, continue...")
     else:
         args.append(f"python={version}")
     if channels:

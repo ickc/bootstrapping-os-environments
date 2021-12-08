@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from pathlib import Path
 from dataclasses import dataclass
 from functools import cached_property
+from pathlib import Path
 
 
 @dataclass
@@ -16,6 +16,7 @@ class Config:
     - optionally has `::` for conda channel delimiter and channel will be ignored here
     - optionally has version pinned by `=` and will be ignored here
     """
+
     text: list[str]
 
     @classmethod
@@ -28,6 +29,5 @@ class Config:
         return set(
             package
             for word in self.text
-            if (package := word.lstrip("#").strip().split("::")[-1].split("=")[0])
-            and not package.startswith("*")
+            if (package := word.lstrip("#").strip().split("::")[-1].split("=")[0]) and not package.startswith("*")
         )
