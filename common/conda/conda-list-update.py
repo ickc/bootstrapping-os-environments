@@ -16,16 +16,15 @@
 # %%
 from __future__ import annotations
 
-from collections import OrderedDict
 import logging
-
-from IPython.display import display
+from collections import OrderedDict
 
 import pandas as pd
+import plotly.express as px
 import yaml
 import yamlloader
+from IPython.display import display
 from map_parallel import map_parallel
-import plotly.express as px
 
 logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 
@@ -34,9 +33,8 @@ logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 # %autoreload 2
 
 # %%
-from bsos.conda_helper import (AnacondaSupport, CondaInfo, CondaList,
-                               conda_check_compat_python_versions)
 from bsos.conda_env import PY2_PACKAGES
+from bsos.conda_helper import AnacondaSupport, CondaInfo, CondaList, conda_check_compat_python_versions
 from bsos.core import Config
 
 
@@ -74,22 +72,22 @@ conda_list
 # %%
 conda_packages: set[str] = set().union(*(set(env.user_installed_packages) for env in conda_list.values()))  # type: ignore[assignment]
 len(conda_packages)
-conda_all = (
-    parse_config("conda.txt") | parse_config("conda-all.txt") | parse_config("conda-CPython.txt")
-)
+conda_all = parse_config("conda.txt") | parse_config("conda-all.txt") | parse_config("conda-CPython.txt")
 conda_all2 = conda_all | set(PY2_PACKAGES)
 
 # %% [markdown]
 # User installed packages not in `conda-all.txt` or `conda.txt`
 
 # %%
-list(map(print, sorted(conda_packages - conda_all2)));
+for i in sorted(conda_packages - conda_all2):
+    print(i)
 
 # %% [markdown]
 # in `conda-all.txt` or `conda.txt` but not installed
 
 # %%
-list(map(print, sorted(conda_all - conda_packages)));
+for i in sorted(conda_all - conda_packages):
+    print(i)
 
 # %% [markdown]
 # # pip
@@ -102,13 +100,15 @@ pip_all = parse_config("pip.txt")
 # pypi packages not in `pip.txt`
 
 # %%
-list(map(print, sorted(pip_packages - pip_all)));
+for i in sorted(pip_packages - pip_all):
+    print(i)
 
 # %% [markdown]
 # in `pip.txt` but not installed
 
 # %%
-list(map(print, sorted(pip_all - pip_packages)));
+for i in sorted(pip_all - pip_packages):
+    print(i)
 
 # %% [markdown]
 # # Inspect packages not compatible with a Python version
@@ -122,9 +122,7 @@ print(
     f"These are not compatible with {version_check}:\n",
     df_compat[~df_compat.is_compat].index.values,
 )
-print(
-    f"{df_compat.is_compat.sum()} packages are compatible with {version_check} out of {df_compat.shape[0]}."
-)
+print(f"{df_compat.is_compat.sum()} packages are compatible with {version_check} out of {df_compat.shape[0]}.")
 
 # %% [markdown]
 # # Inspect packages not compatible with pypy
@@ -177,7 +175,10 @@ px.line(df_tidy, x="version", y="n_packages", color="os")
 version = "3.9"
 for os_ in ("linux", "osx"):
     df = get_df(version, os_)
-    print(f"These packages are listed in txt but not supported by Anaconda on platform {os_}:\n", conda_all - set(df.index.values))  # type:ignore[arg-type] # stub limitation
+    print(
+        f"These packages are listed in txt but not supported by Anaconda on platform {os_}:\n",
+        conda_all - set(df.index.values),  # type:ignore[arg-type] # stub limitation
+    )
 
 # %% [markdown]
 # # Intersection of Anaconda supported packages
@@ -191,18 +192,14 @@ df_mac = get_df(version, "osx")
 conda_supported_packages_linux = set(df_linux.index)
 conda_supported_packages_mac = set(df_mac.index)
 conda_supported_packages = conda_supported_packages_linux | conda_supported_packages_mac
-len(conda_supported_packages_mac), len(conda_supported_packages_linux), len(
-    conda_supported_packages
-)
+len(conda_supported_packages_mac), len(conda_supported_packages_linux), len(conda_supported_packages)
 
 # %%
 # packages in conda_all.txt or conda.txt, that's supported by Anaconda
 conda_filtered_linux = conda_all & conda_supported_packages_linux
 conda_filtered_mac = conda_all & conda_supported_packages_mac
 conda_filtered = conda_filtered_mac & conda_filtered_linux
-len(conda_filtered), len(conda_filtered_mac), len(
-    conda_filtered_linux
-), conda_filtered_linux - conda_filtered_mac
+len(conda_filtered), len(conda_filtered_mac), len(conda_filtered_linux), conda_filtered_linux - conda_filtered_mac
 
 # %%
 conda_filtered.update({"anaconda", "panflute", "cytoolz"})
