@@ -34,7 +34,8 @@ logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 # %autoreload 2
 
 # %%
-from bsos.conda_helper import *
+from bsos.conda_helper import (AnacondaSupport, CondaInfo, CondaList,
+                               conda_check_compat_python_versions)
 from bsos.conda_env import PY2_PACKAGES
 from bsos.core import Config
 
