@@ -15,3 +15,5 @@ grep -v '#' port.txt | xargs sudo port install
 git config --global pull.rebase false
 
 sudo port load smartmontools
+sudo port load openssh
+sudo port load rsync
