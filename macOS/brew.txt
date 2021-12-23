@@ -40,7 +40,7 @@ clang-format
 # libav
 # instrumentation framework for building dynamic analysis tool
 # valgrind
-shellcheck
+# shellcheck
 # automake
 vitorgalvao/tiny-scripts/cask-repair
 # go
@@ -80,4 +80,4 @@ imageoptim-cli
 # annie
 # media-info
 tdewolff/tap/minify
-clementtsang/bottom/bottom
+# clementtsang/bottom/bottom
