@@ -85,11 +85,11 @@ cheatsheet
 # hardware related ################################################################
 # openzfs
 # gdisk
-intel-power-gadget
+# intel-power-gadget
 # gfxcardstatus
 # logitech-gaming-software
-logitech-options
-logitech-g-hub
+# logitech-options
+# logitech-g-hub
 # logitech-unifying
 # check if it is this or `wacom-intuos-pro-tablet`
 # wacom-intuos-tablet
