@@ -106,3 +106,6 @@ lilypond
 libimobiledevice
 stack
 uncrustify
+
+entr
+hyperfine
