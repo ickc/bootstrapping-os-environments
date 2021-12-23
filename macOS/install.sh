@@ -3,7 +3,7 @@
 set -e
 
 MACPORTS_VERSION=2.7.1
-MACPORTS_OS_VERSION=11-BigSur
+MACPORTS_OS_VERSION=12-Monterey
 # TODO: on next macOS major upgrade we should move to /opt/homebrew and create a dedicated homebrew user account to manage this
 HOMEBREW_PREFIX="$HOME/.homebrew"
 CONDA_PREFIX="${CONDA_PREFIX:-"$HOME/.mambaforge"}"
@@ -11,9 +11,6 @@ CONDA_PREFIX="${CONDA_PREFIX:-"$HOME/.mambaforge"}"
 # sudo loop
 sudo xcodebuild -license accept
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-# install xcode command line tools
-xcode-select --install
 
 # helpers ##############################################################
 
@@ -69,4 +66,4 @@ export CONDA_PREFIX
 
 print_double_line
 echo 'install basher...'
-../common/basher.sh
+../install/basher.sh
