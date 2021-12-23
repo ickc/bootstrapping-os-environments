@@ -11,7 +11,7 @@ gzip
 less
 m4
 nano
-# openssh
+openssh
 rsync
 screen
 unzip
@@ -47,17 +47,17 @@ tree
 exiftool
 wget
 doxygen
-# pandoc
-# unison
+pandoc
+unison
 opencc
 epubcheck
 p7zip
 cmake
 # llvm
 gsl
-# sshfs
-# gpsbabel
-# shellcheck
+sshfs
+gpsbabel
+shellcheck
 automake
 go
 julia
@@ -72,13 +72,13 @@ ncdu
 exa
 ranger
 w3m
-# lynx
+lynx
 highlight
 bat
 atool
 neofetch
 sshuttle
-# ffmpeg +gpl2 +gpl3 +nonfree
+ffmpeg +gpl2 +gpl3 +nonfree
 
 gpgme
 port_cutleaves
@@ -87,12 +87,12 @@ tidy
 ghostscript
 iperf3
 nmap
-# testdisk
-# youtube-dl
+testdisk
+youtube-dl
 annie
 mediainfo
-# MediaInfo-gui
-# mpich
+MediaInfo-gui
+mpich
 mpich-gcc10
 fftw-3
 cfitsio
