@@ -8,7 +8,7 @@ On the old Mac:
 On the freshly installed Mac:
 
 - open App Store, sign in and install Xcode.
-- In command line, run e.g. `make` to trigger CLT install.
+- In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
 - In System Preferences, Sharing, activate remote ssh.
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles), which requires the CLT.
@@ -20,6 +20,7 @@ On the freshly installed Mac:
 - Install package managers: `install.sh`
 - restart shell for the new PATH to take effect
 - Install packages (sub-level indicates depending on higher levels executed first)
+	- `../common/basher.sh`
 	- `mas.sh`
 		- `brew-cask.sh`
 	- `brew.sh`
