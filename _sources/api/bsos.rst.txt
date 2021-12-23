@@ -1,0 +1,18 @@
+bsos package
+============
+
+.. automodule:: bsos
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   bsos.conda_env
+   bsos.conda_helper
+   bsos.core
+   bsos.util

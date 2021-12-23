@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bsos—bootstraping OS environments &#8212; bsos 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/css/_table.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/fonts/fonts.min.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Installation" href="../installation/" />
+    <link rel="prev" title="Contents" href="../" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../">
+          bsos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/ickc/bsos/">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">bsos—bootstraping OS environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/modules/">bsos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors/">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/">Revision history for <code class="docutils literal notranslate"><span class="pre">bsos</span></code></a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">bsos—bootstraping OS environments</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#conda-py"><code class="docutils literal notranslate"><span class="pre">conda.py</span></code></a></li>
+<li><a class="reference internal" href="#todo">Todo</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../" title="Previous Chapter: Contents"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Contents</span>
+    </a>
+  </li>
+  <li>
+    <a href="../installation/" title="Next Chapter: Installation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Installation &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search/" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="bsosbootstraping-os-environments">
+<h1><a class="toc-backref" href="#id1">bsos—bootstraping OS environments</a><a class="headerlink" href="#bsosbootstraping-os-environments" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Date</dt>
+<dd class="field-odd"><p>December 23, 2021</p>
+</dd>
+</dl>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#bsosbootstraping-os-environments" id="id1">bsos—bootstraping OS environments</a></p>
+<ul>
+<li><p><a class="reference internal" href="#description" id="id2">Description</a></p></li>
+<li><p><a class="reference internal" href="#conda-py" id="id3"><code class="docutils literal notranslate"><span class="pre">conda.py</span></code></a></p></li>
+<li><p><a class="reference internal" href="#todo" id="id4">Todo</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>docs</p></th>
+<th class="head"><p><a class="reference external" href="https://bsos.readthedocs.io/en/latest/?badge=latest&amp;style=plastic"><img alt="Documentation Status" src="https://readthedocs.org/projects/bsos/badge/?version=latest" /></a> <a class="reference external" href="https://ickc.github.io/bsos"><img alt="image2" src="https://github.com/ickc/bsos/workflows/GitHub%20Pages/badge.svg" /></a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tests</p></td>
+<td><p><img alt="GitHub Actions" src="https://github.com/ickc/bsos/workflows/Python%20package/badge.svg" /> <a class="reference external" href="https://codecov.io/github/ickc/bsos"><img alt="Coverage Status" src="https://codecov.io/gh/ickc/bsos/branch/master/graphs/badge.svg?branch=master" /></a></p>
+<p><a class="reference external" href="https://www.codacy.com/app/ickc/bsos"><img alt="Codacy Code Quality Status" src="https://img.shields.io/codacy/grade/078ebc537c5747f68c1d4ad3d3594bbf.svg" /></a> <a class="reference external" href="https://scrutinizer-ci.com/g/ickc/bsos/"><img alt="Scrutinizer Status" src="https://img.shields.io/scrutinizer/quality/g/ickc/bsos/master.svg" /></a> <a class="reference external" href="https://codeclimate.com/github/ickc/bsos"><img alt="CodeClimate Quality Status" src="https://codeclimate.com/github/ickc/bsos/badges/gpa.svg" /></a></p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>package</p></td>
+<td><p><a class="reference external" href="https://pypi.org/project/bsos"><img alt="Supported versions" src="https://img.shields.io/pypi/pyversions/bsos.svg" /></a> <a class="reference external" href="https://pypi.org/project/bsos"><img alt="Supported implementations" src="https://img.shields.io/pypi/implementation/bsos.svg" /></a> <a class="reference external" href="https://pypi.org/project/bsos"><img alt="PyPI Wheel" src="https://img.shields.io/pypi/wheel/bsos.svg" /></a></p>
+<p><a class="reference external" href="https://pypi.org/project/bsos"><img alt="PyPI Package latest release" src="https://img.shields.io/pypi/v/bsos.svg" /></a> <a class="reference external" href="https://github.com/ickc/bsos/releases"><img alt="GitHub Releases" src="https://img.shields.io/github/tag/ickc/bsos.svg?label=github+release" /></a> <a class="reference external" href="https://pypi.python.org/pypi/bsos/"><img alt="Development Status" src="https://img.shields.io/pypi/status/bsos.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/bsos/"><img alt="Downloads" src="https://img.shields.io/pypi/dm/bsos.svg" /></a></p>
+<p><a class="reference external" href="https://github.com/ickc/bsos/compare/v0.1.0...master"><img alt="Commits since latest release" src="https://img.shields.io/github/commits-since/ickc/bsos/v0.1.0.svg" /></a> <img alt="License" src="https://img.shields.io/pypi/l/bsos.svg" /></p>
+</td>
+</tr>
+<tr class="row-even"><td><p>conda-forge</p></td>
+<td><p><a class="reference external" href="https://anaconda.org/conda-forge/bsos"><img alt="Conda Recipe" src="https://img.shields.io/badge/recipe-bsos-green.svg" /></a> <a class="reference external" href="https://anaconda.org/conda-forge/bsos"><img alt="Conda Downloads" src="https://img.shields.io/conda/dn/conda-forge/bsos.svg" /></a> <a class="reference external" href="https://anaconda.org/conda-forge/bsos"><img alt="Conda Version" src="https://img.shields.io/conda/vn/conda-forge/bsos.svg" /></a> <a class="reference external" href="https://anaconda.org/conda-forge/bsos"><img alt="Conda Platforms" src="https://img.shields.io/conda/pn/conda-forge/bsos.svg" /></a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="description">
+<h2><a class="toc-backref" href="#id2">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Disclaimer: this is written for me, and at best served as a starting point for you. It is not documented. Good starting point would be to tailor the <code class="docutils literal notranslate"><span class="pre">*.txt</span></code> files to packages you want to install on your machines. A better design probably would be to separate install scripts and config files (<code class="docutils literal notranslate"><span class="pre">*.txt</span></code>) in different repo.</p>
+<p>Setup macOS or Ubuntu in scripts so that it is repeatable and automatic.</p>
+<p>Scripts to automate installations of softwares after a freshly installed OS — macOS or Ubuntu.</p>
+<p>The goal is to automate as much as possible on setting up a new machine, an often tedious task when you want to erase the drive and reinstall everything. Tools like Time Machine could be an alternative, but often time you want to start fresh without all the legacy stuffs like applications and settings, etc.</p>
+<p>These scripts provided an automated way to repeat what you did to the OSes. Whenever you install a new software, update the scripts accordingly to reflect what you did. So that in the future you can run the scripts and recover the “current status” of your machine.</p>
+<p>For example, even something like editing a bash profile, rather than editing it directly (or backing it up), scripts are written to edit the bash profile instead so it is also automated.</p>
+</div>
+<div class="section" id="conda-py">
+<h2><a class="toc-backref" href="#id3"><code class="docutils literal notranslate"><span class="pre">conda.py</span></code></a><a class="headerlink" href="#conda-py" title="Permalink to this headline">¶</a></h2>
+<p>See <code class="docutils literal notranslate"><span class="pre">`common/conda/README.md</span></code> &lt;common/conda/README.md&gt;`__.</p>
+</div>
+<div class="section" id="todo">
+<h2><a class="toc-backref" href="#id4">Todo</a><a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>seperate the boilerplate and the custom <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files for personalisation. This should be easier for forks.</p></li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Kolen Cheung.<br/>
+      Last updated on Dec 23, 2021.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

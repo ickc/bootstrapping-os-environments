@@ -1,0 +1,7 @@
+bsos.core module
+================
+
+.. automodule:: bsos.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
