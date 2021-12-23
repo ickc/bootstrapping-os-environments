@@ -11,7 +11,7 @@ On the freshly installed computer:
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles).
 - Install ssh-dir.
-- Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/reproducible-os-environments.git || git clone https://github.com/ickc/reproducible-os-environments.git; cd reproducible-os-environments/debian`
+- Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/bootstrapping-os-environments.git || git clone https://github.com/ickc/bootstrapping-os-environments.git; cd bootstrapping-os-environments/debian`
 	- `brew.sh` (optional)
 	- `apt.sh` / `raspbian.sh`
 		- `deb.sh`

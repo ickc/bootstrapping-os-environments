@@ -13,7 +13,7 @@ On the freshly installed Mac:
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles), which requires the CLT.
 - Install ssh-dir.
-- Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/reproducible-os-environments.git || git clone https://github.com/ickc/reproducible-os-environments.git; cd reproducible-os-environments/macOS`
+- Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/bootstrapping-os-environments.git || git clone https://github.com/ickc/bootstrapping-os-environments.git; cd bootstrapping-os-environments/macOS`
 - remove sleep image (may already be the default): `sleep.sh`
 - symlink iCloud Documents to have a simpler path: `ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Documents" "$HOME/iCloud"`
 - Install Cocoa emacs emulation `install-cocoa-emacs-emulation.sh`
