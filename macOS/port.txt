@@ -48,7 +48,7 @@ exiftool
 wget
 doxygen
 pandoc
-unison
+# unison
 opencc
 epubcheck
 p7zip
