@@ -7,7 +7,7 @@ On the old computer:
 
 On the freshly installed computer:
 
-- `sudo apt install openssh-server zsh tmux curl && chsh -s /bin/zsh`
+- `sudo apt install openssh-server zsh tmux curl -y && chsh -s /bin/zsh`
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles).
 - Install ssh-dir.
