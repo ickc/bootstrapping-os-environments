@@ -6,7 +6,6 @@ MACPORTS_VERSION=2.7.1
 MACPORTS_OS_VERSION=12-Monterey
 # TODO: on next macOS major upgrade we should move to /opt/homebrew and create a dedicated homebrew user account to manage this
 HOMEBREW_PREFIX="$HOME/.homebrew"
-CONDA_PREFIX="${CONDA_PREFIX:-"$HOME/.mambaforge"}"
 
 # sudo loop
 sudo xcodebuild -license accept
@@ -61,7 +60,6 @@ brew install --cask oracle-jdk
 
 print_double_line
 echo 'install mamba-forge...'
-export CONDA_PREFIX
 ../install/mamba.sh
 
 print_double_line
