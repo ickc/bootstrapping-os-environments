@@ -94,7 +94,7 @@ mediainfo
 MediaInfo-gui
 fftw-3
 cfitsio
-SuiteSparse
+# SuiteSparse
 bfg
 jq
 
