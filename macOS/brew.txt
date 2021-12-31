@@ -81,3 +81,5 @@ imageoptim-cli
 # media-info
 tdewolff/tap/minify
 # clementtsang/bottom/bottom
+# some cask needs this and Xcode has shipped with svn in the past
+svn
