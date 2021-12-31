@@ -139,7 +139,6 @@ svgcleaner
 kitty
 # mediainfo
 mpv
-resxtreme
 # geekbench
 # ios-app-signer
 # licecap
