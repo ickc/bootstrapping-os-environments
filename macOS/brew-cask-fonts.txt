@@ -50,3 +50,4 @@ font-fira-code-nerd-font
 font-hasklug-nerd-font
 # Microsoft, from pljoska
 # niksy/pljoska/font-microsoft-cleartype-family
+font-noto-sans-cjk-tc
