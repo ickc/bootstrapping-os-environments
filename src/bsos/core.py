@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
 
@@ -22,15 +22,18 @@ class Package:
 
     match_spec: MatchSpec
     ignored: bool = False
+    kwargs: dict[str, str | bool] = field(default_factory=dict)
 
     @property
     def to_dict(self) -> dict[str, str | bool]:
-        return {
+        res = {
             "name": self.name,
             "version": self.version,
             "channel": self.channel,
             "ignored": self.ignored,
         }
+        res.update(self.kwargs)
+        return res  # type: ignore[return-value] # type limitation
 
     @classmethod
     def from_txt_line(cls, line: str) -> Package | None:
@@ -71,7 +74,7 @@ class Config:
     packages: list[Package]
 
     @property
-    def to_dict(self) -> list[dict[str, str]]:
+    def to_dict(self) -> list[dict[str, str | bool]]:
         return [p.to_dict for p in self.packages]
 
     @cached_property
