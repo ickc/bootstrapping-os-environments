@@ -79,7 +79,9 @@ class Config:
 
     @cached_property
     def dataframe(self) -> pd.DataFrame:
-        return pd.DataFrame(self.to_dict)
+        df = pd.DataFrame(self.to_dict)
+        df.set_index("name", inplace=True)
+        return df
 
     @classmethod
     def from_file(cls, path: Path) -> Config:
