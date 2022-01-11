@@ -3,7 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
+from typing import ClassVar
 
+import numpy as np
 import pandas as pd
 from conda.models.match_spec import MatchSpec
 
@@ -23,15 +25,11 @@ class Package:
     match_spec: MatchSpec
     ignored: bool = False
     kwargs: dict[str, str | bool] = field(default_factory=dict)
+    KEYS: ClassVar[list[str]] = ["name", "version", "channel", "ignored"]
 
     @property
     def to_dict(self) -> dict[str, str | bool]:
-        res = {
-            "name": self.name,
-            "version": self.version,
-            "channel": self.channel,
-            "ignored": self.ignored,
-        }
+        res = {key: getattr(self, key) for key in self.KEYS}
         res.update(self.kwargs)
         return res  # type: ignore[return-value] # type limitation
 
@@ -84,9 +82,43 @@ class Config:
         return df
 
     @classmethod
-    def from_file(cls, path: Path) -> Config:
+    def from_txt(cls, path: Path) -> Config:
         with open(path, "r") as f:
             return cls([p for line in f if (p := Package.from_txt_line(line.strip())) is not None])
+
+    @classmethod
+    def from_csv(cls, path: Path) -> Config:
+        keys = set(Package.KEYS)
+
+        df = pd.read_csv(path, index_col=0)
+        df.replace(np.nan, "", inplace=True)
+        packages = []
+        for name, row in df.iterrows():
+            kwargs = {"name": name}
+            if row.version:
+                kwargs["version"] = row.version
+            if row.channel:
+                kwargs["channel"] = row.channel
+            match_spec = MatchSpec(**kwargs)
+            ignored = row.ignored
+            kwargs = {key: row[key] for key in row.index if key not in keys}
+            packages.append(Package(match_spec, ignored=ignored, kwargs=kwargs))
+        return cls(packages)
+
+    @classmethod
+    def from_file(cls, path: Path) -> Config:
+        path = Path(path)
+
+        ext = path.suffix
+        if ext == ".txt":
+            return cls.from_txt(path)
+        elif ext == ".csv":
+            return cls.from_csv(path)
+        else:
+            raise ValueError(f"Unknown extension: {ext}")
+
+    def to_csv(self, path: Path) -> None:
+        self.dataframe.to_csv(path)
 
     @cached_property
     def packages_including_ingored(self) -> set[str]:
