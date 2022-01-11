@@ -24,7 +24,7 @@ class Package:
 
     @classmethod
     def from_txt_line(cls, line: str) -> Package | None:
-        if line.startswith("#*"):
+        if not line or line.startswith("#*"):
             return None
         ignored = False
         if line.startswith("#"):
