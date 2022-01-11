@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
 
+import pandas as pd
 from conda.models.match_spec import MatchSpec
 
 
@@ -21,6 +22,15 @@ class Package:
 
     match_spec: MatchSpec
     ignored: bool = False
+
+    @property
+    def to_dict(self) -> dict[str, str | bool]:
+        return {
+            "name": self.name,
+            "version": self.version,
+            "channel": self.channel,
+            "ignored": self.ignored,
+        }
 
     @classmethod
     def from_txt_line(cls, line: str) -> Package | None:
@@ -59,6 +69,14 @@ class Config:
     """
 
     packages: list[Package]
+
+    @property
+    def to_dict(self) -> list[dict[str, str]]:
+        return [p.to_dict for p in self.packages]
+
+    @cached_property
+    def dataframe(self) -> pd.DataFrame:
+        return pd.DataFrame(self.to_dict)
 
     @classmethod
     def from_file(cls, path: Path) -> Config:
