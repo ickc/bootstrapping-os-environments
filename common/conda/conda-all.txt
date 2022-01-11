@@ -5,83 +5,86 @@ zeep
 pandocfilters
 numpy
 sympy
-pillow
+# pillow
 pyyaml
-ujson
+# ujson
 pylint
 mypy
 sphinx
 sphinxcontrib-apidoc
-sphinxcontrib-contentui
-tox
-tox-conda
+# sphinxcontrib-contentui
+# tox
+# tox-conda
 
-decorator
+# decorator
 
-numexpr
+# numexpr
 setuptools
 
-imageio
+# imageio
 coverage
 pandoc
 pandoc-crossref
 panflute
 pantable
 pancritic
-click
-pypandoc
+# click
+# pypandoc
 mpmath
-markdown
-markdown2
-scikit-image
+# markdown
+# markdown2
+# scikit-image
 requests
 requests-oauthlib
-requests-futures
-opencv
-dask
-distributed
-multipledispatch
+# requests-futures
+# opencv
+# dask
+# distributed
+# multipledispatch
 uncertainties
 nbconvert
-holoviews
+# holoviews
 
-autopep8
-pycodestyle
-flake8
-flake8-pyi
+# autopep8
+# pycodestyle
+# flake8
+# flake8-pyi
 black
-gpxpy
+autoflake
+removestar
 
-python-cufflinks
+# gpxpy
+
+# python-cufflinks
 twine
-github3.py
-pygithub
+# github3.py
+# pygithub
 beautifulsoup4
 plotly
-nltk
+# nltk
 ipywidgets
-line_profiler
-snakeviz
-libiconv
+# line_profiler
+# snakeviz
+# libiconv
 
-cytoolz
-conda
+# cytoolz
+# conda
 pyotp
 
-bidict
-fire
-qrcode
-terminaltables
-boltons
-arrow
+# bidict
+# fire
+# qrcode
+# terminaltables
+# boltons
+# arrow
 emcee
-colorama
+# colorama
 
 bandit
-dateparser
+# dateparser
 geopy
-pydocstyle
-python-slugify
+# pydocstyle
+# python-slugify
 xlrd
 sphinx_bootstrap_theme
 sphinxcontrib-napoleon
@@ -95,8 +98,8 @@ flatten-dict
 
 johnnydep
 
-ics
-datashader
+# ics
+# datashader
 
 pygments-style-solarized
 
@@ -119,7 +122,7 @@ wolframclient
 numba_quaternion
 
 feedgen
-fastai::ghapi
+# fastai::ghapi
 ghp-import
 ipympl
 parsl
@@ -165,3 +168,5 @@ jinja2
 cffi
 intel-openmp
 numba::icc_rt
+
+colormath
