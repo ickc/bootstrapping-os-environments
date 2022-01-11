@@ -1,7 +1,7 @@
 healpy
 pyslalib
 #* pandasgui dependencies
-pynput
+# pynput
 aiohttp
 bump2version
 chardet
@@ -22,6 +22,6 @@ toml
 tox
 watchdog
 wheel
-numba::numba
-gooey
+numba::numba==0.55.0rc1
+# gooey
 make_arq
