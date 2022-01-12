@@ -6,6 +6,10 @@ jobs:
   build-n-publish:
 
     runs-on: ubuntu-latest
+    # required by conda
+    defaults:
+      run:
+        shell: bash -l {0}
     strategy:
       fail-fast: false
       matrix:
