@@ -12,6 +12,7 @@ import argparse
 import os
 import platform
 import sys
+from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -38,7 +39,9 @@ CHANNEL_LUT: dict[str, list[str]] = {
     "defaults": ["defaults", "conda-forge"],
     "intel": ["intel", "defaults", "conda-forge"],
 }
-MPICH_EXTERNAL: str = "mpich=3.3.*=external_*"
+MPICH_EXTERNAL: str = "mpich={version}.*=external_*"
+
+logger = getLogger(__name__)
 
 
 def read_env(path: Path) -> list[str]:
@@ -84,15 +87,17 @@ def cook_yaml(
         except ValueError:
             pass
 
-    if mpi == "cray":
-        print("Please run cray-mpi4py.sh to install mpi4py compiled using Cray compiler.", file=sys.stderr)
-    elif mpi == "external":
-        # https://conda-forge.org/docs/user/tipsandtricks.html?highlight=hpc#using-external-message-passing-interface-mpi-libraries
-        dict_["dependencies"].append(MPICH_EXTERNAL)
+    if mpi is None:
+        pass
     elif mpi in ("mpich", "openmpi"):
         dict_["dependencies"].append(mpi)
-    elif mpi is None:
-        pass
+    elif mpi == "cray":
+        logger.info("Please run cray-mpi4py.sh to install mpi4py compiled using Cray compiler.")
+    # e.g. external-3.4
+    elif mpi.startswith("external"):
+        # https://conda-forge.org/docs/user/tipsandtricks.html?highlight=hpc#using-external-message-passing-interface-mpi-libraries
+        version = mpi.split("-")[-1]
+        dict_["dependencies"].append(MPICH_EXTERNAL.format(version=version))
     else:
         raise ValueError(f"Unknown mpi choice {mpi}.")
     if mpi is not None and mpi != "cray":
@@ -142,8 +147,8 @@ def cli() -> None:
         "-m",
         "--mpi",
         help=(
-            "custom version of mpi4py if sepecified. Valid options: mpich/openmpi; external for using external mpich"
-            " 3.3.x; cray for custom build using cray compiler."
+            "custom version of mpi4py if sepecified. Valid options: mpich/openmpi; external-* for using external mpich"
+            " e.g. external-3.4 means mpich=3.4.*=external_*; cray for custom build using cray compiler."
         ),
     )
     parser.add_argument("--pypy", action="store_true", help="install pypy, install CPython if not specified")
