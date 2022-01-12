@@ -38,8 +38,7 @@ jobs:
     - name: Install dependencies—pip
       run: |
         # let coverage read setup.py instead of pyproject.toml
-        make setup.py
-        mv pyproject.toml .pyproject.toml
+        make editable
     - name: Install dependencies—pandoc
       run: |
         # pandoc
