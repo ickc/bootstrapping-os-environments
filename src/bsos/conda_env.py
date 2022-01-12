@@ -26,6 +26,7 @@ __version__: str = "0.6"
 PY2_PACKAGES: list[str] = [
     "weave",
     "functools32",
+    "future",
     "futures",
     "subprocess32",
     "backports.weakref",
