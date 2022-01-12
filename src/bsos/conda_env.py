@@ -9,9 +9,11 @@ new systems with just Python and conda.
 from __future__ import annotations
 
 import argparse
+import csv
 import os
 import platform
 import sys
+from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -19,7 +21,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Any
 
-__version__: str = "0.5"
+__version__: str = "0.6"
 
 PY2_PACKAGES: list[str] = [
     "weave",
@@ -44,9 +46,56 @@ MPICH_EXTERNAL: str = "mpich={version}.*=external_*"
 logger = getLogger(__name__)
 
 
-def read_env(path: Path) -> list[str]:
+def read_txt(path: Path) -> list[str]:
     with open(path, "r") as f:
         return [line_ for line in f if (line_ := line.strip()) and not line_.startswith("#")]
+
+
+def _str_to_bool(string: str) -> bool:
+    """Help casting boolean from CSV to bool type."""
+    s = string.lower()
+    if s == "true":
+        return True
+    elif s == "false":
+        return False
+    elif s == "none":
+        return None
+    else:
+        raise ValueError(f"Cannot convert to bool: {string}")
+
+
+def read_csv(path: Path, version: str) -> list[str]:
+    with open("conda.csv") as f:
+        data = list(csv.reader(f))
+    columns = data[0]
+    if version not in columns:
+        raise ValueError(f"Version {version} not specified in file {path}.")
+    override_key = f"{version}-override"
+    packages: list[dict[str, str | bool]] = [dict(zip(columns, datum)) for datum in data[1:]]
+    package_specs: list[str] = []
+    for package in packages:
+        # version, channel, *-override can be empty string
+        if not _str_to_bool(package["ignored"]) and _str_to_bool(package[version]):
+            package_spec = ""
+            if override_key in package:
+                package_spec = package[override_key]  # type: ignore[assignment]
+            if not package_spec:
+                n = package["name"]
+                v = package["version"]
+                c = package["channel"]
+                package_spec = f"{c}::{n}{v}" if c else f"{n}{v}"
+            package_specs.append(package_spec)
+    return package_specs
+
+
+def read_env(path: Path, version: str) -> list[str]:
+    ext = Path(path).suffix
+    if ext == ".txt":
+        return read_txt(path)
+    elif ext == ".csv":
+        return read_csv(path, version)
+    else:
+        raise ValueError(f"Unknown suffix {ext}.")
 
 
 def cook_yaml(
@@ -59,8 +108,9 @@ def cook_yaml(
     mpi: str | None = None,
     pypy: bool = False,
 ) -> dict:
-    conda_envs: list[str] = sum((read_env(conda_path) for conda_path in conda_paths), [])
-    pip_envs: list[str] = sum((read_env(pip_path) for pip_path in pip_paths), [])
+    python_full_version = f"pypy{python_version}" if pypy else python_version
+    conda_envs: list[str] = sum((read_env(conda_path, python_full_version) for conda_path in conda_paths), [])
+    pip_envs: list[str] = sum((read_env(pip_path, python_full_version) for pip_path in pip_paths), [])
 
     dict_: dict[str, Any] = {}
 
@@ -92,7 +142,7 @@ def cook_yaml(
     elif mpi in ("mpich", "openmpi"):
         dict_["dependencies"].append(mpi)
     elif mpi == "cray":
-        logger.info("Please run cray-mpi4py.sh to install mpi4py compiled using Cray compiler.")
+        logger.warning("Please run cray-mpi4py.sh to install mpi4py compiled using Cray compiler.")
     # e.g. external-3.4
     elif mpi.startswith("external"):
         # https://conda-forge.org/docs/user/tipsandtricks.html?highlight=hpc#using-external-message-passing-interface-mpi-libraries
