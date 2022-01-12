@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.13.6
+#       jupytext_version: 1.13.5
 #   kernelspec:
 #     display_name: simple
 #     language: python
@@ -41,7 +41,7 @@ logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 
 def parse_config(path: str) -> set[str]:
     """A convenient function to call Config.names directly."""
-    return Config.from_file(path).names
+    return set(Config.from_file(path).names)
 
 
 def get_df(version: str, os: str) -> pd.DataFrame:
