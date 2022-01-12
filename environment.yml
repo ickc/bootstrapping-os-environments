@@ -18,6 +18,7 @@ dependencies:
   # run:
   - defopt >=6,<7
   - numpy
+  - pandas
   # run_constrained:
   - coloredlogs >=14,<16
   # tests:
