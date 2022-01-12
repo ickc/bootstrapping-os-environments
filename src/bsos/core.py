@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import dataclass, field
 from functools import cached_property
+from logging import getLogger
 from pathlib import Path
 from typing import ClassVar
 
@@ -9,6 +11,8 @@ import defopt
 import numpy as np
 import pandas as pd
 from conda.models.match_spec import MatchSpec
+
+logger = getLogger(__name__)
 
 
 @dataclass
@@ -125,17 +129,25 @@ class Config:
     def to_csv(self, path: Path) -> None:
         self.dataframe.to_csv(path)
 
-    @cached_property
-    def packages_including_ingored(self) -> set[str]:
-        return set(p.name for p in self.packages)
+    @property
+    def names(self) -> list[str]:
+        return [p.name for p in self.packages]
 
     @property
     def package_spec(self) -> list[str]:
         return [str(p.match_spec) for p in self.packages]
 
+    @property
+    def check_duplicate(self) -> list[str]:
+        counter = Counter(self.names)
+        return [item for item, count in counter.items() if count > 1]
+
 
 def normalize(path: Path, out_path: Path) -> None:
     c = Config.from_file(path)
+    dup = c.check_duplicate
+    if dup:
+        logger.warning("The following packages are duplicated: %s", dup)
     c.to_csv(out_path)
 
 

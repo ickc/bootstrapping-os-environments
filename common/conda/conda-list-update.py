@@ -40,8 +40,8 @@ logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 
 
 def parse_config(path: str) -> set[str]:
-    """A convenient function to call Config.packages_including_ingored directly."""
-    return Config.from_file(path).packages_including_ingored
+    """A convenient function to call Config.names directly."""
+    return Config.from_file(path).names
 
 
 def get_df(version: str, os: str) -> pd.DataFrame:
@@ -74,7 +74,7 @@ conda_list
 conda_packages: set[str] = set().union(*(set(env.user_installed_packages) for env in conda_list.values()))  # type: ignore[assignment]
 len(conda_packages)
 config = Config.from_csv("conda.csv")
-conda_all = config.packages_including_ingored
+conda_all = set(config.names)
 conda_all2 = conda_all | set(PY2_PACKAGES)
 
 # %% [markdown]
