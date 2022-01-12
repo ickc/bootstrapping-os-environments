@@ -43,6 +43,9 @@ python = ">=3.8"
 defopt = "^6"
 numpy = "*"
 pandas = "*"
+psutil = "*"
+conda = "*"
+map_parallel = "*"
 
 # extras
 coloredlogs = { optional = true, version = ">=14,<16" }

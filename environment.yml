@@ -19,6 +19,9 @@ dependencies:
   - defopt >=6,<7
   - numpy
   - pandas
+  - psutil
+  - conda
+  - map_parallel
   # run_constrained:
   - coloredlogs >=14,<16
   # tests:
