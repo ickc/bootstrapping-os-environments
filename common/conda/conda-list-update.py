@@ -6,11 +6,11 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.13.1
+#       jupytext_version: 1.13.6
 #   kernelspec:
-#     display_name: all39-defaults
+#     display_name: simple
 #     language: python
-#     name: all39-defaults
+#     name: simple
 # ---
 
 # %%
@@ -26,6 +26,10 @@ import yamlloader
 from IPython.display import display
 from map_parallel import map_parallel
 
+from bsos.conda_env import PY2_PACKAGES
+from bsos.conda_helper import AnacondaSupport, CondaInfo, CondaList, conda_check_compat_python_versions
+from bsos.core import Config
+
 logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 
 # %%
@@ -33,9 +37,6 @@ logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 # %autoreload 2
 
 # %%
-from bsos.conda_env import PY2_PACKAGES
-from bsos.conda_helper import AnacondaSupport, CondaInfo, CondaList, conda_check_compat_python_versions
-from bsos.core import Config
 
 
 def parse_config(path: str) -> set[str]:
@@ -72,7 +73,8 @@ conda_list
 # %%
 conda_packages: set[str] = set().union(*(set(env.user_installed_packages) for env in conda_list.values()))  # type: ignore[assignment]
 len(conda_packages)
-conda_all = parse_config("conda.txt") | parse_config("conda-all.txt") | parse_config("conda-CPython.txt")
+config = Config.from_csv("conda.csv")
+conda_all = config.packages_including_ingored
 conda_all2 = conda_all | set(PY2_PACKAGES)
 
 # %% [markdown]
@@ -114,40 +116,18 @@ for i in sorted(pip_all - pip_packages):
 # # Inspect packages not compatible with a Python version
 
 # %%
-version_check = "3.10"
-conda_all_tuple = tuple(conda_all)
-conda_compat = conda_check_compat_python_versions(version_check, conda_all_tuple)
-df_compat = pd.DataFrame(conda_compat, index=conda_all_tuple, columns=["is_compat"])
-print(
-    f"These are not compatible with {version_check}:\n",
-    df_compat[~df_compat.is_compat].index.values,
-)
-print(f"{df_compat.is_compat.sum()} packages are compatible with {version_check} out of {df_compat.shape[0]}.")
-
-# %% [markdown]
-# # Inspect packages not compatible with pypy
-#
-# Warning: this is not correct. conda might actually install both pypy and CPython in the same env. Giving this up for now.
-
-# %%
-version_check = "pypy3.7"
-conda_compat_pypy = conda_check_compat_python_versions(
-    version_check,
-    conda_all_tuple,
-    channels=["conda-forge"],
-)
-df_compat_pypy = pd.DataFrame(
-    conda_compat_pypy,
-    index=conda_all_tuple,
-    columns=["is_compat"],
-)
-print(
-    f"These are not compatible with {version_check}:",
-    df_compat_pypy[~df_compat_pypy.is_compat].index.values,
-)
-print(
-    f"{df_compat_pypy.is_compat.sum()} packages are compatible with {version_check} out of {df_compat_pypy.shape[0]}."
-)
+packages = config.package_spec
+df_config = config.dataframe
+for version_check in ("3.7", "3.8", "3.9", "3.10", "pypy3.6", "pypy3.7"):
+    conda_compat = conda_check_compat_python_versions(version_check, packages)
+    df_config[version_check] = conda_compat
+    print(
+        f"These are not compatible with {version_check}:\n",
+        df_config[~df_config[version_check]].index.values,
+    )
+    print(f"{df_config[version_check].sum()} packages are compatible with {version_check} out of {df_config.shape[0]}.")
+config = config.from_dataframe(df_config)
+config.to_csv("conda.csv")
 
 # %% [markdown]
 # # Inspect packages not supported by Anaconda
