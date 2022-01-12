@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+"""Create a conda environment YAML file from our config files.
+
+This should be a self-contained, stdlib only script to be runnable on
+new systems with just Python and conda.
+"""
+
 from __future__ import annotations
 
 import argparse
