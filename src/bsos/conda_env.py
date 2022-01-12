@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 
+from __future__ import annotations
+
 import argparse
 import os
 import platform
 import sys
+from pathlib import Path
+from typing import TYPE_CHECKING
 
-__version__ = "0.5"
+if TYPE_CHECKING:
+    from typing import Any
 
-PY2_PACKAGES = [
+__version__: str = "0.5"
+
+PY2_PACKAGES: list[str] = [
     "weave",
     "functools32",
     "futures",
@@ -19,38 +26,41 @@ PY2_PACKAGES = [
     "funcsigs",
     "pathlib2",
 ]
+DARWIN_PACKAGES: list[str] = ["python.app"]
+CHANNEL_LUT: dict[str, list[str]] = {
+    "conda-forge": ["conda-forge"],
+    "defaults": ["defaults", "conda-forge"],
+    "intel": ["intel", "defaults", "conda-forge"],
+}
+MPICH_EXTERNAL: str = "mpich=3.3.*=external_*"
 
 
-def read_env(path):
+def read_env(path: Path) -> list[str]:
     with open(path, "r") as f:
         return [line_ for line in f if (line_ := line.strip()) and not line_.startswith("#")]
 
 
 def cook_yaml(
-    python_version="3",
-    channel="defaults",
-    name="all",
-    prefix=None,
-    conda_paths=[],
-    pip_paths=[],
-    mpi=None,
-    pypy=False,
-):
-    conda_envs = sum((read_env(conda_path) for conda_path in conda_paths), [])
-    pip_envs = sum((read_env(pip_path) for pip_path in pip_paths), [])
+    python_version: str = "3",
+    channel: str = "defaults",
+    name: str = "all",
+    prefix: str | None = None,
+    conda_paths: list[Path] = [],
+    pip_paths: list[Path] = [],
+    mpi: str | None = None,
+    pypy: bool = False,
+) -> dict:
+    conda_envs: list[str] = sum((read_env(conda_path) for conda_path in conda_paths), [])
+    pip_envs: list[str] = sum((read_env(pip_path) for pip_path in pip_paths), [])
 
-    dict_ = dict()
+    dict_: dict[str, Any] = {}
 
     # channel
-    dict_["channels"] = {
-        "conda-forge": ["conda-forge"],
-        "defaults": ["defaults", "conda-forge"],
-        "intel": ["intel", "defaults", "conda-forge"],
-    }[channel]
+    dict_["channels"] = CHANNEL_LUT[channel]
 
     dict_["dependencies"] = conda_envs
     if platform.system() == "Darwin":
-        dict_["dependencies"] += ["python.app"]
+        dict_["dependencies"] += DARWIN_PACKAGES
 
     # python_version
     python_version_major = python_version[0]
@@ -72,14 +82,14 @@ def cook_yaml(
         print("Please run cray-mpi4py.sh to install mpi4py compiled using Cray compiler.", file=sys.stderr)
     elif mpi == "external":
         # https://conda-forge.org/docs/user/tipsandtricks.html?highlight=hpc#using-external-message-passing-interface-mpi-libraries
-        dict_["dependencies"].append("mpich=3.3.*=external_*")
+        dict_["dependencies"].append(MPICH_EXTERNAL)
     elif mpi in ("mpich", "openmpi"):
         dict_["dependencies"].append(mpi)
     elif mpi is None:
         pass
     else:
         raise ValueError(f"Unknown mpi choice {mpi}.")
-    if mpi is not None:
+    if mpi is not None and mpi != "cray":
         dict_["dependencies"].append("mpi4py")
 
     if pip_envs:
@@ -96,7 +106,7 @@ def cook_yaml(
     return dict_
 
 
-def cli():
+def cli() -> None:
     parser = argparse.ArgumentParser(description="Generate conda environment YAML file.")
 
     parser.add_argument("-o", "--yaml", type=argparse.FileType("w"), default=sys.stdout, help="Output YAML.")
