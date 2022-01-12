@@ -88,10 +88,14 @@ class Config:
 
     @classmethod
     def from_csv(cls, path: Path) -> Config:
-        keys = set(Package.KEYS)
-
         df = pd.read_csv(path, index_col=0)
         df.replace(np.nan, "", inplace=True)
+        return cls.from_dataframe(df)
+
+    @classmethod
+    def from_dataframe(cls, df: pd.DataFrame) -> Config:
+        keys = set(Package.KEYS)
+
         packages = []
         for name, row in df.iterrows():
             kwargs = {"name": name}
@@ -123,3 +127,7 @@ class Config:
     @cached_property
     def packages_including_ingored(self) -> set[str]:
         return set(p.name for p in self.packages)
+
+    @property
+    def package_spec(self) -> list[str]:
+        return [str(p.match_spec) for p in self.packages]
