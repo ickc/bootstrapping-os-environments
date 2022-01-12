@@ -119,8 +119,36 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="bsos-conda-env-module">
-<h1>bsos.conda_env module<a class="headerlink" href="#bsos-conda-env-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-bsos.conda_env">
+<span id="bsos-conda-env-module"></span><h1>bsos.conda_env module<a class="headerlink" href="#module-bsos.conda_env" title="Permalink to this headline">¶</a></h1>
+<p>Create a conda environment YAML file from our config files.</p>
+<p>This should be a self-contained, stdlib only script to be runnable on
+new systems with just Python and conda.</p>
+<dl class="py function">
+<dt id="bsos.conda_env.cli">
+<code class="sig-prename descclassname"><span class="pre">bsos.conda_env.</span></code><code class="sig-name descname"><span class="pre">cli</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../_modules/bsos/conda_env/#cli"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.conda_env.cli" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="bsos.conda_env.cook_yaml">
+<code class="sig-prename descclassname"><span class="pre">bsos.conda_env.</span></code><code class="sig-name descname"><span class="pre">cook_yaml</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">python_version</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'3'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'defaults'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span> <span class="p"><span class="pre">|</span></span> <span class="pre">None</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conda_paths</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pip_paths</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpi</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span> <span class="p"><span class="pre">|</span></span> <span class="pre">None</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pypy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="../../_modules/bsos/conda_env/#cook_yaml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.conda_env.cook_yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="bsos.conda_env.read_csv">
+<code class="sig-prename descclassname"><span class="pre">bsos.conda_env.</span></code><code class="sig-name descname"><span class="pre">read_csv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="../../_modules/bsos/conda_env/#read_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.conda_env.read_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="bsos.conda_env.read_env">
+<code class="sig-prename descclassname"><span class="pre">bsos.conda_env.</span></code><code class="sig-name descname"><span class="pre">read_env</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="../../_modules/bsos/conda_env/#read_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.conda_env.read_env" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="bsos.conda_env.read_txt">
+<code class="sig-prename descclassname"><span class="pre">bsos.conda_env.</span></code><code class="sig-name descname"><span class="pre">read_txt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="../../_modules/bsos/conda_env/#read_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.conda_env.read_txt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 

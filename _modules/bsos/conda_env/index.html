@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bsos.conda_env &#8212; bsos 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/css/_table.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/fonts/fonts.min.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../">
+          bsos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/ickc/bsos/">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme/">bsos—bootstraping OS environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules/">bsos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors/">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog/">Revision history for <code class="docutils literal notranslate"><span class="pre">bsos</span></code></a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search/" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for bsos.conda_env</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;Create a conda environment YAML file from our config files.</span>
+
+<span class="sd">This should be a self-contained, stdlib only script to be runnable on</span>
+<span class="sd">new systems with just Python and conda.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="n">__version__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.6&quot;</span>
+
+<span class="n">PY2_PACKAGES</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;weave&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;functools32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;future&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;futures&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;subprocess32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;backports.weakref&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;backports.functools_lru_cache&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;backports_abc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pathlib2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;funcsigs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pathlib2&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">DARWIN_PACKAGES</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;python.app&quot;</span><span class="p">]</span>
+<span class="n">CHANNEL_LUT</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;conda-forge&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;conda-forge&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;defaults&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;defaults&quot;</span><span class="p">,</span> <span class="s2">&quot;conda-forge&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;intel&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;intel&quot;</span><span class="p">,</span> <span class="s2">&quot;defaults&quot;</span><span class="p">,</span> <span class="s2">&quot;conda-forge&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">MPICH_EXTERNAL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mpich=</span><span class="si">{version}</span><span class="s2">.*=external_*&quot;</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="read_txt"><a class="viewcode-back" href="../../../api/bsos.conda_env/#bsos.conda_env.read_txt">[docs]</a><span class="k">def</span> <span class="nf">read_txt</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">line_</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span> <span class="k">if</span> <span class="p">(</span><span class="n">line_</span> <span class="o">:=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line_</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)]</span></div>
+
+
+<span class="k">def</span> <span class="nf">_str_to_bool</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Help casting boolean from CSV to bool type.&quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">s</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">s</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot convert to bool: </span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="read_csv"><a class="viewcode-back" href="../../../api/bsos.conda_env/#bsos.conda_env.read_csv">[docs]</a><span class="k">def</span> <span class="nf">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;conda.csv&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Version </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> not specified in file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">override_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">-override&quot;</span>
+    <span class="n">packages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">datum</span><span class="p">))</span> <span class="k">for</span> <span class="n">datum</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+    <span class="n">package_specs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">packages</span><span class="p">:</span>
+        <span class="c1"># version, channel, *-override can be empty string</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_str_to_bool</span><span class="p">(</span><span class="n">package</span><span class="p">[</span><span class="s2">&quot;ignored&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="n">_str_to_bool</span><span class="p">(</span><span class="n">package</span><span class="p">[</span><span class="n">version</span><span class="p">]):</span>
+            <span class="n">package_spec</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">override_key</span> <span class="ow">in</span> <span class="n">package</span><span class="p">:</span>
+                <span class="n">package_spec</span> <span class="o">=</span> <span class="n">package</span><span class="p">[</span><span class="n">override_key</span><span class="p">]</span>  <span class="c1"># type: ignore[assignment]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">package_spec</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="n">package</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">package</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">package</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span>
+                <span class="n">package_spec</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">::</span><span class="si">{</span><span class="n">n</span><span class="si">}{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">c</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">package_specs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">package_spec</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">package_specs</span></div>
+
+
+<div class="viewcode-block" id="read_env"><a class="viewcode-back" href="../../../api/bsos.conda_env/#bsos.conda_env.read_env">[docs]</a><span class="k">def</span> <span class="nf">read_env</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.txt&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">read_txt</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown suffix </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cook_yaml"><a class="viewcode-back" href="../../../api/bsos.conda_env/#bsos.conda_env.cook_yaml">[docs]</a><span class="k">def</span> <span class="nf">cook_yaml</span><span class="p">(</span>
+    <span class="n">python_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+    <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;defaults&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">conda_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">pip_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">mpi</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">pypy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">python_full_version</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;pypy</span><span class="si">{</span><span class="n">python_version</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">pypy</span> <span class="k">else</span> <span class="n">python_version</span>
+    <span class="n">conda_envs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">read_env</span><span class="p">(</span><span class="n">conda_path</span><span class="p">,</span> <span class="n">python_full_version</span><span class="p">)</span> <span class="k">for</span> <span class="n">conda_path</span> <span class="ow">in</span> <span class="n">conda_paths</span><span class="p">),</span> <span class="p">[])</span>
+    <span class="n">pip_envs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">read_env</span><span class="p">(</span><span class="n">pip_path</span><span class="p">,</span> <span class="n">python_full_version</span><span class="p">)</span> <span class="k">for</span> <span class="n">pip_path</span> <span class="ow">in</span> <span class="n">pip_paths</span><span class="p">),</span> <span class="p">[])</span>
+
+    <span class="n">dict_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># channel</span>
+    <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;channels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CHANNEL_LUT</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+
+    <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conda_envs</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">DARWIN_PACKAGES</span>
+
+    <span class="c1"># python_version</span>
+    <span class="n">python_version_major</span> <span class="o">=</span> <span class="n">python_version</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">pypy</span><span class="p">:</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;pypy&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;pypy</span><span class="si">{</span><span class="n">python_version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;python=</span><span class="si">{</span><span class="n">python_version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">channel</span> <span class="o">==</span> <span class="s2">&quot;intel&quot;</span><span class="p">:</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;intelpython</span><span class="si">{</span><span class="n">python_version_major</span><span class="si">}</span><span class="s2">_core&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">python_version_major</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">PY2_PACKAGES</span>
+        <span class="c1"># conda cannot resolve subprocess32 and mypy in python2</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;mypy&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="n">mpi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">mpi</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;mpich&quot;</span><span class="p">,</span> <span class="s2">&quot;openmpi&quot;</span><span class="p">):</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mpi</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mpi</span> <span class="o">==</span> <span class="s2">&quot;cray&quot;</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Please run cray-mpi4py.sh to install mpi4py compiled using Cray compiler.&quot;</span><span class="p">)</span>
+    <span class="c1"># e.g. external-3.4</span>
+    <span class="k">elif</span> <span class="n">mpi</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;external&quot;</span><span class="p">):</span>
+        <span class="c1"># https://conda-forge.org/docs/user/tipsandtricks.html?highlight=hpc#using-external-message-passing-interface-mpi-libraries</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">mpi</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MPICH_EXTERNAL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown mpi choice </span><span class="si">{</span><span class="n">mpi</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mpi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mpi</span> <span class="o">!=</span> <span class="s2">&quot;cray&quot;</span><span class="p">:</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;mpi4py&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pip_envs</span><span class="p">:</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="s2">&quot;pip&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;pip&quot;</span><span class="p">:</span> <span class="n">pip_envs</span><span class="p">},</span>
+        <span class="p">]</span>
+
+    <span class="c1"># name</span>
+    <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}{</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">python_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="c1"># prefix</span>
+    <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+        <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">dict_</span></div>
+
+
+<div class="viewcode-block" id="cli"><a class="viewcode-back" href="../../../api/bsos.conda_env/#bsos.conda_env.cli">[docs]</a><span class="k">def</span> <span class="nf">cli</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Generate conda environment YAML file.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--yaml&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output YAML.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--version&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;python version. 2, 3, or 3.x. Default: 3&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--channel&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;defaults&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;conda channel. e.g. intel, defaults. Default: defaults&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--name&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;prefix of the name of environment. Default: all&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--prefix&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Full path to conda environment prefix. If not specified, conda&#39;s default will be used.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-C&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--conda-txt&quot;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;path to a file that contains the list of conda packages to be installed. Can be more than 1.&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-P&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--pip-txt&quot;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;path to a file that contains the list of pip packages to be installed. Can be more than 1.&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--mpi&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;custom version of mpi4py if sepecified. Valid options: mpich/openmpi; external-* for using external mpich&quot;</span>
+            <span class="s2">&quot; e.g. external-3.4 means mpich=3.4.*=external_*; cray for custom build using cray compiler.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--pypy&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;install pypy, install CPython if not specified&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-V&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(prog)s</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__version__</span><span class="p">))</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">dict_</span> <span class="o">=</span> <span class="n">cook_yaml</span><span class="p">(</span>
+        <span class="n">python_version</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span>
+        <span class="n">conda_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">conda_txt</span><span class="p">,</span>
+        <span class="n">pip_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">pip_txt</span><span class="p">,</span>
+        <span class="n">mpi</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">mpi</span><span class="p">,</span>
+        <span class="n">pypy</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">pypy</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">yaml</span>
+
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">yaml</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">json</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">yaml</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">cli</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Kolen Cheung.<br/>
+      Last updated on Jan 12, 2022.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
