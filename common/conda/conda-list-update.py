@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.13.6
+#       jupytext_version: 1.13.5
 #   kernelspec:
 #     display_name: all39-conda-forge
 #     language: python
@@ -126,8 +126,6 @@ for version_check in ("3.7", "3.8", "3.9", "pypy3.6", "pypy3.7"):
         df_config[~df_config[version_check]].index.values,
     )
     print(f"{df_config[version_check].sum()} packages are compatible with {version_check} out of {df_config.shape[0]}.")
-config = config.from_dataframe(df_config)
-config.to_csv("conda.csv")
 
 
 # %% [markdown]
@@ -154,10 +152,9 @@ def get_latest_version(
 
 
 # %%
-# this is stateful in cell running order
-# df_config.version = map_parallel(get_latest_version, config.names, mode="multiprocessing")
-df_config.version = [get_latest_version(package.name) for package in config.packages]
-config_latest = Config.from_dataframe(df_config)
+df_latest = df_config.copy()
+df_latest.version = [get_latest_version(package.name) for package in config.packages]
+config_latest = Config.from_dataframe(df_latest)
 version_check = "3.10"
 packages = config_latest.package_spec
 
@@ -169,8 +166,9 @@ print(
 )
 print(f"{df_config[version_check].sum()} packages are compatible with {version_check} out of {df_config.shape[0]}.")
 
-config_latest = Config.from_dataframe(df_config)
-config_latest.to_csv("conda.csv")
+# %%
+config = config.from_dataframe(df_config)
+config.to_csv("conda.csv")
 
 # %% [markdown]
 # # Inspect packages not supported by Anaconda
