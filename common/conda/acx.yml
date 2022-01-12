@@ -10,7 +10,11 @@ dependencies:
 - autopep8
 - beautifulsoup4
 - black
+- bleach
+- blosc
 - bokeh
+- bottleneck
+- certifi
 - cffi
 - chardet
 - click
@@ -25,8 +29,9 @@ dependencies:
 - decorator
 - distributed
 - ephem
+- fastparquet
 - flake8
-- future
+- gdal
 - h5py
 - holoviews
 - html5lib
@@ -37,7 +42,9 @@ dependencies:
 - ipython
 - ipywidgets
 - jinja2
+- joblib
 - libiconv
+- lxml
 - markdown
 - markdown2
 - matplotlib
@@ -47,6 +54,7 @@ dependencies:
 - mypy
 - mypy_extensions
 - nbconvert
+- networkx
 - nltk
 - nose
 - numba
@@ -63,6 +71,7 @@ dependencies:
 - psutil
 - pycodestyle
 - pydocstyle
+- pydot
 - pygments
 - pylint
 - pyqt
@@ -70,8 +79,8 @@ dependencies:
 - pytest
 - pytest-cov
 - pytest-xdist
-- python-dateutil
 - python-slugify
+- pytz
 - pyyaml
 - requests
 - scikit-image
@@ -80,6 +89,7 @@ dependencies:
 - seaborn
 - setuptools
 - snakeviz
+- sortedcontainers
 - sphinx
 - statsmodels
 - sympy
@@ -88,4 +98,8 @@ dependencies:
 - ujson
 - watchdog
 - wheel
+- xarray
 - xlrd
+- xlsxwriter
+- xlwt
+- zlib
