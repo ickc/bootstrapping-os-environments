@@ -7,63 +7,46 @@ cd "$DIR"
 
 # install conda environments
 
-# ab2-defaults
-# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "ab" -C conda.txt
-# mamba env create -f temp.yml
-# ab2-intel
-# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "ab" -C conda.txt -c intel
-# mamba env create -f temp.yml
-
-# all2-defaults
-# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt
-# mamba env create -f temp.yml
-# all2-intel
-# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt -c intel
-# mamba env create -f temp.yml
-
-# ab38-defaults
-# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "ab" -C conda.txt -v 3.8
-# mamba env create -f temp.yml
-# ab37-intel
-# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "ab" -C conda.txt -c intel -v 3.7
-# mamba env create -f temp.yml
-
-# all38-defaults
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt -v 3.8
+# all37-conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.7
 mamba env create -f temp.yml
-# all37-intel
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt -c intel -v 3.7
+# all38-conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.8
 mamba env create -f temp.yml
-
-# all39-defaults
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.txt conda-all.txt conda-CPython.txt -v 3.9
+# all39-conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.9
+mamba env create -f temp.yml
+# all310-conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.10
+mamba env create -f temp.yml
+# all-pypy36-conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.6 --pypy
+mamba env create -f temp.yml
+# all-pypy37-conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.7 --pypy
 mamba env create -f temp.yml
 
 # pip39-defaults
-./../../src/bsos/conda_env.py -o temp.yml -n "pip" -P pip.txt -v 3.9
+./../../src/bsos/conda_env.py -o temp.yml -n "pip" -P pip.txt -v 3.10
 mamba env create -f temp.yml
 
 # these bare envs are for tox
 
-# bare35-defaults
-./../../src/bsos/conda_env.py -o temp.yml -n "bare" -v 3.5
-mamba env create -f temp.yml
-
 # bare36-defaults
-./../../src/bsos/conda_env.py -o temp.yml -n "bare" -v 3.6
-mamba env create -f temp.yml
+# ./../../src/bsos/conda_env.py -o temp.yml -n "bare" -v 3.6
+# mamba env create -f temp.yml
 
 # bare-pypy27-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -n "bare-pypy" -v 2.7 --pypy -c conda-forge
-mamba env create -f temp.yml
+# ./../../src/bsos/conda_env.py -o temp.yml -n "bare-pypy" -v 2.7 --pypy -c conda-forge
+# mamba env create -f temp.yml
 
 # bare-pypy36-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -n "bare-pypy" -v 3.6 --pypy -c conda-forge
-mamba env create -f temp.yml
+# ./../../src/bsos/conda_env.py -o temp.yml -n "bare-pypy" -v 3.6 --pypy -c conda-forge
+# mamba env create -f temp.yml
 
 # bare-pypy37-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -n "bare-pypy" -v 3.7 --pypy -c conda-forge
-mamba env create -f temp.yml
+# ./../../src/bsos/conda_env.py -o temp.yml -n "bare-pypy" -v 3.7 --pypy -c conda-forge
+# mamba env create -f temp.yml
 
 # pypy36-conda-forge
 # ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "pypy" -C conda.txt conda-all.txt -v 3.6 --pypy -c conda-forge
