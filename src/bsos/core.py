@@ -5,6 +5,7 @@ from functools import cached_property
 from pathlib import Path
 from typing import ClassVar
 
+import defopt
 import numpy as np
 import pandas as pd
 from conda.models.match_spec import MatchSpec
@@ -136,3 +137,7 @@ class Config:
 def normalize(path: Path, out_path: Path) -> None:
     c = Config.from_file(path)
     c.to_csv(out_path)
+
+
+if __name__ == "__main__":
+    defopt.run(normalize)
