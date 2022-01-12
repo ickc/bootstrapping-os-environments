@@ -6,11 +6,11 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.13.5
+#       jupytext_version: 1.13.6
 #   kernelspec:
-#     display_name: simple
+#     display_name: all39-conda-forge
 #     language: python
-#     name: simple
+#     name: all39-conda-forge
 # ---
 
 # %%
@@ -118,7 +118,7 @@ for i in sorted(pip_all - pip_packages):
 # %%
 packages = config.package_spec
 df_config = config.dataframe
-for version_check in ("3.7", "3.8", "3.9", "3.10", "pypy3.6", "pypy3.7"):
+for version_check in ("3.7", "3.8", "3.9", "pypy3.6", "pypy3.7"):
     conda_compat = conda_check_compat_python_versions(version_check, packages)
     df_config[version_check] = conda_compat
     print(
@@ -128,6 +128,49 @@ for version_check in ("3.7", "3.8", "3.9", "3.10", "pypy3.6", "pypy3.7"):
     print(f"{df_config[version_check].sum()} packages are compatible with {version_check} out of {df_config.shape[0]}.")
 config = config.from_dataframe(df_config)
 config.to_csv("conda.csv")
+
+
+# %% [markdown]
+# Special treatment to latest Python where packages may not support it.
+#
+# First try to find out the latest version and set that in `package_spec`.
+#
+# This is done because probably some earlier version may not constraint against future Python,
+# so that the solver is giving false positive of a package supporting Python 3.10,
+# but later fails as all packages are solved together.
+
+# %%
+def get_latest_version(
+    package: str,
+    url: str = "https://anaconda.org/conda-forge/{package}",
+    headers: "dict[str, str]" = {"User-agent": "Mozilla/5.0"},
+) -> str:
+    import requests
+    from bs4 import BeautifulSoup
+
+    r = requests.get(url.format(package=package), headers=headers)
+    s = BeautifulSoup(r.text, "html.parser")
+    return s.small.text
+
+
+# %%
+# this is stateful in cell running order
+# df_config.version = map_parallel(get_latest_version, config.names, mode="multiprocessing")
+df_config.version = [get_latest_version(package.name) for package in config.packages]
+config_latest = Config.from_dataframe(df_config)
+version_check = "3.10"
+packages = config_latest.package_spec
+
+conda_compat = conda_check_compat_python_versions(version_check, packages)
+df_config[version_check] = conda_compat
+print(
+    f"These are not compatible with {version_check}:\n",
+    df_config[~df_config[version_check]].index.values,
+)
+print(f"{df_config[version_check].sum()} packages are compatible with {version_check} out of {df_config.shape[0]}.")
+
+config_latest = Config.from_dataframe(df_config)
+config_latest.to_csv("conda.csv")
 
 # %% [markdown]
 # # Inspect packages not supported by Anaconda
