@@ -31,7 +31,7 @@ class Package:
     def to_dict(self) -> dict[str, str | bool]:
         res = {key: getattr(self, key) for key in self.KEYS}
         res.update(self.kwargs)
-        return res  # type: ignore[return-value] # type limitation
+        return res
 
     @classmethod
     def from_txt_line(cls, line: str) -> Package | None:
