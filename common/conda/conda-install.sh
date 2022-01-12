@@ -37,15 +37,15 @@ if [[ -n ${UPDATE+x} ]]; then
 else
     mamba env create -f temp.yml
 fi
-# all-pypy36-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.6 --pypy
+# pypy-36-conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "pypy" -C conda.csv -c conda-forge -v 3.6 --pypy
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml --prune
 else
     mamba env create -f temp.yml
 fi
-# all-pypy37-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.7 --pypy
+# pypy-37-conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "pypy" -C conda.csv -c conda-forge -v 3.7 --pypy
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml --prune
 else
