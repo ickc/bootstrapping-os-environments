@@ -86,6 +86,7 @@ pylint:
 format:
 	black . && isort .
 	find \! -path '*/.ipynb_checkpoints/*' -name '*.ipynb' -exec jupytext --sync --pipe black --pipe 'isort - --treat-comment-as-code "# %%" --float-to-top' {} +
+	python src/bsos/core.py common/conda/conda.csv common/conda/conda.csv
 print-%:
 	$(info $* = $($*))
 
