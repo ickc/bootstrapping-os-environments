@@ -131,3 +131,8 @@ class Config:
     @property
     def package_spec(self) -> list[str]:
         return [str(p.match_spec) for p in self.packages]
+
+
+def normalize(path: Path, out_path: Path) -> None:
+    c = Config.from_file(path)
+    c.to_csv(out_path)

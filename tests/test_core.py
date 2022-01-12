@@ -1,7 +1,7 @@
 from pathlib import Path
 from unittest import TestCase
 
-from bsos.core import Config
+from bsos.core import normalize
 
 
 class TestConfig(TestCase):
@@ -10,8 +10,7 @@ class TestConfig(TestCase):
         self.out_path = Path("tests/conda.csv")
 
     def test_roundtrip(self):
-        c = Config.from_file(self.path)
-        c.to_csv(self.out_path)
+        normalize(self.path, self.out_path)
         with self.path.open("r") as f:
             ref = f.read()
         with self.out_path.open("r") as f:
