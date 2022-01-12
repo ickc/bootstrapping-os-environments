@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# usage: UPDATE=1 ./conda-install.sh
+
 set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -9,26 +11,54 @@ cd "$DIR"
 
 # all37-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.7
-mamba env create -f temp.yml
+if [[ -n ${UPDATE+x} ]]; then
+    mamba env update -f temp.yml --prune
+else
+    mamba env create -f temp.yml
+fi
 # all38-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.8
-mamba env create -f temp.yml
+if [[ -n ${UPDATE+x} ]]; then
+    mamba env update -f temp.yml --prune
+else
+    mamba env create -f temp.yml
+fi
 # all39-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.9
-mamba env create -f temp.yml
+if [[ -n ${UPDATE+x} ]]; then
+    mamba env update -f temp.yml --prune
+else
+    mamba env create -f temp.yml
+fi
 # all310-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.10
-mamba env create -f temp.yml
+if [[ -n ${UPDATE+x} ]]; then
+    mamba env update -f temp.yml --prune
+else
+    mamba env create -f temp.yml
+fi
 # all-pypy36-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.6 --pypy
-mamba env create -f temp.yml
+if [[ -n ${UPDATE+x} ]]; then
+    mamba env update -f temp.yml --prune
+else
+    mamba env create -f temp.yml
+fi
 # all-pypy37-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.7 --pypy
-mamba env create -f temp.yml
+if [[ -n ${UPDATE+x} ]]; then
+    mamba env update -f temp.yml --prune
+else
+    mamba env create -f temp.yml
+fi
 
 # pip39-defaults
 ./../../src/bsos/conda_env.py -o temp.yml -n "pip" -P pip.txt -v 3.10
-mamba env create -f temp.yml
+if [[ -n ${UPDATE+x} ]]; then
+    mamba env update -f temp.yml --prune
+else
+    mamba env create -f temp.yml
+fi
 
 # these bare envs are for tox
 
