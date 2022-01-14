@@ -8,7 +8,7 @@ MACPORTS_OS_VERSION=12-Monterey
 HOMEBREW_PREFIX="$HOME/.homebrew"
 
 # sudo loop
-sudo xcodebuild -license accept
+# sudo xcodebuild -license accept
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # helpers ##############################################################

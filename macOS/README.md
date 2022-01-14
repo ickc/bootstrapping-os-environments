@@ -7,7 +7,7 @@ On the old Mac:
 
 On the freshly installed Mac:
 
-- open App Store, sign in and install Xcode.
+- ~~open App Store, sign in and install Xcode.~~
 - In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
 - In System Preferences, Sharing, activate remote ssh.
 - Generate SSH key and add it to GitHub.
