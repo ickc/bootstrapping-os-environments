@@ -7,7 +7,7 @@ On the old Mac:
 
 On the freshly installed Mac:
 
-- open App Store, sign in and install Xcode.
+- open App Store, sign in and install Xcode, and run the followings meanwhile.
 - In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
 - In System Preferences, Sharing, activate remote ssh.
 - Generate SSH key and add it to GitHub.
@@ -22,9 +22,9 @@ On the freshly installed Mac:
 - Install packages (sub-level indicates depending on higher levels executed first)
 	- `../common/basher.sh`
 	- `mas.sh`
-		- `brew-cask.sh`
-	- `brew.sh`
-	- `port.sh`
+		- `brew-cask.sh` (run after Xcode is installed)
+	- `brew.sh` (you may need to run `softwareupdate --all --install --force` first to update the Command Line Tools (CLT))
+	- `port.sh` (run after Xcode is installed)
 	- `conda activate`
 		- `conda-install.sh`
 			- `jupyterlab.sh`
