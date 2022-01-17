@@ -109,3 +109,8 @@ entr
 hyperfine
 bottom
 duti
+
+# github cli
+gh
+# manipulate tags on Mac OS X files
+tag
