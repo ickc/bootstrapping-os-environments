@@ -4,7 +4,7 @@ channels:
   - defaults
 # channel_priority: True
 dependencies:
-  - python=3.9
+  - python=3.10
   - jupyterlab>=3
   - jupyterhub
   - ipywidgets
