@@ -29,6 +29,12 @@ print_double_line
 echo "Changing shell to zsh..."
 chsh -s $(which zsh)
 
+# updatedb is causing a lot of activity
+# see https://unix.stackexchange.com/a/113681
+print_double_line
+echo "Removing mlocate..."
+sudo yum remove mlocate -y || true
+
 print_double_line
 echo "Running yum update..."
 sudo yum update -y
