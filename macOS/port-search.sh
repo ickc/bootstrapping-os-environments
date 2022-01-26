@@ -16,6 +16,9 @@ print_line () {
 
 while IFS="" read -r p || [ -n "$p" ]; do
     print_double_line
-    echo port search $p
+    echo searching $p
     port search $p
+    print_line
+    brew info $p
+    fi
 done < <(grep -v '#' $@)
