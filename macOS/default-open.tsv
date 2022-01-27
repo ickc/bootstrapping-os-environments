@@ -207,6 +207,7 @@ com.microsoft.VSCode	com.macromates.textmate.lisp	all
 com.microsoft.VSCode	com.macromates.textmate.logo	all
 com.microsoft.VSCode	com.macromates.textmate.scheme	all
 com.microsoft.VSCode	com.macromates.textmate.standard-ml	all
+com.microsoft.VSCode	com.macromates.textmate.config-file	all
 com.microsoft.VSCode	com.microsoft.asp	all
 com.microsoft.VSCode	com.microsoft.asp.net	all
 com.microsoft.VSCode	com.microsoft.c-sharp	all
