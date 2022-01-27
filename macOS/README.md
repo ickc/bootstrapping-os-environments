@@ -10,6 +10,7 @@ On the freshly installed Mac:
 - open App Store, sign in and install Xcode, and run the followings meanwhile.
 - In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
 - In System Preferences, Sharing, activate remote ssh.
+- In System Preferences, `Security & Privacy -> Privacy -> Full Disk Access`, add `/usr/libexec/sshd-keygen-wrapper`[^sshd-keygen].
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles), which requires the CLT.
 - Install ssh-dir.
@@ -31,6 +32,8 @@ On the freshly installed Mac:
 				- `jupyterlab-config.sh`
 - upgrade package installers
 	- `upgrade.sh`
+
+[^sshd-keygen]: [bash - Getting an “Operation not permitted” error when running commands after to SSHing from another machine to macOS - Super User](https://superuser.com/questions/1615072/getting-an-operation-not-permitted-error-when-running-commands-after-to-sshing)
 
 # No Cli Install
 
