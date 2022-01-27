@@ -32,6 +32,7 @@ On the freshly installed Mac:
 				- `jupyterlab-config.sh`
 - upgrade package installers
 	- `upgrade.sh`
+- In System Preferences, `Security & Privacy -> Privacy -> Full Disk Access`, add `kitty`.
 
 [^sshd-keygen]: [bash - Getting an “Operation not permitted” error when running commands after to SSHing from another machine to macOS - Super User](https://superuser.com/questions/1615072/getting-an-operation-not-permitted-error-when-running-commands-after-to-sshing)
 
