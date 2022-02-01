@@ -16,3 +16,4 @@ neofetch
 parallel
 iperf3
 wol
+perl-Image-ExifTool
