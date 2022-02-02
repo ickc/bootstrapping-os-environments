@@ -1,0 +1,11 @@
+# mamba env create -f ir.yml
+# mamba env update --name r --file ir.yml --prune
+name: ir
+channels:
+  - r
+  - conda-forge
+channel_priority: flexible
+dependencies:
+  - r-irkernel
+  - r-languageserver
+  - r-dlm
