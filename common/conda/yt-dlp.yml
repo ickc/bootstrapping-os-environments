@@ -1,0 +1,17 @@
+name: yt-dlp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # required
+  - mutagen
+  - pycryptodomex
+  - websockets
+  # optional
+  - ffmpeg
+  - secretstorage
+  # provided for linux only
+  - HCC::rtmpdump
+  - phantomjs
+  - pip
+    - yt-dlp
