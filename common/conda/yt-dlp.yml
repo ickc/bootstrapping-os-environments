@@ -13,5 +13,5 @@ dependencies:
   # provided for linux only
   - HCC::rtmpdump
   - phantomjs
-  - pip
+  - pip:
     - yt-dlp
