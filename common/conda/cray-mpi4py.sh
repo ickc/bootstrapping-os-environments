@@ -4,11 +4,11 @@ set -e
 
 # TODO: better choice of this tempdir
 tempDir="$HOME/.mpi4py/"
-mpi4pyVersion="3.0.3" #TODO
+mpi4pyVersion="3.1.3" #TODO
 mpiName="mpi4py-$mpi4pyVersion"
 
 mkdir -p "$tempDir" && cd "$tempDir"
-wget -qO- https://bitbucket.org/mpi4py/mpi4py/downloads/$mpiName.tar.gz | tar -xzf -
+wget -qO- "https://github.com/mpi4py/mpi4py/releases/download/$mpi4pyVersion/mpi4py-$mpi4pyVersion.tar.gz" | tar -xzf -
 cd $mpiName
 
 if [[ -n $NERSC_HOST ]]; then
