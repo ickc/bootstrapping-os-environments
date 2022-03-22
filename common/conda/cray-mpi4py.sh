@@ -12,12 +12,14 @@ wget -qO- "https://github.com/mpi4py/mpi4py/releases/download/$mpi4pyVersion/mpi
 cd $mpiName
 
 if [[ -n $NERSC_HOST ]]; then
+    # https://docs.nersc.gov/development/languages/python/parallel-python/#mpi4py-in-your-custom-conda-environment
+    echo NERSC host detected, using NERSC recommended method to install mpi4py...
     # https://docs.nersc.gov/development/languages/python/parallel-python/
     module swap PrgEnv-${PE_ENV,,} PrgEnv-gnu
     module unload craype-hugepages2M
     module unload libfabric || true
 
-    MPICC="cc -shared" pip install --no-binary=mpi4py mpi4py
+    MPICC="cc -shared" pip install --force --no-cache-dir --no-binary=mpi4py mpi4py
 else
     # * see https://bitbucket.org/mpi4py/mpi4py/issues/143/build-failure-with-openmpi
     cat << EOF > conf/sysconfigdata-conda-user.py
