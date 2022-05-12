@@ -114,3 +114,8 @@ duti
 gh
 # manipulate tags on Mac OS X files
 tag
+
+difftastic
+git-filter-repo
+mpv
+onefetch
