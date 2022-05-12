@@ -52,3 +52,4 @@ font-hasklug-nerd-font
 # niksy/pljoska/font-microsoft-cleartype-family
 font-noto-sans-cjk-tc
 font-noto-sans-cjk-sc
+font-jetbrains-mono-nerd-font
