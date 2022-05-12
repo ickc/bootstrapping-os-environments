@@ -150,3 +150,12 @@ mpv
 # powerpanel
 # signal
 # tor-browser
+
+dataspell
+
+kiwix
+microsoft-auto-update
+microsoft-edge
+netdownloadhelpercoapp
+raspberry-pi-imager
+sioyek
