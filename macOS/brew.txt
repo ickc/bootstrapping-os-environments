@@ -82,6 +82,7 @@ imageoptim-cli
 tdewolff/tap/minify
 # clementtsang/bottom/bottom
 # some cask needs this and Xcode has shipped with svn in the past
-svn
+subversion
 # streamlink in macports is too old
 streamlink
+btop
