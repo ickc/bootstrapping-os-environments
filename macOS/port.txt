@@ -79,6 +79,7 @@ atool
 neofetch
 sshuttle
 ffmpeg +gpl2 +gpl3 +nonfree
+mpv +audiocd +bluray +bundle +dvd +libarchive +network +opengl +osd +python39 +rubberband
 
 gpgme
 port_cutleaves
