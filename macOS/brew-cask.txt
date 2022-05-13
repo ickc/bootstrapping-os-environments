@@ -21,7 +21,7 @@ astropad
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
 slack
-# steam
+steam
 # nomachine
 # video conference
 # zoomus
@@ -40,7 +40,8 @@ visual-studio-code
 # nteract
 # pycharm
 # eclipse-cpp
-# rstudio
+r
+rstudio
 # racket
 libreoffice
 # manuscripts
@@ -56,7 +57,7 @@ gimp
 # adobe-dng-converter
 imageoptim
 imagealpha
-# handbrake
+handbrake
 vlc
 makemkv
 # kodi
@@ -131,7 +132,7 @@ hwsensors
 svgcleaner
 # tuxguitar
 # webplotdigitizer
-# zotero
+zotero
 # bookends
 # guitar-pro
 # texpad
