@@ -5,9 +5,11 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # setup compilers first
-sudo port -N install gcc11 mpich mpich-gcc11
+sudo port -N install gcc11 mpich-default
+# port select --list gcc
 sudo port -N select --set gcc mp-gcc11
-sudo port -N select --set mpi mpich-gcc11
+# port select --list mpi
+sudo port -N select --set mpi mpich-mp-fortran
 
 grep -v '#' port.txt | xargs sudo port -N install
 
