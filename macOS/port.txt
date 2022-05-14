@@ -11,7 +11,7 @@ gzip
 less
 m4
 nano
-openssh
+# openssh
 rsync
 screen
 unzip
@@ -55,7 +55,7 @@ p7zip
 cmake
 # llvm
 gsl
-sshfs
+# sshfs
 gpsbabel
 shellcheck
 automake
