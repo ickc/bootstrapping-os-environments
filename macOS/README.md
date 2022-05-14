@@ -38,6 +38,22 @@ On the freshly installed Mac:
 
 [^sshd-keygen]: [bash - Getting an “Operation not permitted” error when running commands after to SSHing from another machine to macOS - Super User](https://superuser.com/questions/1615072/getting-an-operation-not-permitted-error-when-running-commands-after-to-sshing)
 
+# List of unsupported softwares in Apple Silicon
+
+- `brew/imageoptim-cli`: [Unable to install on M1 / Apple Silicon · Issue #191 · JamieMason/ImageOptim-CLI](https://github.com/JamieMason/ImageOptim-CLI/issues/191)
+- port:
+	- testdisk
+- conda:
+	- mkl
+	- pandoc-crossref
+	- acor
+	- toast
+	- libsharp
+	- intel-openmp
+	- pickle5
+	- pyslalib
+	- make_arq
+
 # No Cli Install
 
 Manual Settings:
