@@ -4,6 +4,7 @@ On the old Mac:
 
 - Use `list-update.sh` to print out packages you're using but not included in the scripts here.
 - Optionally, use `list-installed-packages.sh </FOLDER/>`: to export lists of installed things into `FOLDER` for future references
+- Optionally, backup the wall papers. See [macOS Wallpaper Locations].
 
 On the freshly installed Mac:
 
@@ -53,6 +54,17 @@ On the freshly installed Mac:
 	- pickle5
 	- pyslalib
 	- make_arq
+
+# macOS Wallpaper Locations
+
+Different versions of macOS may have wall papers in the following paths,
+
+```bash
+/Library/Desktop Pictures
+/System/Library/Desktop Pictures
+$HOME/Library/Application Support/com.apple.mobileAssetDesktop
+/System/Library/AssetsV2/com_apple_MobileAsset_DesktopPicture
+```
 
 # No Cli Install
 
