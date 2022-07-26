@@ -55,6 +55,15 @@ On the freshly installed Mac:
 	- pyslalib
 	- make_arq
 
+# List of softwares relying on Rosetta 2
+
+
+
+- port:
+	- stack
+		- pandoc
+		- shellcheck
+
 # macOS Wallpaper Locations
 
 Different versions of macOS may have wall papers in the following paths,
