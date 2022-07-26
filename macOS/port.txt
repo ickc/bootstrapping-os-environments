@@ -32,7 +32,6 @@ inetutils
 gmake
 zsh
 vim
-emacs
 
 parallel
 multimarkdown
