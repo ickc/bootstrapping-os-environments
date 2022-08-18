@@ -11,9 +11,10 @@ On the freshly installed Mac:
 - open App Store, sign in and install Xcode, and run the followings meanwhile.
 - In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
 	- `sudo xcodebuild -license accept`.
-- In System Preferences, Sharing, activate remote ssh, select `Allow full disk access for remote users` if available, which probably is equivalent to the `Full Disk Access` setting below.
+- In System Preferences, Sharing, activate remote ssh,
+	- select `Allow full disk access for remote users` if available, which probably is equivalent to the `Full Disk Access` setting below.
+	- In System Preferences, `Security & Privacy -> Privacy -> Full Disk Access`, add `/usr/libexec/sshd-keygen-wrapper`[^sshd-keygen]. (This may be done automatically in later versions of macOS/mac.)
 - `softwareupdate --install-rosetta --agree-to-license` to install rosetta for Apple Silicon.
-- In System Preferences, `Security & Privacy -> Privacy -> Full Disk Access`, add `/usr/libexec/sshd-keygen-wrapper`[^sshd-keygen]. (This may be done automatically in later versions of macOS/mac.)
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles), which requires the CLT.
 - Install ssh-dir.
