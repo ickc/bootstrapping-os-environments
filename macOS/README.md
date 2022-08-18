@@ -19,7 +19,7 @@ On the freshly installed Mac:
 - Install ssh-dir.
 - Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/bootstrapping-os-environments.git || git clone https://github.com/ickc/bootstrapping-os-environments.git; cd bootstrapping-os-environments/macOS`
 - remove sleep image (may already be the default): `sleep.sh`
-- symlink iCloud Documents to have a simpler path: `ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Documents" "$HOME/iCloud"`
+- symlink iCloud Documents to have a simpler path: `rm -f "$HOME/iCloud"; ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/iCloud" "$HOME/iCloud"`
 - Install Cocoa emacs emulation `install-cocoa-emacs-emulation.sh`
 - Install package managers: `install.sh`
 - restart shell for the new PATH to take effect
