@@ -19,6 +19,7 @@ clang-format
 # doxygen
 pandoc
 pandoc-crossref
+shellcheck
 # closure-compiler
 # convert emf to pdf
 # unoconv
@@ -41,7 +42,6 @@ pandoc-crossref
 # libav
 # instrumentation framework for building dynamic analysis tool
 # valgrind
-# shellcheck
 # automake
 vitorgalvao/tiny-scripts/cask-repair
 # go

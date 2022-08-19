@@ -27,8 +27,8 @@ On the freshly installed Mac:
 - Install packages (sub-level indicates depending on higher levels executed first)
 	- `../common/basher.sh`
 	- `mas.sh`
-		- `brew-cask.sh` (run after Xcode is installed)
 	- `brew.sh` (you may need to run `softwareupdate --all --install --force` first to update the Command Line Tools (CLT))
+		- `brew-cask.sh`
 	- `port.sh` (run after Xcode is installed)
 	- `conda activate`
 		- `conda-install.sh`
@@ -58,9 +58,7 @@ On the freshly installed Mac:
 
 # List of softwares relying on Rosetta 2
 
-
-
-- port:
+- port: (These are moved to homebrew for now. c.f. <https://trac.macports.org/ticket/64063>.)
 	- stack
 		- pandoc
 		- shellcheck
