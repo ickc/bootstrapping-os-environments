@@ -40,6 +40,17 @@ On the freshly installed Mac:
 
 [^sshd-keygen]: [bash - Getting an “Operation not permitted” error when running commands after to SSHing from another machine to macOS - Super User](https://superuser.com/questions/1615072/getting-an-operation-not-permitted-error-when-running-commands-after-to-sshing)
 
+# sudo with Touch ID
+
+```bash
+sudo nano /etc/pam.d/sudo
+# add these
+auth       optional       /opt/local/lib/pam/pam_reattach.so ignore_ssh
+auth       sufficient     pam_tid.so
+```
+
+See <https://github.com/fabianishere/pam_reattach>.
+
 # List of unsupported softwares in Apple Silicon
 
 - `brew/imageoptim-cli`: [Unable to install on M1 / Apple Silicon · Issue #191 · JamieMason/ImageOptim-CLI](https://github.com/JamieMason/ImageOptim-CLI/issues/191)
