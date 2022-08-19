@@ -119,3 +119,7 @@ difftastic
 git-filter-repo
 mpv
 onefetch
+
+iproute2mac
+pam-reattach
+wtfutil

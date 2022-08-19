@@ -17,7 +17,8 @@ clang-format
 # wget
 # brew doctor will complain it is missing. I wonder why it wasn't installed if it is needed, and if it is really needed
 # doxygen
-# pandoc
+pandoc
+pandoc-crossref
 # closure-compiler
 # convert emf to pdf
 # unoconv
@@ -86,3 +87,4 @@ subversion
 # streamlink in macports is too old
 streamlink
 btop
+memtester

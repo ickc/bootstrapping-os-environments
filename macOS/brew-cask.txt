@@ -5,6 +5,7 @@ xquartz
 # playonmac
 # license required ################################################################
 logos
+accordance
 # microsoft-office-2011
 # microsoft-office
 # vmware-fusion
@@ -31,6 +32,7 @@ steam
 # sling
 authy
 discord
+raindropio
 # text ################################################################
 mactex
 # visual-studio-code-insiders
@@ -47,6 +49,9 @@ libreoffice
 # manuscripts
 marked
 # macdown
+notion
+obsidian
+logseq
 # browser ################################################################
 google-chrome
 firefox
@@ -83,6 +88,7 @@ calibre
 keepassxc
 # keeweb
 cheatsheet
+aerial
 # hardware related ################################################################
 # openzfs
 # gdisk
@@ -115,7 +121,8 @@ detexify
 # homebrew-cask-versions ################################################################
 # safari-technology-preview
 # google-chrome-canary
-chromium
+# chromium
+eloston-chromium
 # multimarkdown-composer-pro
 # networking
 zerotier-one
@@ -160,3 +167,6 @@ microsoft-edge
 netdownloadhelpercoapp
 raspberry-pi-imager
 sioyek
+
+utm
+yattee

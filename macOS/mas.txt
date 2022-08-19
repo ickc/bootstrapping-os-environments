@@ -127,3 +127,7 @@
 1568262835
 # Vinegar
 1591303229
+# PayPal Honey
+1472777122
+# FakespotSafari
+1592541616
