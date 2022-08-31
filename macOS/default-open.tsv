@@ -394,6 +394,7 @@ com.microsoft.VSCode	public.rss	all
 com.microsoft.VSCode	public.svg-image	all
 com.microsoft.VSCode	public.xfd	all
 com.microsoft.VSCode	public.xhtml	all
+com.microsoft.VSCode	public.ffxml	all
 # public.yaml
 com.microsoft.VSCode	public.yaml	all
 com.microsoft.VSCode	com.apple.text-based-dylib	all
