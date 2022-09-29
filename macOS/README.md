@@ -9,6 +9,7 @@ On the old Mac:
 On the freshly installed Mac:
 
 - open App Store, sign in and install Xcode, and run the followings meanwhile.
+	- You may need to open Xcode explicitly for all components to be installed^[See [ios - Xcode build fails and repetitive requires command line developer tools install - Stack Overflow](https://stackoverflow.com/questions/72583801/xcode-build-fails-and-repetitive-requires-command-line-developer-tools-install/73703946#73703946).].
 - In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
 	- `sudo xcodebuild -license accept`.
 - In System Preferences, Sharing, activate remote ssh,
