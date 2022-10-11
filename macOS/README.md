@@ -23,6 +23,7 @@ On the freshly installed Mac:
 - remove sleep image (may already be the default): `sleep.sh`
 - symlink iCloud Documents to have a simpler path: `rm -f "$HOME/iCloud"; ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/iCloud" "$HOME/iCloud"`
 - Install Cocoa emacs emulation `install-cocoa-emacs-emulation.sh`
+- Remap keys at launch: `key-remapping-hidutil.sh`
 - Install package managers: `install.sh`
 - restart shell for the new PATH to take effect
 - Install packages (sub-level indicates depending on higher levels executed first)

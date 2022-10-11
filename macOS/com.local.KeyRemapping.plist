@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.local.KeyRemapping</string>
+    <key>Comment</key>
+    <string>modify from https://apple.stackexchange.com/a/398797/355318
+        also see https://developer.apple.com/library/archive/technotes/tn2450/_index.html
+        this maps the Application key used in Windows keyboard to the Right Alt key used in macOS</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/hidutil</string>
+        <string>property</string>
+        <string>--set</string>
+        <string>{"UserKeyMapping":[
+            {
+                "HIDKeyboardModifierMappingSrc": 0x700000065,
+                "HIDKeyboardModifierMappingDst": 0x7000000E6
+            }
+        ]}</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
