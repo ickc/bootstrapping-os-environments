@@ -31,6 +31,7 @@ On the freshly installed Mac:
 	- `mas.sh`
 	- `brew.sh` (you may need to run `softwareupdate --all --install --force` first to update the Command Line Tools (CLT))
 		- `brew-cask.sh`
+			- `tex.sh`
 	- `port.sh` (run after Xcode is installed)
 	- `conda activate`
 		- `conda-install.sh`
