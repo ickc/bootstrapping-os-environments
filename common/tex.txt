@@ -1,0 +1,35 @@
+# pandoc 2.19.2 dependencies
+# package already present for MacTeX
+amsfonts
+amsmath
+lm
+unicode-math
+iftex
+listings
+fancyvrb
+tools
+booktabs
+graphics
+hyperref
+xcolor
+ulem
+geometry
+setspace
+babel
+xecjk
+fontspec
+selnolig
+bidi
+mathspec
+upquote
+microtype
+csquotes
+natbib
+biblatex
+bibtex
+biber
+parskip
+xurl
+bookmark
+footnotehyper
+mdwtools
