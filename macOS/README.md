@@ -49,7 +49,7 @@ Macports requires migration after an OS upgrade:
 
 > A MacPorts installation is designed to work with a particular operating system and a particular hardware architecture.^[[Migration – MacPorts](https://trac.macports.org/wiki/Migration)]
 
-Run
+Install the latest Xcode, Xcode Command Line Tools, then run
 
 ```bash
 ./port-uninstall.sh
