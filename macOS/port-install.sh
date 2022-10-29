@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-# modified from install.sh
-
 set -e
 
 MACPORTS_VERSION=2.8.0
