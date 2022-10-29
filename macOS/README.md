@@ -43,6 +43,22 @@ On the freshly installed Mac:
 
 [^sshd-keygen]: [bash - Getting an “Operation not permitted” error when running commands after to SSHing from another machine to macOS - Super User](https://superuser.com/questions/1615072/getting-an-operation-not-permitted-error-when-running-commands-after-to-sshing)
 
+# After OS upgrade
+
+Macports requires migration after an OS upgrade:
+
+> A MacPorts installation is designed to work with a particular operating system and a particular hardware architecture.^[[Migration – MacPorts](https://trac.macports.org/wiki/Migration)]
+
+Run
+
+```bash
+./port-uninstall.sh
+./port-install.sh
+./port.sh
+```
+
+to uninstall and reinstall macports, as well as all packages.
+
 # sudo with Touch ID
 
 ```bash
