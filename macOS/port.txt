@@ -44,6 +44,7 @@ pdf2svg
 potrace
 tree
 exiftool
+exiv2
 wget
 doxygen
 # pandoc
@@ -52,6 +53,8 @@ doxygen
 opencc
 epubcheck
 p7zip
+p5.34-archive-zip
+unrar
 cmake
 # llvm
 gsl
