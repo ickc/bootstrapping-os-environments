@@ -5,9 +5,9 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # setup compilers first
-sudo port -N install gcc11 mpich-default
+sudo port -N install gcc12 mpich-default
 # port select --list gcc
-sudo port -N select --set gcc mp-gcc11
+sudo port -N select --set gcc mp-gcc12
 # port select --list mpi
 sudo port -N select --set mpi mpich-mp-fortran
 
