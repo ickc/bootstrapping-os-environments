@@ -77,7 +77,7 @@ ncdu
 # testdisk
 # youtube-dl
 # ifuse # FUSE module for iOS devices
-imageoptim-cli
+# imageoptim-cli
 # annie
 lux
 # media-info
