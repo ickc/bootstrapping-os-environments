@@ -76,6 +76,7 @@ ncdu
 # sshuttle
 # testdisk
 # youtube-dl
+yt-dlp
 # ifuse # FUSE module for iOS devices
 # imageoptim-cli
 # annie
