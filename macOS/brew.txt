@@ -37,7 +37,7 @@ shellcheck
 # gsl
 # sshfs
 # GPS
-# gpsbabel
+gpsbabel
 # e.g. avprobe
 # libav
 # instrumentation framework for building dynamic analysis tool
@@ -52,7 +52,7 @@ vitorgalvao/tiny-scripts/cask-repair
 # htop alternatives
 # glances
 # du alternatives
-# ncdu
+ncdu
 # ls alternatives
 # exa
 # file manager and its dependencies
@@ -79,6 +79,7 @@ vitorgalvao/tiny-scripts/cask-repair
 # ifuse # FUSE module for iOS devices
 imageoptim-cli
 # annie
+lux
 # media-info
 tdewolff/tap/minify
 # clementtsang/bottom/bottom
