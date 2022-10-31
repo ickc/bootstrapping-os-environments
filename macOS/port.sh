@@ -11,7 +11,7 @@ sudo port -N select --set gcc mp-gcc12
 # port select --list mpi
 sudo port -N select --set mpi mpich-mp-fortran
 
-grep -v '#' port.txt | xargs sudo port -N install
+grep -v '#' port.txt | xargs -n1 sudo port -N install
 
 # configure git after macports's git is installed
 git config --global pull.rebase false
