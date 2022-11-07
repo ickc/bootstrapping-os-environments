@@ -61,6 +61,8 @@ to uninstall and reinstall macports, as well as all packages.
 
 # sudo with Touch ID
 
+Redo this after every major OS upgrade.
+
 ```bash
 sudo nano /etc/pam.d/sudo
 # add these
