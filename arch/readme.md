@@ -14,7 +14,7 @@ Remember to setup the network (see [Network configuration - ArchWiki](https://wi
 
 ```sh
 pacman -Syu
-pacman -S grub efibootmgr tmux dhcpcd iotop mosh zsh which dhcpcd sudo inetutils neofetch ntp firewalld smartmontools nvme-cli exa # intel-ucode / amd-ucode
+pacman -S grub efibootmgr tmux dhcpcd iotop mosh zsh which dhcpcd sudo inetutils neofetch ntp firewalld smartmontools nvme-cli exa btop lm_sensors # intel-ucode / amd-ucode
 grub-mkconfig -o /boot/grub/grub.cfg
 systemctl enable --now dhcpcd
 systemctl enable --now ntpd.service
@@ -35,8 +35,8 @@ Install yay: [Jguer/yay: Yet another Yogurt - An AUR Helper written in Go](https
 yay -S linux-headers zfs-dkms
 ```
 
-- btop
-- exa
+- setup kernel parameters
+- detect sensors by `sudo sensors-detect --auto`
 
 ## Nameserver
 
