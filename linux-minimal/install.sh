@@ -16,16 +16,14 @@ print_line () {
 
 install () {
 print_double_line
-echo "Enter your email: "
-read email
+read -p "Enter your email: " email
 echo "Generatin ssh key for $email"
 ssh-keygen -t ed25519 -C "$email"
 
 print_line
 echo "Add the following to your github account in https://github.com/settings/keys"
 cat ~/.ssh/id_ed25519.pub
-echo "Press enter to continue"
-read
+read -p "Press enter to continue"
 
 print_double_line
 echo "Installing dotfiles..."
