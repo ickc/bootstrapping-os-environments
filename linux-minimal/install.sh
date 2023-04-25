@@ -14,6 +14,7 @@ print_line () {
 
 ########################################################################
 
+install () {
 print_double_line
 echo "Enter your email: "
 read email
@@ -68,3 +69,6 @@ print_line
 echo "Installing system packages using mamba..."
 cd ~/git/source/bootstrapping-os-environments/common/conda/
 ./conda-system.sh
+}
+
+install
