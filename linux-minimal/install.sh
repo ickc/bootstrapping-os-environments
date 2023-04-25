@@ -31,7 +31,9 @@ echo "Installing dotfiles..."
 mkdir -p ~/git/source; cd ~/git/source
 git clone git@github.com:ickc/dotfiles.git
 cd dotfiles
-make uninstall && make install && make
+. "$HOME/git/source/dotfiles/bin/env"
+. "$HOME/git/source/dotfiles/bin/interactive"
+make install && make
 
 print_double_line
 echo "Installing ssh-dir..."
@@ -45,7 +47,6 @@ make install
 
 print_double_line
 echo "Installing bootstrapping-os-environments..."
-mkdir -p ~/git/source
 cd ~/git/source
 git clone git@github.com:ickc/bootstrapping-os-environments.git
 
@@ -61,8 +62,8 @@ cd ~/git/source/bootstrapping-os-environments/common
 print_double_line
 echo "Installing mambaforge..."
 cd ~/git/source/bootstrapping-os-environments/install/
-./mamba.sh
-. ~/.mambaforge/bin/activate
+CONDA_PREFIX="$__CONDA_PREFIX" ./mamba.sh
+. "$CONDA_PREFIX/bin/activate"
 print_line
 echo "Installing system packages using mamba..."
 cd ~/git/source/bootstrapping-os-environments/common/conda/
