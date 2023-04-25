@@ -49,16 +49,6 @@ cd ~/git/source
 git clone git@github.com:ickc/bootstrapping-os-environments.git
 
 print_double_line
-echo "Installing basher..."
-cd ~/git/source/bootstrapping-os-environments/install
-./basher.sh
-. "$HOME/git/source/dotfiles/bin/env"
-print_line
-echo "Installing basher packages..."
-cd ~/git/source/bootstrapping-os-environments/common
-./basher.sh
-
-print_double_line
 echo "Installing mambaforge..."
 cd ~/git/source/bootstrapping-os-environments/install/
 CONDA_PREFIX="$__CONDA_PREFIX" ./mamba.sh
@@ -67,6 +57,17 @@ print_line
 echo "Installing system packages using mamba..."
 cd ~/git/source/bootstrapping-os-environments/common/conda/
 ./conda-system.sh
+
+print_double_line
+echo "Installing basher..."
+cd ~/git/source/bootstrapping-os-environments/install
+./basher.sh
+. "$HOME/git/source/dotfiles/bin/env"
+. "$HOME/git/source/dotfiles/bin/interactive"
+print_line
+echo "Installing basher packages..."
+cd ~/git/source/bootstrapping-os-environments/common
+./basher.sh
 }
 
 install
