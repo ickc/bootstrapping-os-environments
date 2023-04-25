@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # helpers ##############################################################
 
 print_double_line () {
