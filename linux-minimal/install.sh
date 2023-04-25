@@ -52,6 +52,7 @@ print_double_line
 echo "Installing basher..."
 cd ~/git/source/bootstrapping-os-environments/install
 ./basher.sh
+. "$HOME/git/source/dotfiles/bin/env"
 print_line
 echo "Installing basher packages..."
 cd ~/git/source/bootstrapping-os-environments/common
