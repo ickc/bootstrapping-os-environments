@@ -29,7 +29,6 @@ mkdir -p ~/git/source; cd ~/git/source
 git clone git@github.com:ickc/dotfiles.git
 cd dotfiles
 . "$HOME/git/source/dotfiles/bin/env"
-. "$HOME/git/source/dotfiles/bin/interactive"
 make install && make
 
 print_double_line
