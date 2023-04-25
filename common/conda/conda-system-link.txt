@@ -3,6 +3,10 @@ hub
 nano
 parallel
 tmux
+zsh
+mosh
+mosh-client
+mosh-server
 tree
 wget
 curl

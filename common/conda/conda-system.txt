@@ -3,6 +3,8 @@ hub
 nano
 parallel
 tmux
+zsh
+mosh
 
 tree
 wget
