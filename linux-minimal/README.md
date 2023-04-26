@@ -26,6 +26,8 @@ Also remove useless initial files in home.
 
 ## Install and setup
 
+In case of very old system, generate ssh keys yourself, add it to your GitHub account in <https://github.com/settings/keys> first.
+
 Then run,
 
 ```sh
