@@ -44,11 +44,6 @@ rm -rf ~/.ssh
 make install
 
 print_double_line
-echo "Installing bootstrapping-os-environments..."
-cd ~/git/source
-git clone git@github.com:ickc/bootstrapping-os-environments.git
-
-print_double_line
 echo "Installing mambaforge..."
 cd ~/git/source/bootstrapping-os-environments/install/
 CONDA_PREFIX="$__CONDA_PREFIX" ./mamba.sh
