@@ -23,6 +23,9 @@ Then run,
 
 ```sh
 bash <(curl -sL https://github.com/ickc/bootstrapping-os-environments/raw/master/linux-minimal/install.sh)
+# or
+curl -sL https://github.com/ickc/bootstrapping-os-environments/raw/master/linux-minimal/install.sh -o install.sh
+bash install.sh
 ```
 
 ### Install vscode-server
