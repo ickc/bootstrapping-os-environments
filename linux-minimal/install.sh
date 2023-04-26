@@ -64,6 +64,7 @@ cd ~/git/source/bootstrapping-os-environments/install
 ./basher.sh
 . "$HOME/git/source/dotfiles/bin/env"
 . "$HOME/git/source/dotfiles/bin/interactive"
+export PATH="$HOME/.basher/bin:$PATH"
 print_line
 echo "Installing basher packages..."
 cd ~/git/source/bootstrapping-os-environments/common
