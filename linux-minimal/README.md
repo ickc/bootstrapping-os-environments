@@ -22,10 +22,7 @@ Also remove useless initial files in home.
 Then run,
 
 ```sh
-mkdir -p ~/git/source
-cd ~/git/source
-git clone git@github.com:ickc/bootstrapping-os-environments.git
-~/git/source/bootstrapping-os-environments/linux-minimal/install.sh
+mkdir -p ~/git/source && cd ~/git/source && git clone git@github.com:ickc/bootstrapping-os-environments.git && bootstrapping-os-environments/linux-minimal/install.sh
 ```
 
 ### Install vscode-server
