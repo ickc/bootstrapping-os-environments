@@ -31,9 +31,3 @@ Then run,
 ```sh
 mkdir -p ~/git/source && cd ~/git/source && git clone git@github.com:ickc/bootstrapping-os-environments.git && bootstrapping-os-environments/linux-minimal/install.sh
 ```
-
-or use curl-bash if agent forwarding doesn't work on old systems:
-
-```sh
-curl -sL https://github.com/ickc/bootstrapping-os-environments/raw/master/linux-minimal/install.sh -o install.sh && ./install.sh && rm -f install.sh
-```
