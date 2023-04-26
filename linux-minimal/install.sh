@@ -57,8 +57,6 @@ print_double_line
 echo "Installing basher..."
 cd ~/git/source/bootstrapping-os-environments/install
 ./basher.sh
-. "$HOME/git/source/dotfiles/bin/env"
-. "$HOME/git/source/dotfiles/bin/interactive"
 export PATH="$HOME/.basher/bin:$PATH"
 print_line
 echo "Installing basher packages..."
