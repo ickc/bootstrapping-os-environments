@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess  # nosec
+import sys
 from dataclasses import dataclass
 from functools import cached_property, partial
 from logging import getLogger
@@ -18,14 +19,26 @@ from map_parallel import map_parallel
 
 logger = getLogger(__name__)
 
-CONDA: str = "mamba"
-temp = which(CONDA)
-if temp is None:
+CONDA: str
+CONDA_PATH: Path
+if (temp := which("mamba")) is not None:
+    CONDA = "mamba"
+    CONDA_PATH = Path(temp)
+elif (temp := which("conda")) is not None:
     CONDA = "conda"
-    temp = which(CONDA)
-if temp is None:
-    raise RuntimeError("Cannot find mamba/conda in your PATH.")
-CONDA_PATH = Path(temp)
+    CONDA_PATH = Path(temp)
+else:
+    # try guessing from the parent of the Python executable
+    bin_dir = Path(sys.executable).parent
+    if (temp := bin_dir / "mamba").exists():
+        CONDA = "mamba"
+        CONDA_PATH = temp
+    elif (temp := bin_dir / "conda").exists():
+        CONDA = "conda"
+        CONDA_PATH = temp
+    else:
+        raise RuntimeError("Cannot find mamba/conda in your PATH.")
+    del bin_dir
 del temp
 
 
