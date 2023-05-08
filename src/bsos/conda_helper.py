@@ -19,22 +19,17 @@ from map_parallel import map_parallel
 
 logger = getLogger(__name__)
 
-CONDA: str
 CONDA_PATH: Path
 if (temp := which("mamba")) is not None:
-    CONDA = "mamba"
     CONDA_PATH = Path(temp)
 elif (temp := which("conda")) is not None:
-    CONDA = "conda"
     CONDA_PATH = Path(temp)
 else:
     # try guessing from the parent of the Python executable
     bin_dir = Path(sys.executable).parent
     if (temp := bin_dir / "mamba").exists():
-        CONDA = "mamba"
         CONDA_PATH = temp
     elif (temp := bin_dir / "conda").exists():
-        CONDA = "conda"
         CONDA_PATH = temp
     else:
         raise RuntimeError("Cannot find mamba/conda in your PATH.")
@@ -102,7 +97,7 @@ class CondaRunSubprocess(CondaRun):
     def __init__(self, *args: str) -> None:
         self.args: tuple[str, ...] = args
 
-        cmd = [CONDA, self.command]
+        cmd = [str(CONDA_PATH), self.command]
         cmd += list(self.default_args) + [str(arg) for arg in args]
         logger.info("running %s", subprocess.list2cmdline(cmd))
         res = subprocess.run(cmd, capture_output=True)  # nosec
