@@ -2,7 +2,6 @@ name: acx
 channels:
 - defaults
 dependencies:
-- aiohttp
 - anaconda
 - appdirs
 - arrow
@@ -22,7 +21,7 @@ dependencies:
 - conda
 - cookiecutter
 - coverage
-- cython
+- cvxopt
 - cytoolz
 - dask
 - datashader
@@ -44,11 +43,11 @@ dependencies:
 - jinja2
 - joblib
 - libiconv
+- line_profiler
 - lxml
 - markdown
 - markdown2
 - matplotlib
-- mkl
 - mpmath
 - multipledispatch
 - mypy
@@ -56,10 +55,10 @@ dependencies:
 - nbconvert
 - networkx
 - nltk
-- nose
 - numba
 - numexpr
 - numpy
+- opencv
 - openpyxl
 - pandas
 - pandocfilters
@@ -93,13 +92,11 @@ dependencies:
 - sphinx
 - statsmodels
 - sympy
+- tabulate
 - tbb
 - toml
 - ujson
 - watchdog
 - wheel
 - xarray
-- xlrd
-- xlsxwriter
-- xlwt
 - zlib
