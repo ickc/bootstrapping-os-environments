@@ -12,42 +12,42 @@ cd "$DIR"
 # all37-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.7
 if [[ -n ${UPDATE+x} ]]; then
-    mamba env update -f temp.yml --prune
+    mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all38-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.8
 if [[ -n ${UPDATE+x} ]]; then
-    mamba env update -f temp.yml --prune
+    mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all39-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.9
 if [[ -n ${UPDATE+x} ]]; then
-    mamba env update -f temp.yml --prune
+    mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all310-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.10
 if [[ -n ${UPDATE+x} ]]; then
-    mamba env update -f temp.yml --prune
+    mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all311-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.11
 if [[ -n ${UPDATE+x} ]]; then
-    mamba env update -f temp.yml --prune
+    mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # pypy-37-conda-forge
 ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "pypy" -C conda.csv -c conda-forge -v 3.7 --pypy
 if [[ -n ${UPDATE+x} ]]; then
-    mamba env update -f temp.yml --prune
+    mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
@@ -55,7 +55,7 @@ fi
 # pip311-defaults
 ./../../src/bsos/conda_env.py -o temp.yml -n "pip" -P pip.txt -v 3.11
 if [[ -n ${UPDATE+x} ]]; then
-    mamba env update -f temp.yml --prune
+    mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
