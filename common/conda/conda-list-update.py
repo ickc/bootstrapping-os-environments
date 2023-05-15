@@ -6,11 +6,11 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.13.5
+#       jupytext_version: 1.14.5
 #   kernelspec:
-#     display_name: all39-conda-forge
+#     display_name: all310-conda-forge
 #     language: python
-#     name: all39-conda-forge
+#     name: all310-conda-forge
 # ---
 
 # %%
@@ -51,7 +51,7 @@ def get_df(version: str, os: str) -> pd.DataFrame:
 
 # %%
 conda_info = CondaInfo()
-all_conda_envs = conda_info.envs(sub_env_only=True)
+all_conda_envs = conda_info.envs(sub_env_only=False)
 all_conda_envs
 
 # %% [markdown]
@@ -118,7 +118,7 @@ for i in sorted(pip_all - pip_packages):
 # %%
 packages = config.package_spec
 df_config = config.dataframe
-for version_check in ("3.7", "3.8", "3.9", "pypy3.6", "pypy3.7"):
+for version_check in ("3.7", "3.8", "3.9", "3.10", "pypy3.7", "pypy3.8", "pypy3.9"):
     conda_compat = conda_check_compat_python_versions(version_check, packages)
     df_config[version_check] = conda_compat
     print(
@@ -155,7 +155,7 @@ def get_latest_version(
 df_latest = df_config.copy()
 df_latest.version = [get_latest_version(package.name) for package in config.packages]
 config_latest = Config.from_dataframe(df_latest)
-version_check = "3.10"
+version_check = "3.11"
 packages = config_latest.package_spec
 
 conda_compat = conda_check_compat_python_versions(version_check, packages)
@@ -174,7 +174,8 @@ config.to_csv("conda.csv")
 # # Inspect packages not supported by Anaconda
 
 # %%
-versions = ("2.7", "3.6", "3.7", "3.8", "3.9")
+# recall that the list can be seen in https://docs.anaconda.com/anaconda/packages/pkg-docs/
+versions = ("2.7", "3.7", "3.8", "3.9", "3.10")
 oses = ("osx", "linux")
 n_packages = {}
 for version in versions:
@@ -193,7 +194,7 @@ df_tidy.columns = ["version", "os", "n_packages"]  # type:ignore[assignment] # s
 px.line(df_tidy, x="version", y="n_packages", color="os")
 
 # %%
-version = "3.9"
+version = "3.10"
 for os_ in ("linux", "osx"):
     df = get_df(version, os_)
     print(
@@ -207,7 +208,7 @@ for os_ in ("linux", "osx"):
 # Create an environment named `acx`, which stands for Anaconda extended, as an intersection of packages installed and those supported by Anaconda
 
 # %%
-version = "3.9"
+version = "3.10"
 df_linux = get_df(version, "linux")
 df_mac = get_df(version, "osx")
 conda_supported_packages_linux = set(df_linux.index)
