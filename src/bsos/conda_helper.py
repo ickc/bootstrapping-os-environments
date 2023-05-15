@@ -63,6 +63,7 @@ class CondaRun:
 
         cmd = [self.command]
         cmd += list(self.default_args) + [str(arg) for arg in args]
+        self.cmd = cmd
         logger.info("running conda %s", subprocess.list2cmdline(cmd))
         stdout, stderr, returncode = run_command(*cmd)
         self.stdout: str = stdout
@@ -99,6 +100,7 @@ class CondaRunSubprocess(CondaRun):
 
         cmd = [str(CONDA_PATH), self.command]
         cmd += list(self.default_args) + [str(arg) for arg in args]
+        self.cmd = cmd
         logger.info("running %s", subprocess.list2cmdline(cmd))
         res = subprocess.run(cmd, capture_output=True)  # nosec
         self.stdout: str = res.stdout.decode()
@@ -258,8 +260,27 @@ def conda_check_compat_python_version(
 
     :param version: can be a dot-delimited version string for CPython (e.g. 3.10), or a pypy version (e.g. pypy3.8).
     """
+    shortname = "_".join(channels + [version, package])
     args = conda_check_compat_python_version_args(version, package, channels=channels)
-    conda_create = CondaCreateSubprocess(*args)
+    runtime_error = True
+    while runtime_error:
+        conda_create = CondaCreateSubprocess(*args)
+
+        # temporarily dump to some log files for investigation
+        # tempdir = Path("~/temp/").expanduser()
+        # with (tempdir / (shortname)).open("w") as f:
+        #     print(subprocess.list2cmdline(conda_create.cmd), file=f)
+        #     print("---stdout---", file=f)
+        #     print(conda_create.stdout, file=f)
+        #     print("---stderr---", file=f)
+        #     print(conda_create.stderr, file=f)
+        #     print("---returncode---", file=f)
+        #     print(conda_create.returncode, file=f)
+
+        if "RuntimeError" in conda_create.stdout:
+            logger.warn("RuntimeError detected for %s. Try again.", shortname)
+        else:
+            runtime_error = False
     return conda_create.returncode == 0
 
 
