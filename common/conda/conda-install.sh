@@ -7,38 +7,55 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 
+is_apple_silicon() {
+    machine=$(uname -m)
+    os=$(uname -s)
+    
+    if [[ "$machine" == "arm64" && "$os" == "Darwin" ]]; then
+        return 0  # Apple Silicon
+    else
+        return 1  # Not Apple Silicon
+    fi
+}
+
+if is_apple_silicon; then
+    csv_filename=conda-Darwin-arm64.csv
+else
+    csv_filename=conda.csv
+fi
+
 # install conda environments
 
 # all38-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.8
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "$csv_filename" -c conda-forge -v 3.8
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all39-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.9
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "$csv_filename" -c conda-forge -v 3.9
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all310-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.10
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "$csv_filename" -c conda-forge -v 3.10
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all311-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C conda.csv -c conda-forge -v 3.11
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "$csv_filename" -c conda-forge -v 3.11
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # # pypy-37-conda-forge
-# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "pypy" -C conda.csv -c conda-forge -v 3.7 --pypy
+# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "pypy" -C "$csv_filename" -c conda-forge -v 3.7 --pypy
 # if [[ -n ${UPDATE+x} ]]; then
 #     mamba env update -f temp.yml
 # else

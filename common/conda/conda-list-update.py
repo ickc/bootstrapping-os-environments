@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.14.5
+#       jupytext_version: 1.14.0
 #   kernelspec:
 #     display_name: all310-conda-forge
 #     language: python
@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import logging
 from collections import OrderedDict
+import platform
 
 import pandas as pd
 import plotly.express as px
@@ -32,11 +33,14 @@ from bsos.core import Config
 
 logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 
+
 # %%
 # %load_ext autoreload
 # %autoreload 2
 
 # %%
+def is_apple_silicon():
+    return platform.machine() == 'arm64' and platform.system() == 'Darwin'
 
 
 def parse_config(path: str) -> set[str]:
@@ -48,6 +52,9 @@ def get_df(version: str, os: str) -> pd.DataFrame:
     """A convenient function to call AnacondaSupport.dataframe directly."""
     return AnacondaSupport(version, os).dataframe
 
+
+# %%
+csv_filename = "conda-Darwin-arm64.csv" if is_apple_silicon() else "conda.csv"
 
 # %%
 conda_info = CondaInfo()
@@ -73,7 +80,7 @@ conda_list
 # %%
 conda_packages: set[str] = set().union(*(set(env.user_installed_packages) for env in conda_list.values()))  # type: ignore[assignment]
 len(conda_packages)
-config = Config.from_csv("conda.csv")
+config = Config.from_csv(csv_filename)
 conda_all = set(config.names)
 conda_all2 = conda_all | set(PY2_PACKAGES)
 
@@ -168,7 +175,7 @@ print(f"{df_config[version_check].sum()} packages are compatible with {version_c
 
 # %%
 config = config.from_dataframe(df_config)
-config.to_csv("conda.csv")
+config.to_csv(csv_filename)
 
 # %% [markdown]
 # # Inspect packages not supported by Anaconda
