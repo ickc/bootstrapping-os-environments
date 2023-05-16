@@ -13,7 +13,6 @@ import csv
 import os
 import platform
 import sys
-from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -90,7 +89,7 @@ def read_csv(path: Path, version: str) -> list[str]:
 
 
 def read_env(path: Path, version: str) -> list[str]:
-    ext = Path(path).suffix
+    ext = path.suffix
     if ext == ".txt":
         return read_txt(path)
     elif ext == ".csv":
@@ -174,15 +173,19 @@ def cli() -> None:
     parser.add_argument("-o", "--yaml", type=argparse.FileType("w"), default=sys.stdout, help="Output YAML.")
     parser.add_argument("-v", "--version", type=str, default="3", help="python version. 2, 3, or 3.x. Default: 3")
     parser.add_argument(
-        "-c", "--channel", default="defaults", help="conda channel. e.g. intel, defaults. Default: defaults"
+        "-c", "--channel", type=str, default="defaults", help="conda channel. e.g. intel, defaults. Default: defaults"
     )
-    parser.add_argument("-n", "--name", default="all", help="prefix of the name of environment. Default: all")
+    parser.add_argument("-n", "--name", type=str, default="all", help="prefix of the name of environment. Default: all")
     parser.add_argument(
-        "-p", "--prefix", help="Full path to conda environment prefix. If not specified, conda's default will be used."
+        "-p",
+        "--prefix",
+        type=str,
+        help="Full path to conda environment prefix. If not specified, conda's default will be used.",
     )
     parser.add_argument(
         "-C",
         "--conda-txt",
+        type=Path,
         nargs="+",
         help="path to a file that contains the list of conda packages to be installed. Can be more than 1.",
         default=[],
@@ -197,6 +200,7 @@ def cli() -> None:
     parser.add_argument(
         "-m",
         "--mpi",
+        type=str,
         help=(
             "custom version of mpi4py if sepecified. Valid options: mpich/openmpi; external-* for using external mpich"
             " e.g. external-3.4 means mpich=3.4.*=external_*; cray for custom build using cray compiler."
