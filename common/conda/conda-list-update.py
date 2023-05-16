@@ -17,14 +17,13 @@
 from __future__ import annotations
 
 import logging
-from collections import OrderedDict
 import platform
+from collections import OrderedDict
 
 import pandas as pd
 import plotly.express as px
 import yaml
 import yamlloader
-from IPython.display import display
 from map_parallel import map_parallel
 
 from bsos.conda_env import PY2_PACKAGES
@@ -40,7 +39,7 @@ logging.getLogger("bsos.conda_helper").setLevel(logging.WARNING)
 
 # %%
 def is_apple_silicon():
-    return platform.machine() == 'arm64' and platform.system() == 'Darwin'
+    return platform.machine() == "arm64" and platform.system() == "Darwin"
 
 
 def parse_config(path: str) -> set[str]:
@@ -125,7 +124,7 @@ for i in sorted(pip_all - pip_packages):
 # %%
 packages = config.package_spec
 df_config = config.dataframe
-for version_check in ("3.7", "3.8", "3.9", "3.10", "pypy3.7", "pypy3.8", "pypy3.9"):
+for version_check in ("3.8", "3.9", "3.10"):
     conda_compat = conda_check_compat_python_versions(version_check, packages)
     df_config[version_check] = conda_compat
     print(
