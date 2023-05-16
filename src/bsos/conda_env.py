@@ -66,7 +66,7 @@ def _str_to_bool(string: str) -> bool:
 
 
 def read_csv(path: Path, version: str) -> list[str]:
-    with open("conda.csv") as f:
+    with path.open("r") as f:
         data = list(csv.reader(f))
     columns = data[0]
     if version not in columns:
