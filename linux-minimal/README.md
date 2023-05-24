@@ -28,6 +28,8 @@ Also remove useless initial files in home.
 
 In case of very old system, generate ssh keys yourself, add it to your GitHub account in <https://github.com/settings/keys> first.
 
+You may want to tailor dotfiles before running this.
+
 Then run,
 
 ```sh
