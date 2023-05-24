@@ -32,5 +32,5 @@ rm -f temp.yml
 
 mkdir -p "$BINDIR"
 while read line; do
-    ln -sf "$PREFIX/bin/$line" "$BINDIR"
+    [[ -e "$PREFIX/bin/$line" ]] && ln -sf "$PREFIX/bin/$line" "$BINDIR"
 done < conda-system-link.txt
