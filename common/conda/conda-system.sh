@@ -11,7 +11,12 @@ BINDIR=${BINDIR:-~/.local/bin}
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 
-./../../src/bsos/conda_env.py -o temp.yml -n system -C conda-system.txt -v 3.11 -c conda-forge
+if [[ "$(uname -m)" == ppc64le ]]; then
+    TXT=conda-system-ppc64le.txt
+else
+    TXT=conda-system.txt
+fi
+./../../src/bsos/conda_env.py -o temp.yml -n system -C "$TXT" -v 3.11 -c conda-forge
 if [[ -z ${PREFIX+x} ]]; then
     ENV_NAME=system311-conda-forge
     if [[ -z "$UPDATE" ]]; then
