@@ -52,8 +52,8 @@ make install
 print_double_line
 echo "Installing mambaforge..."
 cd ~/git/source/bootstrapping-os-environments/install/
-CONDA_PREFIX="$__CONDA_PREFIX" ./mamba.sh
-. "$__CONDA_PREFIX/bin/activate"
+CONDA_PREFIX=~/.mambaforge ./mamba.sh
+. ~/.mambaforge/bin/activate
 print_line
 echo "Installing system packages using mamba..."
 cd ~/git/source/bootstrapping-os-environments/common/conda/
