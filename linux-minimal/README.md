@@ -30,6 +30,13 @@ In case of very old system, generate ssh keys yourself, add it to your GitHub ac
 
 You may want to tailor dotfiles before running this.
 
+Optionally install dependencies and change shell first:
+
+```sh
+... install zsh git make curl wget openssh-server
+chsh -s $(which zsh)
+```
+
 Then run,
 
 ```sh
