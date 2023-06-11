@@ -220,7 +220,14 @@ makepkg -si
 rm -rf ~/git/read-only/yay
 ```
 
-# initramfs again
+## Rate mirrors
+
+```bash
+yay -S rate-mirrors-bin
+command -v rate-mirrors >/dev/null 2>&1 && bash -c 'rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist'
+```
+
+## initramfs again
 
 From the warnings in stderr saved in [initramfs](#initramfs), follow this table to install missing packages: [mkinitcpio - ArchWiki](https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX)
 
