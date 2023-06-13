@@ -32,8 +32,6 @@ Also remove useless initial files in home.
 
 In case of very old system, generate ssh keys yourself, add it to your GitHub account in <https://github.com/settings/keys> first.
 
-You may want to tailor dotfiles before running this.
-
 ### Installing dependencies via system package manager (optional)
 
 Optionally install dependencies and change shell first:
