@@ -5,6 +5,8 @@
     - git
     - make
 
+If git is not present, there's a workaround below.
+
 # Steps
 
 ## Add record to ssh-config
@@ -26,9 +28,13 @@ Also remove useless initial files in home.
 
 ## Install and setup
 
+### Preparation
+
 In case of very old system, generate ssh keys yourself, add it to your GitHub account in <https://github.com/settings/keys> first.
 
 You may want to tailor dotfiles before running this.
+
+### Installing dependencies via system package manager (optional)
 
 Optionally install dependencies and change shell first:
 
@@ -37,8 +43,54 @@ Optionally install dependencies and change shell first:
 chsh -s $(which zsh)
 ```
 
+### Installing dependencies via conda (mandatory)
+
+1. Download bootstrapping-os-environments
+    1. Without git
+
+        Obtain bootstrapping-os-environments without git:
+
+        ```bash
+        mkdir -p ~/git/source &&
+        cd ~/git/source &&
+        curl -O -L https://github.com/ickc/bootstrapping-os-environments/archive/refs/heads/master.zip &&
+        unzip master.zip &&
+        rm -f master.zip &&
+        mv bootstrapping-os-environments-master bootstrapping-os-environments
+        ```
+
+    2. With git
+
+        ```bash
+        mkdir -p ~/git/source &&
+        cd ~/git/source &&
+        git clone git@github.com:ickc/bootstrapping-os-environments.git
+        ```
+
+    3. Then run `mamba.sh`:
+
+        ```bash
+        cd ~/git/source/bootstrapping-os-environments/install/
+        CONDA_PREFIX=~/.mambaforge ./mamba.sh
+        . ~/.mambaforge/bin/activate
+
+        cd ~/git/source/bootstrapping-os-environments/common/conda/
+        ./conda-system.sh
+        export PATH="$PATH:$HOME/.local/bin"
+        ```
+
+    4. Switching back to git, if no-git is used above,
+
+        ```bash
+        rm -rf ~/git/source/bootstrapping-os-environments &&
+        cd ~/git/source &&
+        git clone git@github.com:ickc/bootstrapping-os-environments.git
+        ```
+
+### Install
+
 Then run,
 
 ```sh
-mkdir -p ~/git/source && cd ~/git/source && git clone git@github.com:ickc/bootstrapping-os-environments.git && bootstrapping-os-environments/linux-minimal/install.sh
+~/git/source/bootstrapping-os-environments/linux-minimal/install.sh
 ```

@@ -58,16 +58,6 @@ print_line
 echo "Installing basher packages..."
 cd ~/git/source/bootstrapping-os-environments/common
 ./basher.sh
-
-print_double_line
-echo "Installing mambaforge..."
-cd ~/git/source/bootstrapping-os-environments/install/
-CONDA_PREFIX=~/.mambaforge ./mamba.sh
-. ~/.mambaforge/bin/activate
-print_line
-echo "Installing system packages using mamba..."
-cd ~/git/source/bootstrapping-os-environments/common/conda/
-./conda-system.sh
 }
 
 install
