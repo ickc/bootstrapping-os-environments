@@ -45,5 +45,8 @@ curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-mi
 Then run,
 
 ```sh
-curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/install.sh | bash
+mkdir ~/temp
+cd ~/temp
+curl -O -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/install.sh
+bash install.sh
 ```
