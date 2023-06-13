@@ -90,5 +90,5 @@ chsh -s $(which zsh)
 Then run,
 
 ```sh
-~/git/source/bootstrapping-os-environments/linux-minimal/install.sh
+~/git/source/bootstrapping-os-environments/unix-minimal/install.sh
 ```
