@@ -5,6 +5,7 @@ parallel
 tmux
 zsh
 mosh
+openssh
 
 tree
 wget

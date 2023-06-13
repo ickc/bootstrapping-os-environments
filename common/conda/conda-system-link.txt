@@ -7,6 +7,14 @@ zsh
 mosh
 mosh-client
 mosh-server
+scp
+sftp
+ssh
+ssh-add
+ssh-agent
+sshd
+ssh-keygen
+ssh-keyscan
 tree
 wget
 curl

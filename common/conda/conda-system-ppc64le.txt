@@ -5,6 +5,7 @@ nano
 tmux
 zsh
 mosh
+openssh
 
 tree
 wget
