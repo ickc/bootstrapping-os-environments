@@ -16,10 +16,8 @@ On the freshly installed Mac:
 - In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
 	- `sudo xcodebuild -license accept`.
 - `softwareupdate --install-rosetta --agree-to-license` to install rosetta for Apple Silicon.
-- Generate SSH key and add it to GitHub.
-- Install [dotfiles](https://github.com/ickc/dotfiles), which requires the CLT.
-- Install ssh-dir.
-- Install this repo: `mkdir -p ~/git/source; cd ~/git/source; git clone git@github.com:ickc/bootstrapping-os-environments.git || git clone https://github.com/ickc/bootstrapping-os-environments.git; cd bootstrapping-os-environments/macOS`
+- Follow <../unix-minimal/README.md> to setup a minimal environment, which requires the CLT.
+- `cd ~/git/source/bootstrapping-os-environments/macOS`
 - remove sleep image (may already be the default): `sleep.sh`
 - symlink iCloud Documents to have a simpler path: `rm -f "$HOME/iCloud"; ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/iCloud" "$HOME/iCloud"`
 - Install Cocoa emacs emulation `install-cocoa-emacs-emulation.sh`
@@ -27,7 +25,6 @@ On the freshly installed Mac:
 - Install package managers: `install.sh`
 - restart shell for the new PATH to take effect
 - Install packages (sub-level indicates depending on higher levels executed first)
-	- `../common/basher.sh`
 	- `mas.sh`
 	- `brew.sh` (you may need to run `softwareupdate --all --install --force` first to update the Command Line Tools (CLT))
 		- `brew-cask.sh`
