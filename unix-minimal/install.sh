@@ -15,6 +15,8 @@ print_line () {
 ########################################################################
 
 install () {
+# make sure packages from bootstrap.sh can be seen
+export PATH="$HOME/.local/bin:$PATH"
 print_double_line
 if [[ -f ~/.ssh/id_ed25519.pub || -f ~/.ssh/id_rsa.pub ]]; then
     echo "SSH key already exists, assuming ssh-agent is setup to pull from GitHub and skip generating ssh key."
@@ -30,6 +32,17 @@ else
     cat ~/.ssh/id_ed25519.pub || cat ~/.ssh/id_rsa.pub
 fi
 read -p "Press enter to continue"
+
+print_double_line
+echo "Installing bootstrapping-os-envrioments..."
+if [[ -d ~/git/source/bootstrapping-os-environments ]]; then
+    echo "bootstrapping-os-environments already exists, just in case it points to https, setting url to git@github.com:ickc/bootstrapping-os-environments.git..."
+    cd ~/git/source/bootstrapping-os-environments
+    git remote set-url origin git@github.com:ickc/bootstrapping-os-environments.git
+else
+    mkdir -p ~/git/source; cd ~/git/source
+    git clone git@github.com:ickc/bootstrapping-os-environments.git
+fi
 
 print_double_line
 echo "Installing dotfiles..."
