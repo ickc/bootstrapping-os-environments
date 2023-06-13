@@ -10,11 +10,11 @@ On the freshly installed Mac:
 
 - open App Store, sign in and install Xcode, and run the followings meanwhile.
 	- You may need to open Xcode explicitly for all components to be installed^[See [ios - Xcode build fails and repetitive requires command line developer tools install - Stack Overflow](https://stackoverflow.com/questions/72583801/xcode-build-fails-and-repetitive-requires-command-line-developer-tools-install/73703946#73703946).].
-- In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
-	- `sudo xcodebuild -license accept`.
 - In System Preferences, Sharing, activate remote ssh,
 	- select `Allow full disk access for remote users` if available, which probably is equivalent to the `Full Disk Access` setting below.
 	- In System Preferences, `Security & Privacy -> Privacy -> Full Disk Access`, add `/usr/libexec/sshd-keygen-wrapper`[^sshd-keygen]. (This may be done automatically in later versions of macOS/mac.)
+- In command line, run `xcode-select --install` or e.g. `make` to trigger CLT install.
+	- `sudo xcodebuild -license accept`.
 - `softwareupdate --install-rosetta --agree-to-license` to install rosetta for Apple Silicon.
 - Generate SSH key and add it to GitHub.
 - Install [dotfiles](https://github.com/ickc/dotfiles), which requires the CLT.
