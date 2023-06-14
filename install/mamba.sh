@@ -24,7 +24,7 @@ downloadUrl="https://github.com/conda-forge/miniforge/releases/latest/download/M
 print_double_line
 echo Downloading to temp dir "$DOWNLOADDIR"
 cd "$DOWNLOADDIR"
-curl -L "$downloadUrl" --location --output Mambaforge.sh
+curl -L "$downloadUrl" -o Mambaforge.sh
 
 print_double_line
 echo Installing mamba...
