@@ -3,21 +3,34 @@
 set -e
 
 PREFIX=${PREFIX:-~/.local}
+# https://unix.stackexchange.com/a/84980/192799
+DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
 
-GH_SHORT=ClementTsang/bottom
+# helpers ##############################################################
 
-url="https://github.com/$GH_SHORT/releases/latest"
-downloadUrl="https://github.com$(curl -L $url | grep -o "/$GH_SHORT/releases/download/.*/bottom_x86_64-unknown-linux-gnu\.tar\.gz")"
-# downloadUrl="https://github.com$(curl -L $url | grep -o "/$GH_SHORT/archive/.*\.tar.gz")"
+print_double_line () {
+    eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
+}
+
+print_line () {
+    eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
+}
+
+########################################################################
+
+downloadUrl=https://github.com/ClementTsang/bottom/releases/latest/download/bottom_x86_64-unknown-linux-musl.tar.gz
 filename="${downloadUrl##*/}"
 
-mkdir temp-bottom
-cd temp-bottom
-
+print_double_line
+echo Downloading to temp dir "$DOWNLOADDIR"
+cd "$DOWNLOADDIR"
 wget -qO- "$downloadUrl" | tar -xzf -
 
+print_double_line
+echo Installing...
 mkdir -p "$PREFIX/bin"
 mv btm "$PREFIX/bin"
 
-cd ..
-rm -rf temp-bottom
+print_line
+echo Removing temp dir "$DOWNLOADDIR"
+rm -rf "$DOWNLOADDIR"
