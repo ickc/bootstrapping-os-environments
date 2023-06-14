@@ -11,7 +11,7 @@
 On local machine,
 
 ```sh
-code ~/git/private/ssh-dir/.ssh/config
+code ~/.ssh/config
 ```
 
 Create a record for this remote machine.
