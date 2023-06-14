@@ -2,7 +2,7 @@
 
 set -e
 
-PREFIX=${PREFIX:-/global/common/software/polar/local}
+PREFIX=${PREFIX:-~/.local}
 
 GH_SHORT=ClementTsang/bottom
 
@@ -16,6 +16,7 @@ cd temp-bottom
 
 wget -qO- "$downloadUrl" | tar -xzf -
 
+mkdir -p "$PREFIX/bin"
 mv btm "$PREFIX/bin"
 
 cd ..
