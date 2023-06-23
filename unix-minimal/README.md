@@ -16,14 +16,7 @@ code ~/.ssh/config
 
 Create a record for this remote machine.
 
-## Install vscode-server
-
-Connect to this server using vscode remote SSH.
-
-Run on the remote, study how this new remote system is setting up dotfiles first. Update dotfiles to add this system before proceeding.
-Also remove useless initial files in home.
-
-## Install and setup
+## Installing dependencies
 
 ### Installing dependencies via system package manager (optional)
 
@@ -40,7 +33,14 @@ chsh -s $(which zsh)
 curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap.sh | bash
 ```
 
-### Install
+### Install vscode-server
+
+Connect to this server using vscode remote SSH.
+
+Run on the remote, study how this new remote system is setting up dotfiles first. Update dotfiles to add this system before proceeding.
+Also remove useless initial files in home.
+
+## Install
 
 Then run,
 
