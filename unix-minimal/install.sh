@@ -14,7 +14,6 @@ print_line () {
 
 ########################################################################
 
-install () {
 # make sure packages from bootstrap.sh can be seen
 export PATH="$HOME/.local/bin:$PATH"
 print_double_line
@@ -70,6 +69,3 @@ print_line
 echo "Installing basher packages..."
 cd ~/git/source/bootstrapping-os-environments/common
 ./basher.sh
-}
-
-install
