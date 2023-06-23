@@ -54,13 +54,12 @@ make install && make
 
 print_double_line
 echo "Installing ssh-dir..."
-mkdir -p ~/git/private; cd ~/git/private
-git clone git@github.com:ickc/ssh-dir.git ~/.ssh
-cd ssh-dir
-mv ~/.ssh/id_ed25519 .ssh/ || mv ~/.ssh/id_rsa .ssh/
-mv ~/.ssh/id_ed25519.pub .ssh/ || mv ~/.ssh/id_rsa.pub .ssh/
+git clone git@github.com:ickc/ssh-dir.git ~/.ssh.temp
+cd ~/.ssh.temp
+mv ~/.ssh/id_ed25519 ~/.ssh.temp || mv ~/.ssh/id_rsa ~/.ssh.temp
+mv ~/.ssh/id_ed25519.pub ~/.ssh.temp || mv ~/.ssh/id_rsa.pub ~/.ssh.temp
 rm -rf ~/.ssh
-make install
+mv ~/.ssh.temp ~/.ssh
 
 print_double_line
 echo "Installing basher..."
