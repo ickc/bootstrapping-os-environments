@@ -24,6 +24,8 @@ fi
 mkdir -p ~/git/source
 cd ~/git/source
 if [[ $NOGIT -eq 0 ]]; then
+    mkdir -p ~/.ssh
+    ssh-keyscan github.com >> ~/.ssh/known_hosts
     print_double_line
     echo "Cloning bootstrapping-os-environments..."
     git clone git@github.com:ickc/bootstrapping-os-environments.git || git clone https://github.com/ickc/bootstrapping-os-environments.git
