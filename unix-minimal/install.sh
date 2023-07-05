@@ -22,7 +22,8 @@ if [[ -f ~/.ssh/id_ed25519.pub || -f ~/.ssh/id_rsa.pub ]]; then
 else
     read -p "Enter your email: " email
     echo "Generating ssh key for $email"
-    ssh-keygen -t ed25519 -C "$email" || ssh-keygen -t rsa -b 4096 -C "$email"
+    mkdir -p ~/.ssh
+    ssh-keygen -t ed25519 -C "$email" -f ~/.ssh/id_ed25519 || ssh-keygen -t rsa -b 4096 -C "$email" -f ~/.ssh/id_rsa
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_ed25519 || ssh-add ~/.ssh/id_rsa
 
