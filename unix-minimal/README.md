@@ -16,6 +16,8 @@ code ~/.ssh/config
 
 Create a record for this remote machine.
 
+Alternatively, skip this and [Install vscode-cli](#install-vscode-cli).
+
 ## Installing dependencies
 
 ### Installing dependencies via system package manager (optional)
@@ -39,6 +41,15 @@ Connect to this server using vscode remote SSH.
 
 Run on the remote, study how this new remote system is setting up dotfiles first. Update dotfiles to add this system before proceeding.
 Also remove useless initial files in home.
+
+#### Install vscode-cli
+
+Alternatively, install vscode-cli instead,
+
+```bash
+curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/install/vscode_cli.sh | bash
+~/.local/bin/code tunnel --disable-telemetry
+```
 
 ## Install
 
