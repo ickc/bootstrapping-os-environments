@@ -207,6 +207,14 @@ sudo systemctl enable --now dhcpcd
 sudo systemctl enable --now ntpd.service
 ```
 
+## Makeflags
+
+```sh
+sudo nano /etc/makepkg.conf
+# then change this line with appropriate no.
+MAKEFLAGS="-j8"
+```
+
 ## AUR
 
 Install yay: [Jguer/yay: Yet another Yogurt - An AUR Helper written in Go](https://github.com/Jguer/yay#source)
