@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-# update this: https://github.com/cli/cli/releases
-version='2.31.0'
-
 set -e
-# https://unix.stackexchange.com/a/84980/192799
-DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
 
 # helpers ##############################################################
 
@@ -20,6 +15,13 @@ print_line () {
 ########################################################################
 
 install () {
+    # https://unix.stackexchange.com/a/84980/192799
+    DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
+
+    version="$(curl --silent "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')"
+    print_double_line
+    echo "Installing gh version $version"
+
     case "$(uname -s)" in
         Linux*)
             OS=Linux
@@ -74,7 +76,7 @@ install () {
     fi
 
     print_double_line
-    echo Downloading to temp dir "$DOWNLOADDIR"
+    echo "Downloading $downloadUrl to temp dir $DOWNLOADDIR"
     cd "$DOWNLOADDIR"
     if [[ "$OS" == Linux ]]; then
         curl -L "$downloadUrl" -o gh.tar.gz
