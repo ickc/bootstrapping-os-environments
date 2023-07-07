@@ -8,41 +8,43 @@ DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
 
 # helpers ##############################################################
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
 ########################################################################
 
-install () {
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-unknown-linux-gnu.tar.gz
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-apple-darwin.tar.gz
-else
-    echo "Unsupported OS: $OSTYPE"
-    exit 1
-fi
+install() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-unknown-linux-gnu.tar.gz
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-apple-darwin.tar.gz
+    else
+        echo "Unsupported OS: $OSTYPE"
+        exit 1
+    fi
 
-filename="${downloadUrl##*/}"
+    filename="${downloadUrl##*/}"
 
-print_double_line
-echo Downloading to temp dir "$DOWNLOADDIR"
-cd "$DOWNLOADDIR"
-wget "$downloadUrl"
-tar -xf "$filename"
-ls -R
+    print_double_line
+    echo Downloading to temp dir "$DOWNLOADDIR"
+    cd "$DOWNLOADDIR"
+    wget "$downloadUrl"
+    tar -xf "$filename"
+    ls -R
 
-print_double_line
-echo Installing to $PREFIX/bin...
-mkdir -p "$PREFIX/bin"
-mv difft "$PREFIX/bin"
+    print_double_line
+    echo Installing to $PREFIX/bin...
+    mkdir -p "$PREFIX/bin"
+    mv difft "$PREFIX/bin"
 
-print_line
-echo Removing temp dir "$DOWNLOADDIR"
-rm -rf "$DOWNLOADDIR"
+    print_line
+    echo Removing temp dir "$DOWNLOADDIR"
+    rm -rf "$DOWNLOADDIR"
 }
+
+install
