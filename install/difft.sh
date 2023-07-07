@@ -18,7 +18,16 @@ print_line () {
 
 ########################################################################
 
-downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-unknown-linux-gnu.tar.gz
+install () {
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-unknown-linux-gnu.tar.gz
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-apple-darwin.tar.gz
+else
+    echo "Unsupported OS: $OSTYPE"
+    exit 1
+fi
+
 filename="${downloadUrl##*/}"
 
 print_double_line
@@ -36,3 +45,4 @@ mv difft "$PREFIX/bin"
 print_line
 echo Removing temp dir "$DOWNLOADDIR"
 rm -rf "$DOWNLOADDIR"
+}
