@@ -32,10 +32,7 @@ install () {
                 i*86)
                     downloadUrl="https://github.com/cli/cli/releases/download/v${version}/gh_${version}_linux_386.tar.gz"
                     ;;
-                armv6l)
-                    downloadUrl="https://github.com/cli/cli/releases/download/v${version}/gh_${version}_linux_armv6.tar.gz"
-                    ;;
-                armv7l)
+                armv*l)
                     downloadUrl="https://github.com/cli/cli/releases/download/v${version}/gh_${version}_linux_armv6.tar.gz"
                     ;;
                 aarch64)
