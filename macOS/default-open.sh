@@ -11,7 +11,7 @@ for ext in toml dict inc "in" native cfg csl ipynb Rmd; do
         LSHandlerPreferredVersions =             {
             LSHandlerRoleAll = '-';
         };
-        LSHandlerRoleAll = 'com.microsoft.VSCodeInsiders';
+        LSHandlerRoleAll = 'com.microsoft.vscode';
     }"
     done
 
