@@ -81,6 +81,5 @@ redhat.vscode-yaml
 richie5um2.vscode-sort-json
 samuelcolvin.jinjahtml
 tamasfe.even-better-toml
-timonwong.shellcheck
 tuttieee.emacs-mcx
 vscode-icons-team.vscode-icons
