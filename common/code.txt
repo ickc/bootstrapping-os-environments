@@ -32,7 +32,6 @@ mdickin.markdown-shortcuts
 mechatroner.rainbow-csv
 ms-azuretools.vscode-docker
 ms-dotnettools.vscode-dotnet-runtime
-ms-pyright.pyright
 ms-python.black-formatter
 ms-python.gather
 ms-python.isort
