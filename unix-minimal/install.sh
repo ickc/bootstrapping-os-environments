@@ -16,20 +16,31 @@ print_line () {
 
 # make sure packages from bootstrap.sh can be seen
 export PATH="$HOME/.local/bin:$PATH"
+
+# determine ssh algorithm to use
+if ssh -Q key | grep -q "ssh-ed25519"; then
+    SSH_ALGO=ed25519
+elif ssh -Q key | grep -q "ssh-rsa"; then
+    SSH_ALGO=rsa
+else
+    echo "No supported ssh algorithm found, exiting..."
+    exit 1
+fi
+
 print_double_line
-if [[ -f ~/.ssh/id_ed25519.pub || -f ~/.ssh/id_rsa.pub ]]; then
+if [[ -f ~/.ssh/id_${SSH_ALGO}.pubs ]]; then
     echo "SSH key already exists, assuming ssh-agent is setup to pull from GitHub and skip generating ssh key."
 else
     read -p "Enter your email: " email
     echo "Generating ssh key for $email"
     mkdir -p ~/.ssh
-    ssh-keygen -t ed25519 -C "$email" -f ~/.ssh/id_ed25519 || ssh-keygen -t rsa -b 4096 -C "$email" -f ~/.ssh/id_rsa
+    ssh-keygen -t "$SSH_ALGO" -C "$email" -f "$HOME/.ssh/id_${SSH_ALGO}"
     eval "$(ssh-agent -s)"
-    ssh-add ~/.ssh/id_ed25519 || ssh-add ~/.ssh/id_rsa
+    ssh-add "$HOME/.ssh/id_${SSH_ALGO}"
 
     print_line
     echo "Add the following to your github account in https://github.com/settings/keys"
-    cat ~/.ssh/id_ed25519.pub || cat ~/.ssh/id_rsa.pub
+    cat "$HOME/.ssh/id_${SSH_ALGO}.pub"
 fi
 read -p "Press enter to continue"
 
@@ -56,8 +67,8 @@ print_double_line
 echo "Installing ssh-dir..."
 git clone git@github.com:ickc/ssh-dir.git ~/.ssh.temp
 cd ~/.ssh.temp
-mv ~/.ssh/id_ed25519 ~/.ssh.temp || mv ~/.ssh/id_rsa ~/.ssh.temp
-mv ~/.ssh/id_ed25519.pub ~/.ssh.temp || mv ~/.ssh/id_rsa.pub ~/.ssh.temp
+mv ~/.ssh/id_${SSH_ALGO} ~/.ssh.temp
+mv ~/.ssh/id_${SSH_ALGO}.pub ~/.ssh.temp
 rm -rf ~/.ssh
 mv ~/.ssh.temp ~/.ssh
 
