@@ -56,10 +56,7 @@ curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/install
 Then run,
 
 ```sh
-mkdir ~/temp
-cd ~/temp
-curl -O -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/install.sh
-bash install.sh
+~/git/source/bootstrapping-os-environments/unix-minimal/install.sh
 ```
 
 ## All in one go
@@ -67,5 +64,5 @@ bash install.sh
 Some manual interaction needed:
 
 ```sh
-curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap.sh | bash; curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/install/vscode_cli.sh | bash; mkdir ~/temp; cd ~/temp; curl -O -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/install.sh; bash install.sh; ~/.local/bin/code tunnel --disable-telemetry
+curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap.sh | bash; curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/install/vscode_cli.sh | bash; ~/git/source/bootstrapping-os-environments/unix-minimal/install.sh; ~/.local/bin/code tunnel --disable-telemetry
 ```
