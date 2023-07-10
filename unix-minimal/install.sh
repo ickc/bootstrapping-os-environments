@@ -64,6 +64,7 @@ echo "Installing dotfiles..."
 mkdir -p ~/git/source; cd ~/git/source
 git clone git@github.com:ickc/dotfiles.git
 cd dotfiles
+# shellcheck disable=SC1091
 . "$HOME/git/source/dotfiles/bin/env"
 make install && make
 

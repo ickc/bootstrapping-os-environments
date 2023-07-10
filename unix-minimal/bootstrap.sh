@@ -41,6 +41,7 @@ fi
 print_double_line
 echo "Installing mamba..."
 CONDA_PREFIX=~/.mambaforge ~/git/source/bootstrapping-os-environments/install/mamba.sh
+# shellcheck disable=SC1090
 . ~/.mambaforge/bin/activate
 
 print_line
