@@ -62,6 +62,9 @@ sfdp
 tred
 twopi
 unflatten
+clang-format
+git-clang-format
+shfmt
 ranger
 convert
 bat

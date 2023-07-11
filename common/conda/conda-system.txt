@@ -22,6 +22,9 @@ ghostscript
 ffmpeg
 graphviz
 
+clang-format
+go-shfmt
+
 ranger-fm
 # ranger dep
 chardet >=4
