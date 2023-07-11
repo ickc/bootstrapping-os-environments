@@ -27,6 +27,7 @@ janisdd.vscode-edit-csv
 joaompinto.vscode-graphviz
 justusadam.language-haskell
 kisstkondoros.vscode-gutter-preview
+lkrms.inifmt
 mads-hartmann.bash-ide-vscode
 mdickin.markdown-shortcuts
 mechatroner.rainbow-csv
