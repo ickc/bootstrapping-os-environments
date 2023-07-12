@@ -31,6 +31,8 @@ chsh -s $(which zsh)
 
 ### Installing dependencies via conda (mandatory)
 
+This would also clone this repo automatically at `~/git/source/bootstrapping-os-environments`.
+
 ```bash
 curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap.sh | bash
 ```
@@ -51,9 +53,25 @@ curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/install
 ~/.local/bin/code tunnel --disable-telemetry
 ```
 
+Or if this repo is cloned already:
+
+```bash
+~/git/source/bootstrapping-os-environments/unix-minimal/vscode_cli.sh
+~/.local/bin/code tunnel --disable-telemetry
+```
+
 ## Install
 
 Then run,
+
+```sh
+mkdir ~/temp
+cd ~/temp
+curl -O -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/install.sh
+bash install.sh
+```
+
+Or if this repo is cloned already:
 
 ```sh
 ~/git/source/bootstrapping-os-environments/unix-minimal/install.sh
