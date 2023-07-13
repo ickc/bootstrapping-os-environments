@@ -6,7 +6,7 @@ set -e
 
 # * Define PREFIX if you want to install in a conda prefix instead
 # PREFIX=
-BINDIR=${BINDIR:-~/.local/bin}
+BINDIR="${BINDIR:-$HOME/.local/bin}"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
