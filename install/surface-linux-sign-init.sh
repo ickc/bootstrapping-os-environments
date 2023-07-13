@@ -6,7 +6,7 @@ set -e
 
 cd ~
 
-cat <<EOF > ~/mokconfig.cnf
+cat <<EOF > "$HOME/mokconfig.cnf"
 # This definition stops the following lines failing if HOME isn't
 # defined.
 HOME                    = .
@@ -33,7 +33,7 @@ extendedKeyUsage        = codeSigning,1.3.6.1.4.1.311.10.3.6
 nsComment               = "OpenSSL Generated Certificate"
 EOF
 
-openssl req -config ~/mokconfig.cnf \
+openssl req -config "$HOME/mokconfig.cnf" \
         -new -x509 -newkey rsa:2048 \
         -nodes -days 36500 -outform DER \
         -keyout "MOK.priv" \

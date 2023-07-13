@@ -85,11 +85,11 @@ install () {
     cd "$stem"
 
     print_double_line
-    echo Installing to ~/.local/bin
-    mkdir -p ~/.local/bin
-    mv bin/gh ~/.local/bin
-    mkdir -p ~/.local/share/man/man1
-    mv "share/man/man1"/* ~/.local/share/man/man1
+    echo Installing to "$HOME/.local/bin"
+    mkdir -p "$HOME/.local/bin"
+    mv bin/gh "$HOME/.local/bin"
+    mkdir -p "$HOME/.local/share/man/man1"
+    mv "share/man/man1"/* "$HOME/.local/share/man/man1"
 
     print_double_line
     echo Removing temp dir "$DOWNLOADDIR"

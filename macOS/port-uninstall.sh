@@ -38,4 +38,4 @@ sudo rm -rf \
     /Library/StartupItems/DarwinPortsStartup \
     /Library/Tcl/darwinports1.0 \
     /Library/Tcl/macports1.0 \
-    ~/.macports
+    "$HOME/.macports"

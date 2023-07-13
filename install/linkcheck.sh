@@ -3,7 +3,7 @@
 set -e
 
 VERSION=3.0.0
-PREFIX=${PREFIX:-~/.local}
+PREFIX="${PREFIX:-$HOME/.local}"
 # https://unix.stackexchange.com/a/84980/192799
 DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
 

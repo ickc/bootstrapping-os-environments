@@ -21,7 +21,7 @@ sudo snap install --devmode --beta anbox
 snap info anbox
 
 # Add Google Play and ARM support
-mkdir -p ~/git/geeks-r-us && cd ~/git/geeks-r-us
+mkdir -p "$HOME/git/geeks-r-us" && cd "$HOME/git/geeks-r-us"
 git clone git@github.com:geeks-r-us/anbox-playstore-installer.git
 cd anbox-playstore-installer
 

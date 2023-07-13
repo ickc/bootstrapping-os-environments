@@ -44,7 +44,7 @@ fi
 
 # install in all conda environments that ends in -defaults or -intel
 cd python
-for i in $(grep -E -- '-(defaults|intel)' ~/.conda/environments.txt); do
+for i in $(grep -E -- '-(defaults|intel)' "$HOME/.conda/environments.txt"); do
 	print_log "Install in Python at $i"
     . activate "$i"
 	# allow this to fail in some environments

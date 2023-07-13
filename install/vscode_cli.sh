@@ -25,8 +25,8 @@ echo Downloading to temp dir "$DOWNLOADDIR"
 cd "$DOWNLOADDIR"
 curl -L "$downloadUrl" -o vscode_cli.tar.gz
 tar -xf vscode_cli.tar.gz
-mkdir -p ~/.local/bin
-mv code ~/.local/bin
+mkdir -p "$HOME/.local/bin"
+mv code "$HOME/.local/bin"
 
 print_line
 echo Removing temp dir "$DOWNLOADDIR"

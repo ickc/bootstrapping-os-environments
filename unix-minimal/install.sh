@@ -34,34 +34,34 @@ else
 fi
 
 print_double_line
-if [[ -f ~/.ssh/id_${SSH_ALGO}.pubs ]]; then
+if [[ -f "$HOME/.ssh/id_${SSH_ALGO}.pubs" ]]; then
     echo "SSH key already exists, assuming ssh-agent is setup to pull from GitHub and skip generating ssh key."
 else
     echo "Generating ssh key for $BSOS_EMAIL"
-    mkdir -p ~/.ssh
+    mkdir -p "$HOME/.ssh"
     ssh-keygen -t "$SSH_ALGO" -C "$BSOS_EMAIL" -f "$HOME/.ssh/id_${SSH_ALGO}"
     eval "$(ssh-agent -s)"
     ssh-add "$HOME/.ssh/id_${SSH_ALGO}"
 fi
 
 # authenticate with GitHub
-~/git/source/bootstrapping-os-environments/install/gh.sh
+"$HOME/git/source/bootstrapping-os-environments/install/gh.sh"
 gh auth login --git-protocol ssh --web
 
 print_double_line
 echo "Installing bootstrapping-os-envrioments..."
-if [[ -d ~/git/source/bootstrapping-os-environments ]]; then
+if [[ -d "$HOME/git/source/bootstrapping-os-environments" ]]; then
     echo "bootstrapping-os-environments already exists, just in case it points to https, setting url to git@github.com:ickc/bootstrapping-os-environments.git..."
-    cd ~/git/source/bootstrapping-os-environments
+    cd "$HOME/git/source/bootstrapping-os-environments"
     git remote set-url origin git@github.com:ickc/bootstrapping-os-environments.git
 else
-    mkdir -p ~/git/source; cd ~/git/source
+    mkdir -p "$HOME/git/source;" cd "$HOME/git/source"
     git clone git@github.com:ickc/bootstrapping-os-environments.git
 fi
 
 print_double_line
 echo "Installing dotfiles..."
-mkdir -p ~/git/source; cd ~/git/source
+mkdir -p "$HOME/git/source;" cd "$HOME/git/source"
 git clone git@github.com:ickc/dotfiles.git
 cd dotfiles
 # shellcheck disable=SC1091
@@ -70,19 +70,19 @@ make install && make
 
 print_double_line
 echo "Installing ssh-dir..."
-git clone git@github.com:ickc/ssh-dir.git ~/.ssh.temp
-cd ~/.ssh.temp
-mv ~/.ssh/id_${SSH_ALGO} ~/.ssh.temp
-mv ~/.ssh/id_${SSH_ALGO}.pub ~/.ssh.temp
-rm -rf ~/.ssh
-mv ~/.ssh.temp ~/.ssh
+git clone git@github.com:ickc/ssh-dir.git "$HOME/.ssh.temp"
+cd "$HOME/.ssh.temp"
+mv "$HOME/.ssh/id_${SSH_ALGO}" "$HOME/.ssh.temp"
+mv "$HOME/.ssh/id_${SSH_ALGO}.pub" "$HOME/.ssh.temp"
+rm -rf "$HOME/.ssh"
+mv "$HOME/.ssh.temp" "$HOME/.ssh"
 
 print_double_line
 echo "Installing basher..."
-cd ~/git/source/bootstrapping-os-environments/install
+cd "$HOME/git/source/bootstrapping-os-environments/install"
 ./basher.sh
 export PATH="$HOME/.basher/bin:$PATH"
 print_line
 echo "Installing basher packages..."
-cd ~/git/source/bootstrapping-os-environments/common
+cd "$HOME/git/source/bootstrapping-os-environments/common"
 ./basher.sh
