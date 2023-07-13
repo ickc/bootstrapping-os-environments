@@ -4,7 +4,7 @@ set -e
 
 # assume on Ubuntu
 
-cd ~
+cd "$HOME"
 
 cat <<EOF > "$HOME/mokconfig.cnf"
 # This definition stops the following lines failing if HOME isn't
