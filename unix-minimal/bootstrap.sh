@@ -2,6 +2,8 @@
 
 set -e
 
+PREFIX="${PREFIX:-$HOME}"
+
 # helpers ##############################################################
 
 print_double_line () {
@@ -21,11 +23,11 @@ else
     NOGIT=1
 fi
 
-mkdir -p "$HOME/git/source"
-cd "$HOME/git/source"
-if [[ $NOGIT -eq 0 ]]; then
-    mkdir -p "$HOME/.ssh"
-    ssh-keyscan github.com >> "$HOME/.ssh/known_hosts"
+export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+mkdir -p "$PREFIX/git/source"
+cd "$PREFIX/git/source"
+if [[ $NOGIT == 0 ]]; then
     print_double_line
     echo "Cloning bootstrapping-os-environments..."
     git clone git@github.com:ickc/bootstrapping-os-environments.git || git clone https://github.com/ickc/bootstrapping-os-environments.git
@@ -40,18 +42,18 @@ fi
 
 print_double_line
 echo "Installing mamba..."
-CONDA_PREFIX="$HOME/.mambaforge" "$HOME/git/source/bootstrapping-os-environments/install/mamba.sh"
+CONDA_PREFIX="$PREFIX/.mambaforge" "$PREFIX/git/source/bootstrapping-os-environments/install/mamba.sh"
 # shellcheck disable=SC1091
-. "$HOME/.mambaforge/bin/activate"
+. "$PREFIX/.mambaforge/bin/activate"
 
 print_line
 echo "Installing system packages from conda..."
-"$HOME/git/source/bootstrapping-os-environments/common/conda/conda-system.sh"
-export PATH="$HOME/.local/bin:$PATH"
+"$PREFIX/git/source/bootstrapping-os-environments/common/conda/conda-system.sh"
+export PATH="$PREFIX/.local/bin:$PATH"
 
 if [[ $NOGIT -eq 1 ]]; then
-    rm -rf "$HOME/git/source/bootstrapping-os-environments"
-    cd "$HOME/git/source"
+    rm -rf "$PREFIX/git/source/bootstrapping-os-environments"
+    cd "$PREFIX/git/source"
     git clone git@github.com:ickc/bootstrapping-os-environments.git || git clone https://github.com/ickc/bootstrapping-os-environments.git
 fi
 }
