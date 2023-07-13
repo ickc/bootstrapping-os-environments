@@ -4,7 +4,7 @@ set -e
 
 CONDA_PREFIX="${CONDA_PREFIX:-"$HOME/.mambaforge"}"
 # https://unix.stackexchange.com/a/84980/192799
-DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
+DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'mambaforge')"
 
 # helpers ##############################################################
 
