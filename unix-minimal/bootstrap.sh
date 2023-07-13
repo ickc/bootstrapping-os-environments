@@ -23,16 +23,16 @@ else
     NOGIT=1
 fi
 
+# git 2.3.0 or later is required
 export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 mkdir -p "$PREFIX/git/source"
 cd "$PREFIX/git/source"
+print_double_line
 if [[ $NOGIT == 0 ]]; then
-    print_double_line
     echo "Cloning bootstrapping-os-environments..."
     git clone git@github.com:ickc/bootstrapping-os-environments.git || git clone https://github.com/ickc/bootstrapping-os-environments.git
 else
-    print_double_line
     echo "git not found, downloading bootstrapping-os-environments..."
     curl -O -L https://github.com/ickc/bootstrapping-os-environments/archive/refs/heads/master.zip
     unzip master.zip
