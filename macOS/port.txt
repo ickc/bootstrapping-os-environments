@@ -101,6 +101,7 @@ cfitsio
 # SuiteSparse
 bfg
 jq
+gron
 
 xorg-server
 lilypond
