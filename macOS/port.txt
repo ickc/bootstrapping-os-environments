@@ -35,7 +35,7 @@ vim
 
 parallel
 multimarkdown
-# openconnect
+openconnect
 enca
 smartmontools
 ImageMagick
@@ -124,3 +124,5 @@ onefetch
 iproute2mac
 pam-reattach
 wtfutil
+
+graphviz

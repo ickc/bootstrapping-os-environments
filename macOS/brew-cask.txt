@@ -10,9 +10,11 @@ accordance
 # microsoft-office
 # vmware-fusion
 textmate
+jetbrains-toolbox
 # adobe-creative-cloud
 # services ################################################################
 dropbox
+google-drive
 # google-backup-and-sync
 github
 # gitkraken
@@ -29,12 +31,13 @@ steam
 # zoomus
 # blue-jeans-launcher
 # amazon-music
-# spotify
+spotify
 # sling
 # authy
 discord
 raindropio
 background-music
+betterdisplay
 # text ################################################################
 mactex
 # visual-studio-code-insiders
@@ -61,7 +64,7 @@ firefox
 keka
 inkscape
 gimp
-# adobe-dng-converter
+adobe-dng-converter
 # imageoptim
 # imagealpha
 handbrake
@@ -73,7 +76,7 @@ makemkv
 # small utilities ################################################################
 # desktoputility
 disk-inventory-x
-# dupeguru
+dupeguru
 # filezilla
 sdformatter
 appcleaner
@@ -92,6 +95,8 @@ keepassxc
 cheatsheet
 aerial
 # hardware related ################################################################
+fanny
+zsa-wally
 # openzfs
 # gdisk
 # intel-power-gadget
@@ -120,7 +125,7 @@ aerial
 # windows manager ################################################################
 rectangle
 alt-tab
-# detexify
+detexify
 # homebrew-cask-versions ################################################################
 # safari-technology-preview
 # google-chrome-canary
@@ -132,12 +137,12 @@ zerotier-one
 
 # android-platform-tools
 
-# dash
+dash
 # franz
 # horndis
 # hwsensors
 # imaging-edge
-# musescore
+musescore
 # rawtherapee
 # svgcleaner
 # tuxguitar

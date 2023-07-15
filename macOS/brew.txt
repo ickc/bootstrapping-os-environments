@@ -90,3 +90,6 @@ subversion
 streamlink
 btop
 memtester
+f3
+imagemagick
+qmk
