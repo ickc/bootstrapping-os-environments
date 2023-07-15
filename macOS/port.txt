@@ -49,6 +49,7 @@ wget
 doxygen
 # pandoc
 # shellcheck
+shfmt
 # unison
 opencc
 epubcheck
@@ -105,7 +106,7 @@ xorg-server
 lilypond
 
 libimobiledevice
-stack
+# stack
 uncrustify
 
 entr
