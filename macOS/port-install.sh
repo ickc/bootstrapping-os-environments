@@ -6,7 +6,6 @@ MACPORTS_VERSION=2.8.0
 MACPORTS_OS_VERSION=13-Ventura
 
 # sudo loop
-sudo xcodebuild -license accept
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # helpers ##############################################################
