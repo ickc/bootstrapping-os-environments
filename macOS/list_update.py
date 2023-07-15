@@ -136,9 +136,6 @@ df_in = read_port_txt(Path("port.txt"))
 df_in["will_be_installed"] = True
 
 # %%
-df_in
-
-# %%
 df_installed = get_port_installed()
 df_active = df_installed[df_installed.is_active].copy()
 df_active["is_installed"] = True
@@ -148,9 +145,6 @@ df_active.drop("is_active", inplace=True, axis=1)
 df = df_active.merge(df_in, how="outer", on="package")
 for col in ("is_installed", "should_be_installed", "will_be_installed"):
     df[col].fillna(False, inplace=True)
-
-# %%
-df
 
 # %%
 print("Consider adding these packages to port.txt:")
