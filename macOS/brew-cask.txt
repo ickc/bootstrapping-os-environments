@@ -10,18 +10,19 @@ accordance
 # microsoft-office
 # vmware-fusion
 textmate
-adobe-creative-cloud
+# adobe-creative-cloud
 # services ################################################################
-# dropbox
+dropbox
 # google-backup-and-sync
 github
 # gitkraken
-duet
+# duet
 astropad
 # avast
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
 slack
+signal
 steam
 # nomachine
 # video conference
@@ -30,9 +31,10 @@ steam
 # amazon-music
 # spotify
 # sling
-authy
+# authy
 discord
 raindropio
+background-music
 # text ################################################################
 mactex
 # visual-studio-code-insiders
@@ -60,8 +62,8 @@ keka
 inkscape
 gimp
 # adobe-dng-converter
-imageoptim
-imagealpha
+# imageoptim
+# imagealpha
 handbrake
 vlc
 makemkv
@@ -70,7 +72,7 @@ makemkv
 # invisor-lite
 # small utilities ################################################################
 # desktoputility
-# disk-inventory-x
+disk-inventory-x
 # dupeguru
 # filezilla
 sdformatter
@@ -117,7 +119,8 @@ aerial
 # markdown-service-tools
 # windows manager ################################################################
 rectangle
-detexify
+alt-tab
+# detexify
 # homebrew-cask-versions ################################################################
 # safari-technology-preview
 # google-chrome-canary
@@ -132,11 +135,11 @@ zerotier-one
 # dash
 # franz
 # horndis
-hwsensors
+# hwsensors
 # imaging-edge
 # musescore
 # rawtherapee
-svgcleaner
+# svgcleaner
 # tuxguitar
 # webplotdigitizer
 zotero
@@ -146,7 +149,7 @@ zotero
 # alacritty
 kitty
 # mediainfo
-mpv
+# mpv
 # geekbench
 # ios-app-signer
 # licecap
@@ -165,8 +168,8 @@ kiwix
 microsoft-auto-update
 microsoft-edge
 netdownloadhelpercoapp
-raspberry-pi-imager
-sioyek
+# raspberry-pi-imager
+# sioyek
 
 utm
 yattee

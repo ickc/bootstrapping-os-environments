@@ -9,7 +9,7 @@ gnutls
 gpatch
 gzip
 less
-m4
+# m4
 nano
 # openssh
 rsync
@@ -80,8 +80,8 @@ bat
 atool
 neofetch
 sshuttle
-# ffmpeg +gpl2 +gpl3 +nonfree
-# mpv +audiocd +bluray +bundle +dvd +libarchive +network +opengl +osd +python39 +rubberband
+ffmpeg +gpl2 +gpl3 +nonfree
+mpv
 
 gpgme
 port_cutleaves
@@ -95,7 +95,7 @@ nmap
 # annie
 mediainfo
 MediaInfo-gui
-fftw-3
+# fftw-3
 cfitsio
 # SuiteSparse
 bfg
@@ -113,9 +113,7 @@ hyperfine
 bottom
 duti
 
-# github cli
 gh
-# manipulate tags on Mac OS X files
 tag
 
 difftastic

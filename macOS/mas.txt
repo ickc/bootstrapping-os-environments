@@ -5,7 +5,7 @@
 # aText
 # 488566438
 # MultiMarkdown Composer v4
-1275176220
+# 1275176220
 # TaskPaper
 1090940630
 
@@ -26,9 +26,9 @@
 # OneDrive
 823766827
 # feedly
-865500966
+# 865500966
 # Pocket
-568494494
+# 568494494
 
 # SMARTReporter
 509148961
@@ -52,7 +52,7 @@
 # 1094748271
 
 # GarageBand
-# 682658836
+682658836
 # iMovie
 # 408981434
 # Final Cut Pro
@@ -87,12 +87,14 @@
 # SafariMarkdownLinker
 1289119450
 
+# Prime Video
+545519333
 # Trello
 1278508951
 # Wayback Machine
 1472432422
 # 1Keyboard
-766939888
+# 766939888
 # Tabs to Links
 1451408472
 # JPEGmini Pro
@@ -102,7 +104,7 @@
 # Notability
 736189492
 # Strongbox
-1270075435
+897283731
 # Drafts
 1435957248
 # Tab Switcher
@@ -131,3 +133,9 @@
 1472777122
 # FakespotSafari
 1592541616
+# Save to Raindrop.io
+1549370672
+# Refined GitHub
+1519867270
+# The Camelizer
+1532579087
