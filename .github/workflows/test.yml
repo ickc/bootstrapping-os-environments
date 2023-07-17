@@ -28,13 +28,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: conda-incubator/setup-miniconda@v2
+      uses: mamba-org/setup-micromamba@v1
       with:
-        activate-environment: bsos
-        auto-update-conda: true
-        python-version: ${{ matrix.python-version }}
+        cache-environment: true
+        create-args: >-
+          python=${{ matrix.python-version }}
         environment-file: environment.yml
-        auto-activate-base: false
     - name: Install dependencies—pip
       run: |
         # let coverage read setup.py instead of pyproject.toml
