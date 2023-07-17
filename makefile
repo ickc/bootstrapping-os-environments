@@ -93,7 +93,7 @@ print-%:
 # poetry #######################################################################
 
 .PHONY: editable
-editable: setup.py
+editable:
 	$(_python) -m pip install --no-dependencies -e .
 
 # releasing ####################################################################
