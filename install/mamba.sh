@@ -18,6 +18,7 @@ print_line () {
 
 ########################################################################
 
+install () {
 # https://github.com/conda-forge/miniforge
 downloadUrl="https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
 
@@ -34,3 +35,6 @@ chmod +x Mambaforge.sh
 print_line
 echo Removing temp dir "$DOWNLOADDIR"
 rm -rf "$DOWNLOADDIR"
+}
+
+install
