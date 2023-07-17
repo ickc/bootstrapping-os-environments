@@ -92,20 +92,9 @@ print-%:
 
 # poetry #######################################################################
 
-setup.py:
-	poetry build
-	cd dist; tar -tf bsos-0.1.0.tar.gz
-	cd dist; tar -xf bsos-0.1.0.tar.gz bsos-0.1.0/setup.py
-	mv dist/bsos-0.1.0/setup.py .
-	rm -rf dist/bsos-0.1.0
-
 .PHONY: editable
-# since poetry doesn't support editable, we can build and extract the setup.py,
-# temporary remove pyproject.toml and ask pip to install from setup.py instead.
 editable: setup.py
-	mv pyproject.toml .pyproject.toml
 	$(_python) -m pip install --no-dependencies -e .
-	mv .pyproject.toml pyproject.toml
 
 # releasing ####################################################################
 
