@@ -55,13 +55,13 @@ if [[ -d "$HOME/git/source/bootstrapping-os-environments" ]]; then
     cd "$HOME/git/source/bootstrapping-os-environments"
     git remote set-url origin git@github.com:ickc/bootstrapping-os-environments.git
 else
-    mkdir -p "$HOME/git/source;" cd "$HOME/git/source"
+    mkdir -p "$HOME/git/source"; cd "$HOME/git/source"
     git clone git@github.com:ickc/bootstrapping-os-environments.git
 fi
 
 print_double_line
 echo "Installing dotfiles..."
-mkdir -p "$HOME/git/source;" cd "$HOME/git/source"
+mkdir -p "$HOME/git/source"; cd "$HOME/git/source"
 git clone git@github.com:ickc/dotfiles.git
 cd dotfiles
 # shellcheck disable=SC1091
