@@ -17,13 +17,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: mamba-org/setup-micromamba@v1
       with:
-        python-version: ${{ matrix.python-version }}
+        cache-environment: true
+        create-args: >-
+          python=${{ matrix.python-version }}
+        environment-file: environment.yml
     - name: Install dependencies—pip
       run: |
-        pip install -U poetry setuptools
-        pip install .[docs]
+        make editable
         name=bsos; python -m ipykernel install --user --name "$name" --display-name "$name"
     - name: Install dependencies—pandoc
       run: |
