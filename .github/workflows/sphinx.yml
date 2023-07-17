@@ -23,9 +23,9 @@ jobs:
         create-args: >-
           python=${{ matrix.python-version }}
         environment-file: environment.yml
-    - name: Install dependencies—pip
+    - name: Install
       run: |
-        make editable
+        python -m pip install --no-dependencies -e .
         name=bsos; python -m ipykernel install --user --name "$name" --display-name "$name"
     - uses: nikeee/setup-pandoc@v1
       with:

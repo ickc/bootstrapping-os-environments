@@ -90,12 +90,6 @@ format:
 print-%:
 	$(info $* = $($*))
 
-# poetry #######################################################################
-
-.PHONY: editable
-editable:
-	$(_python) -m pip install --no-dependencies -e .
-
 # releasing ####################################################################
 
 .PHONY: bump
