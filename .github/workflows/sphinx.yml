@@ -27,7 +27,6 @@ jobs:
       run: |
         make editable
         name=bsos; python -m ipykernel install --user --name "$name" --display-name "$name"
-    - name: Install dependencies—pandoc
     - uses: nikeee/setup-pandoc@v1
       with:
         pandoc-version: ${{ matrix.pandoc-version }}
