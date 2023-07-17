@@ -4,7 +4,7 @@
 # conda activate bsos
 # python -m ipykernel install --user --name bsos --display-name bsos
 # and then run this to install bsos in editable mode
-# make editable
+# python -m pip install --no-dependencies -e .
 # update using
 # conda env update --name bsos --file environment.yml --prune
 name: bsos

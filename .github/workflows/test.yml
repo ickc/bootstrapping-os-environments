@@ -34,17 +34,11 @@ jobs:
         create-args: >-
           python=${{ matrix.python-version }}
         environment-file: environment.yml
-    - name: Install dependencies—pip
-      run: |
-        # let coverage read setup.py instead of pyproject.toml
-        make editable
-    - name: Install dependencies—pandoc
-      run: |
-        # pandoc
-        [[ ${{ matrix.pandoc-version }} == "latest" ]] && url="https://github.com/jgm/pandoc/releases/latest" || url="https://github.com/jgm/pandoc/releases/tag/${{ matrix.pandoc-version }}"
-        downloadUrl="https://github.com$(curl -L $url | grep -o '/jgm/pandoc/releases/download/.*-amd64\.deb')"
-        wget --quiet "$downloadUrl"
-        sudo dpkg -i "${downloadUrl##*/}"
+    - name: Install
+      run: python -m pip install --no-dependencies -e .
+    - uses: nikeee/setup-pandoc@v1
+      with:
+        pandoc-version: ${{ matrix.pandoc-version }}
     - name: Sanity check
       run: |
         pip check
