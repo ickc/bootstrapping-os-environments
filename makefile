@@ -94,7 +94,7 @@ print-%:
 
 setup.py:
 	poetry build
-	tar -tf bsos-0.1.0.tar.gz
+	cd dist; tar -tf bsos-0.1.0.tar.gz
 	cd dist; tar -xf bsos-0.1.0.tar.gz bsos-0.1.0/setup.py
 	mv dist/bsos-0.1.0/setup.py .
 	rm -rf dist/bsos-0.1.0
