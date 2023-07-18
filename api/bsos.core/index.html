@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>bsos.core module &#8212; bsos 0.1.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/css/_table.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/fonts/fonts.min.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex/" />
     <link rel="search" title="Search" href="../../search/" />
@@ -77,7 +77,36 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">bsos.core module</a></li>
+<li><a class="reference internal" href="#">bsos.core module</a><ul>
+<li><a class="reference internal" href="#bsos.core.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li><a class="reference internal" href="#bsos.core.Config.check_duplicate"><code class="docutils literal notranslate"><span class="pre">Config.check_duplicate</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.dataframe"><code class="docutils literal notranslate"><span class="pre">Config.dataframe</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.from_csv"><code class="docutils literal notranslate"><span class="pre">Config.from_csv()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.from_dataframe"><code class="docutils literal notranslate"><span class="pre">Config.from_dataframe()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.from_file"><code class="docutils literal notranslate"><span class="pre">Config.from_file()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.from_txt"><code class="docutils literal notranslate"><span class="pre">Config.from_txt()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.names"><code class="docutils literal notranslate"><span class="pre">Config.names</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.package_spec"><code class="docutils literal notranslate"><span class="pre">Config.package_spec</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.packages"><code class="docutils literal notranslate"><span class="pre">Config.packages</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.to_csv"><code class="docutils literal notranslate"><span class="pre">Config.to_csv()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.to_dict"><code class="docutils literal notranslate"><span class="pre">Config.to_dict</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bsos.core.Package"><code class="docutils literal notranslate"><span class="pre">Package</span></code></a><ul>
+<li><a class="reference internal" href="#bsos.core.Package.KEYS"><code class="docutils literal notranslate"><span class="pre">Package.KEYS</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.channel"><code class="docutils literal notranslate"><span class="pre">Package.channel</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.from_txt_line"><code class="docutils literal notranslate"><span class="pre">Package.from_txt_line()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.ignored"><code class="docutils literal notranslate"><span class="pre">Package.ignored</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.kwargs"><code class="docutils literal notranslate"><span class="pre">Package.kwargs</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.match_spec"><code class="docutils literal notranslate"><span class="pre">Package.match_spec</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.name"><code class="docutils literal notranslate"><span class="pre">Package.name</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.to_dict"><code class="docutils literal notranslate"><span class="pre">Package.to_dict</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.version"><code class="docutils literal notranslate"><span class="pre">Package.version</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bsos.core.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -119,9 +148,142 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="bsos-core-module">
-<h1>bsos.core module<a class="headerlink" href="#bsos-core-module" title="Permalink to this headline">¶</a></h1>
-</div>
+  <section id="module-bsos.core">
+<span id="bsos-core-module"></span><h1>bsos.core module<a class="headerlink" href="#module-bsos.core" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="bsos.core.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bsos.core.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#bsos.core.Package" title="bsos.core.Package"><span class="pre">bsos.core.Package</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/bsos/core/#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parse the txt format used in specifying packages.</p>
+<p>the convention is that</p>
+<ul class="simple">
+<li><p>starts with <code class="docutils literal notranslate"><span class="pre">#</span></code> is a package to be ignored in installation</p></li>
+<li><p>starts with <code class="docutils literal notranslate"><span class="pre">#*</span></code> is a comment</p></li>
+<li><p>optionally has <cite>::</cite> for conda channel delimiter and channel will be ignored here</p></li>
+<li><p>optionally has version pinned by <cite>=</cite> and will be ignored here</p></li>
+</ul>
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Config.check_duplicate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_duplicate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bsos.core.Config.check_duplicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Config.dataframe">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#bsos.core.Config.dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bsos.core.Config.from_csv">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#bsos.core.Config" title="bsos.core.Config"><span class="pre">Config</span></a></span></span><a class="reference internal" href="../../_modules/bsos/core/#Config.from_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.Config.from_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bsos.core.Config.from_dataframe">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#bsos.core.Config" title="bsos.core.Config"><span class="pre">Config</span></a></span></span><a class="reference internal" href="../../_modules/bsos/core/#Config.from_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.Config.from_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bsos.core.Config.from_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#bsos.core.Config" title="bsos.core.Config"><span class="pre">Config</span></a></span></span><a class="reference internal" href="../../_modules/bsos/core/#Config.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.Config.from_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bsos.core.Config.from_txt">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#bsos.core.Config" title="bsos.core.Config"><span class="pre">Config</span></a></span></span><a class="reference internal" href="../../_modules/bsos/core/#Config.from_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.Config.from_txt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Config.names">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bsos.core.Config.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Config.package_spec">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">package_spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bsos.core.Config.package_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bsos.core.Config.packages">
+<span class="sig-name descname"><span class="pre">packages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#bsos.core.Package" title="bsos.core.Package"><span class="pre">bsos.core.Package</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bsos.core.Config.packages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bsos.core.Config.to_csv">
+<span class="sig-name descname"><span class="pre">to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/bsos/core/#Config.to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.Config.to_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Config.to_dict">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_dict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bsos.core.Config.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bsos.core.Package">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bsos.core.</span></span><span class="sig-name descname"><span class="pre">Package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">match_spec:</span> <span class="pre">MatchSpec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignored:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs:</span> <span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">bool]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/bsos/core/#Package"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.Package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parse a single line of the txt format used in specifying packages.</p>
+<p>the convention is that</p>
+<ul class="simple">
+<li><p>starts with <code class="docutils literal notranslate"><span class="pre">#</span></code> is a package to be ignored in installation</p></li>
+<li><p>starts with <code class="docutils literal notranslate"><span class="pre">#*</span></code> is a comment</p></li>
+<li><p>optionally has <cite>::</cite> for conda channel delimiter and channel will be ignored here</p></li>
+<li><p>optionally has version pinned by <cite>=</cite> and will be ignored here</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bsos.core.Package.KEYS">
+<span class="sig-name descname"><span class="pre">KEYS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'version',</span> <span class="pre">'channel',</span> <span class="pre">'ignored']</span></em><a class="headerlink" href="#bsos.core.Package.KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Package.channel">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">channel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#bsos.core.Package.channel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bsos.core.Package.from_txt_line">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_txt_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#bsos.core.Package" title="bsos.core.Package"><span class="pre">Package</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/bsos/core/#Package.from_txt_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.Package.from_txt_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bsos.core.Package.ignored">
+<span class="sig-name descname"><span class="pre">ignored</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#bsos.core.Package.ignored" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bsos.core.Package.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bsos.core.Package.kwargs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bsos.core.Package.match_spec">
+<span class="sig-name descname"><span class="pre">match_spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MatchSpec</span></em><a class="headerlink" href="#bsos.core.Package.match_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Package.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#bsos.core.Package.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Package.to_dict">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_dict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bsos.core.Package.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bsos.core.Package.version">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#bsos.core.Package.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bsos.core.normalize">
+<span class="sig-prename descclassname"><span class="pre">bsos.core.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/bsos/core/#normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bsos.core.normalize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
 
 
     </div>
@@ -136,8 +298,8 @@
     </p>
     <p>
         &copy; Copyright 2021, Kolen Cheung.<br/>
-      Last updated on Mar 23, 2022.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+      Last updated on Jul 18, 2023.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.0.1.<br/>
     </p>
   </div>
 </footer>

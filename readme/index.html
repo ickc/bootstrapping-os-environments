@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>bsos—bootstraping OS environments &#8212; bsos 0.1.0 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/css/_table.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/fonts/fonts.min.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
@@ -124,14 +124,14 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="bsosbootstraping-os-environments">
-<h1><a class="toc-backref" href="#id1">bsos—bootstraping OS environments</a><a class="headerlink" href="#bsosbootstraping-os-environments" title="Permalink to this headline">¶</a></h1>
+  <section id="bsosbootstraping-os-environments">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink">bsos—bootstraping OS environments</a><a class="headerlink" href="#bsosbootstraping-os-environments" title="Permalink to this heading">¶</a></h1>
 <dl class="field-list simple">
-<dt class="field-odd">Date</dt>
-<dd class="field-odd"><p>March 23, 2022</p>
+<dt class="field-odd">Date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>July 18, 2023</p>
 </dd>
 </dl>
-<div class="contents topic" id="contents">
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#bsosbootstraping-os-environments" id="id1">bsos—bootstraping OS environments</a></p>
@@ -142,12 +142,8 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 86%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>docs</p></th>
 <th class="head"><p><a class="reference external" href="https://bsos.readthedocs.io/en/latest/?badge=latest&amp;style=plastic"><img alt="Documentation Status" src="https://readthedocs.org/projects/bsos/badge/?version=latest" /></a> <a class="reference external" href="https://ickc.github.io/bsos"><img alt="image2" src="https://github.com/ickc/bsos/workflows/GitHub%20Pages/badge.svg" /></a></p></th>
@@ -170,26 +166,26 @@
 </tr>
 </tbody>
 </table>
-<div class="section" id="description">
-<h2><a class="toc-backref" href="#id2">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<section id="description">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Description</a><a class="headerlink" href="#description" title="Permalink to this heading">¶</a></h2>
 <p>Disclaimer: this is written for me, and at best served as a starting point for you. It is not documented. Good starting point would be to tailor the <code class="docutils literal notranslate"><span class="pre">*.txt</span></code> files to packages you want to install on your machines. A better design probably would be to separate install scripts and config files (<code class="docutils literal notranslate"><span class="pre">*.txt</span></code>) in different repo.</p>
 <p>Setup macOS or Ubuntu in scripts so that it is repeatable and automatic.</p>
 <p>Scripts to automate installations of softwares after a freshly installed OS — macOS or Ubuntu.</p>
 <p>The goal is to automate as much as possible on setting up a new machine, an often tedious task when you want to erase the drive and reinstall everything. Tools like Time Machine could be an alternative, but often time you want to start fresh without all the legacy stuffs like applications and settings, etc.</p>
 <p>These scripts provided an automated way to repeat what you did to the OSes. Whenever you install a new software, update the scripts accordingly to reflect what you did. So that in the future you can run the scripts and recover the “current status” of your machine.</p>
 <p>For example, even something like editing a bash profile, rather than editing it directly (or backing it up), scripts are written to edit the bash profile instead so it is also automated.</p>
-</div>
-<div class="section" id="conda-py">
-<h2><a class="toc-backref" href="#id3"><code class="docutils literal notranslate"><span class="pre">conda.py</span></code></a><a class="headerlink" href="#conda-py" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="conda-py">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">conda.py</span></code></a><a class="headerlink" href="#conda-py" title="Permalink to this heading">¶</a></h2>
 <p>See <code class="docutils literal notranslate"><span class="pre">`common/conda/README.md</span></code> &lt;common/conda/README.md&gt;`__.</p>
-</div>
-<div class="section" id="todo">
-<h2><a class="toc-backref" href="#id4">Todo</a><a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="todo">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Todo</a><a class="headerlink" href="#todo" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>seperate the boilerplate and the custom <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files for personalisation. This should be easier for forks.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -204,8 +200,8 @@
     </p>
     <p>
         &copy; Copyright 2021, Kolen Cheung.<br/>
-      Last updated on Mar 23, 2022.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+      Last updated on Jul 18, 2023.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.0.1.<br/>
     </p>
   </div>
 </footer>

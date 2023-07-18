@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bsos.conda_helper &#8212; bsos 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/css/_table.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/fonts/fonts.min.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../">
+          bsos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/ickc/bsos/">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme/">bsos—bootstraping OS environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules/">bsos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors/">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog/">Revision history for <code class="docutils literal notranslate"><span class="pre">bsos</span></code></a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search/" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for bsos.conda_helper</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>  <span class="c1"># nosec</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">which</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">psutil</span>
+<span class="kn">from</span> <span class="nn">conda.cli.python_api</span> <span class="kn">import</span> <span class="n">Commands</span><span class="p">,</span> <span class="n">run_command</span>
+<span class="kn">from</span> <span class="nn">conda.history</span> <span class="kn">import</span> <span class="n">History</span>
+<span class="kn">from</span> <span class="nn">map_parallel</span> <span class="kn">import</span> <span class="n">map_parallel</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">CONDA_PATH</span><span class="p">:</span> <span class="n">Path</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">temp</span> <span class="o">:=</span> <span class="n">which</span><span class="p">(</span><span class="s2">&quot;mamba&quot;</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">CONDA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+<span class="k">elif</span> <span class="p">(</span><span class="n">temp</span> <span class="o">:=</span> <span class="n">which</span><span class="p">(</span><span class="s2">&quot;conda&quot;</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">CONDA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># try guessing from the parent of the Python executable</span>
+    <span class="n">bin_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">temp</span> <span class="o">:=</span> <span class="n">bin_dir</span> <span class="o">/</span> <span class="s2">&quot;mamba&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">CONDA_PATH</span> <span class="o">=</span> <span class="n">temp</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">temp</span> <span class="o">:=</span> <span class="n">bin_dir</span> <span class="o">/</span> <span class="s2">&quot;conda&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">CONDA_PATH</span> <span class="o">=</span> <span class="n">temp</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Cannot find mamba/conda in your PATH.&quot;</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">bin_dir</span>
+<span class="k">del</span> <span class="n">temp</span>
+
+
+<div class="viewcode-block" id="CondaPath"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaPath">[docs]</a><span class="k">class</span> <span class="nc">CondaPath</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#: Base directory of conda installation.</span>
+        <span class="c1">#: E.g. ~/.mambaforge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conda_base</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">CONDA_PATH</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+        <span class="c1">#: Base directory of conda installation.</span>
+        <span class="c1">#: E.g. ~/.mambaforge/envs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conda_envs_base</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conda_base</span> <span class="o">/</span> <span class="s2">&quot;envs&quot;</span>
+
+<div class="viewcode-block" id="CondaPath.is_sub_env"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaPath.is_sub_env">[docs]</a>    <span class="k">def</span> <span class="nf">is_sub_env</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if a path is a sub-directory under `conda_envs_base`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conda_envs_base</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="CondaRun"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaRun">[docs]</a><span class="k">class</span> <span class="nc">CondaRun</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run conda commands using conda API.&quot;&quot;&quot;</span>
+
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">default_args</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;--json&quot;</span><span class="p">,)</span>
+    <span class="n">log_returncode</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">warning</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span>
+
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">]</span>
+        <span class="n">cmd</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_args</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running conda </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">list2cmdline</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+        <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">returncode</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">stdout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">stderr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">returncode</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_returncode</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Return code is non-zero.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+            <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+            <span class="s2">&quot;returncode&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CondaRunSubprocess"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaRunSubprocess">[docs]</a><span class="k">class</span> <span class="nc">CondaRunSubprocess</span><span class="p">(</span><span class="n">CondaRun</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run conda commands using subprocess.</span>
+
+<span class="sd">    This means that we can use mamba when it is in the PATH.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span>
+
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">CONDA_PATH</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">]</span>
+        <span class="n">cmd</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_args</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">list2cmdline</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># nosec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">returncode</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="CondaInfo"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaInfo">[docs]</a><span class="k">class</span> <span class="nc">CondaInfo</span><span class="p">(</span><span class="n">CondaRun</span><span class="p">):</span>
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Commands</span><span class="o">.</span><span class="n">INFO</span>
+
+<div class="viewcode-block" id="CondaInfo.envs"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaInfo.envs">[docs]</a>    <span class="k">def</span> <span class="nf">envs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_env_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtain all conda environment paths.</span>
+
+<span class="sd">        :param sub_env_only: if True, include sub-environments under base conda directory only.</span>
+<span class="sd">            This excludes base/root conda environment and other prefix environments.&quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sub_env_only</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">CondaPath</span><span class="p">()</span><span class="o">.</span><span class="n">is_sub_env</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">Path</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="CondaInfoSubprocess"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaInfoSubprocess">[docs]</a><span class="k">class</span> <span class="nc">CondaInfoSubprocess</span><span class="p">(</span><span class="n">CondaRunSubprocess</span><span class="p">,</span> <span class="n">CondaInfo</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="CondaList"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaList">[docs]</a><span class="k">class</span> <span class="nc">CondaList</span><span class="p">(</span><span class="n">CondaRun</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Conda list a prefix.&quot;&quot;&quot;</span>
+
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Commands</span><span class="o">.</span><span class="n">LIST</span>
+    <span class="n">default_args</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;--json&quot;</span><span class="p">,</span> <span class="s2">&quot;--prefix&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Expecting only 1 specified argument: prefix.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;`conda list` of environment as a DataFrame using conda&#39;s Python API.</span>
+
+<span class="sd">        This one uses the conda Python API that excludes pip installed packages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># type: ignore[call-arg] # stub limitation</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">user_installed_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return user installed packages in prefix.</span>
+
+<span class="sd">        using undocumented conda Python API, see</span>
+<span class="sd">        https://github.com/conda/conda/issues/4545#issuecomment-469984684</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">History</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">history</span><span class="o">.</span><span class="n">get_requested_specs_map</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CondaList.filter_channel"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaList.filter_channel">[docs]</a>    <span class="k">def</span> <span class="nf">filter_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get name from those that are from channel `channel`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">datum</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">datum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">datum</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">channel</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CondaListSubprocess"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaListSubprocess">[docs]</a><span class="k">class</span> <span class="nc">CondaListSubprocess</span><span class="p">(</span><span class="n">CondaRunSubprocess</span><span class="p">,</span> <span class="n">CondaList</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="CondaCreate"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaCreate">[docs]</a><span class="k">class</span> <span class="nc">CondaCreate</span><span class="p">(</span><span class="n">CondaRun</span><span class="p">):</span>
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Commands</span><span class="o">.</span><span class="n">CREATE</span>
+    <span class="n">default_args</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;--json&quot;</span><span class="p">,</span> <span class="s2">&quot;--dry-run&quot;</span><span class="p">,</span> <span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;conda_create_dry-run&quot;</span><span class="p">)</span>
+    <span class="n">log_returncode</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">info</span></div>
+
+
+<div class="viewcode-block" id="CondaCreateSubprocess"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.CondaCreateSubprocess">[docs]</a><span class="k">class</span> <span class="nc">CondaCreateSubprocess</span><span class="p">(</span><span class="n">CondaRunSubprocess</span><span class="p">,</span> <span class="n">CondaCreate</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="AnacondaSupport"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.AnacondaSupport">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">AnacondaSupport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get url to Anaconda&#39;s webpage listing a table of supported packages.</span>
+
+<span class="sd">    This should be updated often as Anaconda&#39;s webpages evolved.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">os</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+        <span class="n">os</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;linux&quot;</span><span class="p">,</span> <span class="s2">&quot;osx&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;os has to be either linux or osx&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="s2">&quot;2.7&quot;</span><span class="p">:</span>
+            <span class="c1"># from https://docs.anaconda.com/anaconda/packages/oldpkglists/</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://docs.anaconda.com/anaconda/packages/old-pkg-lists/2019.10/py</span><span class="si">{version}</span><span class="s2">_</span><span class="si">{os}</span><span class="s2">-64/&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># from https://docs.anaconda.com/anaconda/packages/pkg-docs/</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://docs.anaconda.com/anaconda/packages/py</span><span class="si">{version}</span><span class="s2">_</span><span class="si">{os}</span><span class="s2">-64/&quot;</span>
+        <span class="k">return</span> <span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">os</span><span class="o">=</span><span class="n">os</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get table of packages from Anaconda&#39;s support page in DataFrame.&quot;&quot;&quot;</span>
+        <span class="n">dfs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined] # stub limitation</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Cannot obtain a unique table from </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;In Installer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()):</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;In Installer&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Not all &quot;In Installer&quot; are empty, not removing column...&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+<div class="viewcode-block" id="AnacondaSupport.diff"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.AnacondaSupport.diff">[docs]</a>    <span class="k">def</span> <span class="nf">diff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">AnacondaSupport</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+        <span class="n">df_left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span>
+        <span class="n">df_right</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">dataframe</span>
+
+        <span class="n">idx_left</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df_left</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">idx_right</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df_right</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="n">idx_left_only</span> <span class="o">=</span> <span class="n">idx_left</span> <span class="o">-</span> <span class="n">idx_right</span>
+        <span class="n">idx_right_only</span> <span class="o">=</span> <span class="n">idx_right</span> <span class="o">-</span> <span class="n">idx_left</span>
+        <span class="k">return</span> <span class="n">df_left</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx_left_only</span><span class="p">],</span> <span class="n">df_right</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx_right_only</span><span class="p">]</span>  <span class="c1"># type: ignore[call-overload] # stub limitation</span></div></div>
+
+
+<div class="viewcode-block" id="conda_check_compat_python_version_args"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.conda_check_compat_python_version_args">[docs]</a><span class="k">def</span> <span class="nf">conda_check_compat_python_version_args</span><span class="p">(</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">package</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">channels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;conda-forge&quot;</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">package</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;pypy&quot;</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="s2">&quot;pypy&quot;</span><span class="p">,</span>
+            <span class="n">version</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;conda-forge&quot;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;channels should be set to conda-forge only for pypy, continue...&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;python=</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">channels</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">channels</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--channel&quot;</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">args</span></div>
+
+
+<div class="viewcode-block" id="conda_check_compat_python_version"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.conda_check_compat_python_version">[docs]</a><span class="k">def</span> <span class="nf">conda_check_compat_python_version</span><span class="p">(</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">package</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">channels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;conda-forge&quot;</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a package is compatible with a Python version.</span>
+
+<span class="sd">    :param version: can be a dot-delimited version string for CPython (e.g. 3.10), or a pypy version (e.g. pypy3.8).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">channels</span> <span class="o">+</span> <span class="p">[</span><span class="n">version</span><span class="p">,</span> <span class="n">package</span><span class="p">])</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">conda_check_compat_python_version_args</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">package</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
+    <span class="n">runtime_error</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">runtime_error</span><span class="p">:</span>
+        <span class="n">conda_create</span> <span class="o">=</span> <span class="n">CondaCreateSubprocess</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="c1"># temporarily dump to some log files for investigation</span>
+        <span class="c1"># tempdir = Path(&quot;~/temp/&quot;).expanduser()</span>
+        <span class="c1"># with (tempdir / (shortname)).open(&quot;w&quot;) as f:</span>
+        <span class="c1">#     print(subprocess.list2cmdline(conda_create.cmd), file=f)</span>
+        <span class="c1">#     print(&quot;---stdout---&quot;, file=f)</span>
+        <span class="c1">#     print(conda_create.stdout, file=f)</span>
+        <span class="c1">#     print(&quot;---stderr---&quot;, file=f)</span>
+        <span class="c1">#     print(conda_create.stderr, file=f)</span>
+        <span class="c1">#     print(&quot;---returncode---&quot;, file=f)</span>
+        <span class="c1">#     print(conda_create.returncode, file=f)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;RuntimeError&quot;</span> <span class="ow">in</span> <span class="n">conda_create</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;RuntimeError detected for </span><span class="si">%s</span><span class="s2">. Try again.&quot;</span><span class="p">,</span> <span class="n">shortname</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">runtime_error</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">conda_create</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="conda_check_compat_python_versions"><a class="viewcode-back" href="../../../api/bsos.conda_helper/#bsos.conda_helper.conda_check_compat_python_versions">[docs]</a><span class="k">def</span> <span class="nf">conda_check_compat_python_versions</span><span class="p">(</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">packages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">channels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;conda-forge&quot;</span><span class="p">],</span>
+    <span class="n">processes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(</span><span class="n">logical</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">map_parallel</span><span class="p">(</span>
+        <span class="n">partial</span><span class="p">(</span>
+            <span class="n">conda_check_compat_python_version</span><span class="p">,</span>
+            <span class="n">version</span><span class="p">,</span>
+            <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">packages</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;multithreading&quot;</span><span class="p">,</span>
+        <span class="n">processes</span><span class="o">=</span><span class="n">processes</span><span class="p">,</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Kolen Cheung.<br/>
+      Last updated on Jul 18, 2023.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
