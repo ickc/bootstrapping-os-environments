@@ -1,13 +1,15 @@
 name: GitHub Pages
-
 on:
   push:
     branches:
       - master
-
 jobs:
-  deploy:
+  gh-pages:
     runs-on: ubuntu-latest
+    # required by conda
+    defaults:
+      run:
+        shell: bash -l {0}
     strategy:
       matrix:
         python-version:
