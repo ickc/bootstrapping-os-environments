@@ -1,10 +1,7 @@
-name: Python package
-
+name: Test python package
 on: [push, pull_request]
-
 jobs:
-  build-n-publish:
-
+  test:
     runs-on: ubuntu-latest
     # required by conda
     defaults:
