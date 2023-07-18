@@ -87,7 +87,7 @@ install () {
     cd "$stem"
 
     print_double_line
-    echo Installing to "$PREFIX/bin"
+    echo Installing to "$PREFIX"
     mkdir -p "$PREFIX/bin"
     mv bin/gh "$PREFIX/bin"
     mkdir -p "$PREFIX/share/man/man1"
