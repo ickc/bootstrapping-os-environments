@@ -2,6 +2,8 @@
 
 set -e
 
+PREFIX="${PREFIX:-$HOME/.local}"
+
 # helpers ##############################################################
 
 print_double_line () {
@@ -85,11 +87,11 @@ install () {
     cd "$stem"
 
     print_double_line
-    echo Installing to "$HOME/.local/bin"
-    mkdir -p "$HOME/.local/bin"
-    mv bin/gh "$HOME/.local/bin"
-    mkdir -p "$HOME/.local/share/man/man1"
-    mv "share/man/man1"/* "$HOME/.local/share/man/man1"
+    echo Installing to "$PREFIX/bin"
+    mkdir -p "$PREFIX/bin"
+    mv bin/gh "$PREFIX/bin"
+    mkdir -p "$PREFIX/share/man/man1"
+    mv "share/man/man1"/* "$PREFIX/share/man/man1"
 
     print_double_line
     echo Removing temp dir "$DOWNLOADDIR"
