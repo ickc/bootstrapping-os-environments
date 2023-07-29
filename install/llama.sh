@@ -3,7 +3,7 @@
 set -e
 
 # location to put git repo
-REPO_PREFIX="${REPO_PREFIX:-"$HOME/git/read-only"}"
+REPO_PREFIX="${REPO_PREFIX:-"$HOME/git/fork"}"
 # install prefix
 PREFIX="${PREFIX:-"/opt/llama"}"
 # if CLEAN=1 then remove built files
