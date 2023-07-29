@@ -49,7 +49,11 @@ cd build
 print_double_line
 echo "Running cmake"
 print_line
-cmake -DLLAMA_METAL=ON --install-prefix "$PREFIX" ..
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    cmake -DLLAMA_METAL=ON --install-prefix "$PREFIX" ..
+else
+    cmake --install-prefix "$PREFIX" ..
+fi
 print_double_line
 echo "Building"
 print_line
