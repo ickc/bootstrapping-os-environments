@@ -23,7 +23,7 @@ astropad
 # avast
 # sophos-anti-virus-home-edition # no public link available by the developer, so this is removed
 # skype
-slack
+# slack
 signal
 steam
 # nomachine
