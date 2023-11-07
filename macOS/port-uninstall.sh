@@ -2,10 +2,19 @@
 
 # https://guide.macports.org/chunked/installing.macports.uninstalling.html#installing.macports.uninstalling.users
 
-# sudo loop
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
 # helpers ##############################################################
+
+startsudo() {
+    sudo -v
+    ( while true; do sudo -v; sleep 50; done; ) &
+    SUDO_PID="$!"
+    trap stopsudo SIGINT SIGTERM
+}
+stopsudo() {
+    kill "$SUDO_PID"
+    trap - SIGINT SIGTERM
+    sudo -k
+}
 
 print_double_line () {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
@@ -16,6 +25,8 @@ print_line () {
 }
 
 ########################################################################
+
+startsudo
 
 print_double_line
 echo 'Uninstall All Ports'
@@ -39,3 +50,5 @@ sudo rm -rf \
     /Library/Tcl/darwinports1.0 \
     /Library/Tcl/macports1.0 \
     "$HOME/.macports"
+
+stopsudo

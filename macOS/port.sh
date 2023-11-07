@@ -1,13 +1,35 @@
 #!/usr/bin/env bash
 
-# sudo loop
-sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+# helpers ##############################################################
+
+startsudo() {
+    sudo -v
+    ( while true; do sudo -v; sleep 50; done; ) &
+    SUDO_PID="$!"
+    trap stopsudo SIGINT SIGTERM
+}
+stopsudo() {
+    kill "$SUDO_PID"
+    trap - SIGINT SIGTERM
+    sudo -k
+}
+
+print_double_line () {
+    eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
+}
+
+print_line () {
+    eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
+}
+
+########################################################################
+
+startsudo
 
 # setup compilers first
-sudo port -N install gcc12 mpich-default
+sudo port -N install gcc13 mpich-default
 # port select --list gcc
-sudo port -N select --set gcc mp-gcc12
+sudo port -N select --set gcc mp-gcc13
 # port select --list mpi
 sudo port -N select --set mpi mpich-mp-fortran
 
@@ -20,3 +42,5 @@ git config --global pull.rebase false
 sudo port -N load smartmontools
 # sudo port -N load openssh
 sudo port -N load rsync
+
+stopsudo
