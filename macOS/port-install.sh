@@ -2,13 +2,22 @@
 
 set -e
 
-MACPORTS_VERSION=2.8.0
-MACPORTS_OS_VERSION=13-Ventura
-
-# sudo loop
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+MACPORTS_VERSION=2.8.1
+MACPORTS_OS_VERSION=14-Sonoma
 
 # helpers ##############################################################
+
+startsudo() {
+    sudo -v
+    ( while true; do sudo -v; sleep 50; done; ) &
+    SUDO_PID="$!"
+    trap stopsudo SIGINT SIGTERM
+}
+stopsudo() {
+    kill "$SUDO_PID"
+    trap - SIGINT SIGTERM
+    sudo -k
+}
 
 print_double_line () {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
@@ -19,6 +28,8 @@ print_line () {
 }
 
 ########################################################################
+
+startsudo
 
 print_double_line
 echo "install macports..."
@@ -39,3 +50,5 @@ rm -f "MacPorts-${MACPORTS_VERSION}-${MACPORTS_OS_VERSION}.pkg"
 # rm -rf MacPorts-${MACPORTS_VERSION}*
 # rm -rf macports-base
 sudo /opt/local/bin/port -v selfupdate
+
+stopsudo
