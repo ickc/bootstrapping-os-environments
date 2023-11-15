@@ -49,11 +49,9 @@ cd build
 print_double_line
 echo "Running cmake"
 print_line
-# if [[ "$(uname -s)" == "Darwin" ]]; then
-    # cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" .. -DWHISPER_COREML=1
-# else
-    cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" ..
-# fi
+cmake \
+    -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+    ..
 print_double_line
 echo "Building"
 print_line
