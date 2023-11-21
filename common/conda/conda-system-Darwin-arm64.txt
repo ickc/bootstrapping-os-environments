@@ -1,0 +1,49 @@
+git
+hub
+nano
+parallel
+tmux
+mosh
+openssh
+
+tree
+wget
+curl
+# tidy-html5
+shellcheck
+pandoc
+htop
+s-tui
+mosh
+ncdu
+exa
+ghostscript
+ffmpeg
+graphviz
+
+clang-format
+
+ranger-fm
+# ranger dep
+chardet >=4
+python-bidi >=0.4.2
+imagemagick
+bat
+p7zip
+tar
+unzip
+sed
+# lynx
+poppler
+exiftool
+jq
+
+glances >=3
+# glances dep
+psutil
+bottle >=0.12.18
+netifaces
+py-cpuinfo >=7
+pysnmp
+pystache
+zeroconf

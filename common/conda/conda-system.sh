@@ -11,11 +11,43 @@ BINDIR="${BINDIR:-$HOME/.local/bin}"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 
-if [[ "$(uname -m)" == ppc64le ]]; then
-    TXT=conda-system-ppc64le.txt
-else
-    TXT=conda-system.txt
-fi
+OS="$(uname -s)"
+ARCH="$(uname -m)"
+case "$OS" in
+    Darwin)  # macOS
+        case "$ARCH" in
+            x86_64)   # macOS x64
+                TXT=conda-system.txt
+                ;;
+            arm64)    # macOS aarch
+                TXT=conda-system-Darwin-arm64.txt
+                ;;
+            *)          # Unknown macOS architecture
+                echo "Unknown macOS architecture: $ARCH"
+                exit 1
+                ;;
+        esac
+        ;;
+    "Linux")   # Linux
+        case "$ARCH" in
+            "x86_64")   # Linux x64
+                TXT=conda-system.txt
+                ;;
+            "ppc64le")  # Linux ppc64le
+                TXT=conda-system-Linux-ppc64le.txt
+                ;;
+            *)          # Unknown Linux architecture
+                echo "Unknown Linux architecture: $ARCH"
+                exit 1
+                ;;
+        esac
+        ;;
+    *)
+        echo "Unsupported OS: $OS"
+        exit 1
+        ;;
+esac
+
 ./../../src/bsos/conda_env.py -o temp.yml -n system -C "$TXT" -v 3.11 -c conda-forge
 if [[ -z ${PREFIX+x} ]]; then
     ENV_NAME=system311-conda-forge
