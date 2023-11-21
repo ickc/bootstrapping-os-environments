@@ -16,8 +16,34 @@ print_line () {
 
 ########################################################################
 
-# https://github.com/conda-forge/miniforge
-downloadUrl='https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64'
+# Determine OS and architecture
+os=$(uname -s) # Operating System
+arch=$(uname -m) # Architecture
+# Set downloadUrl based on OS and architecture
+case "${os}-${arch}" in
+    "Linux-x86_64")
+        downloadUrl="https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-x64"
+        ;;
+    "Linux-armv7l")
+        downloadUrl="https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-armhf"
+        ;;
+    "Linux-aarch64")
+        downloadUrl="https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-arm64"
+        ;;
+    "Darwin-x86_64")
+        downloadUrl="https://code.visualstudio.com/sha/download?build=stable&os=cli-darwin-x64"
+        ;;
+    "Darwin-arm64")
+        downloadUrl="https://code.visualstudio.com/sha/download?build=stable&os=cli-darwin-arm64"
+        ;;
+    *)
+        echo "Unsupported OS or architecture"
+        exit 1
+        ;;
+esac
+
+echo "Download URL: $downloadUrl"
+
 
 download () {
 print_double_line
