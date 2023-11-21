@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# usuage: BSOS_EMAIL=... ./install.sh
+# usuage: BSOS_SSH_COMMENT=... ./install.sh
 
 set -e
 
@@ -19,8 +19,8 @@ print_line () {
 # make sure packages from bootstrap.sh can be seen
 export PATH="$HOME/.local/bin:$PATH"
 
-if [[ -z "$BSOS_EMAIL" ]]; then
-    echo "Error: BSOS_EMAIL environment variable not set. Exiting..."
+if [[ -z "$BSOS_SSH_COMMENT" ]]; then
+    echo "Error: BSOS_SSH_COMMENT environment variable not set. Exiting..."
     exit 1
 fi
 # determine ssh algorithm to use
@@ -37,9 +37,9 @@ print_double_line
 if [[ -f "$HOME/.ssh/id_${SSH_ALGO}.pubs" ]]; then
     echo "SSH key already exists, assuming ssh-agent is setup to pull from GitHub and skip generating ssh key."
 else
-    echo "Generating ssh key for $BSOS_EMAIL"
+    echo "Generating ssh key for $BSOS_SSH_COMMENT"
     mkdir -p "$HOME/.ssh"
-    ssh-keygen -t "$SSH_ALGO" -C "$BSOS_EMAIL" -f "$HOME/.ssh/id_${SSH_ALGO}"
+    ssh-keygen -t "$SSH_ALGO" -C "$BSOS_SSH_COMMENT" -f "$HOME/.ssh/id_${SSH_ALGO}"
     eval "$(ssh-agent -s)"
     ssh-add "$HOME/.ssh/id_${SSH_ALGO}"
 fi
