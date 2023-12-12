@@ -22,7 +22,7 @@ arch=$(uname -m) # Architecture
 # Set downloadUrl based on OS and architecture
 case "${os}-${arch}" in
     "Linux-x86_64")
-        downloadUrl="https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-x64"
+        downloadUrl="https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64"
         ;;
     "Linux-armv7l")
         downloadUrl="https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-armhf"
