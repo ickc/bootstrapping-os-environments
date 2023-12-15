@@ -69,6 +69,7 @@ ranger
 convert
 bat
 tar
+zstd
 sed
 exiftool
 jq

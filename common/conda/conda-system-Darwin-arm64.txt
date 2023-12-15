@@ -31,6 +31,7 @@ imagemagick
 bat
 p7zip
 tar
+zstd
 unzip
 sed
 # lynx
