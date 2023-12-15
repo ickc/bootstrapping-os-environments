@@ -1,21 +1,15 @@
 name: jupyterlab
 channels:
   - conda-forge
-  - defaults
-# channel_priority: True
 dependencies:
-  - python=3.10
-  - jupyterlab>=3
-  - jupyterhub
+  - bash_kernel
+  - ipympl
   - ipywidgets
   - jupyter_bokeh
   - jupyterlab-geojson
-  - bash_kernel
-  # - jupyterlab-katex
-  - jupyterlab-mathjax3
+  - jupyterlab-myst
+  - jupyterlab>=4
   - jupytext
-  # for jupyterlab>=3
-  - jupyterlab_widgets
-  - pyviz_comms
-  - ipympl
   - plotly
+  - python=3.12
+  - pyviz_comms
