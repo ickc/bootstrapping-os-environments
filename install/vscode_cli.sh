@@ -3,6 +3,7 @@
 set -e
 # https://unix.stackexchange.com/a/84980/192799
 DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
+PREFIX="${PREFIX:-"$HOME/.local"}"
 
 # helpers ##############################################################
 
@@ -51,8 +52,8 @@ echo Downloading to temp dir "$DOWNLOADDIR"
 cd "$DOWNLOADDIR"
 curl -L "$downloadUrl" -o vscode_cli.tar.gz
 tar -xf vscode_cli.tar.gz
-mkdir -p "$HOME/.local/bin"
-mv code "$HOME/.local/bin"
+mkdir -p "$PREFIX/bin"
+mv code "$PREFIX/bin"
 
 print_line
 echo Removing temp dir "$DOWNLOADDIR"
