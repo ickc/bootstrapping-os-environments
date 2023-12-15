@@ -48,9 +48,9 @@ case "$OS" in
         ;;
 esac
 
-./../../src/bsos/conda_env.py -o temp.yml -n system -C "$TXT" -v 3.11 -c conda-forge
+./../../src/bsos/conda_env.py -o temp.yml -n system -C "$TXT" -v 3.12 -c conda-forge
 if [[ -z ${PREFIX+x} ]]; then
-    ENV_NAME=system311-conda-forge
+    ENV_NAME=system312-conda-forge
     if [[ -z "$UPDATE" ]]; then
         mamba env create -f temp.yml -n "$ENV_NAME"
     else
