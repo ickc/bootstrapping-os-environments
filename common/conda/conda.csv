@@ -182,7 +182,6 @@ tbb,,,False,numba,True,True,True,True,
 jinja2,,,False,"pandas,numba",True,True,True,True,
 cffi,,,False,numba,True,True,True,True,
 llvm-openmp,,,False,numba,True,True,True,True,
-intel-openmp,,,False,numba,True,True,True,True,
 tbb-devel,,,False,numba,True,True,True,True,
 icc_rt,,numba,False,numba,True,True,True,True,
 pickle5,,,False,numba,False,False,False,False,for py37
