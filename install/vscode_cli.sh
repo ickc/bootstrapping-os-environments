@@ -53,7 +53,7 @@ cd "$DOWNLOADDIR"
 curl -L "$downloadUrl" -o vscode_cli.tar.gz
 tar -xf vscode_cli.tar.gz
 mkdir -p "$PREFIX/bin"
-mv code "$PREFIX/bin"
+mv -f code "$PREFIX/bin"
 
 print_line
 echo Removing temp dir "$DOWNLOADDIR"
