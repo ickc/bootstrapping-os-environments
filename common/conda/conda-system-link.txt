@@ -18,6 +18,7 @@ exiftool
 fdp
 ffmpeg
 gc
+gh
 git
 git-clang-format
 glances
