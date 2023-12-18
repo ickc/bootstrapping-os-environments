@@ -45,7 +45,6 @@ else
 fi
 
 # authenticate with GitHub
-"$HOME/git/source/bootstrapping-os-environments/install/gh.sh"
 gh auth login --git-protocol ssh --web
 
 print_double_line
