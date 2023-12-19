@@ -85,6 +85,12 @@ Some manual interaction needed:
 export BSOS_SSH_COMMENT="$USER@$HOSTNAME"; curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap.sh | bash && curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/install/vscode_cli.sh | bash && ~/git/source/bootstrapping-os-environments/unix-minimal/install.sh && ~/.local/bin/code tunnel --disable-telemetry
 ```
 
+At Blackett,
+
+```sh
+curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap-xrootd.sh | bash
+```
+
 # Links
 
 You may need to open <https://github.com/login/device> and input the one-time code to authenticate.
