@@ -88,7 +88,8 @@ export BSOS_SSH_COMMENT="$USER@$HOSTNAME"; curl -L https://github.com/ickc/boots
 At Blackett,
 
 ```sh
-curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap-xrootd.sh | bash
+wget https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap-xrootd.sh
+. bootstrap-xrootd.sh
 ```
 
 # Links
