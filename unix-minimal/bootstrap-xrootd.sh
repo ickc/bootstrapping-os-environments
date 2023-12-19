@@ -41,7 +41,7 @@ cd ~/git/source/dotfiles
 make
 
 # basher #######################################################################
-basher install ickc/dautil-sh
+~/.basher/bin/basher install ickc/dautil-sh
 
 # start zsh ####################################################################
 "$CVMFS_ROOT/usr/bin/zsh"
