@@ -21,9 +21,8 @@ cd ~/git/source
 git clone git@github.com:ickc/dotfiles
 cd ~/git/source/dotfiles
 . bin/env
-make install all
+make install all -j
 . bin/env
-. bin/interactive
 
 # start zsh ####################################################################
 zsh
