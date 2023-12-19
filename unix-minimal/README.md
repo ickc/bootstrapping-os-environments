@@ -82,7 +82,7 @@ Or if this repo is cloned already:
 Some manual interaction needed:
 
 ```sh
-export BSOS_SSH_COMMENT=...; curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap.sh | bash && curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/install/vscode_cli.sh | bash && ~/git/source/bootstrapping-os-environments/unix-minimal/install.sh && ~/.local/bin/code tunnel --disable-telemetry
+export BSOS_SSH_COMMENT="$USER@$HOSTNAME"; curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/unix-minimal/bootstrap.sh | bash && curl -L https://github.com/ickc/bootstrapping-os-environments/raw/master/install/vscode_cli.sh | bash && ~/git/source/bootstrapping-os-environments/unix-minimal/install.sh && ~/.local/bin/code tunnel --disable-telemetry
 ```
 
 # Links
