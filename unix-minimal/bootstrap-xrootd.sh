@@ -31,9 +31,7 @@ git clone git@github.com:ickc/sman-snippets
 curl -fsSL --create-dirs -o ~/.zim/zimfw.zsh https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 
 # install sman #################################################################
-mkdir -p ~/.local/bin
-curl -L https://github.com/ickc/sman/releases/download/v1.0.1/sman-linux-amd64-v1.0.1.tgz | tar -xz -C ~/.local/bin sman-linux-amd64-v1.0.1
-mv ~/.local/bin/sman-linux-amd64-v1.0.1 ~/.local/bin/sman
+bash -c "$(curl https://raw.githubusercontent.com/ickc/sman/master/install.sh)"
 
 # dotfiles
 cd ~/git/source/dotfiles
