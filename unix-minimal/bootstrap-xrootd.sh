@@ -10,36 +10,20 @@ XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manch
 # gfal-ls "$XROOTD_ROOT/home/$USER/.ssh"
 # from storage
 mkdir -p -m 700 ~/.ssh
-gfal-copy "$XROOTD_ROOT/home/$USER/.ssh/id_ed25519" ~/.ssh/id_ed25519
-chmod 600 ~/.ssh/id_ed25519
-gfal-copy "$XROOTD_ROOT/home/$USER/.ssh/id_ed25519.pub" ~/.ssh/id_ed25519.pub
-chmod 644 ~/.ssh/id_ed25519.pub
+gfal-copy -r "$XROOTD_ROOT/home/$USER/.ssh" ~/.ssh
+find ~/.ssh -type f -exec chmod 600 {} +
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 
-# git ##########################################################################
-git clone git@github.com:ickc/sman.git ~/.sman
-git clone https://github.com/basherpm/basher.git ~/.basher
-
+# dotfiles #####################################################################
 mkdir -p ~/git/source
 cd ~/git/source
 git clone git@github.com:ickc/dotfiles
-git clone git@github.com:ickc/sman-snippets
-
-# install zim ##################################################################
-
-curl -fsSL --create-dirs -o ~/.zim/zimfw.zsh https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
-
-# install sman #################################################################
-bash -c "$(curl https://raw.githubusercontent.com/ickc/sman/master/install.sh)"
-
-# dotfiles
 cd ~/git/source/dotfiles
 . bin/env
-make
-
-# basher #######################################################################
-~/.basher/bin/basher install ickc/dautil-sh
+make install all
+. bin/env
+. bin/interactive
 
 # start zsh ####################################################################
-"$CVMFS_ROOT/usr/bin/zsh"
+zsh
