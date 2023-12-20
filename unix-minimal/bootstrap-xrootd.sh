@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# git 2.3.0 or later is required
+export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
 # download ssh keys ############################################################
 XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
 # to stroage
