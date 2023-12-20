@@ -4,6 +4,7 @@
 export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 # download ssh keys ############################################################
+CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory
 XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
 # to stroage
 # gfal-mkdir -p -m 700 "$XROOTD_ROOT/home/$USER/.ssh"
@@ -24,8 +25,8 @@ cd ~/git/source
 git clone git@github.com:ickc/dotfiles
 cd ~/git/source/dotfiles
 . bin/env
-make install all -j
+make install -j && make -j
 . bin/env
 
 # start zsh ####################################################################
-zsh
+$CVMFS_ROOT/usr/bin/zsh
