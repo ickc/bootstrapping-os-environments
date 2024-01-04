@@ -19,6 +19,7 @@ s-tui
 mosh
 ncdu
 exa
+lsdeluxe
 ghostscript
 ffmpeg
 graphviz
