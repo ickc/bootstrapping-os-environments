@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.14.0
+#       jupytext_version: 1.16.0
 #   kernelspec:
 #     display_name: all310-conda-forge
 #     language: python
@@ -14,14 +14,15 @@
 # ---
 
 # %%
-from pathlib import Path
+import re
 import subprocess
 from io import StringIO
-import re
+from pathlib import Path
+from pprint import pprint
 
 import numpy as np
 import pandas as pd
-
+from IPython.display import display
 
 # %% [markdown]
 # `is_installed`
@@ -79,15 +80,19 @@ for col in ("name_x", "name_y"):
     df.drop(col, inplace=True, axis=1)
 for col in ("is_installed", "should_be_installed", "will_be_installed"):
     df[col].fillna(False, inplace=True)
-df = df[['package', 'name', 'version', 'is_installed', 'should_be_installed', 'will_be_installed']]
+df = df[["package", "name", "version", "is_installed", "should_be_installed", "will_be_installed"]]
 
 # %%
-print("Consider adding these packages to mas.txt:")
-df[df.is_installed & ~df.should_be_installed]
+df_add = df[df.is_installed & ~df.should_be_installed]
+if not df_add.empty:
+    print("Consider adding these packages to mas.txt:")
+    display(df_add)
 
 # %%
-print("Consider removing these packages from mas.txt")
-df[df.should_be_installed & ~df.is_installed]
+df_remove = df[df.should_be_installed & ~df.is_installed]
+if not df_remove.empty:
+    print("Consider removing these packages from mas.txt")
+    display(df_remove)
 
 
 # %% [markdown]
@@ -147,12 +152,16 @@ for col in ("is_installed", "should_be_installed", "will_be_installed"):
     df[col].fillna(False, inplace=True)
 
 # %%
-print("Consider adding these packages to port.txt:")
-df[df.is_installed & ~df.should_be_installed]
+df_add = df[df.is_installed & ~df.should_be_installed]
+if not df_add.empty:
+    print("Consider adding these packages to port.txt:")
+    display(df_add)
 
 # %%
-print("Consider removing these packages from port.txt")
-df[df.should_be_installed & ~df.is_installed]
+df_remove = df[df.should_be_installed & ~df.is_installed]
+if not df_remove.empty:
+    print("Consider removing these packages from port.txt")
+    display(df_remove)
 
 
 # %% [markdown]
@@ -184,13 +193,16 @@ packages_in = read_brew_txt(Path("brew.txt"))
 packages_installed = get_brew_installed()
 
 # %%
-print("Consider adding these packages to brew.txt:")
-packages_installed - packages_in
+packages_add = packages_installed - packages_in
+if packages_add:
+    print("Consider adding these packages to brew.txt:")
+    pprint(packages_add)
 
 # %%
-print("Consider removing these packages from brew.txt")
-packages_in - packages_installed
-
+packages_remove = packages_in - packages_installed
+if packages_remove:
+    print("Consider removing these packages from brew.txt")
+    pprint(packages_remove)
 
 # %% [markdown]
 # # brew cask
@@ -209,9 +221,13 @@ packages_in = read_brew_txt(Path("brew-cask.txt")) | read_brew_txt(Path("brew-ca
 packages_installed = get_brew_cask_installed()
 
 # %%
-print("Consider adding these packages to brew-cask.txt or brew-cask-font.txt:")
-packages_installed - packages_in
+packages_add = packages_installed - packages_in
+if packages_add:
+    print("Consider adding these packages to brew-cask.txt or brew-cask-font.txt:")
+    pprint(packages_add)
 
 # %%
-print("Consider removing these packages from brew-cask.txt or brew-cask-font.txt")
-packages_in - packages_installed
+packages_remove = packages_in - packages_installed
+if packages_remove:
+    print("Consider removing these packages from brew-cask.txt or brew-cask-font.txt")
+    pprint(packages_remove)
