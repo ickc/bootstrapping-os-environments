@@ -93,7 +93,6 @@ calibre
 keepassxc
 # keeweb
 cheatsheet
-aerial
 # hardware related ################################################################
 fanny
 zsa-wally
@@ -178,3 +177,9 @@ netdownloadhelpercoapp
 
 utm
 yattee
+
+keymapp
+whatsapp-beta
+alacritty
+wezterm
+

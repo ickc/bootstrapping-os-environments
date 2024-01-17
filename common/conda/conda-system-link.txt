@@ -14,10 +14,10 @@ dot_builtins
 dot2gxl
 edgepaint
 exa
-lsd
 exiftool
 fdp
 ffmpeg
+fzf
 gc
 gh
 git
@@ -38,6 +38,7 @@ gxl2gv
 htop
 hub
 jq
+lsd
 mm2gv
 mosh
 mosh

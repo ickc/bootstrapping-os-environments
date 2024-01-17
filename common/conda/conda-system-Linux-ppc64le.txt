@@ -19,6 +19,7 @@ htop
 mosh
 ncdu
 exa
+fzf
 ghostscript
 ffmpeg
 graphviz

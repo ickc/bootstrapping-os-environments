@@ -72,7 +72,7 @@ tmux-pasteboard
 wakeonlan
 glances
 # ncdu
-exa
+eza
 ranger
 w3m
 lynx
@@ -127,3 +127,5 @@ pam-reattach
 wtfutil
 
 graphviz
+
+fzf

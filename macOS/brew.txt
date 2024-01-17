@@ -93,3 +93,6 @@ memtester
 f3
 imagemagick
 qmk
+
+lsd
+whisper-cpp

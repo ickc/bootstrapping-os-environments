@@ -1,11 +1,11 @@
 # Xcode
-# 497799835
+497799835
 # iThoughtsX
 720669838
 # aText
 # 488566438
 # MultiMarkdown Composer v4
-# 1275176220
+1275176220
 # TaskPaper
 1090940630
 
@@ -118,15 +118,13 @@
 # Right Click
 1364038646
 # WhatsApp
-1147396723
+# 1147396723
 # forScore
 363738376
 # Notability
 360593530
 # HACK
 1464477788
-# Super Agent
-1568262835
 # Vinegar
 1591303229
 # PayPal Honey
@@ -139,3 +137,12 @@
 1519867270
 # The Camelizer
 1532579087
+
+# Slack
+803453959
+# Microsoft Outlook
+985367838
+# Notion Web Clipper
+1559269364
+# uBlacklist for Safari
+1547912640

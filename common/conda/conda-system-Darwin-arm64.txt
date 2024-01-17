@@ -19,6 +19,7 @@ mosh
 ncdu
 exa
 lsdeluxe
+fzf
 ghostscript
 ffmpeg
 graphviz
