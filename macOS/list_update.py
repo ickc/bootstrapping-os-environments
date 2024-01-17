@@ -18,7 +18,6 @@ import re
 import subprocess
 from io import StringIO
 from pathlib import Path
-from pprint import pprint
 
 import numpy as np
 import pandas as pd
@@ -196,13 +195,15 @@ packages_installed = get_brew_installed()
 packages_add = packages_installed - packages_in
 if packages_add:
     print("Consider adding these packages to brew.txt:")
-    pprint(packages_add)
+    for package in packages_add:
+        print("    ", package)
 
 # %%
 packages_remove = packages_in - packages_installed
 if packages_remove:
     print("Consider removing these packages from brew.txt")
-    pprint(packages_remove)
+    for package in packages_remove:
+        print("    ", package)
 
 # %% [markdown]
 # # brew cask
@@ -224,10 +225,12 @@ packages_installed = get_brew_cask_installed()
 packages_add = packages_installed - packages_in
 if packages_add:
     print("Consider adding these packages to brew-cask.txt or brew-cask-font.txt:")
-    pprint(packages_add)
+    for package in packages_add:
+        print("    ", package)
 
 # %%
 packages_remove = packages_in - packages_installed
 if packages_remove:
     print("Consider removing these packages from brew-cask.txt or brew-cask-font.txt")
-    pprint(packages_remove)
+    for package in packages_remove:
+        print("    ", package)
