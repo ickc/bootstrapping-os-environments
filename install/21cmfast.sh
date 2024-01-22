@@ -13,9 +13,9 @@ PREFIX="${PREFIX-"$HOME/21cmfast/local"}"
 P="${P-$(if [[ "$(uname)" == Darwin ]]; then sysctl -n hw.physicalcpu_max; else lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l; fi)}"
 echo "Using $P processes..."
 
-print_log(){
-	eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
-	printf "$@\n"
+print_log() {
+    eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
+    printf "$@\n"
 }
 
 print_log "clone 21cmfast to $TEMPDIR"

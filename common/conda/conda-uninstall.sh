@@ -6,7 +6,7 @@ set -e
 
 environment="$1"
 
-if [[ ! -d "$environment" ]]; then
+if [[ ! -d $environment ]]; then
     echo "$environment do not exist." >&2
     echo "You could try finding it from $HOME/.conda/environments.txt" >&2
     exit 1

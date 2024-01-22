@@ -5,7 +5,7 @@ set -e
 # TODO: update from https://zsh.sourceforge.io/Arc/source.html
 VERSION=${VERSION:-5.9}
 # https://unix.stackexchange.com/a/84980/192799
-DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
+DOWNLOADDIR="$(mktemp -d 2> /dev/null || mktemp -d -t 'zsh')"
 INSTALLDIR=${INSTALLDIR:-"$HOME/.local"}
 
 filename="zsh-$VERSION.tar.xz"
@@ -16,11 +16,11 @@ cd "$DOWNLOADDIR"
 
 # helpers ##############################################################
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
@@ -35,15 +35,15 @@ cd "$dirname"
 print_double_line
 echo Configuring...
 ./configure --prefix="$INSTALLDIR" \
-            --datadir="$INSTALLDIR/share" \
-            --enable-maildir-support \
-            --with-term-lib='ncursesw' \
-            --enable-multibyte \
-            --enable-function-subdirs \
-            --with-tcsetpgrp \
-            --enable-pcre \
-            --enable-cap \
-            --enable-zsh-secure-free
+    --datadir="$INSTALLDIR/share" \
+    --enable-maildir-support \
+    --with-term-lib='ncursesw' \
+    --enable-multibyte \
+    --enable-function-subdirs \
+    --with-tcsetpgrp \
+    --enable-pcre \
+    --enable-cap \
+    --enable-zsh-secure-free
 
 print_double_line
 echo Making...

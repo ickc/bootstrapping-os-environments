@@ -4,7 +4,7 @@ set -e
 
 PREFIX="${PREFIX:-$HOME/.local}"
 # https://unix.stackexchange.com/a/84980/192799
-DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
+DOWNLOADDIR="$(mktemp -d 2> /dev/null || mktemp -d -t 'zsh')"
 
 # helpers ##############################################################
 
@@ -19,9 +19,9 @@ print_line() {
 ########################################################################
 
 install() {
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    if [[ $OSTYPE == "linux-gnu"* ]]; then
         downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-unknown-linux-gnu.tar.gz
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
+    elif [[ $OSTYPE == "darwin"* ]]; then
         downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-apple-darwin.tar.gz
     else
         echo "Unsupported OS: $OSTYPE"

@@ -6,19 +6,19 @@ PREFIX="${PREFIX:-$HOME/.local}"
 
 # helpers ##############################################################
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
 ########################################################################
 
-install () {
+install() {
     # https://unix.stackexchange.com/a/84980/192799
-    DOWNLOADDIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'zsh')"
+    DOWNLOADDIR="$(mktemp -d 2> /dev/null || mktemp -d -t 'zsh')"
 
     version="$(curl --silent "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')"
     print_double_line
@@ -68,7 +68,7 @@ install () {
     esac
 
     filename="${downloadUrl##*/}"
-    if [[ "$OS" == Linux ]]; then
+    if [[ $OS == Linux ]]; then
         stem="${filename%.tar.gz}"
     else
         stem="${filename%.zip}"
@@ -77,7 +77,7 @@ install () {
     print_double_line
     echo "Downloading $downloadUrl to temp dir $DOWNLOADDIR"
     cd "$DOWNLOADDIR"
-    if [[ "$OS" == Linux ]]; then
+    if [[ $OS == Linux ]]; then
         curl -L "$downloadUrl" -o gh.tar.gz
         tar -xf gh.tar.gz
     else

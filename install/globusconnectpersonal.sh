@@ -8,17 +8,17 @@ URL='https://downloads.globus.org/globus-connect-personal/linux/stable/globuscon
 
 # helpers ##############################################################
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-mkdir_check_sudo () {
-    if [[ -d "$1" ]]; then
-        if [[ -w "$1" ]]; then
+mkdir_check_sudo() {
+    if [[ -d $1 ]]; then
+        if [[ -w $1 ]]; then
             # echo "directory exist and writable: $1"
             NEED_SUDO=0
         else
@@ -27,7 +27,7 @@ mkdir_check_sudo () {
         fi
     else
         mkdir -p "$1" 2> /dev/null || true
-        if [[ -d "$1" ]]; then
+        if [[ -d $1 ]]; then
             # echo "directory not exist and created: $1"
             NEED_SUDO=0
         else
@@ -42,7 +42,7 @@ mkdir_check_sudo () {
 
 mkdir_check_sudo "$PREFIX"
 cd "$PREFIX"
-if [[ "$NEED_SUDO" == 0 ]]; then
+if [[ $NEED_SUDO == 0 ]]; then
     wget -qO- "$URL" | tar --strip-components=1 -xzf -
 else
     wget -qO- "$URL" | sudo tar --strip-components=1 -xzf -

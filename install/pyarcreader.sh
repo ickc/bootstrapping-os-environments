@@ -17,12 +17,12 @@ NUMPY_INCLUDE="$(find "$PREFIX" -type d -path '*/lib/python*/site-packages/numpy
 echo "Using numpy include dir: $NUMPY_INCLUDE"
 
 mkdir -p "$TEMPDIR" &&
-cd "$TEMPDIR" &&
-git clone "$BOLOUSER@bolowiki.berkeley.edu:/pbrepo/PbArchive.git" &&
-cd PbArchive &&
-./autogen.sh &&
-mkdir -p "$PREFIX" &&
-CPPFLAGS="-I${PREFIX}/include -I$NUMPY_INCLUDE" LDFLAGS="-L${PREFIX}/lib" ./configure --prefix="$PREFIX" --with-libarchive="$PREFIX" &&
-make -j "$P" &&
-make install -j "$P" &&
-rm -rf "$TEMPDIR"
+    cd "$TEMPDIR" &&
+    git clone "$BOLOUSER@bolowiki.berkeley.edu:/pbrepo/PbArchive.git" &&
+    cd PbArchive &&
+    ./autogen.sh &&
+    mkdir -p "$PREFIX" &&
+    CPPFLAGS="-I${PREFIX}/include -I$NUMPY_INCLUDE" LDFLAGS="-L${PREFIX}/lib" ./configure --prefix="$PREFIX" --with-libarchive="$PREFIX" &&
+    make -j "$P" &&
+    make install -j "$P" &&
+    rm -rf "$TEMPDIR"

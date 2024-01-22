@@ -3,15 +3,19 @@
 set -e
 
 # sudo loop
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+done 2> /dev/null &
 
 # helpers ##############################################################
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 

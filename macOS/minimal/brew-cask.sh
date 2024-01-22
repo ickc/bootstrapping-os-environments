@@ -2,7 +2,11 @@
 
 # prepare sudo for pkg
 sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+done 2> /dev/null &
 
 brew tap homebrew/cask-versions
 brew tap homebrew/cask-drivers

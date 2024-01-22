@@ -4,7 +4,10 @@
 
 startsudo() {
     sudo -v
-    ( while true; do sudo -v; sleep 50; done; ) &
+    (while true; do
+        sudo -v
+        sleep 50
+    done) &
     SUDO_PID="$!"
     trap stopsudo SIGINT SIGTERM
 }
@@ -14,11 +17,11 @@ stopsudo() {
     sudo -k
 }
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 

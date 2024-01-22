@@ -13,17 +13,15 @@ P="${P-$(if [[ "$(uname)" == Darwin ]]; then sysctl -n hw.physicalcpu_max; else 
 echo "Using $P processes..."
 
 mkdir -p "$TEMPDIR" &&
-cd "$TEMPDIR" &&
-wget -qO- http://www.libarchive.org/downloads/libarchive-$VERSION.tar.gz | tar -xzf - &&
-cd libarchive-$VERSION &&
-CFLAGS="$CFLAGS" ./configure --prefix=$PREFIX &&
-
-make -j $P &&
-make install -j $P
+    cd "$TEMPDIR" &&
+    wget -qO- http://www.libarchive.org/downloads/libarchive-$VERSION.tar.gz | tar -xzf - &&
+    cd libarchive-$VERSION &&
+    CFLAGS="$CFLAGS" ./configure --prefix=$PREFIX &&
+    make -j $P &&
+    make install -j $P
 
 rm -rf "$TEMPDIR" &&
-
-echo '# export these PATH'
+    echo '# export these PATH'
 echo export PATH="$PREFIX/bin:\$PATH"
 echo export LD_LIBRARY_PATH="$PREFIX/lib:\$LD_LIBRARY_PATH"
 echo export MANPATH="$PREFIX/share/man:\$MANPATH"

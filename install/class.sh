@@ -10,15 +10,15 @@ set -e
 
 url="git@github.com:lesgourg/class_public.git"
 
-print_log(){
-	eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
-	printf "$@\n"
+print_log() {
+    eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
+    printf "$@\n"
 }
 
 # set install directory
 if [[ -n $NERSC_HOST ]]; then
     defaultDir=/global/common/software/polar/git
-	module swap gcc/8.2.0
+    module swap gcc/8.2.0
 else
     defaultDir="$HOME/git/fork"
 fi
@@ -45,8 +45,8 @@ fi
 # install in all conda environments that ends in -defaults or -intel
 cd python
 for i in $(grep -E -- '-(defaults|intel)' "$HOME/.conda/environments.txt"); do
-	print_log "Install in Python at $i"
+    print_log "Install in Python at $i"
     . activate "$i"
-	# allow this to fail in some environments
-	python setup.py install || true
+    # allow this to fail in some environments
+    python setup.py install || true
 done

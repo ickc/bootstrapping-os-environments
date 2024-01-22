@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # modify from https://apple.stackexchange.com/a/398797/355318
 # also see https://developer.apple.com/library/archive/technotes/tn2450/_index.html

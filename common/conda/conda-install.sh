@@ -4,17 +4,17 @@
 
 set -e
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DIR"
 
 is_apple_silicon() {
     machine=$(uname -m)
     os=$(uname -s)
-    
-    if [[ "$machine" == "arm64" && "$os" == "Darwin" ]]; then
-        return 0  # Apple Silicon
+
+    if [[ $machine == "arm64" && $os == "Darwin" ]]; then
+        return 0 # Apple Silicon
     else
-        return 1  # Not Apple Silicon
+        return 1 # Not Apple Silicon
     fi
 }
 

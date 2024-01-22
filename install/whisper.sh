@@ -11,11 +11,11 @@ CLEAN="${CLEAN:-1}"
 
 # helpers ##############################################################
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
@@ -36,7 +36,7 @@ else
     cd whisper.cpp
 fi
 
-if [[ "$CLEAN" == 1 ]]; then
+if [[ $CLEAN == 1 ]]; then
     print_double_line
     echo "Cleaning build dir"
     print_line

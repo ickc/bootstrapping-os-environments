@@ -6,11 +6,11 @@ set -e
 
 # helpers ##############################################################
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
@@ -19,7 +19,7 @@ print_line () {
 # make sure packages from bootstrap.sh can be seen
 export PATH="$HOME/.local/bin:$PATH"
 
-if [[ -z "$BSOS_SSH_COMMENT" ]]; then
+if [[ -z $BSOS_SSH_COMMENT ]]; then
     echo "Error: BSOS_SSH_COMMENT environment variable not set. Exiting..."
     exit 1
 fi
@@ -54,13 +54,15 @@ if [[ -d "$HOME/git/source/bootstrapping-os-environments" ]]; then
     cd "$HOME/git/source/bootstrapping-os-environments"
     git remote set-url origin git@github.com:ickc/bootstrapping-os-environments.git
 else
-    mkdir -p "$HOME/git/source"; cd "$HOME/git/source"
+    mkdir -p "$HOME/git/source"
+    cd "$HOME/git/source"
     git clone git@github.com:ickc/bootstrapping-os-environments.git
 fi
 
 print_double_line
 echo "Installing dotfiles..."
-mkdir -p "$HOME/git/source"; cd "$HOME/git/source"
+mkdir -p "$HOME/git/source"
+cd "$HOME/git/source"
 git clone git@github.com:ickc/dotfiles.git
 cd dotfiles
 # shellcheck disable=SC1091

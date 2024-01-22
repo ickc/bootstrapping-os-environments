@@ -8,7 +8,7 @@ BOOTSTRAP_SHA="dcb6128284e7e8529a8a770d55cf93d97550558c"
 curl -O https://pkgsrc.joyent.com/packages/Linux/el6/bootstrap/${BOOTSTRAP_TAR}
 
 # Verify the SHA1 checksum.
-echo "${BOOTSTRAP_SHA}  ${BOOTSTRAP_TAR}" >check-shasum
+echo "${BOOTSTRAP_SHA}  ${BOOTSTRAP_TAR}" > check-shasum
 sha1sum -c check-shasum
 
 # Verify PGP signature.  This step is optional, and requires gpg.

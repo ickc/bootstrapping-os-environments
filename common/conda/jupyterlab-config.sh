@@ -5,12 +5,12 @@
 mkdir -p "$HOME/.jupyter"
 
 if [[ $(uname) == Darwin ]]; then
-cat << 'EOF' > "$HOME/.jupyter/jupyter_lab_config.py"
+    cat << 'EOF' > "$HOME/.jupyter/jupyter_lab_config.py"
 c.ServerApp.browser = "/Applications/Chromium.app/Contents/MacOS/Chromium --app=%s"
 c.ServerApp.iopub_data_rate_limit = 10000000000
 EOF
 else
-cat << 'EOF' > "$HOME/.jupyter/jupyter_lab_config.py"
+    cat << 'EOF' > "$HOME/.jupyter/jupyter_lab_config.py"
 c.ServerApp.browser = "chromium-browser --app=%s"
 c.ServerApp.iopub_data_rate_limit = 10000000000
 EOF

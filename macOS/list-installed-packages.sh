@@ -15,7 +15,6 @@ find $HOME/Library/Safari/Extensions/ -iname '*.safariextz' -print | sed -e s=/.
 # local bin
 ls /usr/local/bin/ > local-bin.txt
 
-
 # local bin in home
 ls $HOME/.local/bin > home-local-bin.txt
 
@@ -28,7 +27,7 @@ gem list --no-version > gem.txt
 #npm
 npm list --depth=0 > npm-project-tree.txt
 npm list -g --depth=0 > npm-global-tree.txt
-ls `npm root -g` > npm-global-ls.txt
+ls $(npm root -g) > npm-global-ls.txt
 
 # pip
 pip list | sed 's/ (.*)//' > pip.txt

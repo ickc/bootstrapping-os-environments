@@ -8,7 +8,7 @@
 diskutil list
 while true; do
     read -p "What's the disk number?" dkno
-    if [[ "$dkno" =~ ^[0-9]+$ ]]; then
+    if [[ $dkno =~ ^[0-9]+$ ]]; then
         break
     else
         echo "Disk number should be integers only."
