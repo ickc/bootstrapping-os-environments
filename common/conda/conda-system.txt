@@ -55,3 +55,4 @@ py-cpuinfo >=7
 pysnmp
 pystache
 zeroconf
+dnachun::joshuto
