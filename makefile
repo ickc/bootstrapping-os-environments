@@ -83,10 +83,21 @@ flake8:
 	flake8 . --ignore=E501
 pylint:
 	pylint bsos
-format:
+format: format-python format-shell
+format-python:
 	black . && isort .
 	find \! -path '*/.ipynb_checkpoints/*' -name '*.ipynb' -exec jupytext --sync --pipe black --pipe 'isort - --treat-comment-as-code "# %%" --float-to-top' {} +
 	python src/bsos/core.py common/conda/conda.csv common/conda/conda.csv
+format-shell:
+	find . -type f \
+		\( -name '*.sh' -o -name env -o -name interactive \) \
+		-exec shfmt \
+			--write \
+			--simplify \
+			--indent 4 \
+			--case-indent \
+			--space-redirects \
+			{} +
 print-%:
 	$(info $* = $($*))
 
