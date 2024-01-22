@@ -4,7 +4,7 @@
 sudo -v
 while true; do
     sudo -n true
-    sleep 60
+    sleep 50
     kill -0 "$$" || exit
 done 2> /dev/null &
 
