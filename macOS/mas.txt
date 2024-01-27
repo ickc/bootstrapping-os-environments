@@ -146,3 +146,6 @@
 1559269364
 # uBlacklist for Safari
 1547912640
+
+# Hidden Bar
+1452453066

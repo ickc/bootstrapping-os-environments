@@ -96,3 +96,5 @@ qmk
 
 lsd
 whisper-cpp
+joshuto
+starship
