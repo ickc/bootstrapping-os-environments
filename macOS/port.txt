@@ -68,7 +68,6 @@ htop
 bpytop
 mosh
 tmux
-tmux-pasteboard
 wakeonlan
 glances
 # ncdu

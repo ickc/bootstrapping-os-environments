@@ -13,7 +13,6 @@ wget
 htop
 mosh
 tmux
-tmux-pasteboard
 wakeonlan
 glances
 ncdu
