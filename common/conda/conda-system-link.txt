@@ -69,6 +69,7 @@ ssh-agent
 ssh-keygen
 ssh-keyscan
 sshd
+starship
 tar
 tmux
 tred
