@@ -7,6 +7,7 @@ export HOME="/home/$USER"
 
 # download ssh keys ############################################################
 CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory
+export PATH="$CVMFS_ROOT/usr/bin:$PATH"
 XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
 # to stroage
 # gfal-mkdir -p -m 700 "$XROOTD_ROOT/home/$USER/.ssh"
