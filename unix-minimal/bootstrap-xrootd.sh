@@ -2,6 +2,8 @@
 
 # git 2.3.0 or later is required
 export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+# temporary fix of https://github.com/simonsobs-uk/data-centre/issues/47
+export HOME="/home/$USER"
 
 # download ssh keys ############################################################
 CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory
