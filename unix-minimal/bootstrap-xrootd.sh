@@ -24,9 +24,11 @@ mkdir -p ~/git/source
 cd ~/git/source
 git clone git@github.com:ickc/dotfiles
 cd ~/git/source/dotfiles
-. bin/env
+. config/zsh/.zshenv
+. config/zsh/.zshrc > /dev/null
 make install -j && make -j
-. bin/env
+. config/zsh/.zshenv
+. config/zsh/.zshrc > /dev/null
 
 # start zsh ####################################################################
 $CVMFS_ROOT/usr/bin/zsh
