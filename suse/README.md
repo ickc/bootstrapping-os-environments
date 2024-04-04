@@ -17,6 +17,7 @@ Automated: follow the AutoYaST guide and use profile from pre-existing installat
 ```bash
 sudo transactional-update pkg install \
     bat \
+    btop \
     fzf \
     fzf-bash-completion \
     fzf-tmux \
