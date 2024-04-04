@@ -57,7 +57,7 @@ sudo transactional-update pkg install zfs
 Open UDP ports for mosh:
 
 ```bash
-sudo firewall-cmd --zone=public --add-port=60000-61000/udp --permanent
+sudo firewall-cmd --zone=public --add-service=mosh --permanent
 sudo firewall-cmd --reload
 sudo firewall-cmd --zone=public --list-ports
 ```
@@ -68,6 +68,12 @@ For Samba:
 sudo firewall-cmd --zone=public --add-service=samba --permanent
 sudo firewall-cmd --reload
 sudo firewall-cmd --zone=public --list-ports
+```
+
+To remove ports:
+
+```bash
+sudo firewall-cmd --zone=<zone> --remove-port=<port-number>/<protocol> --permanent
 ```
 
 # Personalize
