@@ -62,6 +62,14 @@ sudo firewall-cmd --reload
 sudo firewall-cmd --zone=public --list-ports
 ```
 
+For Samba:
+
+```bash
+sudo firewall-cmd --zone=public --add-service=samba --permanent
+sudo firewall-cmd --reload
+sudo firewall-cmd --zone=public --list-ports
+```
+
 # Personalize
 
 ```bash
