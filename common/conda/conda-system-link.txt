@@ -42,7 +42,6 @@ jq
 lsd
 mm2gv
 mosh
-mosh
 mosh-client
 mosh-server
 nano
