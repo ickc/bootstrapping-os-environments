@@ -55,15 +55,14 @@ sudo firewall-cmd --zone=public --list-ports
 
 ```bash
 # create ssh key pair
-SSH_ALGO=ed25519
 BSOS_SSH_COMMENT=$USER@$HOSTNAME
 mkdir -p "$HOME/.ssh"
-ssh-keygen -t "$SSH_ALGO" -C "$BSOS_SSH_COMMENT" -f "$HOME/.ssh/id_${SSH_ALGO}"
+ssh-keygen -t ed25519 -C "$BSOS_SSH_COMMENT" -f "$HOME/.ssh/id_ed25519"
 eval "$(ssh-agent -s)"
-ssh-add "$HOME/.ssh/id_${SSH_ALGO}"
+ssh-add "$HOME/.ssh/id_ed25519"
 
 # authenticate with GitHub
-# open https://github.com/login/device
+# open https://github.com/login/device and type the code seen on screen
 gh auth login --git-protocol ssh --web
 
 # clone BSOS
@@ -76,15 +75,14 @@ mkdir -p "$HOME/git/source"
 cd "$HOME/git/source"
 git clone git@github.com:ickc/dotfiles.git
 cd dotfiles
-# shellcheck disable=SC1091
-. "$HOME/git/source/dotfiles/bin/env"
+. "$HOME/git/source/dotfiles/config/zsh/.zshenv"
 make install && make
 
 # Installing ssh-dir
 git clone git@github.com:ickc/ssh-dir.git "$HOME/.ssh.temp"
 cd "$HOME/.ssh.temp"
-mv "$HOME/.ssh/id_${SSH_ALGO}" "$HOME/.ssh.temp"
-mv "$HOME/.ssh/id_${SSH_ALGO}.pub" "$HOME/.ssh.temp"
+mv "$HOME/.ssh/id_ed25519" "$HOME/.ssh.temp"
+mv "$HOME/.ssh/id_ed25519.pub" "$HOME/.ssh.temp"
 rm -rf "$HOME/.ssh"
 mv "$HOME/.ssh.temp" "$HOME/.ssh"
 
