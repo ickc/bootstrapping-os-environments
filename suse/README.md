@@ -18,6 +18,8 @@ Automated: follow the AutoYaST guide and use profile from pre-existing installat
 sudo transactional-update pkg install \
     bat \
     fzf \
+    fzf-tmux \
+    fzf-zsh-completion \
     gh \
     git \
     gnu_parallel \
@@ -36,6 +38,7 @@ sudo transactional-update pkg install \
     starship \
     tmux \
     tree \
+    vim-fzf \
     zsh
 # after reboot
 chsh -s /usr/bin/zsh
