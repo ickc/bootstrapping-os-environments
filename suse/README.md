@@ -26,6 +26,7 @@ sudo transactional-update pkg install \
     gnu_parallel \
     htop \
     jq \
+    lsb-release \
     lsd \
     make \
     mosh \
@@ -33,6 +34,7 @@ sudo transactional-update pkg install \
     python3-glances \
     ranger \
     s-tui \
+    samba \
     sensors \
     ShellCheck \
     shfmt \
@@ -43,6 +45,10 @@ sudo transactional-update pkg install \
     zsh
 # after reboot
 chsh -s /usr/bin/zsh
+# ZFS
+sudo zypper addrepo https://download.opensuse.org/repositories/filesystems/$(lsb_release -rs)/filesystems.repo
+sudo zypper refresh
+sudo transactional-update pkg install zfs
 ```
 
 # Firewall
