@@ -66,7 +66,7 @@ cd "$HOME/git/source"
 git clone git@github.com:ickc/dotfiles.git
 cd dotfiles
 # shellcheck disable=SC1091
-. "$HOME/git/source/dotfiles/bin/env"
+. "$HOME/git/source/dotfiles/config/zsh/.zshenv"
 make install && make
 
 print_double_line
