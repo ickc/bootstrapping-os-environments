@@ -35,6 +35,7 @@ sudo transactional-update pkg install \
     ncdu \
     python3-glances \
     ranger \
+    rasdaemon \
     s-tui \
     samba \
     sensors \
