@@ -25,6 +25,7 @@ sudo transactional-update pkg install \
     gh \
     git \
     gnu_parallel \
+    hddtemp \
     htop \
     jq \
     lsb-release \
