@@ -16,6 +16,7 @@ Automated: follow the AutoYaST guide and use profile from pre-existing installat
 
 ```bash
 sudo transactional-update pkg install \
+    apcupsd \
     bat \
     btop \
     fzf \
