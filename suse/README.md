@@ -12,6 +12,12 @@ Manual: follow on-screen guidance
 
 Automated: follow the AutoYaST guide and use profile from pre-existing installation.
 
+# Disable periodic transactional update
+
+```bash
+sudo systemctl disable --now transactional-update.timer
+```
+
 # Installing dependencies
 
 ```bash
@@ -71,6 +77,7 @@ For Samba:
 sudo firewall-cmd --zone=public --add-service=samba --permanent
 sudo firewall-cmd --reload
 sudo firewall-cmd --zone=public --list-ports
+sudo firewall-cmd --zone=public --list-services
 ```
 
 To remove ports:
