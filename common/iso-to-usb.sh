@@ -1,63 +1,55 @@
 #!/usr/bin/env bash
 
-# get paths and extension
-PATHNAME="$@"
-PATHNAMEWOEXT=${PATHNAME%.*}
-EXT=${PATHNAME##*.}
+# This script burns the iso to the usb disk, supports macOS and Linux.
+# usage: ./iso-to-usb.sh /path/to.iso
 
-# Convert iso to dmg
-if [[ $EXT != "dmg" && $(uname) == Darwin ]]; then
-    filename="$PATHNAMEWOEXT.dmg"
-    hdiutil convert "$PATHNAME" -format UDRW -o "$filename"
-else
-    filename="$PATHNAME"
-fi
+set -e
+UNAME="$(uname)"
 
-# get disk#
-if [[ $(uname) == Darwin ]]; then
+# show the disks
+# for Linux
+if [[ $UNAME == Darwin ]]; then
     diskutil list
-    while true; do
-        read -p "What's the disk number?" dkno
-        if [[ $dkno =~ ^[0-9]+$ ]]; then
-            break
-        else
-            echo "Disk number should be integers only."
-        fi
-    done
-    diskname=disk$dkno
 else
     lsblk
-    while true; do
-        read -p "What's the disk label?" dklb
-        if [[ $dklb =~ ^[a-z]$ ]]; then
-            break
-        else
-            echo "Disk number should be alphabets only."
-        fi
-    done
-    diskname=sd$dklb
 fi
 
-# clone
+# read the disk name from user
 while true; do
-    read -p "Do you wish to burn the iso to $diskname? (Y/n)" yn
-    if [[ $(uname) == Darwin ]]; then
-        case $yn in
-            [Yy]*)
-                diskutil unmountDisk /dev/$diskname && sudo dd if="$filename" of=/dev/r$diskname status=progress bs=1M && sync
-                break
-                ;;
-            [Nn]*) exit ;;
-            *) echo "Please answer yes or no." ;;
-        esac
+    read -rp "What's the disk name?" diskname
+    if [[ -b "/dev/$diskname" ]]; then
+        break
     else
-        case $yn in
-            [Yy]*)
-                sudo dd if="$filename" of=/dev/$diskname status=progress bs=1M && sync
-                break
-                ;;
-            [Nn]*) exit ;;
-            *) echo "Please answer yes or no." ;;
-        esac
+        echo "Disk name is not valid."
     fi
 done
+
+# confirm to burn the iso to the disk, else exit
+while true; do
+    read -rp "Do you wish to burn the iso to $diskname? (Y/n)" yn
+    case $yn in
+    [Yy]*) break ;;
+    [Nn]*) exit ;;
+    *) echo "Please answer yes or no." ;;
+    esac
+done
+
+echo unmounting the disk "/dev/$diskname"
+if [[ $UNAME == Darwin ]]; then
+    diskutil unmountDisk "/dev/$diskname"
+else
+    sudo umount "/dev/$diskname"
+fi
+
+if [[ $UNAME == Darwin ]]; then
+    if [[ $(command -v dd) == /bin/dd ]]; then
+        # use macOS dd
+        sudo dd if="$1" of="/dev/r$diskname" bs=4m
+    else
+        # use gnu dd
+        sudo dd if="$1" of="/dev/$diskname" bs=4M conv=fsync status=progress
+    fi
+else
+    sudo dd if="$1" of="/dev/$diskname" bs=4M conv=fsync oflag=direct status=progress
+fi
+sync
