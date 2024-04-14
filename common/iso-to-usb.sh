@@ -38,7 +38,7 @@ echo unmounting the disk "/dev/$diskname"
 if [[ $UNAME == Darwin ]]; then
     diskutil unmountDisk "/dev/$diskname"
 else
-    sudo umount "/dev/$diskname"
+    sudo umount "/dev/$diskname" || true
 fi
 
 if [[ $UNAME == Darwin ]]; then
