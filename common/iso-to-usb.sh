@@ -16,7 +16,7 @@ fi
 
 # read the disk name from user
 while true; do
-    read -rp "What's the disk name?" diskname
+    read -rp "What's the disk name? " diskname
     if [[ -b "/dev/$diskname" ]]; then
         break
     else
@@ -26,7 +26,7 @@ done
 
 # confirm to burn the iso to the disk, else exit
 while true; do
-    read -rp "Do you wish to burn the iso to $diskname? (Y/n)" yn
+    read -rp "Do you wish to burn the iso to $diskname? (Y/n) " yn
     case $yn in
     [Yy]*) break ;;
     [Nn]*) exit ;;
