@@ -10,8 +10,11 @@ UNAME="$(uname)"
 # for Linux
 if [[ $UNAME == Darwin ]]; then
     diskutil list
-else
+elif [[ $UNAME == Linux ]]; then
     lsblk
+else
+    echo "Unsupported OS: $UNAME"
+    exit 1
 fi
 
 # read the disk name from user
@@ -37,19 +40,14 @@ done
 echo unmounting the disk "/dev/$diskname"
 if [[ $UNAME == Darwin ]]; then
     diskutil unmountDisk "/dev/$diskname"
+    # use macOS dd
+    sudo /bin/dd if="$1" of="/dev/r$diskname" bs=4m status=progress
+    # alternatively, with GNU dd
+    # sudo dd if="$1" of="/dev/r$diskname" bs=4M conv=fsync status=progress
+    # not using it here for portability
+    sync
 else
     sudo umount "/dev/$diskname" || true
+    sudo dd if="$1" of="/dev/$diskname" bs=4M status=progress conv=fsync oflag=direct
+    sync
 fi
-
-if [[ $UNAME == Darwin ]]; then
-    if [[ $(command -v dd) == /bin/dd ]]; then
-        # use macOS dd
-        sudo dd if="$1" of="/dev/r$diskname" bs=4m
-    else
-        # use gnu dd
-        sudo dd if="$1" of="/dev/r$diskname" bs=4M conv=fsync status=progress
-    fi
-else
-    sudo dd if="$1" of="/dev/$diskname" bs=4M conv=fsync oflag=direct status=progress
-fi
-sync
