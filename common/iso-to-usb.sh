@@ -47,7 +47,7 @@ if [[ $UNAME == Darwin ]]; then
         sudo dd if="$1" of="/dev/r$diskname" bs=4m
     else
         # use gnu dd
-        sudo dd if="$1" of="/dev/$diskname" bs=4M conv=fsync status=progress
+        sudo dd if="$1" of="/dev/r$diskname" bs=4M conv=fsync status=progress
     fi
 else
     sudo dd if="$1" of="/dev/$diskname" bs=4M conv=fsync oflag=direct status=progress
