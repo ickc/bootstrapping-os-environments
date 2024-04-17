@@ -11,12 +11,20 @@ Manual: follow on-screen guidance
 
 Automated: follow the AutoYaST guide and use profile from pre-existing installation.
 
-## Hostname
+## Variables
+
+C.f. template: `/opt/ohpc/pub/doc/recipes/leap15/input.local`
+or <https://github.com/openhpc/ohpc/blob/b2e3d64f628870e82c2508cadbbb40fa040a348c/docs/recipes/install/leap15/input.local.template#L4>.
 
 ```bash
 # tailor this
-sms_name=ohpc
-sms_ip=192.168.4.20
+export sms_name=ohpc \
+    sms_ip=192.168.4.20
+```
+
+## Hostname
+
+```bash
 sudo hostnamectl set-hostname "$sms_name"
 echo "$sms_ip $sms_name" | sudo tee -a /etc/hosts
 hostnamectl
@@ -82,8 +90,3 @@ sudo firewall-cmd --zone=<zone> --remove-port=<port-number>/<protocol> --permane
 ## Personalize
 
 Do your own personalization here.
-
-# TODO
-
-Template: `/opt/ohpc/pub/doc/recipes/leap15/input.local`
-or <https://github.com/openhpc/ohpc/blob/b2e3d64f628870e82c2508cadbbb40fa040a348c/docs/recipes/install/leap15/input.local.template#L4>
