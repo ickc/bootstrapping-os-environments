@@ -87,6 +87,13 @@ To remove ports:
 sudo firewall-cmd --zone=<zone> --remove-port=<port-number>/<protocol> --permanent
 ```
 
+# Sensors
+
+```bash
+sudo sensors-detect
+# and follow on screen instructions
+```
+
 # Personalize
 
 ```bash
