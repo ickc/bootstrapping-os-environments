@@ -143,4 +143,8 @@ nagios_web_password=...
 sed -i 's/SuSEfirewall2/firewalld/' recipe.sh
 export OHPC_INPUT_LOCAL="$(realpath input.local)"
 sudo ./recipe.sh
+# fix some problems with the script
+sudo nano /etc/slurm/slurm.conf
+# edit this line
+# NodeName=c[1-2] Sockets=1 CoresPerSocket=2 ThreadsPerCore=2 State=UNKNOWN
 ```
