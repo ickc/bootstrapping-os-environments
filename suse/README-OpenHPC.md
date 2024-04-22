@@ -18,6 +18,7 @@ Manual: follow on-screen guidance
     - btrfs
     - without swap
 - by default, it chooses wicked, alternatively, you can choose Network Manager
+- turn off firewall, as OpenHPC doc will ask you to turn it off later
 
 Automated: follow the AutoYaST guide and use profile from pre-existing installation.
 
@@ -26,7 +27,7 @@ Automated: follow the AutoYaST guide and use profile from pre-existing installat
 ```bash
 # tailor this
 export sms_name=ohpc \
-    sms_ip=192.168.4.20
+    sms_ip=192.168.4.5
 sudo hostnamectl set-hostname "$sms_name"
 echo "$sms_ip $sms_name" | sudo tee -a /etc/hosts
 hostnamectl
@@ -74,6 +75,8 @@ sudo zypper install zfs
 ```
 
 ## Firewall
+
+Skip this if you didn't enable firewall in the first place.
 
 TODO: in the documentation, it mentions `SuSEfirewall2` should be disabled.
 But `firewalld` is used in OpenSUSE Leap 15.5.
