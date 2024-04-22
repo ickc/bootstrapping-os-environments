@@ -124,7 +124,7 @@ sudo rpm -ivh http://repos.openhpc.community/OpenHPC/3/Leap_15/x86_64/ohpc-relea
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
 
 ```bash
-sudo zypper -n install docs-ohpc
+sudo zypper install docs-ohpc
 mkdir -p ~/ohpc
 cd ~/ohpc
 cp /opt/ohpc/pub/doc/recipes/leap15/input.local .
@@ -132,6 +132,7 @@ cp -p /opt/ohpc/pub/doc/recipes/leap15/x86_64/warewulf/slurm/recipe.sh .
 # tailor
 # TODO: check eth_provision
 ```
+
 Tailor this, for example,
 
 ```bash
