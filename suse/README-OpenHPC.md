@@ -86,6 +86,7 @@ sudo zypper install \
     hddtemp \
     htop \
     jq \
+    lldpd \
     lsb-release \
     lsd \
     make \

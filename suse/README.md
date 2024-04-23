@@ -36,6 +36,7 @@ sudo transactional-update pkg install \
     hddtemp \
     htop \
     jq \
+    lldpd \
     lsb-release \
     lsd \
     make \
