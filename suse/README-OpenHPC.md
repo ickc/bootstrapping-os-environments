@@ -8,6 +8,19 @@ The only confusion is the its discovery—nowhere in its website makes it clear 
 Links to the manual can be found in
 [3.x · openhpc/ohpc Wiki](https://github.com/openhpc/ohpc/wiki/3.x).
 
+## OS choice
+
+OpenHPC only supports RHEL derivatives or SUSE derivatives.
+
+See [CERN Linux Landscape Update (2023-10-06)](https://indico.cern.ch/event/1253805/contributions/5556270/attachments/2729315/4744119/SoC3_Linux.pdf) for the recent EULA change made by Red Hat on June 21 2023.
+In short, Red Hat is actively discourage the existence of a clone including the discontinuation of CentOS,
+and the EULA change that is designed to kill off 3rd party clone such as Rocky Linux.
+
+Because of this, OpenSUSE is recommended and used in this guide.
+If RHEL derivatives is a must, AlmaLinux is recommended
+as they aim for ABI compatibility,
+avoiding the EULA restriction from Red Hat.
+
 ## UEFI
 
 - Turn off Secure Boot if you need ZFS (or else self-signed the ZFS kernel module later)
