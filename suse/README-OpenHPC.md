@@ -43,6 +43,8 @@ Define these for the following, see appendix A for details.
 # tailor this
 export sms_name=ohpc \
     sms_ip=192.168.1.5 \
+    internal_netmask=255.255.255.0 \
+    sms_eth_internal=p1p1 \
     ntp_server=0.uk.pool.ntp.org \
     bmc_password=... \
     nagios_web_password=...
@@ -204,6 +206,35 @@ sudo nano /etc/slurm/slurm.conf
 ```
 
 Optionally, set up `slurm-slurmdbd-ohpc`.
+
+## 3.7 Complete basic Warewulf setup for *master* node
+
+```bash
+sudo cp /etc/warewulf/provision.conf /etc/warewulf/provision.conf.old
+sudo perl -pi -e "s/device = eth1/device = ${sms_eth_internal}/" /etc/warewulf/provision.conf
+sudo perl -pi -e "s#\#tftpdir = /var/lib/#tftpdir = /srv/#" /etc/warewulf/provision.conf
+sudo perl -pi -e "s,cacert =.*,cacert = /etc/ssl/ca-bundle.pem," /etc/warewulf/provision.conf
+
+sudo cp /etc/sysconfig/dhcpd /etc/sysconfig/dhcpd.old
+sudo perl -pi -e "s/^DHCPD_INTERFACE=\S+/DHCPD_INTERFACE=${sms_eth_internal}/" /etc/sysconfig/dhcpd
+
+sudo cp /etc/apache2/conf.d/warewulf-httpd.conf /etc/apache2/conf.d/warewulf-httpd.conf.old
+sudo perl -pi -e "s#modules/mod_perl.so\$#/usr/lib64/apache2/mod_perl.so#" /etc/apache2/conf.d/warewulf-httpd.conf
+
+# skip this if you have already configured the network
+sudo ip link set dev ${sms_eth_internal} up
+sudo ip address add ${sms_ip}/${internal_netmask} broadcast + dev ${sms_eth_internal}
+
+sudo a2enmod mod_rewrite
+
+sudo systemctl enable mariadb.service
+sudo systemctl restart mysql
+sudo systemctl enable apache2.service
+sudo systemctl restart apache2
+sudo systemctl enable dhcpd.service
+sudo systemctl enable tftp.socket
+sudo systemctl start tftp.socket
+```
 
 # A Installation Template
 
