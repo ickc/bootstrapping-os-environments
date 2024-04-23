@@ -45,6 +45,8 @@ export sms_name=ohpc \
 
 # 2 Install Base Operating System (BOS)
 
+This guide installs the OpenSUSE Leap 15.5.
+
 Manual: follow on-screen guidance
 
 - setup timezone, keyboard layout
