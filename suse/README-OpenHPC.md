@@ -12,7 +12,7 @@ Links to the manual can be found in
 
 - Turn off Secure Boot if you need ZFS (or else self-signed the ZFS kernel module later)
 
-## 1.3 Inputs {#inputs}
+## 1.3 Inputs
 
 OpenHPC doc and the automated script assumes some variables are defined.
 Define these for the following, see appendix A for details.
@@ -42,7 +42,7 @@ Automated: follow the AutoYaST guide and use profile from pre-existing installat
 
 ## Hostname
 
-C.f. [Inputs](#inputs).
+C.f. [Inputs](#13-inputs).
 
 ```bash
 sudo hostnamectl set-hostname "$sms_name"
@@ -139,7 +139,7 @@ sudo rpm -ivh http://repos.openhpc.community/OpenHPC/3/Leap_15/x86_64/ohpc-relea
 
 ## 3.2 Installation template
 
-Optionally, jump to [appendix A](#installation-template) to automate the followings by running a script.
+Optionally, jump to [appendix A](#a-installation-template) to automate the followings by running a script.
 
 ## 3.3 Add provisioning services on master node
 
@@ -165,7 +165,7 @@ chronyc sources
 chronyc sourcestats
 ```
 
-# A Installation Template {#installation-template}
+# A Installation Template
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
 
@@ -179,7 +179,7 @@ cp -p /opt/ohpc/pub/doc/recipes/leap15/x86_64/warewulf/slurm/recipe.sh .
 # TODO: check eth_provision
 ```
 
-Tailor this, for `input.local`, c.f. [Inputs](#inputs).
+Tailor this, for `input.local`, c.f. [Inputs](#13-inputs).
 For `recipe.sh`:
 
 ```bash
