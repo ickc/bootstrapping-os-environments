@@ -29,6 +29,11 @@ avoiding the EULA restriction from Red Hat.
 
 `ipmitool` commands are skipped in this guide. Check the OpenHPC doc for details.
 
+## 1.2 Requirements/Assumptions
+
+This guide follows the reference design of OpenHPC in Fig. 1 of the documentation.
+In particular, there's a separate network connecting the master node to compute nodes.
+
 ## 1.3 Inputs
 
 OpenHPC doc and the automated script assumes some variables are defined.
