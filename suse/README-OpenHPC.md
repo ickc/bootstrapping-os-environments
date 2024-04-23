@@ -1,7 +1,7 @@
 # 1 Introduction
 
 This is a note to deploy OpenHPC 3.0 with OpenSUSE Leap 15.5 and SLURM variant.
-The heading number used below here coincides with "OpenHPC (v3.0) Cluster Building Recipes—OpenSUSE Leap 15.5 Base OS Warewulf/SLURM Edition for Linux* (x86 64)".
+The heading number used below here coincides with [OpenHPC (v3.0) Cluster Building Recipes—OpenSUSE Leap 15.5 Base OS Warewulf/SLURM Edition for Linux* (x86 64)](https://github.com/openhpc/ohpc/releases/download/v3.0.GA/Install_guide-Leap_15-Warewulf-SLURM-3.0-x86_64.pdf).
 
 OpenHPC documentation is excellent.
 The only confusion is the its discovery—nowhere in its website makes it clear to know where to start reading the manual.
@@ -11,6 +11,10 @@ Links to the manual can be found in
 ## UEFI
 
 - Turn off Secure Boot if you need ZFS (or else self-signed the ZFS kernel module later)
+
+## IPMI
+
+`ipmitool` commands are skipped in this guide. Check the OpenHPC doc for details.
 
 ## 1.3 Inputs
 
@@ -141,7 +145,7 @@ sudo rpm -ivh http://repos.openhpc.community/OpenHPC/3/Leap_15/x86_64/ohpc-relea
 
 Optionally, jump to [appendix A](#a-installation-template) to automate the followings by running a script.
 
-## 3.3 Add provisioning services on master node
+## 3.3 Add provisioning services on *master* node
 
 ```bash
 sudo zypper -n install ohpc-base
