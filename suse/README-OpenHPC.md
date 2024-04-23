@@ -55,6 +55,7 @@ sudo zypper install \
     make \
     mosh \
     ncdu \
+    neofetch \
     python3-glances \
     ranger \
     rasdaemon \

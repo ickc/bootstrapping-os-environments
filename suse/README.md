@@ -41,6 +41,7 @@ sudo transactional-update pkg install \
     make \
     mosh \
     ncdu \
+    neofetch \
     python3-glances \
     ranger \
     rasdaemon \
