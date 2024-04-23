@@ -1,4 +1,4 @@
-# Introduction
+# 1 Introduction
 
 This is a note to deploy OpenHPC 3.0 with OpenSUSE Leap 15.5 and SLURM variant.
 The heading number used below here coincides with "OpenHPC (v3.0) Cluster Building Recipes—OpenSUSE Leap 15.5 Base OS Warewulf/SLURM Edition for Linux* (x86 64)".
@@ -7,6 +7,24 @@ OpenHPC documentation is excellent.
 The only confusion is the its discovery—nowhere in its website makes it clear to know where to start reading the manual.
 Links to the manual can be found in
 [3.x · openhpc/ohpc Wiki](https://github.com/openhpc/ohpc/wiki/3.x).
+
+## UEFI
+
+- Turn off Secure Boot if you need ZFS (or else self-signed the ZFS kernel module later)
+
+## 1.3 Inputs {#inputs}
+
+OpenHPC doc and the automated script assumes some variables are defined.
+Define these for the following, see appendix A for details.
+
+```bash
+# tailor this
+export sms_name=ohpc \
+    sms_ip=192.168.4.5 \
+    ntp_server=0.uk.pool.ntp.org \
+    bmc_password=... \
+    nagios_web_password=...
+```
 
 # 2 Install Base Operating System (BOS)
 
@@ -24,10 +42,9 @@ Automated: follow the AutoYaST guide and use profile from pre-existing installat
 
 ## Hostname
 
+C.f. [Inputs](#inputs).
+
 ```bash
-# tailor this
-export sms_name=ohpc \
-    sms_ip=192.168.4.5
 sudo hostnamectl set-hostname "$sms_name"
 echo "$sms_ip $sms_name" | sudo tee -a /etc/hosts
 hostnamectl
@@ -120,7 +137,35 @@ Do your own personalization here.
 sudo rpm -ivh http://repos.openhpc.community/OpenHPC/3/Leap_15/x86_64/ohpc-release-3-1.leap15.x86_64.rpm
 ```
 
-# A Installation Template
+## 3.2 Installation template
+
+Optionally, jump to [appendix A](#installation-template) to automate the followings by running a script.
+
+## 3.3 Add provisioning services on master node
+
+```bash
+sudo zypper -n install ohpc-base
+sudo zypper -n install ohpc-warewulf
+
+# by default, OpenSUSE has this line
+# include /etc/chrony.d/*.conf
+# so that the file created below will be included
+# also, note that /etc/chrony.d/pool.conf has default config, which is removed below
+# tailor the "allow all" line to a more specific range if needed
+sudo tee /etc/chrony.d/ohpc.conf <<EOF
+local stratum 10
+server ${ntp_server} iburst
+allow ${sms_ip%.*}.0/24
+EOF
+sudo rm -f /etc/chrony.d/pool.conf
+sudo systemctl restart chronyd
+# showing some info
+chronyc tracking
+chronyc sources
+chronyc sourcestats
+```
+
+# A Installation Template {#installation-template}
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
 
@@ -134,16 +179,10 @@ cp -p /opt/ohpc/pub/doc/recipes/leap15/x86_64/warewulf/slurm/recipe.sh .
 # TODO: check eth_provision
 ```
 
-Tailor this, for example,
+Tailor this, for `input.local`, c.f. [Inputs](#inputs).
+For `recipe.sh`:
 
 ```bash
-# input.local
-sms_name=ohpc
-sms_ip=192.168.4.20
-bmc_password=...
-nagios_web_password=...
-
-# recipe.sh
 # probably they haven't updated the script for this part yet as of writing:
 sed -i 's/SuSEfirewall2/firewalld/' recipe.sh
 export OHPC_INPUT_LOCAL="$(realpath input.local)"
