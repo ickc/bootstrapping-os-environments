@@ -169,6 +169,21 @@ chronyc sources
 chronyc sourcestats
 ```
 
+## 3.4 Add resource management services on *master* node
+
+```bash
+sudo zypper -n install ohpc-slurm-server
+sudo cp /etc/slurm/slurm.conf.ohpc /etc/slurm/slurm.conf
+sudo cp /etc/slurm/cgroup.conf.example /etc/slurm/cgroup.conf
+# this line edit SlurmctldHost
+sudo perl -pi -e "s/SlurmctldHost=\S+/SlurmctldHost=${sms_name}/" /etc/slurm/slurm.conf
+sudo nano /etc/slurm/slurm.conf
+# edit this line
+# NodeName=c[1-2] Sockets=1 CoresPerSocket=2 ThreadsPerCore=2 State=UNKNOWN
+```
+
+Optionally, set up `slurm-slurmdbd-ohpc`.
+
 # A Installation Template
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
