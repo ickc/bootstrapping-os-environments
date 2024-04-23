@@ -42,7 +42,7 @@ Define these for the following, see appendix A for details.
 ```bash
 # tailor this
 export sms_name=ohpc \
-    sms_ip=192.168.4.5 \
+    sms_ip=192.168.1.5 \
     ntp_server=0.uk.pool.ntp.org \
     bmc_password=... \
     nagios_web_password=...
