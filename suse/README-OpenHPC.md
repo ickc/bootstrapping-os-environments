@@ -34,6 +34,13 @@ avoiding the EULA restriction from Red Hat.
 This guide follows the reference design of OpenHPC in Fig. 1 of the documentation.
 In particular, there's a separate network connecting the master node to compute nodes.
 
+Note that the reference design as shown in Fig. 1 has an optional parallel file system.
+This is excluded in this guide, and the baseline choice would be Ceph.
+
+Also note that the master node (a.k.a. head node, or SMS) is supposed to export an NFS.
+In this guide, we will build a ZFS pool and export that as the NFS mount.
+This is a choice orthogonal to the OpenHPC documentation and is documented in [the ZFS section](#zfs).
+
 ## 1.3 Inputs
 
 OpenHPC doc and the automated script assumes some variables are defined.
@@ -41,7 +48,7 @@ Define these for the following, see appendix A for details.
 
 ```bash
 # tailor this
-export sms_name=ohpc \
+export sms_name=penrose-master \
     sms_ip=192.168.1.5 \
     internal_netmask=255.255.255.0 \
     sms_eth_internal=p1p1 \
@@ -155,6 +162,67 @@ sudo sensors-detect
 ## Personalize
 
 Do your own personalization here.
+
+# ZFS
+
+In this example, preparing the the NFS mount from the master to compute nodes,
+we will create a ZFS pool of 90 HDDs using draid.
+For an introduction to draid, see the [documentation](https://openzfs.github.io/openzfs-docs/Basic%20Concepts/dRAID%20Howto.html), which is very light on details,
+or [this 2020 presentation from ZFS developer](https://docs.google.com/presentation/d/1uo0nBfY84HIhEqGWEx-Tbm8fPbJKtIP3ICo4toOPcJo/).
+
+Here we make the following choice:
+
+- parity: 2
+- data: 9
+- children: 90
+- spares: 2
+
+Note that we are not choosing 8 data + 2 parity configuration as we want to have some hot spares.
+This recommendation is based on an
+[undocumented internal analysis available here](https://docs.google.com/spreadsheets/d/11skQ6fB39xiTJCtHYazxsIJZWKxzcWrH/edit?usp=sharing&ouid=117180715885747044421&rtpof=true&sd=true).
+The decision rule is based on the criteria that we require at least 4/3 PB of usable storage space,
+and a subjective judgement to balance between IOPS, risk, and no. of hot spares.
+
+Before proceeding, follow this guide on
+[Advanced Format hard disk drives](https://wiki.archlinux.org/title/Advanced_Format#Advanced_Format_hard_disk_drives)
+to check if there are advanced format options,
+and if so, perform advance formatting with 4k (4096).
+
+```bash
+# this is just a quick and dirty trick to get the list of HDDs on the storage nodes
+# The trick would fails if not all the HDDs are 18.2T
+readarray -t disks < <(lsblk | grep '18.2T' | cut -d' ' -f1)
+# E.g. disks=(sda sdb sdc sdd sde sdf sdg sdh sdi sdj sdk sdl sdm sdn sdo sdp sdq sdr sds sdt sdu sdv sdw sdx sdy sdz sdaa sdab sdac sdad sdae sdaf sdag sdah sdai sdaj sdak sdal sdam sdan sdao sdap sdaq sdar sdas sdat sdau sdav sdaw sdax sday sdaz sdba sdbb sdbc sdbd sdbe sdbf sdbg sdbh sdbi sdbj sdbk sdbl sdbm sdbn sdbo sdbp sdbq sdbr sdbs sdbt sdbu sdbv sdbw sdbx sdby sdbz sdca sdcb sdcc sdcd sdce sdcf sdcg sdch sdci sdcj sdck sdcl)
+# atime, acl, compression and xattr are chosen for performance
+sudo zpool create \
+    -f \
+    -n \
+    -m /srv/dicke \
+    -o ashift=12 \
+    -o autoexpand=on \
+    -O acltype=off \
+    -O atime=off \
+    -O compression=off \
+    -O normalization=formD \
+    -O xattr=sa \
+    dicke \
+    draid2:9d:90c:2s \
+    ${disks[@]}
+# the above command is run with `-n` for dry-run
+# once confirmed it is good to go, rerun without `-n`
+# import by id to guard against silent change of ordering of device names such as sda, sdb, ...
+sudo zpool export dicke
+sudo zpool import -d /dev/disk/by-id dicke
+```
+
+Now, your pool should be available at `/srv/dicke`.
+Export this path through NFS by following the OpenHPC doc.
+
+## ZFS References
+
+- [OpenZFS Documentation — OpenZFS documentation](https://openzfs.github.io/openzfs-docs/index.html)
+- [System Administration - OpenZFS](https://openzfs.org/wiki/System_Administration)
+- [Aaron Toponce : Install ZFS on Debian GNU/Linux](https://web.archive.org/web/20230904234829/https://pthree.org/2012/04/17/install-zfs-on-debian-gnulinux/)
 
 # 3 Install OpenHPC Components
 
