@@ -120,10 +120,6 @@ sudo zypper install \
     vim-fzf \
     zsh
 chsh -s /usr/bin/zsh
-# ZFS
-sudo zypper addrepo https://download.opensuse.org/repositories/filesystems/$(lsb_release -rs)/filesystems.repo
-sudo zypper refresh
-sudo zypper install zfs
 ```
 
 ## Firewall
@@ -165,7 +161,15 @@ Do your own personalization here.
 
 # ZFS
 
-In this example, preparing the the NFS mount from the master to compute nodes,
+Install ZFS:
+
+```bash
+sudo zypper addrepo https://download.opensuse.org/repositories/filesystems/$(lsb_release -rs)/filesystems.repo
+sudo zypper refresh
+sudo zypper install zfs
+```
+
+In this example, preparing for the NFS mount from the master to compute nodes,
 we will create a ZFS pool of 90 HDDs using draid.
 For an introduction to draid, see the [documentation](https://openzfs.github.io/openzfs-docs/Basic%20Concepts/dRAID%20Howto.html), which is very light on details,
 or [this 2020 presentation from ZFS developer](https://docs.google.com/presentation/d/1uo0nBfY84HIhEqGWEx-Tbm8fPbJKtIP3ICo4toOPcJo/).
