@@ -66,7 +66,8 @@ Manual: follow on-screen guidance
 - setup timezone, keyboard layout
 - Choose server (not transactional as it is still experimental)
 - Customize drive prep with
-    - btrfs
+    - btrfs, chosen to guard against bit-rot with better support to be used as root drive in Linux. OpenSUSE supports this and is the default choice. This is especially important for storage nodes.
+        - Ideally, to minimize any chance of bit rot, turn off any hardware RAID expose the raw device as JBOD. Setup btrfs yourself to use 2 drives in RAID 1 configuration (such as 512MiB for UEFI boot partition, the rest for btrfs.)
     - without swap
 - by default, it chooses wicked, alternatively, you can choose Network Manager
 - turn off firewall, as OpenHPC doc will ask you to turn it off later
