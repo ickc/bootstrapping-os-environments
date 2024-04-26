@@ -12,17 +12,18 @@ The only confusion is its discovery—nowhere in its website makes it clear wher
 OpenHPC only supports RHEL derivatives or SUSE derivatives.
 
 See [CERN Linux Landscape Update (2023-10-06)](https://indico.cern.ch/event/1253805/contributions/5556270/attachments/2729315/4744119/SoC3_Linux.pdf) for the recent EULA change made by Red Hat on June 21 2023.
-In short, Red Hat is actively discourage the existence of a clone including the discontinuation of CentOS,
+In short, Red Hat is actively discouraging the existence of a clone including the discontinuation of CentOS,
 and the EULA change that is designed to kill off 3rd party clone such as Rocky Linux.
 
 Because of this, OpenSUSE is recommended and used in this guide.
 If RHEL derivatives is a must, AlmaLinux is recommended
 as they aim for ABI compatibility,
-avoiding the EULA restriction from Red Hat.
+avoiding the issues associated with making bug-for-bug-compatible clones after the Red Hat EULA change.
 
 ## UEFI
 
-- Turn off Secure Boot if you need ZFS (or else self-signed the ZFS kernel module later)
+- Turn off Secure Boot if you need ZFS (or else self-signed the ZFS kernel module later).
+    Note that this might already be the default, such as on ThinkSystem SR650 V3.
 
 ## IPMI
 
@@ -43,7 +44,7 @@ This is a choice orthogonal to the OpenHPC documentation and is documented in [t
 ## 1.3 Inputs
 
 OpenHPC doc and the automated script assumes some variables are defined.
-Define these for the following, see appendix A for details.
+Define these for the following sections. See appendix A for details.
 
 ```bash
 # tailor this
@@ -71,7 +72,7 @@ Manual: follow on-screen guidance
 - by default, it chooses wicked, alternatively, you can choose Network Manager
 - turn off firewall, as OpenHPC doc will ask you to turn it off later
 
-Automated: follow the AutoYaST guide and use profile from pre-existing installation.
+Automated: follow the AutoYaST guide and use profile from pre-existing installation. This is useful to redeploy OpenSUSE to identical hardware configurations.
 
 ## Hostname
 
@@ -84,6 +85,8 @@ hostnamectl
 ```
 
 ## Installing dependencies
+
+Tailor this section to your liking:
 
 ```bash
 sudo zypper update
@@ -129,7 +132,6 @@ Skip this if you didn't enable firewall in the first place.
 TODO: in the documentation, it mentions `SuSEfirewall2` should be disabled.
 But `firewalld` is used in OpenSUSE Leap 15.5.
 It is possible it actually meant to disable that instead.
-So far let's set it up without disabling.
 
 > Warning: Since Leap 15.0 Firewalld has been the default way to manage firewall configuration. Official SuSEfirewall2 packages are no longer available. [SuSEfirewall2 - openSUSE Wiki](https://en.opensuse.org/SuSEfirewall2)
 
@@ -157,7 +159,7 @@ sudo sensors-detect
 
 ## Personalize
 
-Do your own personalization here.
+Do your own personalization here, such as setting up your own dotfiles.
 
 # ZFS
 
@@ -197,7 +199,7 @@ and if so, perform advance formatting with 4k (4096).
 # The trick would fails if not all the HDDs are 18.2T
 readarray -t disks < <(lsblk | grep '18.2T' | cut -d' ' -f1)
 # E.g. disks=(sda sdb sdc sdd sde sdf sdg sdh sdi sdj sdk sdl sdm sdn sdo sdp sdq sdr sds sdt sdu sdv sdw sdx sdy sdz sdaa sdab sdac sdad sdae sdaf sdag sdah sdai sdaj sdak sdal sdam sdan sdao sdap sdaq sdar sdas sdat sdau sdav sdaw sdax sday sdaz sdba sdbb sdbc sdbd sdbe sdbf sdbg sdbh sdbi sdbj sdbk sdbl sdbm sdbn sdbo sdbp sdbq sdbr sdbs sdbt sdbu sdbv sdbw sdbx sdby sdbz sdca sdcb sdcc sdcd sdce sdcf sdcg sdch sdci sdcj sdck sdcl)
-# atime, acl, compression and xattr are chosen for performance
+# atime, acl, compression and xattr settings are chosen for performance
 sudo zpool create \
     -f \
     -n \
@@ -220,7 +222,36 @@ sudo zpool import -d /dev/disk/by-id dicke
 ```
 
 Now, your pool should be available at `/srv/dicke`.
-Export this path through NFS by following the OpenHPC doc.
+
+## Adding SLOG & L2ARC
+
+Optionally but highly recommended, follow the section "Adding an L2ARC" from the blog post
+[Aaron Toponce : ZFS Administration, Part IV- The Adjustable Replacement Cache](https://web.archive.org/web/20230828024336/https://pthree.org/2012/12/07/zfs-administration-part-iv-the-adjustable-replacement-cache/).
+
+The command involved is something like
+
+```bash
+parted /dev/nvme... unit s mklabel gpt mkpart primary zfs 2048 4G mkpart primary zfs 4G 100%
+parted /dev/nvme... unit s mklabel gpt mkpart primary zfs 2048 4G mkpart primary zfs 4G 100%
+zpool add dicke \
+    log mirror \
+        /dev/disk/by-id/...-part1 \
+        /dev/disk/by-id/...-part1 \
+    cache \
+        /dev/disk/by-id/...-part2 \
+        /dev/disk/by-id/...-part2
+```
+
+But you need to adjust the device names, the device IDs, and the size to your specific case.
+
+## NFS share
+
+You have 2 choices,
+
+1. Export this path through NFS by following the OpenHPC doc, or alternatively,
+2. uses the ZFS specific method to share over NFS by following this guide:
+    [Aaron Toponce : ZFS Administration, Part XV- iSCSI, NFS and Samba](https://web.archive.org/web/20230828014245/https://pthree.org/2012/12/31/zfs-administration-part-xv-iscsi-nfs-and-samba/).
+    To see the motivation of using the ZFS specific method, see the "Motivation" section of that blog post.
 
 ## ZFS References
 
