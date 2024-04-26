@@ -340,6 +340,41 @@ sudo systemctl enable tftp.socket
 sudo systemctl start tftp.socket
 ```
 
+## 3.8 Define *compute* image for provisioning
+
+### 3.8.1 Build initial BOS image
+
+```bash
+# Define chroot location
+export CHROOT=/opt/ohpc/admin/images/leap15.5 # Build initial chroot image
+sudo mkdir -p -m 755 $CHROOT # create chroot housing dir
+sudo mkdir -m 755 $CHROOT/dev # create chroot /dev dir
+sudo mknod -m 666 $CHROOT/dev/zero c 1 5 # create /dev/zero device
+sudo wwmkchroot -v opensuse-15.5 $CHROOT # create base image # Enable OpenHPC repo in chroot
+sudo cp -p /etc/zypp/repos.d/OpenHPC*.repo $CHROOT/etc/zypp/repos.d # Import GPG keys for chroot repository usage
+sudo zypper -n --root $CHROOT --no-gpg-checks --gpg-auto-import-keys refresh
+```
+
+### 3.8.2 Add OpenHPC components
+
+```bash
+sudo cp -p /etc/resolv.conf $CHROOT/etc/resolv.conf
+sudo zypper -n --root $CHROOT --no-gpg-checks --gpg-auto-import-keys refresh
+sudo cp /etc/passwd /etc/group $CHROOT/etc
+sudo zypper -n --root $CHROOT install ohpc-base-compute
+sudo zypper -n --root $CHROOT install ohpc-slurm-client
+sudo chroot $CHROOT systemctl enable munge
+echo SLURMD_OPTIONS="--conf-server ${sms_ip}" | sudo tee $CHROOT/etc/sysconfig/slurmd
+sudo cp /opt/ohpc/pub/examples/udev/60-ipath.rules $CHROOT/etc/udev/rules.d/
+sudo zypper -n --root $CHROOT install chrony
+sudo chroot $CHROOT systemctl enable chronyd
+echo "server ${sms_ip} iburst" | sudo tee -a $CHROOT/etc/chrony.conf
+sudo zypper -n --root $CHROOT install kernel-default
+sudo zypper -n --root $CHROOT install lmod-ohpc
+sudo chroot $CHROOT systemctl enable sshd.service
+sudo mv $CHROOT/etc/hostname $CHROOT/etc/hostname.orig
+```
+
 # A Installation Template
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
