@@ -454,6 +454,15 @@ all: @adm,@compute
 EOF
 ```
 
+### 3.8.5 Import files
+
+```bash
+sudo wwsh file import /etc/passwd
+sudo wwsh file import /etc/group
+sudo wwsh file import /etc/shadow
+sudo wwsh file import /etc/munge/munge.key
+```
+
 # A Installation Template
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
