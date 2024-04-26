@@ -4,8 +4,7 @@ This is a note to deploy OpenHPC 3.0 with OpenSUSE Leap 15.5 and SLURM variant.
 The heading number used below here coincides with [OpenHPC (v3.0) Cluster Building Recipes—OpenSUSE Leap 15.5 Base OS Warewulf/SLURM Edition for Linux* (x86 64)](https://github.com/openhpc/ohpc/releases/download/v3.0.GA/Install_guide-Leap_15-Warewulf-SLURM-3.0-x86_64.pdf).
 
 OpenHPC documentation is excellent.
-The only confusion is the its discovery—nowhere in its website makes it clear to know where to start reading the manual.
-Links to the manual can be found in
+The only confusion is its discovery—nowhere in its website makes it clear where to find the manual, which is in
 [3.x · openhpc/ohpc Wiki](https://github.com/openhpc/ohpc/wiki/3.x).
 
 ## OS choice
