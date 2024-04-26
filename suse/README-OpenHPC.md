@@ -375,6 +375,26 @@ sudo chroot $CHROOT systemctl enable sshd.service
 sudo mv $CHROOT/etc/hostname $CHROOT/etc/hostname.orig
 ```
 
+### 3.8.3 Customize system configuration
+
+```bash
+# Initialize warewulf database and ssh_keys
+sudo wwinit database
+sudo wwinit ssh_keys # Add NFS client mounts of /home and /opt/ohpc/pub to base image
+echo "${sms_ip}:/home /home nfs nfsvers=4,nodev,nosuid 0 0" | sudo tee -a $CHROOT/etc/fstab
+echo "${sms_ip}:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=4,nodev 0 0" | sudo tee -a $CHROOT/etc/fstab # Export /home and OpenHPC public packages from master server
+echo "/home *(rw,no_subtree_check,fsid=10,no_root_squash)" | sudo tee -a /etc/exports
+echo "/opt/ohpc/pub *(ro,no_subtree_check,fsid=11)" | sudo tee -a /etc/exports
+# (Optional) Setup NFS mount for /opt/intel if planning to install oneAPI packages
+sudo mkdir -p /opt/intel
+echo "/opt/intel *(ro,no_subtree_check,fsid=12)" | sudo tee -a /etc/exports
+echo "${sms_ip}:/opt/intel /opt/intel nfs nfsvers=4,nodev 0 0" | sudo tee -a $CHROOT/etc/fstab
+# Finalize NFS config and restart
+sudo exportfs -a
+sudo systemctl restart nfs-server
+sudo systemctl enable nfs-server
+```
+
 # A Installation Template
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
