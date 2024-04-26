@@ -53,6 +53,8 @@ export sms_name=penrose-master \
     internal_netmask=255.255.255.0 \
     sms_eth_internal=p1p1 \
     ntp_server=0.uk.pool.ntp.org \
+    compute_prefix=penrose \
+    num_computes=2 \
     bmc_password=... \
     nagios_web_password=...
 ```
@@ -437,6 +439,20 @@ for example,
 and `/opt/ohpc/pub/examples/nagios/compute.cfg` does not exist.
 
 This is not a critical component, we will skip it for now.
+
+#### 3.8.4.9 Add ClusterShell
+
+```bash
+# Install ClusterShell
+sudo zypper -n install clustershell # Setup node definitions
+cd /etc/clustershell/groups.d
+sudo mv local.cfg local.cfg.orig
+sudo tee local.cfg <<EOF
+adm: ${sms_name}
+compute: ${compute_prefix}[1-${num_computes}]
+all: @adm,@compute
+EOF
+```
 
 # A Installation Template
 
