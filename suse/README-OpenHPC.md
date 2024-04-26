@@ -326,6 +326,7 @@ sudo perl -pi -e "s#modules/mod_perl.so\$#/usr/lib64/apache2/mod_perl.so#" /etc/
 
 # skip this if you have already configured the network
 sudo ip link set dev ${sms_eth_internal} up
+# skip this if you do not use a separate network between master and compute nodes as in Fig. 1
 sudo ip address add ${sms_ip}/${internal_netmask} broadcast + dev ${sms_eth_internal}
 
 sudo a2enmod mod_rewrite
