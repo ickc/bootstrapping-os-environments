@@ -395,6 +395,49 @@ sudo systemctl restart nfs-server
 sudo systemctl enable nfs-server
 ```
 
+### 3.8.4 Additional Customization *(optional)*
+
+#### 3.8.4.3 Increase locked memory limits
+
+```bash
+# Update memlock settings on master
+sudo perl -pi -e 's/# End of file/\* soft memlock unlimited\n$&/s' /etc/security/limits.conf
+sudo perl -pi -e 's/# End of file/\* hard memlock unlimited\n$&/s' /etc/security/limits.conf # Update memlock settings within compute image
+sudo perl -pi -e 's/# End of file/\* soft memlock unlimited\n$&/s' $CHROOT/etc/security/limits.conf
+sudo perl -pi -e 's/# End of file/\* hard memlock unlimited\n$&/s' $CHROOT/etc/security/limits.conf
+```
+
+#### 3.8.4.4 Enable ssh control via resource manager
+
+```bash
+echo "account required pam_slurm.so" | sudo tee -a $CHROOT/etc/pam.d/sshd
+```
+
+#### 3.8.4.7 Enable forwarding of system logs
+
+```bash
+# Configure SMS to receive messages and reload rsyslog configuration
+echo ’module(load="imudp")’ | sudo tee -a /etc/rsyslog.d/ohpc.conf
+echo ’input(type="imudp" port="514")’ | sudo tee -a /etc/rsyslog.d/ohpc.conf
+sudo systemctl restart rsyslog # Define compute node forwarding destination
+echo "*.* @${sms_ip}:514" | sudo tee -a $CHROOT/etc/rsyslog.conf
+echo "Target=\"${sms_ip}\" Protocol=\"udp\"" | sudo tee -a $CHROOT/etc/rsyslog.conf # Disable most local logging on computes. Emergency and boot logs will remain on the compute nodes
+perl -pi -e "s/^\*\.info/\\#\*\.info/" $CHROOT/etc/rsyslog.conf
+perl -pi -e "s/^authpriv/\\#authpriv/" $CHROOT/etc/rsyslog.conf
+perl -pi -e "s/^mail/\\#mail/" $CHROOT/etc/rsyslog.conf
+perl -pi -e "s/^cron/\\#cron/" $CHROOT/etc/rsyslog.conf
+perl -pi -e "s/^uucp/\\#uucp/" $CHROOT/etc/rsyslog.conf
+```
+
+#### 3.8.4.8 Add Nagios monitoring
+
+This section of the doc is outdated,
+for example,
+`$CHROOT/etc/nagios/nrpe.cfg` becomes `$CHROOT/etc/nrpe.cfg`,
+and `/opt/ohpc/pub/examples/nagios/compute.cfg` does not exist.
+
+This is not a critical component, we will skip it for now.
+
 # A Installation Template
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
