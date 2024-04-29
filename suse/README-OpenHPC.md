@@ -463,6 +463,17 @@ sudo wwsh file import /etc/shadow
 sudo wwsh file import /etc/munge/munge.key
 ```
 
+## 3.9 Finalizing provisioning configuration
+
+### 3.9.1 Assemble bootstrap image
+
+```bash
+# (Optional) Include drivers from kernel updates; needed if enabling additional kernel modules on computes
+export WW_CONF=/etc/warewulf/bootstrap.conf
+echo "drivers += updates/kernel/" | sudo tee -a $WW_CONF # Build bootstrap image
+sudo wwbootstrap `uname -r`
+```
+
 # A Installation Template
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
