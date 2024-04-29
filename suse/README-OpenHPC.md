@@ -474,6 +474,12 @@ echo "drivers += updates/kernel/" | sudo tee -a $WW_CONF # Build bootstrap image
 sudo wwbootstrap `uname -r`
 ```
 
+### 3.9.2 Assemble Virtual Node File System (VNFS) image
+
+```bash
+sudo wwvnfs --chroot $CHROOT
+```
+
 # A Installation Template
 
 C.f. <https://github.com/openhpc/ohpc/blob/3.x/docs/recipes/install/leap15/input.local.template>.
