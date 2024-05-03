@@ -25,6 +25,7 @@ sudo transactional-update pkg install \
     apcupsd \
     bat \
     btop \
+    exfatprogs \
     f3 \
     fzf \
     fzf-bash-completion \

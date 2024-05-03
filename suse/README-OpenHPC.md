@@ -95,6 +95,7 @@ sudo zypper update
 sudo zypper install \
     bat \
     btop \
+    exfatprogs \
     fzf \
     fzf-bash-completion \
     fzf-tmux \
