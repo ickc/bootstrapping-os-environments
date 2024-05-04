@@ -19,3 +19,20 @@ On the freshly installed computer:
 				- `conda-install.sh`
 					- `jupyterlab.sh`
 						- `jupyterlab-chrome.sh`
+
+# Raspberry Pi 4
+
+## UEFI
+
+- update the EEPROM
+	- to check: `sudo rpi-eeprom-update`
+	- to update: `sudo rpi-update` and then reboot
+- prepare SD card: [pftf/RPi4: Raspberry Pi 4 UEFI Firmware Images](https://github.com/pftf/RPi4). In order for the UEFI config to persist, as of writing, these conditions must be met:
+	- use micro SD card rather than USB
+	- format it with ESP flag
+	- some micro SD card might not work, e.g. a 2GB micro SD card I have, but 4GB or 128GB are fine.
+- Turn off 3GB limit: Device Manager → Raspberry Pi Configuration → Advanced Configuration
+
+## memtest86
+
+[memtest86](https://www.memtest86.com) can be run together with UEFI setup above. As of UEFI firmware v1.37, only single CPU mode would work.
