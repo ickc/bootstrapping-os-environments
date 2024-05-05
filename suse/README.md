@@ -21,6 +21,7 @@ sudo systemctl disable --now transactional-update.timer
 # Installing dependencies
 
 ```bash
+# or if not using transactional server: sudo zypper update && sudo zypper install...
 sudo transactional-update pkg install \
     apcupsd \
     bat \
@@ -131,13 +132,4 @@ mv "$HOME/.ssh/id_ed25519" "$HOME/.ssh.temp"
 mv "$HOME/.ssh/id_ed25519.pub" "$HOME/.ssh.temp"
 rm -rf "$HOME/.ssh"
 mv "$HOME/.ssh.temp" "$HOME/.ssh"
-
-# Installing basher
-cd "$HOME/git/source/bootstrapping-os-environments/install"
-./basher.sh
-export PATH="$HOME/.basher/bin:$PATH"
-print_line
-echo "Installing basher packages..."
-cd "$HOME/git/source/bootstrapping-os-environments/common"
-./basher.sh
 ```
