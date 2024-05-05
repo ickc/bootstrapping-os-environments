@@ -28,6 +28,7 @@ sudo transactional-update pkg install \
     btop \
     exfatprogs \
     f3 \
+    fastfetch \
     fzf \
     fzf-bash-completion \
     fzf-tmux \
