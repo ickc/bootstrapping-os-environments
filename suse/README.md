@@ -134,3 +134,19 @@ mv "$HOME/.ssh/id_ed25519.pub" "$HOME/.ssh.temp"
 rm -rf "$HOME/.ssh"
 mv "$HOME/.ssh.temp" "$HOME/.ssh"
 ```
+
+# Docker
+
+```bash
+sudo zypper install docker docker-compose docker-compose-switch
+sudo systemctl enable docker
+sudo usermod -G docker -a $USER
+# make the group change immediate, alternatively, log out and back in again
+newgrp docker
+sudo systemctl restart docker
+# testing
+docker version
+docker run --rm hello-world
+docker images
+# docker rmi -f IMAGE_ID
+```
