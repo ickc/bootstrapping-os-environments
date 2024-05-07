@@ -113,6 +113,7 @@ sudo zypper install \
     mosh \
     ncdu \
     neofetch \
+    nmap \
     python3-glances \
     ranger \
     rasdaemon \
