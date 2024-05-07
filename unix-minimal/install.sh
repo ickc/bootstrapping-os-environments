@@ -77,13 +77,3 @@ mv "$HOME/.ssh/id_${SSH_ALGO}" "$HOME/.ssh.temp"
 mv "$HOME/.ssh/id_${SSH_ALGO}.pub" "$HOME/.ssh.temp"
 rm -rf "$HOME/.ssh"
 mv "$HOME/.ssh.temp" "$HOME/.ssh"
-
-print_double_line
-echo "Installing basher..."
-cd "$HOME/git/source/bootstrapping-os-environments/install"
-./basher.sh
-export PATH="$HOME/.basher/bin:$PATH"
-print_line
-echo "Installing basher packages..."
-cd "$HOME/git/source/bootstrapping-os-environments/common"
-./basher.sh
