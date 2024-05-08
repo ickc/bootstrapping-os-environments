@@ -56,6 +56,7 @@ sudo transactional-update pkg install \
     ShellCheck \
     shfmt \
     starship \
+    tcpdump \
     tmux \
     tree \
     vim-fzf \

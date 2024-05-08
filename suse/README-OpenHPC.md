@@ -122,6 +122,7 @@ sudo zypper install \
     ShellCheck \
     shfmt \
     starship \
+    tcpdump \
     tmux \
     tree \
     vim-fzf \
