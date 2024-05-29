@@ -38,6 +38,7 @@ gxl2gv
 htop
 hub
 joshuto
+zellij
 jq
 lsd
 mm2gv
