@@ -12,6 +12,8 @@ dijkstra
 dot
 dot_builtins
 dot2gxl
+dua
+dust
 edgepaint
 exa
 exiftool
@@ -38,7 +40,6 @@ gxl2gv
 htop
 hub
 joshuto
-zellij
 jq
 lsd
 mm2gv
@@ -77,5 +78,6 @@ tree
 twopi
 unflatten
 wget
+zellij
 zsh
 zstd
