@@ -3,6 +3,8 @@
 set -e
 
 PREFIX="${PREFIX:-$HOME}"
+# point CONDA_PREFIX to an existing conda/mamba prefix to skip installing mamba
+CONDA_PREFIX="${CONDA_PREFIX:-$PREFIX/.mambaforge}"
 
 # helpers ##############################################################
 
@@ -41,10 +43,15 @@ install() {
     fi
 
     print_double_line
-    echo "Installing mamba..."
-    CONDA_PREFIX="$PREFIX/.mambaforge" "$PREFIX/git/source/bootstrapping-os-environments/install/mamba.sh"
+    if [[ -x ${CONDA_PREFIX}/bin/mamba ]]; then
+        echo "Using existing mamba prefix at $CONDA_PREFIX"
+    else
+        echo "Installing mamba..."
+        export CONDA_PREFIX
+        "$PREFIX/git/source/bootstrapping-os-environments/install/mamba.sh"
+    fi
     # shellcheck disable=SC1091
-    . "$PREFIX/.mambaforge/bin/activate"
+    . "$CONDA_PREFIX/bin/activate"
 
     print_line
     echo "Installing system packages from conda..."
