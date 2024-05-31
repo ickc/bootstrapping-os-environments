@@ -2,7 +2,7 @@
 
 set -e
 
-PREFIX="${PREFIX:-$HOME/.local}"
+PREFIX="${PREFIX:-${HOME}/.local}"
 
 # helpers ##############################################################
 
@@ -22,7 +22,7 @@ install() {
 
     version="$(curl --silent "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')"
     print_double_line
-    echo "Installing gh version $version"
+    echo "Installing gh version ${version}"
 
     case "$(uname -s)" in
         Linux*)
@@ -68,34 +68,34 @@ install() {
     esac
 
     filename="${downloadUrl##*/}"
-    if [[ $OS == Linux ]]; then
+    if [[ ${OS} == Linux ]]; then
         stem="${filename%.tar.gz}"
     else
         stem="${filename%.zip}"
     fi
 
     print_double_line
-    echo "Downloading $downloadUrl to temp dir $DOWNLOADDIR"
-    cd "$DOWNLOADDIR"
-    if [[ $OS == Linux ]]; then
-        curl -L "$downloadUrl" -o gh.tar.gz
+    echo "Downloading ${downloadUrl} to temp dir ${DOWNLOADDIR}"
+    cd "${DOWNLOADDIR}"
+    if [[ ${OS} == Linux ]]; then
+        curl -L "${downloadUrl}" -o gh.tar.gz
         tar -xf gh.tar.gz
     else
-        curl -L "$downloadUrl" -o gh.zip
+        curl -L "${downloadUrl}" -o gh.zip
         unzip gh.zip
     fi
-    cd "$stem"
+    cd "${stem}"
 
     print_double_line
-    echo Installing to "$PREFIX"
-    mkdir -p "$PREFIX/bin"
-    mv bin/gh "$PREFIX/bin"
-    mkdir -p "$PREFIX/share/man/man1"
-    mv "share/man/man1"/* "$PREFIX/share/man/man1"
+    echo Installing to "${PREFIX}"
+    mkdir -p "${PREFIX}/bin"
+    mv bin/gh "${PREFIX}/bin"
+    mkdir -p "${PREFIX}/share/man/man1"
+    mv "share/man/man1"/* "${PREFIX}/share/man/man1"
 
     print_double_line
-    echo Removing temp dir "$DOWNLOADDIR"
-    rm -rf "$DOWNLOADDIR"
+    echo Removing temp dir "${DOWNLOADDIR}"
+    rm -rf "${DOWNLOADDIR}"
 }
 
 install

@@ -3,7 +3,7 @@
 set -e
 
 VERSION=20.09
-PREFIX="${PREFIX:-$HOME/.local}"
+PREFIX="${PREFIX:-${HOME}/.local}"
 # https://unix.stackexchange.com/a/84980/192799
 DOWNLOADDIR="$(mktemp -d 2> /dev/null || mktemp -d -t 'zsh')"
 
@@ -18,19 +18,19 @@ print_line() {
 }
 
 ########################################################################
-downloadUrl="https://mediaarea.net/download/binary/mediainfo/$VERSION/mediainfo-$VERSION.glibc2.3-x86_64.AppImage"
+downloadUrl="https://mediaarea.net/download/binary/mediainfo/${VERSION}/mediainfo-${VERSION}.glibc2.3-x86_64.AppImage"
 filename="${downloadUrl##*/}"
 
 print_double_line
-echo Downloading to temp dir "$DOWNLOADDIR"
-cd "$DOWNLOADDIR"
-wget "$downloadUrl"
+echo Downloading to temp dir "${DOWNLOADDIR}"
+cd "${DOWNLOADDIR}"
+wget "${downloadUrl}"
 
 print_double_line
-echo Installing to $PREFIX/bin...
-mv "$filename" "$PREFIX/bin/mediainfo"
-chmod +x "$PREFIX/bin/mediainfo"
+echo Installing to ${PREFIX}/bin...
+mv "${filename}" "${PREFIX}/bin/mediainfo"
+chmod +x "${PREFIX}/bin/mediainfo"
 
 print_line
-echo Removing temp dir "$DOWNLOADDIR"
-rm -rf "$DOWNLOADDIR"
+echo Removing temp dir "${DOWNLOADDIR}"
+rm -rf "${DOWNLOADDIR}"

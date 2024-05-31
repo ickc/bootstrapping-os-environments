@@ -14,7 +14,7 @@ case "$(uname -sm)" in
         ;;
 esac
 
-wget "$downloadUrl" -O vscode.deb
+wget "${downloadUrl}" -O vscode.deb
 
 sudo apt install ./vscode.deb -y
 

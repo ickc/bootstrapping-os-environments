@@ -9,7 +9,7 @@ case "$(uname -sm)" in
     Linux\ aarch64) downloadUrl=https://windscribe.com/install/desktop/linux_deb_arm ;;
 esac
 
-wget "$downloadUrl" -O windscribe.deb
+wget "${downloadUrl}" -O windscribe.deb
 
 sudo apt install ./windscribe.deb -y
 

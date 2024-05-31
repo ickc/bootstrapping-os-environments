@@ -3,7 +3,7 @@
 set -e
 
 # install reload-browser for entr
-PREFIX="${PREFIX:-"$HOME/.local"}"
+PREFIX="${PREFIX:-"${HOME}/.local"}"
 
 # https://unix.stackexchange.com/a/84980/192799
 DOWNLOADDIR="$(mktemp -d 2> /dev/null || mktemp -d -t 'zsh')"
@@ -22,19 +22,19 @@ print_line() {
 
 install() {
     print_double_line
-    echo Downloading to temp dir "$DOWNLOADDIR"
-    cd "$DOWNLOADDIR"
+    echo Downloading to temp dir "${DOWNLOADDIR}"
+    cd "${DOWNLOADDIR}"
     curl -L -O https://eradman.com/entrproject/scripts/reload-browser
     chmod +x reload-browser
 
     print_line
-    echo Installing to "$PREFIX/bin"
-    mkdir -p "$PREFIX/bin"
-    mv reload-browser "$PREFIX/bin"
+    echo Installing to "${PREFIX}/bin"
+    mkdir -p "${PREFIX}/bin"
+    mv reload-browser "${PREFIX}/bin"
 
     print_line
-    echo Removing temp dir "$DOWNLOADDIR"
-    rm -rf "$DOWNLOADDIR"
+    echo Removing temp dir "${DOWNLOADDIR}"
+    rm -rf "${DOWNLOADDIR}"
 }
 
 install

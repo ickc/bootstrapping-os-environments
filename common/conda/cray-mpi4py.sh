@@ -2,22 +2,22 @@
 
 set -e
 
-MPI4PYTMPDIR="${MPI4PYTMPDIR:-$HOME/.mpi4py/}"
+MPI4PYTMPDIR="${MPI4PYTMPDIR:-${HOME}/.mpi4py/}"
 MPI4PY_VERSION="${MPI4PY_VERSION:-3.1.3}"
 
-if [[ -n $NERSC_HOST ]]; then
+if [[ -n ${NERSC_HOST} ]]; then
     # https://docs.nersc.gov/development/languages/python/parallel-python/#mpi4py-in-your-custom-conda-environment
     echo NERSC host detected, using NERSC recommended method to install mpi4py...
     module swap PrgEnv-${PE_ENV,,} PrgEnv-gnu
     module unload craype-hugepages2M
     module unload libfabric || true
 
-    MPICC="cc -shared" pip install --force --no-cache-dir --no-binary=mpi4py "mpi4py==$MPI4PY_VERSION"
+    MPICC="cc -shared" pip install --force --no-cache-dir --no-binary=mpi4py "mpi4py==${MPI4PY_VERSION}"
 else
-    mpiName="mpi4py-$MPI4PY_VERSION"
-    mkdir -p "$MPI4PYTMPDIR" && cd "$MPI4PYTMPDIR"
-    wget -qO- "https://github.com/mpi4py/mpi4py/releases/download/$MPI4PY_VERSION/mpi4py-$MPI4PY_VERSION.tar.gz" | tar -xzf -
-    cd $mpiName
+    mpiName="mpi4py-${MPI4PY_VERSION}"
+    mkdir -p "${MPI4PYTMPDIR}" && cd "${MPI4PYTMPDIR}"
+    wget -qO- "https://github.com/mpi4py/mpi4py/releases/download/${MPI4PY_VERSION}/mpi4py-${MPI4PY_VERSION}.tar.gz" | tar -xzf -
+    cd ${mpiName}
 
     # * see https://bitbucket.org/mpi4py/mpi4py/issues/143/build-failure-with-openmpi
     cat << EOF > conf/sysconfigdata-conda-user.py
@@ -58,4 +58,4 @@ fi
 
 cd -
 
-rm -rf "$MPI4PYTMPDIR"
+rm -rf "${MPI4PYTMPDIR}"

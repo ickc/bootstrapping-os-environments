@@ -6,13 +6,13 @@ set -e
 VERSION=${VERSION:-5.9}
 # https://unix.stackexchange.com/a/84980/192799
 DOWNLOADDIR="$(mktemp -d 2> /dev/null || mktemp -d -t 'zsh')"
-INSTALLDIR=${INSTALLDIR:-"$HOME/.local"}
+INSTALLDIR=${INSTALLDIR:-"${HOME}/.local"}
 
-filename="zsh-$VERSION.tar.xz"
-dirname="zsh-$VERSION"
-url="https://sourceforge.net/projects/zsh/files/zsh/$VERSION/$filename/download"
+filename="zsh-${VERSION}.tar.xz"
+dirname="zsh-${VERSION}"
+url="https://sourceforge.net/projects/zsh/files/zsh/${VERSION}/${filename}/download"
 
-cd "$DOWNLOADDIR"
+cd "${DOWNLOADDIR}"
 
 # helpers ##############################################################
 
@@ -27,15 +27,15 @@ print_line() {
 ########################################################################
 
 print_double_line
-echo Downloading from $url to temp dir $DOWNLOADDIR
-wget -O - "$url" | tar -xJf -
+echo Downloading from ${url} to temp dir ${DOWNLOADDIR}
+wget -O - "${url}" | tar -xJf -
 
-cd "$dirname"
+cd "${dirname}"
 
 print_double_line
 echo Configuring...
-./configure --prefix="$INSTALLDIR" \
-    --datadir="$INSTALLDIR/share" \
+./configure --prefix="${INSTALLDIR}" \
+    --datadir="${INSTALLDIR}/share" \
     --enable-maildir-support \
     --with-term-lib='ncursesw' \
     --enable-multibyte \
@@ -59,5 +59,5 @@ make install
 make install.info
 
 print_line
-echo Removing temp dir at $DOWNLOADDIR
-rm -rf "$DOWNLOADDIR"
+echo Removing temp dir at ${DOWNLOADDIR}
+rm -rf "${DOWNLOADDIR}"

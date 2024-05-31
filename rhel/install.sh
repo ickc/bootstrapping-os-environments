@@ -23,8 +23,8 @@ print_line() {
 
 print_double_line
 echo "Setting samba..."
-sudo smbpasswd -a "$USER"
-sudo smbpasswd -e "$USER"
+sudo smbpasswd -a "${USER}"
+sudo smbpasswd -e "${USER}"
 # https://unix.stackexchange.com/a/562993
 sudo setsebool -P samba_export_all_ro=1 samba_export_all_rw=1
 sudo systemctl enable --now {smb,nmb}

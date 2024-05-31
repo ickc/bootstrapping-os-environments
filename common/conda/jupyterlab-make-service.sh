@@ -8,8 +8,8 @@
 # sudo systemctl enable --now jupyterhub
 
 SERVICEFILE="${SERVICEFILE:-/usr/lib/systemd/system/jupyterhub.service}"
-RUNUSER="${RUNUSER:-$USER}"
-WORKINGDIR="${WORKINGDIR:-$HOME}"
+RUNUSER="${RUNUSER:-${USER}}"
+WORKINGDIR="${WORKINGDIR:-${HOME}}"
 
 cat << EOF |
 [Unit]
@@ -17,12 +17,12 @@ Description=Jupyterhub
 After=syslog.target network.target
 
 [Service]
-User=$RUNUSER
-Environment=PYTHONPATH=$PYTHONPATH
+User=${RUNUSER}
+Environment=PYTHONPATH=${PYTHONPATH}
 ExecStart=/bin/sh -c 'source /opt/anaconda/bin/activate jupyterlab && jupyterhub labhub'
-WorkingDirectory=$WORKINGDIR
+WorkingDirectory=${WORKINGDIR}
 
 [Install]
 WantedBy=multi-user.target
 EOF
-    sudo tee "$SERVICEFILE"
+    sudo tee "${SERVICEFILE}"

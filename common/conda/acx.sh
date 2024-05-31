@@ -4,7 +4,7 @@ set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-mamba env create -f "$DIR/acx.yml"
+mamba env create -f "${DIR}/acx.yml"
 
 . activate acx
 

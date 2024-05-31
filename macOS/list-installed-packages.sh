@@ -10,13 +10,13 @@ ls /Applications > applications-ls.txt
 tree -L 2 /Applications > applications-tree.txt
 
 # Safari extensions
-find $HOME/Library/Safari/Extensions/ -iname '*.safariextz' -print | sed -e s=/.*/==g -e s=.safariextz==g > safari.txt
+find ${HOME}/Library/Safari/Extensions/ -iname '*.safariextz' -print | sed -e s=/.*/==g -e s=.safariextz==g > safari.txt
 
 # local bin
 ls /usr/local/bin/ > local-bin.txt
 
 # local bin in home
-ls $HOME/.local/bin > home-local-bin.txt
+ls ${HOME}/.local/bin > home-local-bin.txt
 
 # brew
 brew leaves > brew.txt

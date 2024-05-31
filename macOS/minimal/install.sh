@@ -5,8 +5,8 @@ set -e
 MACPORTS_VERSION=2.6.4_1
 MACPORTS_OS_VERSION=11-BigSur
 # TODO: on next macOS major upgrade we should move to /opt/homebrew and create a dedicated homebrew user account to manage this
-HOMEBREW_PREFIX="$HOME/.homebrew"
-CONDA_PREFIX="$HOME/.mambaforge"
+HOMEBREW_PREFIX="${HOME}/.homebrew"
+CONDA_PREFIX="${HOME}/.mambaforge"
 
 # sudo loop
 # sudo xcodebuild -license accept
@@ -51,10 +51,10 @@ sudo /opt/local/bin/port -v selfupdate
 print_double_line
 echo "install homebrew..."
 # install brew
-sudo mkdir -p "$HOMEBREW_PREFIX" && sudo chown "$USER" "$HOMEBREW_PREFIX" && sudo chgrp staff "$HOMEBREW_PREFIX"
-curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C "$HOMEBREW_PREFIX"
+sudo mkdir -p "${HOMEBREW_PREFIX}" && sudo chown "${USER}" "${HOMEBREW_PREFIX}" && sudo chgrp staff "${HOMEBREW_PREFIX}"
+curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C "${HOMEBREW_PREFIX}"
 
-# export PATH="$HOMEBREW_PREFIX/bin:$PATH"
+# export PATH="${HOMEBREW_PREFIX}/bin:${PATH}"
 # print_double_line
 # echo "install mas..."
 # brew install mas
@@ -67,4 +67,4 @@ print_double_line
 echo 'install mamba-forge...'
 curl https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-MacOSX-x86_64.sh --location --output Mambaforge-MacOSX-x86_64.sh
 chmod +x Mambaforge-MacOSX-x86_64.sh
-./Mambaforge-MacOSX-x86_64.sh -b -s -p "$CONDA_PREFIX"
+./Mambaforge-MacOSX-x86_64.sh -b -s -p "${CONDA_PREFIX}"

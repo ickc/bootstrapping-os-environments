@@ -21,6 +21,6 @@ EOF
 
 echo 'Include = /etc/pacman.d/custom' >> /etc/pacman.conf
 
-sudo install -d /var/cache/pacman/custom -o $USER
+sudo install -d /var/cache/pacman/custom -o ${USER}
 repo-add /var/cache/pacman/custom/custom.db.tar
 sudo pacman -Syu

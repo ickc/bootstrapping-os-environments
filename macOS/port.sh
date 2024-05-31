@@ -12,7 +12,7 @@ startsudo() {
     trap stopsudo SIGINT SIGTERM
 }
 stopsudo() {
-    kill "$SUDO_PID"
+    kill "${SUDO_PID}"
     trap - SIGINT SIGTERM
     sudo -k
 }

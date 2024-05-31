@@ -13,7 +13,7 @@ systemctl start sshd
 # update system clock
 timedatectl set-ntp true
 
-parted /dev/$DISK
+parted /dev/${DISK}
 mkfs.fat /dev/${PART}1
 mkfs.ext4 /dev/${PART}2
 
@@ -36,12 +36,12 @@ hwclock --systohc
 echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 echo 'LANG=en_US.UTF-8' > /etc/locale.conf
 
-echo "$INSTALLHOSTNAME" > /etc/hostname
+echo "${INSTALLHOSTNAME}" > /etc/hostname
 
 cat << EOF > /etc/hosts
 127.0.0.1    localhost
 ::1    localhost
-127.0.1.1    $INSTALLHOSTNAME.localdomain    $INSTALLHOSTNAME
+127.0.1.1    ${INSTALLHOSTNAME}.localdomain    ${INSTALLHOSTNAME}
 EOF
 
 pacman -S iw wpa_supplicant dialog intel-ucode grub efibootmgr openssh

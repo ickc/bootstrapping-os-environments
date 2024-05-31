@@ -6,8 +6,8 @@ set -e
 
 sudo apt install git curl wget sed -y
 
-git clone https://github.com/ickc/linux-surface.git "$HOME/linux-surface"
+git clone https://github.com/ickc/linux-surface.git "${HOME}/linux-surface"
 
-cd "$HOME/linux-surface"
+cd "${HOME}/linux-surface"
 
 sudo sh setup.sh

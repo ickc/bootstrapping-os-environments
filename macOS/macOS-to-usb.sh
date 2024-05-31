@@ -8,14 +8,14 @@
 diskutil list
 while true; do
     read -p "What's the disk number?" dkno
-    if [[ $dkno =~ ^[0-9]+$ ]]; then
+    if [[ ${dkno} =~ ^[0-9]+$ ]]; then
         break
     else
         echo "Disk number should be integers only."
     fi
 done
 
-diskutil partitionDisk "/dev/disk$dkno" GPT JHFS+ "$2" 100%
+diskutil partitionDisk "/dev/disk${dkno}" GPT JHFS+ "$2" 100%
 
 sudo "$1/Contents/Resources/createinstallmedia" \
     --volume "/Volumes/$2" \

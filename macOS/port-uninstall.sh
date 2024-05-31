@@ -14,7 +14,7 @@ startsudo() {
     trap stopsudo SIGINT SIGTERM
 }
 stopsudo() {
-    kill "$SUDO_PID"
+    kill "${SUDO_PID}"
     trap - SIGINT SIGTERM
     sudo -k
 }
@@ -52,6 +52,6 @@ sudo rm -rf \
     /Library/StartupItems/DarwinPortsStartup \
     /Library/Tcl/darwinports1.0 \
     /Library/Tcl/macports1.0 \
-    "$HOME/.macports"
+    "${HOME}/.macports"
 
 stopsudo

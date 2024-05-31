@@ -40,10 +40,10 @@ mkdir_check_sudo() {
 
 ########################################################################
 
-mkdir_check_sudo "$PREFIX"
-cd "$PREFIX"
-if [[ $NEED_SUDO == 0 ]]; then
-    wget -qO- "$URL" | tar --strip-components=1 -xzf -
+mkdir_check_sudo "${PREFIX}"
+cd "${PREFIX}"
+if [[ ${NEED_SUDO} == 0 ]]; then
+    wget -qO- "${URL}" | tar --strip-components=1 -xzf -
 else
-    wget -qO- "$URL" | sudo tar --strip-components=1 -xzf -
+    wget -qO- "${URL}" | sudo tar --strip-components=1 -xzf -
 fi

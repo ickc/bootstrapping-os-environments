@@ -4,7 +4,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # https://github.com/mathiasbynens/dotfiles/issues/458
 for ext in toml dict inc "in" native cfg csl ipynb Rmd; do
-    defaults write "$HOME/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure.plist" LSHandlers -array-add \
+    defaults write "${HOME}/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure.plist" LSHandlers -array-add \
         "{
         LSHandlerContentTag = ${ext};
         LSHandlerContentTagClass = 'public.filename-extension';
@@ -16,4 +16,4 @@ for ext in toml dict inc "in" native cfg csl ipynb Rmd; do
 done
 
 # https://apple.stackexchange.com/a/123954
-duti < "$DIR/default-open.tsv"
+duti < "${DIR}/default-open.tsv"

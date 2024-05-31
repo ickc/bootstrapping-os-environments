@@ -20,5 +20,5 @@ gpg2 --verify ${BOOTSTRAP_TAR}{.asc,}
 sudo tar -zxpf ${BOOTSTRAP_TAR} -C /
 
 # Add paths
-echo 'export PATH=/usr/pkg/sbin:/usr/pkg/bin:$PATH'
-echo 'export MANPATH=/usr/pkg/man:$MANPATH'
+echo 'export PATH=/usr/pkg/sbin:/usr/pkg/bin:${PATH}'
+echo 'export MANPATH=/usr/pkg/man:${MANPATH}'

@@ -4,21 +4,20 @@
 
 # helpers ##############################################################
 
-print_double_line () {
+print_double_line() {
     eval printf %.0s= '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
-print_line () {
+print_line() {
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}
 }
 
 ########################################################################
 
-while IFS="" read -r p || [ -n "$p" ]; do
+while IFS="" read -r p || [ -n "${p}" ]; do
     print_double_line
-    echo searching $p
-    port search $p
+    echo searching ${p}
+    port search ${p}
     print_line
-    brew info $p
-    fi
+    brew info ${p}
 done < <(grep -v '#' $@)

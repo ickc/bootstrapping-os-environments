@@ -2,6 +2,6 @@
 
 set -e
 
-PREFIX="${PREFIX:-$HOME/.basher}"
+PREFIX="${PREFIX:-${HOME}/.basher}"
 
-git clone https://github.com/basherpm/basher.git "$PREFIX"
+git clone https://github.com/basherpm/basher.git "${PREFIX}"

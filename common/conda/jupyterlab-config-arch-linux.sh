@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-mkdir -p "$HOME/.jupyter"
+mkdir -p "${HOME}/.jupyter"
 
-cat << 'EOF' > "$HOME/.jupyter/jupyter_lab_config.py"
+cat << 'EOF' > "${HOME}/.jupyter/jupyter_lab_config.py"
 c.ServerApp.iopub_data_rate_limit = 10000000000
 EOF
 

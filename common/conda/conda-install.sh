@@ -5,13 +5,13 @@
 set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$DIR"
+cd "${DIR}"
 
 is_apple_silicon() {
     machine=$(uname -m)
     os=$(uname -s)
 
-    if [[ $machine == "arm64" && $os == "Darwin" ]]; then
+    if [[ ${machine} == "arm64" && ${os} == "Darwin" ]]; then
         return 0 # Apple Silicon
     else
         return 1 # Not Apple Silicon
@@ -27,35 +27,35 @@ fi
 # install conda environments
 
 # all38-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "$csv_filename" -c conda-forge -v 3.8
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "${csv_filename}" -c conda-forge -v 3.8
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all39-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "$csv_filename" -c conda-forge -v 3.9
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "${csv_filename}" -c conda-forge -v 3.9
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all310-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "$csv_filename" -c conda-forge -v 3.10
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "${csv_filename}" -c conda-forge -v 3.10
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # all311-conda-forge
-./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "$csv_filename" -c conda-forge -v 3.11
+./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "all" -C "${csv_filename}" -c conda-forge -v 3.11
 if [[ -n ${UPDATE+x} ]]; then
     mamba env update -f temp.yml
 else
     mamba env create -f temp.yml
 fi
 # # pypy-37-conda-forge
-# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "pypy" -C "$csv_filename" -c conda-forge -v 3.7 --pypy
+# ./../../src/bsos/conda_env.py -o temp.yml -m mpich -n "pypy" -C "${csv_filename}" -c conda-forge -v 3.7 --pypy
 # if [[ -n ${UPDATE+x} ]]; then
 #     mamba env update -f temp.yml
 # else
@@ -98,26 +98,26 @@ rm -f temp.yml
 
 conda info --env | grep -v -E '#|base' - | grep -E '(defaults|intel|conda-forge)' - | cut -d' ' -f1 | xargs -i bash -c '
     for name do
-        . activate "$name"
-        python -m ipykernel install --user --name "$name" --display-name "$name"
+        . activate "${name}"
+        python -m ipykernel install --user --name "${name}" --display-name "${name}"
         conda deactivate
     done' bash {}
 
 conda info --env | grep -v -E '#|base' - | grep -E '^(all|pip)' - | cut -d' ' -f1 | xargs -i bash -c '
     for name do
-        . activate "$name"
-        case "$name" in
+        . activate "${name}"
+        case "${name}" in
         *-defaults)
-            cp condarc/defaults.yml "$CONDA_PREFIX/.condarc"
+            cp condarc/defaults.yml "${CONDA_PREFIX}/.condarc"
             ;;
         *-conda-forge)
-            cp condarc/conda-forge.yml "$CONDA_PREFIX/.condarc"
+            cp condarc/conda-forge.yml "${CONDA_PREFIX}/.condarc"
             ;;
         *-intel)
-            cp condarc/intel.yml "$CONDA_PREFIX/.condarc"
+            cp condarc/intel.yml "${CONDA_PREFIX}/.condarc"
             ;;
         pip*)
-            cp condarc/pip.yml "$CONDA_PREFIX/.condarc"
+            cp condarc/pip.yml "${CONDA_PREFIX}/.condarc"
             ;;
         esac
         conda deactivate
