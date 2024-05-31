@@ -91,6 +91,7 @@ format-python:
 format-shell:
 	find . -type f \
 		\( -name '*.sh' -o -name env -o -name interactive \) \
+		-exec sed -i -E 's/\$$([a-zA-Z_][a-zA-Z0-9_]*)/$${\1}/g' {} + \
 		-exec shfmt \
 			--write \
 			--simplify \
