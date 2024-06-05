@@ -14,7 +14,7 @@ print_line() {
 
 ########################################################################
 
-while IFS="" read -r p || [ -n "${p}" ]; do
+while IFS="" read -r p || [[ -n ${p} ]]; do
     print_double_line
     echo searching ${p}
     port search ${p}
