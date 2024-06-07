@@ -73,6 +73,7 @@ ssh-keyscan
 sshd
 starship
 tar
+task
 tmux
 tred
 tree

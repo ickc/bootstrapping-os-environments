@@ -62,3 +62,4 @@ dnachun::joshuto
 dnachun::dua-cli
 dnachun::bottom
 dust
+go-task
