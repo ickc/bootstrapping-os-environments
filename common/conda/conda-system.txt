@@ -60,4 +60,5 @@ zeroconf
 dnachun::zellij
 dnachun::joshuto
 dnachun::dua-cli
+dnachun::bottom
 dust
