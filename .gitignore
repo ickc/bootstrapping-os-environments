@@ -1,12 +1,3 @@
 *.ipynb
 dist/
 setup.py
-*.egg-info/
-
-.DS_Store
-.mypy_cache/
-.pytest_cache/
-.vscode/
-*.pyc
-.ipynb_checkpoints/
-.coverage*
