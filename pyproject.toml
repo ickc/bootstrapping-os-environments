@@ -148,7 +148,6 @@ max-line-length = 120
 
 [tool.black]
 line-length = 120
-experimental-string-processing = true
 target-version = ['py38']
 
 [tool.jupytext]
