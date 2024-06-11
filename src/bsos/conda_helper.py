@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess  # nosec
 import sys
 from dataclasses import dataclass
@@ -19,22 +20,31 @@ from map_parallel import map_parallel
 
 logger = getLogger(__name__)
 
-CONDA_PATH: Path
-if (temp := which("mamba")) is not None:
-    CONDA_PATH = Path(temp)
-elif (temp := which("conda")) is not None:
-    CONDA_PATH = Path(temp)
-else:
-    # try guessing from the parent of the Python executable
-    bin_dir = Path(sys.executable).parent
-    if (temp := bin_dir / "mamba").exists():
-        CONDA_PATH = temp
-    elif (temp := bin_dir / "conda").exists():
-        CONDA_PATH = temp
+# get env var MAMBA_ROOT_PREFIX
+MAMBA_ROOT_PREFIX: str | None = os.environ.get("MAMBA_ROOT_PREFIX", None)
+if MAMBA_ROOT_PREFIX is None:
+    CONDA_PATH: Path
+    if (temp := which("mamba")) is not None:
+        CONDA_PATH = Path(temp)
+    elif (temp := which("conda")) is not None:
+        CONDA_PATH = Path(temp)
     else:
-        raise RuntimeError("Cannot find mamba/conda in your PATH.")
-    del bin_dir
-del temp
+        # try guessing from the parent of the Python executable
+        bin_dir = Path(sys.executable).parent
+        if (temp := bin_dir / "mamba").exists():
+            CONDA_PATH = temp
+        elif (temp := bin_dir / "conda").exists():
+            CONDA_PATH = temp
+        else:
+            raise RuntimeError("Cannot find mamba/conda in your PATH.")
+        del bin_dir
+    del temp
+else:
+    CONDA_PATH = Path(MAMBA_ROOT_PREFIX) / "bin" / "mamba"
+    if not CONDA_PATH.exists():
+        CONDA_PATH = Path(MAMBA_ROOT_PREFIX) / "bin" / "conda"
+        if not CONDA_PATH.exists():
+            raise RuntimeError(f"Cannot find mamba/conda in MAMBA_ROOT_PREFIX={MAMBA_ROOT_PREFIX}.")
 
 
 class CondaPath:
