@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.14.7
+#       jupytext_version: 1.16.1
 #   kernelspec:
 #     display_name: all310-conda-forge
 #     language: python
@@ -78,7 +78,8 @@ df["name"] = np.where(df.name_x.isna(), df.name_y, df.name_x)
 for col in ("name_x", "name_y"):
     df.drop(col, inplace=True, axis=1)
 for col in ("is_installed", "should_be_installed", "will_be_installed"):
-    df[col].fillna(False, inplace=True)
+    with pd.option_context("future.no_silent_downcasting", True):
+        df[col] = df[col].fillna(False).infer_objects(copy=False)
 df = df[["package", "name", "version", "is_installed", "should_be_installed", "will_be_installed"]]
 
 # %%
@@ -148,7 +149,8 @@ df_active.drop("is_active", inplace=True, axis=1)
 # %%
 df = df_active.merge(df_in, how="outer", on="package")
 for col in ("is_installed", "should_be_installed", "will_be_installed"):
-    df[col].fillna(False, inplace=True)
+    with pd.option_context("future.no_silent_downcasting", True):
+        df[col] = df[col].fillna(False).infer_objects(copy=False)
 
 # %%
 df_add = df[df.is_installed & ~df.should_be_installed]
