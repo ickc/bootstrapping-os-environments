@@ -81,9 +81,9 @@
 # 1Blocker
 1365531024
 # Furiganify
-1151320968
+# 1151320968
 # PiPifier
-1160374471
+# 1160374471
 # SafariMarkdownLinker
 1289119450
 
@@ -92,7 +92,7 @@
 # Trello
 1278508951
 # Wayback Machine
-1472432422
+# 1472432422
 # 1Keyboard
 # 766939888
 # Tabs to Links
@@ -116,7 +116,7 @@
 # Monosnap
 # 540348655
 # Right Click
-1364038646
+# 1364038646
 # WhatsApp
 # 1147396723
 # forScore
@@ -128,13 +128,13 @@
 # Vinegar
 1591303229
 # PayPal Honey
-1472777122
+# 1472777122
 # FakespotSafari
-1592541616
+# 1592541616
 # Save to Raindrop.io
 1549370672
 # Refined GitHub
-1519867270
+# 1519867270
 # The Camelizer
 1532579087
 
@@ -143,9 +143,9 @@
 # Microsoft Outlook
 985367838
 # Notion Web Clipper
-1559269364
+# 1559269364
 # uBlacklist for Safari
 1547912640
 
 # Hidden Bar
-1452453066
+# 1452453066

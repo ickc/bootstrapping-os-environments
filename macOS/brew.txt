@@ -98,3 +98,10 @@ lsd
 whisper-cpp
 joshuto
 starship
+
+pixi
+zellij
+mactop
+llama.cpp
+fff
+lldpd

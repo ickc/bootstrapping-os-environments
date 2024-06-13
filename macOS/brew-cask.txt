@@ -11,7 +11,7 @@ accordance
 # vmware-fusion
 textmate
 jetbrains-toolbox
-# adobe-creative-cloud
+adobe-creative-cloud
 # services ################################################################
 dropbox
 google-drive
@@ -96,8 +96,8 @@ keepassxc
 # keeweb
 cheatsheet
 # hardware related ################################################################
-fanny
-zsa-wally
+# fanny
+# zsa-wally
 # openzfs
 # gdisk
 # intel-power-gadget
@@ -125,7 +125,7 @@ zsa-wally
 # markdown-service-tools
 # windows manager ################################################################
 amethyst
-rectangle
+# rectangle
 alt-tab
 detexify
 # homebrew-cask-versions ################################################################
@@ -139,7 +139,7 @@ zerotier-one
 
 # android-platform-tools
 
-dash
+# dash
 # franz
 # horndis
 # hwsensors
@@ -185,3 +185,7 @@ keymapp
 whatsapp-beta
 alacritty
 wezterm
+
+chatgpt
+jordanbaird-ice
+windscribe
