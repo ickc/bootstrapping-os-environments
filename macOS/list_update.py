@@ -98,72 +98,69 @@ if not df_remove.empty:
 # %% [markdown]
 # # port
 
-# %%
-def read_port_txt(path: Path) -> pd.DataFrame:
-    with path.open("r") as f:
-        data = f.read().splitlines()
-    data = [d for datum in data if (d := datum.strip())]
-    names = []
-    args = []
-    should_be_installeds = []
-    for line in data:
-        should_be_installed = True
-        if line.startswith("#"):
-            line = line[1:].strip()
-            should_be_installed = False
-        name, *arg = line.split()
-        names.append(name)
-        args.append(" ".join(arg))
-        should_be_installeds.append(should_be_installed)
-    return pd.DataFrame({"package": names, "args": args, "should_be_installed": should_be_installeds})
+# %% [raw]
+# def read_port_txt(path: Path) -> pd.DataFrame:
+#     with path.open("r") as f:
+#         data = f.read().splitlines()
+#     data = [d for datum in data if (d := datum.strip())]
+#     names = []
+#     args = []
+#     should_be_installeds = []
+#     for line in data:
+#         should_be_installed = True
+#         if line.startswith("#"):
+#             line = line[1:].strip()
+#             should_be_installed = False
+#         name, *arg = line.split()
+#         names.append(name)
+#         args.append(" ".join(arg))
+#         should_be_installeds.append(should_be_installed)
+#     return pd.DataFrame({"package": names, "args": args, "should_be_installed": should_be_installeds})
 
+# %% [raw]
+# def get_port_installed() -> pd.DataFrame:
+#     res = subprocess.run(["port", "installed", "requested"], check=True, capture_output=True)
+#     # 1st line is "The following ports are currently installed:"
+#     lines = res.stdout.decode().splitlines()[1:]
+#     regex = re.compile(r"^ +([^ ]+) @([^ ]+)( \(active\))?$")
+#     packages = []
+#     versions = []
+#     is_active = []
+#     for line in lines:
+#         match = regex.match(line)
+#         if match:
+#             packages.append(match.group(1))
+#             versions.append(match.group(2))
+#             is_active.append(match.group(3) is not None)
+#     return pd.DataFrame({"package": packages, "version": versions, "is_active": is_active})
 
-# %%
-def get_port_installed() -> pd.DataFrame:
-    res = subprocess.run(["port", "installed", "requested"], check=True, capture_output=True)
-    # 1st line is "The following ports are currently installed:"
-    lines = res.stdout.decode().splitlines()[1:]
-    regex = re.compile(r"^ +([^ ]+) @([^ ]+)( \(active\))?$")
-    packages = []
-    versions = []
-    is_active = []
-    for line in lines:
-        match = regex.match(line)
-        if match:
-            packages.append(match.group(1))
-            versions.append(match.group(2))
-            is_active.append(match.group(3) is not None)
-    return pd.DataFrame({"package": packages, "version": versions, "is_active": is_active})
+# %% [raw]
+# df_in = read_port_txt(Path("port.txt"))
+# df_in["will_be_installed"] = True
 
+# %% [raw]
+# df_installed = get_port_installed()
+# df_active = df_installed[df_installed.is_active].copy()
+# df_active["is_installed"] = True
+# df_active.drop("is_active", inplace=True, axis=1)
 
-# %%
-df_in = read_port_txt(Path("port.txt"))
-df_in["will_be_installed"] = True
+# %% [raw]
+# df = df_active.merge(df_in, how="outer", on="package")
+# for col in ("is_installed", "should_be_installed", "will_be_installed"):
+#     with pd.option_context("future.no_silent_downcasting", True):
+#         df[col] = df[col].fillna(False).infer_objects(copy=False)
 
-# %%
-df_installed = get_port_installed()
-df_active = df_installed[df_installed.is_active].copy()
-df_active["is_installed"] = True
-df_active.drop("is_active", inplace=True, axis=1)
+# %% [raw]
+# df_add = df[df.is_installed & ~df.should_be_installed]
+# if not df_add.empty:
+#     print("Consider adding these packages to port.txt:")
+#     display(df_add)
 
-# %%
-df = df_active.merge(df_in, how="outer", on="package")
-for col in ("is_installed", "should_be_installed", "will_be_installed"):
-    with pd.option_context("future.no_silent_downcasting", True):
-        df[col] = df[col].fillna(False).infer_objects(copy=False)
-
-# %%
-df_add = df[df.is_installed & ~df.should_be_installed]
-if not df_add.empty:
-    print("Consider adding these packages to port.txt:")
-    display(df_add)
-
-# %%
-df_remove = df[df.should_be_installed & ~df.is_installed]
-if not df_remove.empty:
-    print("Consider removing these packages from port.txt")
-    display(df_remove)
-
+# %% [raw]
+# df_remove = df[df.should_be_installed & ~df.is_installed]
+# if not df_remove.empty:
+#     print("Consider removing these packages from port.txt")
+#     display(df_remove)
 
 # %% [markdown]
 # # brew
