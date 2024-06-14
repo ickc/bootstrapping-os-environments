@@ -35,10 +35,10 @@ print_double_line
 echo 'Uninstall All Ports'
 sudo port -fp uninstall installed
 
-# print_line
-# echo 'Remove Users and Groups'
-# sudo dscl . -delete /Users/macports
-# sudo dscl . -delete /Groups/macports
+print_line
+echo 'Remove Users and Groups'
+sudo dscl . -delete /Users/macports
+sudo dscl . -delete /Groups/macports
 
 print_line
 echo 'Remove the Rest of MacPorts'
@@ -52,6 +52,6 @@ sudo rm -rf \
     /Library/StartupItems/DarwinPortsStartup \
     /Library/Tcl/darwinports1.0 \
     /Library/Tcl/macports1.0 \
-    "${HOME}/.macports"
+    ~/.macports
 
 stopsudo
