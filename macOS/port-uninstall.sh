@@ -8,7 +8,7 @@ startsudo() {
     sudo -v
     (while true; do
         sudo -v
-        sleep 50
+        /bin/sleep 50
     done) &
     SUDO_PID="$!"
     trap stopsudo SIGINT SIGTERM
