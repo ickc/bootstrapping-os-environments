@@ -28,9 +28,8 @@ sed -i -E \
     flake.nix
 
 # check & apply
-cd ~/git/source/dotfiles/config/nix-darwin &&
-nix run nix-darwin -- switch --flake . &&
-darwin-rebuild switch --flake .
+# nix run nix-darwin -- switch --flake ~/git/source/dotfiles/config/nix-darwin
+darwin-rebuild switch --flake ~/git/source/dotfiles/config/nix-darwin
 
 # update
 nix flake update
