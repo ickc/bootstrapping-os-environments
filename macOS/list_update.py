@@ -70,6 +70,11 @@ def get_mas_installed() -> pd.DataFrame:
 df_in = read_mas_txt(Path("mas.txt"))
 df_in["will_be_installed"] = True
 
+# %% [raw]
+# # migrate to nix-darwin:
+# for name, row in df_in[df_in.should_be_installed].iterrows():
+#     print(f'"{row["name"]}" = {row.package};')
+
 # %%
 df_installed = get_mas_installed()
 df_installed["is_installed"] = True
