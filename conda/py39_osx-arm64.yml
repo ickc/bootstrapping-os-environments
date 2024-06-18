@@ -17,7 +17,9 @@ dependencies:
 - certifi
 - cffi
 - chardet
+- colorama
 - coloredlogs
+- compilers
 - contextily
 - coverage
 - custom-inherit
@@ -35,6 +37,7 @@ dependencies:
 - geopy
 - ghapi
 - glom
+- graphviz
 - h5py
 - healpy
 - holoviews
@@ -115,7 +118,6 @@ dependencies:
 - sympy
 - tabulate
 - tbb
-- tbb-devel
 - tikzplotlib
 - toml
 - typeguard
