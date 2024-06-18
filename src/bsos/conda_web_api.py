@@ -9,7 +9,7 @@ from pathlib import Path
 import httpx
 import platformdirs
 import yaml
-import yamlloader
+import yamlloader  # type: ignore
 
 
 def parse_conda_build(build: str) -> tuple[int, int]:
