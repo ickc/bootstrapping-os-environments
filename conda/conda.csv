@@ -3,8 +3,8 @@ acor,,True,,1.1.1,,,Estimate the autocorrelation time of a time series quickly.,
 aiohttp,,True,,3.9.5,,,Async http client/server framework (asyncio),http://aiohttp.readthedocs.io/,True
 archspec,,False,,0.2.3,,,A library to query system architecture,https://archspec.readthedocs.io/,True
 arrow,,True,,1.3.0,,,Better dates & times for Python,https://arrow.readthedocs.io,True
-asdf,,False,,3.2.0,astropy,,Python implementation of the ASDF Standard,http://asdf.readthedocs.io/,True
-astropy,,False,,6.1.1,,,Community-developed Python Library for Astronomy,http://docs.astropy.org/en/stable/,True
+asdf-astropy,,False,,0.6.1,astropy,,ASDF serialization support for astropy,,True
+astropy,,False,,6.1.1,,https://docs.astropy.org/en/stable/install.html#using-conda,Community-developed Python Library for Astronomy,http://docs.astropy.org/en/stable/,True
 autoflake,,False,,1.7.5,,,Removes unused imports and unused variables,,True
 autopep8,,True,,2.3.0,,,A tool that automatically formats Python code to conform to the PEP 8 style guide,,True
 bandit,,False,,1.7.8,,,"Bandit is a tool designed to find common security issues in Python code. To do this Bandit processes each file, builds an AST from it, and runs appropriate plugins against the AST nodes. Once Bandit has finished scanning all the files it generates a report.",https://bandit.readthedocs.io/en/latest/,True
@@ -68,7 +68,7 @@ grayskull,,True,,2.5.3,,,Project to generate recipes for conda.,,True
 h5py,,False,,3.11.0,astropy,,Read and write HDF5 files from Python,,True
 healpy,,False,,1.16.6,,,Healpix tools package for Python,http://healpy.readthedocs.org/,True
 holoviews,,False,,1.19.0,,,Stop plotting your data - annotate your data and let it visualize itself.,http://holoviews.org/getting_started/index.html,True
-html5lib,,False,,1.1,pandas,,HTML parser based on the WHATWG HTML specification,,True
+html5lib,,False,,1.1,pandas/astropy,,HTML parser based on the WHATWG HTML specification,,True
 httpx,,False,,0.27.0,,,A next-generation HTTP client for Python.,https://www.encode.io/httpx/,True
 icc_rt,numba,False,,2020.2,numba,,,,False
 ics,,False,,0.7,,,Pythonic iCalendar (RFC 5545) Parser,https://icspy.readthedocs.io/en/stable/,True
@@ -95,7 +95,7 @@ mamba,,True,,1.5.8,,,"A fast drop-in alternative to conda, using libsolv for dep
 map_parallel,,False,,0.2.0,,,A drop-in replacement of map/starmap but in parallel with different backends.,,True
 markdown,,True,,3.6,,,Python implementation of Markdown.,https://python-markdown.github.io/,True
 markdown2,,True,,2.4.13,,,A fast and complete Python implementation of Markdown,,True
-matplotlib,,False,,3.8.4,pandas,,Publication quality figures in Python,http://matplotlib.org/contents.html,True
+matplotlib,,False,,3.8.4,pandas/astropy,,Publication quality figures in Python,http://matplotlib.org/contents.html,True
 mkl,,False,,2024.1.0,numpy,,Intel® oneAPI Math Kernel Library runtime libraries,https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html,False
 mpmath,,False,,1.3.0,astropy/sympy,,Python library for arbitrary-precision floating-point arithmetic,http://mpmath.org/doc/current/,True
 multipledispatch,,True,,0.6.0,,,Multiple dispatch,https://multiple-dispatch.readthedocs.io,True
@@ -115,7 +115,7 @@ openpyxl,,False,,3.1.4,pandas,,A Python library to read/write Excel 2010 xlsx/xl
 oyaml,,False,,1.0,,,Ordered YAML: drop-in replacement for PyYAML which preserves dict ordering,,True
 palettable,,False,,3.3.3,,,Color palettes for Python,,True
 pancritic,,True,,0.3.2,,,CriticMarkdup parser with optional pandoc backend,,True
-pandas,,False,,2.2.2,,,"Powerful data structures for data analysis, time series, and statistics",https://pandas.pydata.org/docs/,True
+pandas,,False,,2.2.2,astropy,,"Powerful data structures for data analysis, time series, and statistics",https://pandas.pydata.org/docs/,True
 pandoc,,True,,3.2,,,The universal markup converter,http://pandoc.org/MANUAL.html,False
 pandoc-crossref,,True,,0.3.17.1,,,Pandoc filter for cross-references,https://lierdakil.github.io/pandoc-crossref/,False
 pandocfilters,,True,,1.5.0,,,A python module for writing pandoc filters,,True
@@ -174,7 +174,7 @@ ruamel.yaml,,False,,0.18.6,,,A YAML package for Python. It is a derivative of Ki
 schema,,False,,0.7.7,,,Schema validation just got Pythonic,,True
 scikit-image,,True,,0.23.2,,,Image processing in Python.,,True
 scikit-learn,,True,,1.5.0,,,A set of python modules for machine learning and data mining,,True
-scipy,,False,,1.13.1,pandas/numba,,Scientific Library for Python,http://www.scipy.org/docs.html,True
+scipy,,False,,1.13.1,pandas/numba/astropy,,Scientific Library for Python,http://www.scipy.org/docs.html,True
 seaborn,,False,,0.13.2,,,Statistical data visualization,https://seaborn.pydata.org,False
 setuptools,,False,,70.0.0,pandas/astropy,,"Download, build, install, upgrade, and uninstall Python packages",http://pythonhosted.org/setuptools/,True
 snakeviz,,True,,2.2.0,,,An in-browser Python profile viewer,https://jiffyclub.github.io/snakeviz,True
