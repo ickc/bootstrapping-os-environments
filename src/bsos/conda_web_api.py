@@ -110,7 +110,7 @@ class CondaPackage:
 
     @property
     def summary(self) -> str:
-        return self.data["summary"]
+        return self.data["summary"].strip()
 
     @property
     def latest_version(self) -> str:
