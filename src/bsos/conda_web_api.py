@@ -210,12 +210,12 @@ class CondaPackages:
                 "version": str,
                 "channel": str,
                 "ignored": bool,
-                "dep-of": str,
+                "depended": str,
                 "notes": str,
             },
             na_filter=False,
         )
-        df = df[["version", "channel", "ignored", "dep-of", "notes"]].sort_index()
+        df = df[["version", "channel", "ignored", "depended", "notes"]].sort_index()
         return cls(df, default_channel=default_channel)
 
     @cached_property
@@ -234,7 +234,7 @@ class CondaPackages:
             p.version = row.version
             p.channel = row.channel
             p.ignored = row.ignored
-            p.dep_of = row["dep-of"]
+            p.dep_of = row.depended
             p.notes = row.notes
             res.append(p)
         return res

@@ -1,4 +1,4 @@
-name,version,channel,ignored,dep-of,3.8,3.9,3.10,3.11,3.12,notes
+name,version,channel,ignored,depended,3.8,3.9,3.10,3.11,3.12,notes
 archspec,,,False,,True,True,True,True,True,
 mkl,,,False,numpy,False,False,False,False,False,
 quaternion,,,False,,True,True,True,True,True,

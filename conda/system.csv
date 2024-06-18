@@ -1,4 +1,4 @@
-name,version,channel,ignored,dep-of,notes,summary,latest_version,doc_url,depends_on_python
+name,version,channel,ignored,depended,notes,summary,latest_version,doc_url,depends_on_python
 bat,,,False,,,A cat(1) clone with syntax highlighting and Git integration,0.24.0,,False
 bottom,,dnachun,False,,,Yet another cross-platform graphical process/system monitor,0.9.6,,False
 clang-format,,,False,,,Development headers and libraries for Clang,18.1.7,,False

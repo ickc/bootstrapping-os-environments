@@ -1,4 +1,4 @@
-name,version,channel,ignored,dep-of,notes,summary,latest_version,doc_url,depends_on_python
+name,version,channel,ignored,depended,notes,summary,latest_version,doc_url,depends_on_python
 acor,,,False,,,Estimate the autocorrelation time of a time series quickly.,1.1.1,,True
 aiohttp,,,True,,,Async http client/server framework (asyncio),3.9.5,http://aiohttp.readthedocs.io/,True
 appdirs,,,True,pandasgui,,A small Python module for determining appropriate platform-specific dirs,1.4.4,,True
