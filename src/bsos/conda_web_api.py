@@ -252,6 +252,7 @@ class CondaPackages:
         self.df["latest_version"] = [p.latest_version for p in self.packages]
         self.df["doc_url"] = [p.doc_url for p in self.packages]
         self.df["depends_on_python"] = [p.depends_on_python for p in self.packages]
+        self.df.index = pd.Index([p.name for p in self.packages], name="name")
         # name,version,channel,ignored,depended,notes,summary,latest_version,doc_url,depends_on_python
         self.df = self.df[
             [
@@ -266,6 +267,7 @@ class CondaPackages:
                 "depends_on_python",
             ]
         ]
+        self.df = self.df.sort_index()
 
     def to_csv(self, path: Path) -> None:
         self.df.to_csv(path)
