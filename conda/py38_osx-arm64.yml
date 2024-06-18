@@ -3,7 +3,7 @@ channels:
 dependencies:
 - python=3.8
 - archspec
-- asdf
+- asdf-astropy
 - astropy
 - autoflake
 - bandit
