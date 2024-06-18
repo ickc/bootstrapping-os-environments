@@ -45,7 +45,6 @@ dependencies:
 - holoviews
 - html5lib
 - httpx
-- ics
 - intel-cmplr-lib-rt
 - ipykernel
 - ipympl
