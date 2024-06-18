@@ -182,13 +182,22 @@ class CondaPackage:
         return res
 
     def support(self, platform: str, python_version: tuple[int, int]) -> bool:
-        if self.is_noarch:
-            return True
-        if platform in self.platforms:
-            if not self.depends_on_python:
+        for file in reversed(self.data["files"]):
+            platform_cur = file["attrs"]["subdir"]
+            if platform_cur == "noarch":
                 return True
-            if python_version <= self.latest_python_versions[platform]:
-                return True
+            # matching platform
+            if platform == platform_cur:
+                depends_on_python = False
+                for dep in file["attrs"]["depends"]:
+                    if dep.startswith("python "):
+                        depends_on_python = True
+                        break
+                if not depends_on_python:
+                    return True
+                # matching python version
+                if python_version == parse_conda_build(file["attrs"]["build"]):
+                    return True
         return False
 
     def to_dict(self) -> dict:
