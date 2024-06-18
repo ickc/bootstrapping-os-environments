@@ -1,0 +1,46 @@
+name,version,channel,ignored,dep-of,notes,summary,latest_version,doc_url,depends_on_python
+bat,,,False,,,A cat(1) clone with syntax highlighting and Git integration,0.24.0,,False
+bottom,,dnachun,False,,,Yet another cross-platform graphical process/system monitor,0.9.6,,False
+clang-format,,,False,,,Development headers and libraries for Clang,18.1.7,,False
+curl,,,False,,,tool and library for transferring data with URL syntax,8.8.0,https://curl.haxx.se/docs/,False
+dua-cli,,dnachun,False,,,"View disk space usage and delete unwanted data, fast",2.29.0,,False
+dust,,,False,,,du + rust = dust. Like du but more intuitive.,1.0.0,,False
+exiftool,,,False,,,"Read, Write and Edit Meta Information!",12.76,,False
+eza,,,False,,,"A modern, maintained replacement for ls.",0.18.18,,False
+ffmpeg,,,False,,,"Cross-platform solution to record, convert and stream audio and video.",7.0.1,https://ffmpeg.org/documentation.html,False
+fzf,,,False,,,A command-line fuzzy finder,0.53.0,,False
+gh,,,False,,,Github CLI.,2.51.0,https://cli.github.com/,False
+ghostscript,,,False,,,An interpreter for the PostScript language and for PDF,10.03.1,,False
+git,,,False,,,distributed version control system,2.45.2,,False
+go-shfmt,,,False,,,"A shell parser, formatter, and interpreter. Supports POSIX Shell, Bash, and mksh",3.8.0,,False
+go-task,,,False,,,A task runner / simpler Make alternative written in Go.,3.37.2,https://taskfile.dev/,False
+graphviz,,,False,,,Open Source graph visualization software.,11.0.0,https://graphviz.gitlab.io/documentation/,False
+htop,,,False,,,htop is an interactive text-mode process viewer for Unix systems. It aims to be a better 'top',3.3.0,,False
+hub,,,True,,,git + hub = github,2.14.2,,False
+imagemagick,,,False,,,"Software suite to create, edit, compose, or convert bitmap images.",7.1.0_57,,False
+joshuto,,dnachun,False,,,ranger-like terminal file manager written in Rust,0.9.8,,False
+jq,,,False,,,A command-line JSON processor.,1.7.1,,False
+lsdeluxe,,,False,,,The next gen ls command,1.1.2,,False
+lynx,,,True,,,Text-based web browser,2.8.9.1,http://lynx.invisible-island.net/lynx_help/,False
+mosh,,,False,,,Mobile shell that supports roaming and intelligent local echo,1.4.0,,False
+mosh,,,False,,,Mobile shell that supports roaming and intelligent local echo,1.4.0,,False
+nano,,,False,,,"Nano's ANOther editor, an enhanced free Pico clone",8.0,https://www.nano-editor.org/docs.php,False
+ncdu,,,False,,,NCurses Disk Usage,1.16,https://dev.yorhel.nl/ncdu/man,False
+openssh,,,False,,,A suite of secure networking utilities based on the SSH protocol,8.0p1,,False
+p7zip,,,True,,,"p7zip is a quick port of 7z.exe and 7za.exe (command line version of 7zip, see www.7-zip.org ) for Unix.",16.02,,False
+pandoc,,,False,,,The universal markup converter,3.2,http://pandoc.org/MANUAL.html,False
+parallel,,,False,,,GNU parallel is a shell tool for executing jobs in parallel using one or more computers.,20240522,,False
+poppler,,,False,,,The Poppler PDF manipulation library.,24.04.0,,False
+sed,,,False,,,sed (stream editor) is a non-interactive command-line text editor.,4.8,,False
+shellcheck,,,False,,,"ShellCheck, a static analysis tool for shell scripts",0.10.0,,False
+starship,,,False,,,"The minimal, blazing-fast, and infinitely customizable prompt for any shell!",1.19.0,,False
+tar,,,False,,,GNU tape archive program,1.34,,False
+tidy-html5,,,True,,,"The granddaddy of HTML tools, with support for modern standards.",5.8.0,http://www.html-tidy.org/,False
+tmux,,,False,,,A terminal multiplexer.,3.4,,False
+tree,,,False,,,Tree is a recursive directory listing command,2.1.1,http://oldmanprogrammer.net/source.php?dir=projects/tree,False
+unzip,,,False,,,,6.0,,False
+w3m,,,False,,,Text mode web browser/pager.,0.5.3+git20220429,,False
+wget,,,False,,,utility for non-interactive download of files from the Web,1.21.4,https://www.gnu.org/software/wget/,False
+zellij,,dnachun,False,,,"Pluggable terminal workspace, with terminal multiplexer as the base feature",0.40.1,,False
+zsh,,,False,,,"Zsh is a shell designed for interactive use, although it is also a powerful scripting language.",5.9,http://zsh.sourceforge.net/Doc/Release/zsh_toc.html,False
+zstd,,,False,,,Zstandard - Fast real-time compression algorithm,1.5.6,https://facebook.github.io/zstd/zstd_manual.html,False
