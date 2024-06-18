@@ -7,6 +7,7 @@ from functools import cached_property
 from pathlib import Path
 
 import httpx
+import pandas as pd
 import platformdirs
 import yaml
 import yamlloader  # type: ignore
@@ -181,3 +182,46 @@ class CondaPackage:
         path = Path(path)
         with path.open("w", encoding="utf-8") as f:
             yaml.dump(self.to_dict(), f, Dumper=yamlloader.ordereddict.CSafeDumper)
+
+
+@dataclass
+class CondaPackages:
+    df: pd.DataFrame
+    default_channel: str = "conda-forge"
+
+    @classmethod
+    def read_csv(cls, path: Path) -> CondaPackages:
+        df = pd.read_csv(
+            path,
+            index_col=0,
+            dtype={
+                "version": str,
+                "channel": str,
+                "ignored": bool,
+                "dep-of": str,
+                "notes": str,
+            },
+            na_filter=False,
+        )
+        return cls(df[["version", "channel", "ignored", "dep-of", "notes"]].copy())
+
+    @cached_property
+    def username_package_pairs(self) -> list[tuple[str, str]]:
+        return [(row.channel or self.default_channel, name) for name, row in self.df.iterrows()]
+
+    @cached_property
+    def data(self) -> list[dict]:
+        return asyncio.run(get_package_info(self.username_package_pairs))
+
+    @cached_property
+    def packages(self) -> list[CondaPackage]:
+        return [CondaPackage(d) for d in self.data]
+
+    def expand_from_data(self) -> None:
+        self.df["summary"] = [p.summary for p in self.packages]
+        self.df["latest_version"] = [p.latest_version for p in self.packages]
+        self.df["doc_url"] = [p.doc_url for p in self.packages]
+        self.df["depends_on_python"] = [p.depends_on_python for p in self.packages]
+
+    def to_csv(self, path: Path) -> None:
+        self.df.to_csv(path)
