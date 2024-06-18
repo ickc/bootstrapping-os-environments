@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# usage: CONDA_PREFIX=... mamba.sh
+
 set -e
 
 CONDA_PREFIX="${CONDA_PREFIX:-"${HOME}/.miniforge3"}"
@@ -26,11 +28,16 @@ install() {
     echo Downloading to temp dir "${DOWNLOADDIR}"
     cd "${DOWNLOADDIR}"
     curl -L "${downloadUrl}" -o Miniforge3.sh
+    chmod +x Miniforge3.sh
 
     print_double_line
-    echo Installing mamba...
-    chmod +x Miniforge3.sh
-    ./Miniforge3.sh -b -s -p "${CONDA_PREFIX}"
+    if [[ -f "${CONDA_PREFIX}/etc/profile.d/conda.sh" ]]; then
+        echo Updating mamba...
+        ./Miniforge3.sh -ubsp "${CONDA_PREFIX}"
+    else
+        echo Installing mamba...
+        ./Miniforge3.sh -bsp "${CONDA_PREFIX}"
+    fi
 
     print_line
     echo Removing temp dir "${DOWNLOADDIR}"
