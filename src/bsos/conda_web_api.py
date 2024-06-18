@@ -255,6 +255,9 @@ def main(
     archs: list[str] = ["linux-64", "linux-aarch64", "linux-ppc64le", "osx-64", "osx-arm64"],
     versions: list[str] = ["3.8", "3.9", "3.10", "3.11", "3.12"],
     default_channel: str = "conda-forge",
+    name_format: str = "py{version}",
+    name_replace_from: str = ".",
+    name_replace_to: str = "",
 ):
     """Generate conda environment files."""
     packages = CondaPackages.read_csv(csv)
@@ -266,7 +269,7 @@ def main(
     for arch in archs:
         for version in versions:
             python_version: tuple[int, int] = tuple(map(int, version.split(".")))  # type: ignore[assignment]
-            name = f"py{version.replace('.', '')}"
+            name = name_format.format(arch=arch, version=version).replace(name_replace_from, name_replace_to)
             dependencies: list[str] = [f"python={version}"]
             res = {
                 "name": name,
