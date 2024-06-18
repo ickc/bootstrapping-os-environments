@@ -111,7 +111,7 @@ nose,,True,,1.3.7,,,Nose extends unittest to make testing easier,,True
 numba,,False,,0.59.1,pandas,https://numba.pydata.org/numba-doc/latest/user/installing.html#dependency-list,NumPy aware dynamic Python compiler using LLVM,http://numba.pydata.org/,True
 numba_quaternion,,True,,0.2.0,,,Some convenience functions for Cosmology-related analysis.,,True
 numexpr,,False,,2.10.0,pandas,,Fast numerical expression evaluator for NumPy.,https://github.com/pydata/numexpr/wiki/Numexpr-Users-Guide,True
-numpy,,False,,2.0.0,,,The fundamental package for scientific computing with Python.,https://numpy.org/doc/stable/,True
+numpy,,False,,2.0.0,,https://numpy.org/install/#numpy-packages--accelerated-linear-algebra-libraries,The fundamental package for scientific computing with Python.,https://numpy.org/doc/stable/,True
 opencv,,True,,4.10.0,,,Computer vision and machine learning software library.,https://docs.opencv.org/4.x/,True
 openpyxl,,False,,3.1.4,pandas,,A Python library to read/write Excel 2010 xlsx/xlsm files,https://openpyxl.readthedocs.io/en/stable/,True
 oyaml,,False,,1.0,,,Ordered YAML: drop-in replacement for PyYAML which preserves dict ordering,,True
