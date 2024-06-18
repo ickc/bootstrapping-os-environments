@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from pathlib import Path
 import asyncio
 import json
 from dataclasses import dataclass
+from functools import cached_property
+from pathlib import Path
 
 import httpx
 import platformdirs
@@ -12,6 +13,12 @@ import yamlloader
 
 
 def parse_conda_build(build: str) -> tuple[int, int]:
+    """Parse conda build string and return python version as tuple.
+
+    This does not attempt to be robust, just quick and dirty getting the job done here.
+
+    TODO: py313
+    """
     if "py312" in build:
         return 3, 12
     if "py311" in build:
@@ -104,7 +111,7 @@ class CondaPackage:
     def platforms(self) -> dict[str, str]:
         return self.data["platforms"]
 
-    @property
+    @cached_property
     def platform_set(self) -> set[tuple[str, str]]:
         return set(self.platforms.items())
 
@@ -116,14 +123,14 @@ class CondaPackage:
     def latest_release(self) -> dict:
         return self.data["releases"][-1]
 
-    @property
+    @cached_property
     def latest_files(self) -> list[dict]:
         files = self.data["files"]
         platforms = self.platform_set
         res = [file for file in files if (file["attrs"]["subdir"], file["version"]) in platforms]
         return res
 
-    @property
+    @cached_property
     def latest_build_number(self) -> int:
         res = 0
         for file in self.latest_files:
@@ -131,11 +138,11 @@ class CondaPackage:
                 res = n
         return res
 
-    @property
+    @cached_property
     def latest_files_with_latest_build_number(self) -> list[dict]:
         return [file for file in self.latest_files if file["attrs"]["build_number"] == self.latest_build_number]
 
-    @property
+    @cached_property
     def is_noarch(self) -> bool:
         if "noarch" in self.platforms:
             return True
@@ -144,7 +151,7 @@ class CondaPackage:
                 return True
         return False
 
-    @property
+    @cached_property
     def depends_on_python(self) -> bool:
         for file in self.latest_files_with_latest_build_number:
             for dep in file["attrs"]["depends"]:
@@ -152,7 +159,7 @@ class CondaPackage:
                     return True
         return False
 
-    @property
+    @cached_property
     def latest_python_versions(self) -> dict[str, tuple[int, int]]:
         if self.is_noarch or not self.depends_on_python:
             return {}
