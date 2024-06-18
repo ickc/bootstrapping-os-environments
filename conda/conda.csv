@@ -27,7 +27,7 @@ bump2version,,False,,1.0.1,,,Version-bump your software with a single command!,h
 cairocffi,,True,,1.7.0,,,cffi-based cairo bindings for Python,,True
 certifi,,False,,2024.6.2,astropy,,Python package for providing Mozilla's CA Bundle.,https://pypi.python.org/pypi/certifi,True
 cffi,,False,,1.16.0,numba,,Metapackage to select pypy as python implementation,http://cffi.readthedocs.org,True
-chardet,,False,,5.1.0,,Universal Character Encoding Detector,Universal character encoding detector,http://chardet.readthedocs.org/,True
+chardet,,False,,5.1.0,,,Universal character encoding detector,http://chardet.readthedocs.org/,True
 click,,True,,8.1.3,,,Composable command line interface toolkit,https://click.palletsprojects.com/,True
 colorama,,True,,0.4.6,numba,,Cross-platform colored terminal text,http://pypi.python.org/pypi/colorama,True
 coloredlogs,,False,,15.0.1,,,Colored terminal output for Python's logging module,,True
@@ -112,7 +112,7 @@ multipledispatch,,True,,0.6.0,,,Multiple dispatch,https://multiple-dispatch.read
 mypy,,False,,1.10.0,,,Optional static typing for Python,http://mypy.readthedocs.io,True
 mypy_extensions,,True,,1.0.0,pandasgui,,Experimental type system extensions for programs checked with the mypy typechecker.,https://mypy.readthedocs.io,True
 nbconvert,,False,,7.16.4,,,Converting Jupyter Notebooks,https://nbconvert.readthedocs.org/,False
-nbsphinx,,False,,0.9.4,,sphinx ipynb support,Jupyter Notebook Tools for Sphinx,,True
+nbsphinx,,False,,0.9.4,,,Jupyter Notebook Tools for Sphinx,,True
 networkx,,False,,3.3,bokeh,,Python package for creating and manipulating complex networks,http://networkx.github.io/documentation.html,True
 nikola,,True,,8.2.2,,,"A modular, fast, simple, static website and blog generator",,True
 nltk,,True,,3.8.1,,,Natural Language Toolkit,http://www.nltk.org/,True
@@ -154,7 +154,7 @@ pygments,,False,,2.18.0,numba,,"Pygments is a generic syntax highlighter suitabl
 pygraphviz,,False,,1.13,networkx,,Python interface to Graphviz,https://graphviz.readthedocs.io,True
 pylint,,False,,3.2.3,,,python code static checker,https://pylint.readthedocs.io/en/latest/,True
 pymediainfo,,False,,6.1.0,,,A Python wrapper around the MediaInfo library,https://pymediainfo.readthedocs.io/,True
-pyment,,True,,0.3.3,,convert docstrings,Generate/convert automatically the docstrings from code signature,,True
+pyment,,True,,0.3.3,,,Generate/convert automatically the docstrings from code signature,,True
 pynput,,True,,1.7.7,pandasgui,,This library allows you to control and monitor input devices.,https://pynput.readthedocs.io/en/latest/,True
 pyotp,,False,,2.6.0,,,Python One Time Password Library,https://pyotp.readthedocs.io/,True
 pypandoc,,True,,1.13,,,Thin wrapper for pandoc,,True
