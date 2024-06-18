@@ -215,7 +215,15 @@ class CondaPackages:
             },
             na_filter=False,
         )
-        df = df[["version", "channel", "ignored", "depended", "notes"]].sort_index()
+        df = df[
+            [
+                "channel",
+                "ignored",
+                "version",
+                "depended",
+                "notes",
+            ]
+        ].sort_index()
         return cls(df, default_channel=default_channel)
 
     @cached_property
@@ -244,6 +252,20 @@ class CondaPackages:
         self.df["latest_version"] = [p.latest_version for p in self.packages]
         self.df["doc_url"] = [p.doc_url for p in self.packages]
         self.df["depends_on_python"] = [p.depends_on_python for p in self.packages]
+        # name,version,channel,ignored,depended,notes,summary,latest_version,doc_url,depends_on_python
+        self.df = self.df[
+            [
+                "channel",
+                "ignored",
+                "version",
+                "latest_version",
+                "depended",
+                "notes",
+                "summary",
+                "doc_url",
+                "depends_on_python",
+            ]
+        ]
 
     def to_csv(self, path: Path) -> None:
         self.df.to_csv(path)
