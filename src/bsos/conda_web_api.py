@@ -119,10 +119,6 @@ class CondaPackage:
     def doc_url(self) -> str:
         return self.data["doc_url"]
 
-    @property
-    def latest_release(self) -> dict:
-        return self.data["releases"][-1]
-
     @cached_property
     def latest_files(self) -> list[dict]:
         files = self.data["files"]
@@ -143,43 +139,12 @@ class CondaPackage:
         return [file for file in self.latest_files if file["attrs"]["build_number"] == self.latest_build_number]
 
     @cached_property
-    def is_noarch(self) -> bool:
-        if "noarch" in self.platforms:
-            return True
-        for file in self.latest_files_with_latest_build_number:
-            if file["attrs"]["subdir"] == "noarch":
-                return True
-        return False
-
-    @cached_property
     def depends_on_python(self) -> bool:
         for file in self.latest_files_with_latest_build_number:
             for dep in file["attrs"]["depends"]:
                 if dep.startswith("python "):
                     return True
         return False
-
-    @cached_property
-    def latest_python_versions(self) -> dict[str, tuple[int, int]]:
-        if self.is_noarch or not self.depends_on_python:
-            return {}
-        res: dict[str, tuple[int, int]] = {}
-        for arch in self.platforms:
-            builds: list[tuple[int, int]] = []
-            for file in self.latest_files_with_latest_build_number:
-                if file["attrs"]["subdir"] == arch:
-                    try:
-                        builds.append(parse_conda_build(file["attrs"]["build"]))
-                    except ValueError as e:
-                        print(f"Failed to parse {self.name} for {arch}: {e}")
-                        print(file)
-                        raise e
-            if builds:
-                res[arch] = max(builds)
-            else:
-                # assuming if no builds, it must be no arch and hence compatible with all python versions
-                res[arch] = (3, 99)
-        return res
 
     def support(self, platform: str, python_version: tuple[int, int]) -> bool:
         for file in reversed(self.data["files"]):
@@ -208,10 +173,7 @@ class CondaPackage:
             "latest_version": self.latest_version,
             "platforms": self.platforms,
             "doc_url": self.doc_url,
-            "is_noarch": self.is_noarch,
             "depends_on_python": self.depends_on_python,
-            "latest_python_versions": self.latest_python_versions,
-            "latest_release": self.latest_release,
             "latest_files_with_latest_build_number": self.latest_files_with_latest_build_number,
         }
 
