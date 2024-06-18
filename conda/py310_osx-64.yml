@@ -2,6 +2,8 @@ channels:
 - conda-forge
 dependencies:
 - python=3.10
+- adbc-driver-postgresql
+- adbc-driver-sqlite
 - archspec
 - asdf-astropy
 - astropy
@@ -69,6 +71,7 @@ dependencies:
 - numba
 - numexpr
 - numpy
+- odfpy
 - openpyxl
 - oyaml
 - palettable
@@ -80,6 +83,7 @@ dependencies:
 - plotly
 - poetry
 - psutil
+- psycopg2
 - py-cpuinfo
 - pyarrow
 - pydot
@@ -87,6 +91,7 @@ dependencies:
 - pygraphviz
 - pylint
 - pymediainfo
+- pymysql
 - pyotp
 - pyreadstat
 - pyrss2gen
@@ -97,6 +102,7 @@ dependencies:
 - pytest-mpi
 - pytest-parallel
 - pytest-xdist
+- python-calamine
 - pytz
 - pyxlsb
 - pyyaml
@@ -115,6 +121,7 @@ dependencies:
 - sphinx_bootstrap_theme
 - sphinxcontrib-apidoc
 - sphinxcontrib-napoleon
+- sqlalchemy
 - statsmodels
 - sympy
 - tabulate
@@ -132,8 +139,8 @@ dependencies:
 - xarray
 - xlrd
 - xlsxwriter
-- xlwt
 - xmltodict
 - yamlloader
 - zlib
+- zstandard
 name: py310
