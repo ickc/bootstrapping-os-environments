@@ -8,14 +8,14 @@ astropy,,False,,6.1.1,,,Community-developed Python Library for Astronomy,http://
 autoflake,,False,,1.7.5,,,Removes unused imports and unused variables,,True
 autopep8,,True,,2.3.0,,,A tool that automatically formats Python code to conform to the PEP 8 style guide,,True
 bandit,,False,,1.7.8,,,"Bandit is a tool designed to find common security issues in Python code. To do this Bandit processes each file, builds an AST from it, and runs appropriate plugins against the AST nodes. Once Bandit has finished scanning all the files it generates a report.",https://bandit.readthedocs.io/en/latest/,True
-beautifulsoup4,,False,,4.12.3,"pandas,astropy",,Python library designed for screen-scraping,http://beautiful-soup-4.readthedocs.io/en/latest/,True
+beautifulsoup4,,False,,4.12.3,pandas/astropy,,Python library designed for screen-scraping,http://beautiful-soup-4.readthedocs.io/en/latest/,True
 bidict,,True,,0.23.1,,,"Efficient, Pythonic bidirectional map implementation and related functionality",https://bidict.readthedocs.io,True
 black,,False,,24.4.2,,,The uncompromising code formatter.,https://black.readthedocs.io/,True
 bleach,,False,,6.1.0,astropy,,"Easy, whitelist-based HTML-sanitizing tool",https://bleach.readthedocs.io/,True
 blosc,,False,,1.21.5,pandas,,"A blocking, shuffling and loss-less compression library that can be faster than `memcpy()`",,False
 bokeh,,False,,3.4.1,,,Statistical and novel interactive HTML plots for Python,http://bokeh.pydata.org/en/latest/docs/user_guide.html,True
 boltons,,True,,24.0.0,,,"boltons should be builtins. Boltons is a set of over 160 BSD-licensed, pure-Python utilities in the same spirit as--and yet conspicuously missing from--the standard library.",,True
-bottleneck,,False,,1.4.0,"pandas,astropy",,Fast NumPy array functions written in Cython.,https://bottleneck.readthedocs.io,True
+bottleneck,,False,,1.4.0,pandas/astropy,,Fast NumPy array functions written in Cython.,https://bottleneck.readthedocs.io,True
 bpytop,,True,,1.0.68,,,"Resource monitor that shows usage and stats for processor, memory, disks, network and processes.",,True
 bump2version,,False,,1.0.1,,,Version-bump your software with a single command!,https://github.com/c4urself/bump2version,True
 cairocffi,,True,,1.7.0,,,cffi-based cairo bindings for Python,,True
@@ -79,7 +79,7 @@ ipympl,,False,,0.9.4,,,Matplotlib Jupyter Extension,,True
 ipyparallel,,False,,8.8.0,,,Interactive Parallel Computing with IPython,https://ipyparallel.readthedocs.io,True
 ipython,,False,,8.25.0,,,IPython: Productive Interactive Computing,https://ipython.readthedocs.io,True
 ipywidgets,,False,,8.1.3,,,Jupyter Interactive Widgets,https://ipywidgets.readthedocs.io/en/latest/,True
-jinja2,,False,,3.1.4,"pandas,numba",,A very fast and expressive template engine.,http://jinja.pocoo.org/docs/dev/,True
+jinja2,,False,,3.1.4,pandas/numba,,A very fast and expressive template engine.,http://jinja.pocoo.org/docs/dev/,True
 joblib,,False,,1.4.2,statsmodels,,Lightweight pipelining: using Python functions as pipeline jobs.,,True
 johnnydep,,False,,1.20.4,,,Display dependency tree of Python distribution,,True
 jplephem,,False,,2.21,astropy,,"Python version of NASA DE4xx ephemerides, the basis for the Astronomical Alamanac",,True
@@ -88,7 +88,7 @@ kml2geojson,,False,,5.1.0,,,A Python library to covert KML files to GeoJSON file
 libsharp,,True,,1.0.0,,,"Library for fast spherical harmonic transforms, see http://arxiv.org/abs/1303.4945",,True
 line_profiler,,True,,4.1.1,,,A module for monitoring memory usage of a python program,https://github.com/pyutils/line_profiler,True
 llvm-openmp,,False,,18.1.7,numba,,The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran.,,False
-lxml,,False,,5.2.2,"pandas,networkx",,Pythonic binding for the C libraries libxml2 and libxslt.,http://lxml.de/index.html#documentation,True
+lxml,,False,,5.2.2,pandas/networkx,,Pythonic binding for the C libraries libxml2 and libxslt.,http://lxml.de/index.html#documentation,True
 make_arq,,True,,0.1,,,A tool for generating Sony A7RIII/IV and Fujifilm GFX 100 Pixel-Shift files.,,True
 makefun,,False,,1.15.2,,,Small library to dynamically create python functions.,https://smarie.github.io/python-makefun,True
 mamba,,True,,1.5.8,,,"A fast drop-in alternative to conda, using libsolv for dependency resolution",,True
@@ -97,7 +97,7 @@ markdown,,True,,3.6,,,Python implementation of Markdown.,https://python-markdown
 markdown2,,True,,2.4.13,,,A fast and complete Python implementation of Markdown,,True
 matplotlib,,False,,3.8.4,pandas,,Publication quality figures in Python,http://matplotlib.org/contents.html,True
 mkl,,False,,2024.1.0,numpy,,Intel® oneAPI Math Kernel Library runtime libraries,https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html,False
-mpmath,,False,,1.3.0,"astropy,sympy",,Python library for arbitrary-precision floating-point arithmetic,http://mpmath.org/doc/current/,True
+mpmath,,False,,1.3.0,astropy/sympy,,Python library for arbitrary-precision floating-point arithmetic,http://mpmath.org/doc/current/,True
 multipledispatch,,True,,0.6.0,,,Multiple dispatch,https://multiple-dispatch.readthedocs.io,True
 mypy,,False,,1.10.0,,,Optional static typing for Python,http://mypy.readthedocs.io,True
 nbconvert,,False,,7.16.4,,,Converting Jupyter Notebooks,https://nbconvert.readthedocs.org/,False
@@ -134,7 +134,7 @@ pockets,,True,,0.9.1,,,A collection of helpful Python tools!,,True
 poetry,,False,,1.8.3,,,Python dependency management and packaging made easy,https://python-poetry.org/docs/,True
 psutil,,False,,5.9.8,bokeh,,A cross-platform process and system utilities module for Python,http://pythonhosted.org/psutil/,True
 py-cpuinfo,,False,,9.0.0,,,A module for getting CPU info with pure Python,,True
-pyarrow,,False,,16.1.0,"pandas,astropy",,Python libraries for Apache Arrow with default capabilities,,True
+pyarrow,,False,,16.1.0,pandas/astropy,,Python libraries for Apache Arrow with default capabilities,,True
 pycodestyle,,True,,2.12.0,,,Python style guide checker,https://pycodestyle.readthedocs.io/,True
 pydocstyle,,True,,6.3.0,,,Python docstring style checker (formerly pep257),http://pydocstyle.readthedocs.org,True
 pydot,,False,,2.0.0,networkx,,Python interface to Graphviz's Dot,https://pypi.python.org/pypi/pydot,True
@@ -174,9 +174,9 @@ ruamel.yaml,,False,,0.18.6,,,A YAML package for Python. It is a derivative of Ki
 schema,,False,,0.7.7,,,Schema validation just got Pythonic,,True
 scikit-image,,True,,0.23.2,,,Image processing in Python.,,True
 scikit-learn,,True,,1.5.0,,,A set of python modules for machine learning and data mining,,True
-scipy,,False,,1.13.1,"pandas,numba",,Scientific Library for Python,http://www.scipy.org/docs.html,True
+scipy,,False,,1.13.1,pandas/numba,,Scientific Library for Python,http://www.scipy.org/docs.html,True
 seaborn,,False,,0.13.2,,,Statistical data visualization,https://seaborn.pydata.org,False
-setuptools,,False,,70.0.0,"pandas,astropy",,"Download, build, install, upgrade, and uninstall Python packages",http://pythonhosted.org/setuptools/,True
+setuptools,,False,,70.0.0,pandas/astropy,,"Download, build, install, upgrade, and uninstall Python packages",http://pythonhosted.org/setuptools/,True
 snakeviz,,True,,2.2.0,,,An in-browser Python profile viewer,https://jiffyclub.github.io/snakeviz,True
 sortedcontainers,,False,,2.4.0,astropy,,"Python Sorted Container Types: SortedList, SortedDict, and SortedSet",http://www.grantjenks.com/docs/sortedcontainers/,True
 sphinx,,False,,7.3.7,,,Sphinx makes it easy to create intelligent and beautiful documentation.,https://www.sphinx-doc.org/en/master/,True
