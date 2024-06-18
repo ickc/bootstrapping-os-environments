@@ -17,9 +17,7 @@ dependencies:
 - jq
 - lsdeluxe
 - mosh
-- mosh
 - nano
-- ncdu
 - openssh
 - pandoc
 - parallel

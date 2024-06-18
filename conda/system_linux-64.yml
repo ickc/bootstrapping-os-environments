@@ -8,7 +8,6 @@ dependencies:
 - dnachun::dua-cli
 - dust
 - exiftool
-- eza
 - ffmpeg
 - fzf
 - gh
@@ -23,9 +22,7 @@ dependencies:
 - jq
 - lsdeluxe
 - mosh
-- mosh
 - nano
-- ncdu
 - openssh
 - pandoc
 - parallel

@@ -7,7 +7,7 @@ nose,,,True,,,Nose extends unittest to make testing easier,1.3.7,,True
 pip,,,False,,,PyPA recommended tool for installing Python packages,24.0,https://pip.pypa.io/en/stable/,True
 pickleshare,,,True,,,Tiny 'shelve'-like database with concurrency support,0.7.5,,False
 scipy,,,False,"pandas,numba",,Scientific Library for Python,1.13.1,http://www.scipy.org/docs.html,True
-astropy,,,False,,,Community-developed Python Library for Astronomy,6.1.0,http://docs.astropy.org/en/stable/,True
+astropy,,,False,,,Community-developed Python Library for Astronomy,6.1.1,http://docs.astropy.org/en/stable/,True
 h5py,,,False,astropy,,Read and write HDF5 files from Python,3.11.0,,True
 bleach,,,False,astropy,,"Easy, whitelist-based HTML-sanitizing tool",6.1.0,https://bleach.readthedocs.io/,True
 sortedcontainers,,,False,astropy,,"Python Sorted Container Types: SortedList, SortedDict, and SortedSet",2.4.0,http://www.grantjenks.com/docs/sortedcontainers/,True
@@ -54,7 +54,7 @@ tox,,,True,,,virtualenv-based automation of test activities,4.15.1,https://tox.r
 tox-conda,,,True,,,tox plugin that provides integration with conda,0.10.2,https://github.com/tox-dev/tox-conda,True
 decorator,,,True,,,Decorators for Humans,5.1.1,,True
 numexpr,,,False,pandas,,Fast numerical expression evaluator for NumPy.,2.10.0,https://github.com/pydata/numexpr/wiki/Numexpr-Users-Guide,True
-bottleneck,,,False,"pandas,astropy",,Fast NumPy array functions written in Cython.,1.3.8,https://bottleneck.readthedocs.io,True
+bottleneck,,,False,"pandas,astropy",,Fast NumPy array functions written in Cython.,1.4.0,https://bottleneck.readthedocs.io,True
 setuptools,,,False,"pandas,astropy",,"Download, build, install, upgrade, and uninstall Python packages",70.0.0,http://pythonhosted.org/setuptools/,True
 imageio,,,False,,,A Python library for reading and writing image data,2.34.1,https://imageio.readthedocs.io,True
 coverage,,,False,,,Code coverage measurement for Python,7.5.3,,True
@@ -152,7 +152,7 @@ feedgen,,,False,,,Generate web feeds in both ATOM and RSS format.,1.0.0,https://
 ghapi,,,True,,,A python client for the GitHub API,1.0.5,,True
 ghp-import,,,False,,,Copy your docs directly to the gh-pages branch.,2.1.0,,True
 ipympl,,,False,,,Matplotlib Jupyter Extension,0.9.4,,True
-parsl,,,False,,,Simple parallel workflows system for Python,2024.6.10,https://parsl.readthedocs.io/,True
+parsl,,,False,,,Simple parallel workflows system for Python,2024.6.17,https://parsl.readthedocs.io/,True
 tikzplotlib,,,False,,,Convert matplotlib figures into TikZ/PGFPlots,0.10.1,,True
 urlpath,,,False,,,Object-oriented URL from `urllib.parse` and `pathlib`,1.2.0,,True
 schema,,,False,,,Schema validation just got Pythonic,0.7.7,,True
