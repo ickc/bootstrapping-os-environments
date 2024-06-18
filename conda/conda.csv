@@ -13,7 +13,7 @@ bidict,,True,,0.23.1,,,"Efficient, Pythonic bidirectional map implementation and
 black,,False,,24.4.2,,,The uncompromising code formatter.,https://black.readthedocs.io/,True
 bleach,,False,,6.1.0,astropy,,"Easy, whitelist-based HTML-sanitizing tool",https://bleach.readthedocs.io/,True
 blosc,,False,,1.21.5,pandas,,"A blocking, shuffling and loss-less compression library that can be faster than `memcpy()`",,False
-bokeh,,False,,3.4.1,,,Statistical and novel interactive HTML plots for Python,http://bokeh.pydata.org/en/latest/docs/user_guide.html,True
+bokeh,,False,,3.4.1,,https://docs.bokeh.org/en/latest/docs/first_steps/installation.html#installing-optional-dependencies,Statistical and novel interactive HTML plots for Python,http://bokeh.pydata.org/en/latest/docs/user_guide.html,True
 boltons,,True,,24.0.0,,,"boltons should be builtins. Boltons is a set of over 160 BSD-licensed, pure-Python utilities in the same spirit as--and yet conspicuously missing from--the standard library.",,True
 bottleneck,,False,,1.4.0,pandas/astropy,,Fast NumPy array functions written in Cython.,https://bottleneck.readthedocs.io,True
 bpytop,,True,,1.0.68,,,"Resource monitor that shows usage and stats for processor, memory, disks, network and processes.",,True
