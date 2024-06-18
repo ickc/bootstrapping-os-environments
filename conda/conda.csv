@@ -10,16 +10,14 @@ autopep8,,True,,2.3.0,,,A tool that automatically formats Python code to conform
 bandit,,False,,1.7.8,,,"Bandit is a tool designed to find common security issues in Python code.
 To do this Bandit processes each file, builds an AST from it, and runs
 appropriate plugins against the AST nodes. Once Bandit has finished
-scanning all the files it generates a report.
-",https://bandit.readthedocs.io/en/latest/,True
+scanning all the files it generates a report.",https://bandit.readthedocs.io/en/latest/,True
 beautifulsoup4,,False,,4.12.3,"pandas,astropy",,Python library designed for screen-scraping,http://beautiful-soup-4.readthedocs.io/en/latest/,True
 bidict,,True,,0.23.1,,,"Efficient, Pythonic bidirectional map implementation and related functionality",https://bidict.readthedocs.io,True
 black,,False,,24.4.2,,,The uncompromising code formatter.,https://black.readthedocs.io/,True
 bleach,,False,,6.1.0,astropy,,"Easy, whitelist-based HTML-sanitizing tool",https://bleach.readthedocs.io/,True
 blosc,,False,,1.21.5,pandas,,"A blocking, shuffling and loss-less compression library that can be faster than `memcpy()`",,False
 bokeh,,False,,3.4.1,,,Statistical and novel interactive HTML plots for Python,http://bokeh.pydata.org/en/latest/docs/user_guide.html,True
-boltons,,True,,24.0.0,,,"boltons should be builtins. Boltons is a set of over 160 BSD-licensed, pure-Python utilities in the same spirit as--and yet conspicuously missing from--the standard library.
-",,True
+boltons,,True,,24.0.0,,,"boltons should be builtins. Boltons is a set of over 160 BSD-licensed, pure-Python utilities in the same spirit as--and yet conspicuously missing from--the standard library.",,True
 bottleneck,,False,,1.4.0,"pandas,astropy",,Fast NumPy array functions written in Cython.,https://bottleneck.readthedocs.io,True
 bpytop,,True,,1.0.68,,,"Resource monitor that shows usage and stats for processor, memory, disks, network and processes.",,True
 bump2version,,False,,1.0.1,,,Version-bump your software with a single command!,https://github.com/c4urself/bump2version,True
@@ -60,8 +58,7 @@ flake8-pyi,,True,,24.6.0,,,A plugin for flake8 to enable linting .pyi files.,,Tr
 flatten-dict,,True,,0.4.2,,,A flexible utility for flattening and unflattening dict-like objects in Python.,,True
 folium,,False,,0.17.0,,,Make beautiful maps with Leaflet.js and Python,,True
 gdal,,False,,3.9.0,networkx,,"GDAL is a translator library for raster and vector geospatial data formats that is released under an
-X/MIT style Open Source license by the Open Source Geospatial Foundation.
-",,True
+X/MIT style Open Source license by the Open Source Geospatial Foundation.",,True
 geojson,,False,,3.1.0,,,Python bindings and utilities for GeoJSON,,True
 geopandas,,False,,0.14.4,,,Geographic pandas extensions,,True
 geopy,,False,,2.4.1,,,Python Geocoding Toolbox.,,True
@@ -173,8 +170,7 @@ qrcode,,True,,7.4.2,,,QR Code image generator,,True
 quaternion,,False,,2023.0.3,,,Add built-in support for quaternions to numpy,https://github.com/moble/quaternion#usage,True
 quaternionarray,,True,,0.6.2,,,Python package for fast quaternion arrays math,,True
 readability-lxml,,False,,0.8.1,,,fast html to text parser (article readability tool) with python 3 support,,True
-removestar,,True,,1.3.1,,,"removestar is a tool to automatically replace 'import *' in Python files with explicit imports.
-",https://asmeurer.com/removestar,True
+removestar,,True,,1.3.1,,,removestar is a tool to automatically replace 'import *' in Python files with explicit imports.,https://asmeurer.com/removestar,True
 requests,,False,,2.32.3,,,"Requests is an elegant and simple HTTP library for Python, built with ♥.",,True
 requests-futures,,False,,1.0.0,,,Asynchronous Python HTTP for Humans.,,True
 requests-oauthlib,,False,,2.0.0,,,OAuthlib authentication support for Requests.,https://github.com/requests/requests-oauthlib,True
