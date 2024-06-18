@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from __future__ import annotations
 
 import asyncio
@@ -6,6 +8,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
 
+import defopt  # type: ignore
 import httpx
 import pandas as pd
 import platformdirs
@@ -91,6 +94,11 @@ async def get_package_info(
 @dataclass
 class CondaPackage:
     data: dict
+    version: str = ""
+    channel: str = ""
+    ignored: bool = False
+    dep_of: str = ""
+    notes: str = ""
 
     @property
     def name(self) -> str:
@@ -190,7 +198,11 @@ class CondaPackages:
     default_channel: str = "conda-forge"
 
     @classmethod
-    def read_csv(cls, path: Path) -> CondaPackages:
+    def read_csv(
+        cls,
+        path: Path,
+        default_channel: str = "conda-forge",
+    ) -> CondaPackages:
         df = pd.read_csv(
             path,
             index_col=0,
@@ -203,11 +215,11 @@ class CondaPackages:
             },
             na_filter=False,
         )
-        return cls(df[["version", "channel", "ignored", "dep-of", "notes"]].copy())
+        return cls(df[["version", "channel", "ignored", "dep-of", "notes"]].copy(), default_channel=default_channel)
 
     @cached_property
     def username_package_pairs(self) -> list[tuple[str, str]]:
-        return [(row.channel or self.default_channel, name) for name, row in self.df.iterrows()]
+        return [(row.channel or self.default_channel, name) for name, row in self.df.iterrows()]  # type: ignore[misc]
 
     @cached_property
     def data(self) -> list[dict]:
@@ -215,7 +227,16 @@ class CondaPackages:
 
     @cached_property
     def packages(self) -> list[CondaPackage]:
-        return [CondaPackage(d) for d in self.data]
+        res = []
+        for d, (name, row) in zip(self.data, self.df.iterrows()):
+            p = CondaPackage(d)
+            p.version = row.version
+            p.channel = row.channel
+            p.ignored = row.ignored
+            p.dep_of = row["dep-of"]
+            p.notes = row.notes
+            res.append(p)
+        return res
 
     def expand_from_data(self) -> None:
         self.df["summary"] = [p.summary for p in self.packages]
@@ -225,3 +246,49 @@ class CondaPackages:
 
     def to_csv(self, path: Path) -> None:
         self.df.to_csv(path)
+
+
+def main(
+    csv: Path,
+    out_dir: Path = Path("conda"),
+    # https://conda.io/projects/conda/en/latest/commands/env/create.html#named-arguments
+    archs: list[str] = ["linux-64", "linux-aarch64", "linux-ppc64le", "osx-64", "osx-arm64"],
+    versions: list[str] = ["3.8", "3.9", "3.10", "3.11", "3.12"],
+    default_channel: str = "conda-forge",
+):
+    """Generate conda environment files."""
+    packages = CondaPackages.read_csv(csv)
+
+    # update the csv
+    packages.expand_from_data()
+    packages.to_csv(csv)
+
+    for arch in archs:
+        for version in versions:
+            python_version: tuple[int, int] = tuple(map(int, version.split(".")))  # type: ignore[assignment]
+            name = f"py{version.replace('.', '')}"
+            dependencies: list[str] = [f"python={version}"]
+            res = {
+                "name": name,
+                "channels": [default_channel],
+                "dependencies": dependencies,
+            }
+            for package in packages.packages:
+                if not package.ignored and package.support(arch, python_version):
+                    temp: list[str] = []
+                    if package.channel:
+                        temp.append(f"{package.channel}::")
+                    temp.append(package.name)
+                    if package.version:
+                        temp.append(f"={package.version}")
+                    dependencies.append("".join(temp))
+            with (out_dir / f"{name}_{arch}.yml").open("w", encoding="utf-8") as f:
+                yaml.dump(res, f, Dumper=yamlloader.ordereddict.CSafeDumper)
+
+
+def cli():
+    defopt.run(main)
+
+
+if __name__ == "__main__":
+    cli()
