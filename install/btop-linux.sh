@@ -29,7 +29,8 @@ git checkout "${LATEST_TAG}"
 
 print_double_line
 echo "Compiling ${LATEST_TAG}..."
-make CXX="${CC}" ADDFLAGS='-march=native -mtune=native'
+# https://github.com/aristocratos/btop/pull/725#issuecomment-1902070615
+make LDFLAGS=-ldl CXX="${CC}" ADDFLAGS='-march=native -mtune=native'
 print_line
 echo "Installing to ${PREFIX}..."
 export PREFIX
