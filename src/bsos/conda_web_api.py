@@ -215,7 +215,8 @@ class CondaPackages:
             },
             na_filter=False,
         )
-        return cls(df[["version", "channel", "ignored", "dep-of", "notes"]].copy(), default_channel=default_channel)
+        df = df[["version", "channel", "ignored", "dep-of", "notes"]].sort_index()
+        return cls(df, default_channel=default_channel)
 
     @cached_property
     def username_package_pairs(self) -> list[tuple[str, str]]:
