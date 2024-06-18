@@ -6,3 +6,8 @@ tasks:
     cmds:
       - python -m bsos.conda_web_api conda/conda.csv
       - python -m bsos.conda_web_api conda/system.csv -v 3.12 --name-format system --no-python
+  list:depended:
+    desc: "List all depended packages."
+    cmds:
+      - |
+        < conda/conda.csv tail -n +2 | cut -d, -f6 | tr '/' '\n' | sort -u
