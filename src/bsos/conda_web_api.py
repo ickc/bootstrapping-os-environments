@@ -139,7 +139,7 @@ class CondaPackage:
     def latest_build_number(self) -> int:
         res = 0
         for file in self.latest_files:
-            if n := file["attrs"]["build_number"] > res:
+            if (n := file["attrs"]["build_number"]) > res:
                 res = n
         return res
 
@@ -151,7 +151,7 @@ class CondaPackage:
     def depends_on_python(self) -> bool:
         for file in self.latest_files_with_latest_build_number:
             for dep in file["attrs"]["depends"]:
-                if dep.startswith("python "):
+                if dep.startswith("python"):
                     return True
         return False
 
