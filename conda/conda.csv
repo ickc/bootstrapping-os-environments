@@ -79,6 +79,7 @@ h5py,,,False,astropy,,Read and write HDF5 files from Python,3.11.0,,True
 healpy,,,False,,,Healpix tools package for Python,1.16.6,http://healpy.readthedocs.org/,True
 holoviews,,,True,,,Stop plotting your data - annotate your data and let it visualize itself.,1.19.0,http://holoviews.org/getting_started/index.html,True
 html5lib,,,False,pandas,,HTML parser based on the WHATWG HTML specification,1.1,,True
+httpx,,,False,,,A next-generation HTTP client for Python.,0.27.0,https://www.encode.io/httpx/,True
 icc_rt,,numba,False,numba,,,2020.2,,False
 ics,,,True,,,Pythonic iCalendar (RFC 5545) Parser,0.7,https://icspy.readthedocs.io/en/stable/,True
 imageio,,,False,,,A Python library for reading and writing image data,2.34.1,https://imageio.readthedocs.io,True
@@ -138,6 +139,7 @@ pickle5,,,False,numba,for py37,Experimental backport of the pickle 5 protocol (P
 pickleshare,,,True,,,Tiny 'shelve'-like database with concurrency support,0.7.5,,True
 pillow,,,False,,,Pillow is the friendly PIL fork by Alex Clark and Contributors,10.3.0,,True
 pip,,,False,,,PyPA recommended tool for installing Python packages,24.0,https://pip.pypa.io/en/stable/,True
+platformdirs,,,False,,,"A small Python module for determining appropriate platform-specific dirs, e.g. a ""user data dir"".",4.2.2,,True
 plotly,,,False,,,"An interactive, browser-based graphing library for Python",5.22.0,https://plot.ly/python/,True
 pockets,,,True,,,A collection of helpful Python tools!,0.9.1,,True
 poetry,,,False,,,Python dependency management and packaging made easy,1.8.3,https://python-poetry.org/docs/,True
