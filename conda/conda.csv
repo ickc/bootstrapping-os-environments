@@ -1,7 +1,6 @@
 name,channel,ignored,version,latest_version,depended,notes,summary,doc_url,depends_on_python
 acor,,True,,1.1.1,,,Estimate the autocorrelation time of a time series quickly.,,True
 aiohttp,,True,,3.9.5,,,Async http client/server framework (asyncio),http://aiohttp.readthedocs.io/,True
-appdirs,,True,,1.4.4,pandasgui,,A small Python module for determining appropriate platform-specific dirs,,True
 archspec,,False,,0.2.3,,,A library to query system architecture,https://archspec.readthedocs.io/,True
 arrow,,True,,1.3.0,,,Better dates & times for Python,https://arrow.readthedocs.io,True
 asdf,,False,,3.2.0,astropy,,Python implementation of the ASDF Standard,http://asdf.readthedocs.io/,True
@@ -42,7 +41,6 @@ custom-inherit,,False,,2.4.1,,,A Python package that provides customized docstri
 cvxopt,,False,,1.3.2,statsmodels,,Convex optimization package,https://cvxopt.org/userguide,True
 cython,,True,,3.0.10,,,The Cython compiler for writing C extensions for the Python language,https://docs.cython.org,True
 cytoolz,,True,,0.12.3,,,Cython implementation of Toolz. High performance functional utilities,https://pypi.python.org/pypi/cytoolz,True
-dacite,,True,,1.8.1,pandasgui,,Simple creation of data classes from dictionaries.,,True
 dask,,True,,2024.6.0,,,Parallel PyData with Task Scheduling,https://dask.org/,True
 datashader,,True,,0.16.2,,,Data visualization toolchain based on aggregating into a grid,http://datashader.org,True
 dateparser,,True,,1.2.0,,,Date parsing library designed to parse dates from HTML pages,,True
@@ -110,7 +108,6 @@ mkl,,False,,2024.1.0,numpy,,Intel® oneAPI Math Kernel Library runtime libraries
 mpmath,,False,,1.3.0,"astropy,sympy",,Python library for arbitrary-precision floating-point arithmetic,http://mpmath.org/doc/current/,True
 multipledispatch,,True,,0.6.0,,,Multiple dispatch,https://multiple-dispatch.readthedocs.io,True
 mypy,,False,,1.10.0,,,Optional static typing for Python,http://mypy.readthedocs.io,True
-mypy_extensions,,True,,1.0.0,pandasgui,,Experimental type system extensions for programs checked with the mypy typechecker.,https://mypy.readthedocs.io,True
 nbconvert,,False,,7.16.4,,,Converting Jupyter Notebooks,https://nbconvert.readthedocs.org/,False
 nbsphinx,,False,,0.9.4,,,Jupyter Notebook Tools for Sphinx,,True
 networkx,,False,,3.3,bokeh,,Python package for creating and manipulating complex networks,http://networkx.github.io/documentation.html,True
@@ -155,10 +152,8 @@ pygraphviz,,False,,1.13,networkx,,Python interface to Graphviz,https://graphviz.
 pylint,,False,,3.2.3,,,python code static checker,https://pylint.readthedocs.io/en/latest/,True
 pymediainfo,,False,,6.1.0,,,A Python wrapper around the MediaInfo library,https://pymediainfo.readthedocs.io/,True
 pyment,,True,,0.3.3,,,Generate/convert automatically the docstrings from code signature,,True
-pynput,,True,,1.7.7,pandasgui,,This library allows you to control and monitor input devices.,https://pynput.readthedocs.io/en/latest/,True
 pyotp,,False,,2.6.0,,,Python One Time Password Library,https://pyotp.readthedocs.io/,True
 pypandoc,,True,,1.13,,,Thin wrapper for pandoc,,True
-pyqt,,True,,5.15.7,pandasgui,,Python bindings for the Qt cross platform application toolkit,https://www.riverbankcomputing.com/static/Docs/PyQt5/,True
 pyreadstat,,False,,1.2.7,pandas,,"read SAS, SPSS and STATA files into pandas data frames",https://github.com/Roche/pyreadstat,True
 pyrss2gen,,False,,1.1,,,Generate RSS2 using a Python data structure,,True
 pyslalib,,True,,1.0.4,,,f2py and numpy based wrappers for SLALIB,,True
