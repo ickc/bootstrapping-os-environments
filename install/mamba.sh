@@ -36,7 +36,7 @@ install() {
         ./Miniforge3.sh -ubsp "${CONDA_PREFIX}"
     else
         echo Installing mamba...
-        ./Miniforge3.sh -bsp "${CONDA_PREFIX}"
+        ./Miniforge3.sh -fbsp "${CONDA_PREFIX}"
     fi
 
     print_line
