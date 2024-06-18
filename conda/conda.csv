@@ -7,10 +7,7 @@ asdf,,False,,3.2.0,astropy,,Python implementation of the ASDF Standard,http://as
 astropy,,False,,6.1.1,,,Community-developed Python Library for Astronomy,http://docs.astropy.org/en/stable/,True
 autoflake,,False,,1.7.5,,,Removes unused imports and unused variables,,True
 autopep8,,True,,2.3.0,,,A tool that automatically formats Python code to conform to the PEP 8 style guide,,True
-bandit,,False,,1.7.8,,,"Bandit is a tool designed to find common security issues in Python code.
-To do this Bandit processes each file, builds an AST from it, and runs
-appropriate plugins against the AST nodes. Once Bandit has finished
-scanning all the files it generates a report.",https://bandit.readthedocs.io/en/latest/,True
+bandit,,False,,1.7.8,,,"Bandit is a tool designed to find common security issues in Python code. To do this Bandit processes each file, builds an AST from it, and runs appropriate plugins against the AST nodes. Once Bandit has finished scanning all the files it generates a report.",https://bandit.readthedocs.io/en/latest/,True
 beautifulsoup4,,False,,4.12.3,"pandas,astropy",,Python library designed for screen-scraping,http://beautiful-soup-4.readthedocs.io/en/latest/,True
 bidict,,True,,0.23.1,,,"Efficient, Pythonic bidirectional map implementation and related functionality",https://bidict.readthedocs.io,True
 black,,False,,24.4.2,,,The uncompromising code formatter.,https://black.readthedocs.io/,True
@@ -32,8 +29,7 @@ colormath,,True,,3.0.0,,,Color math and conversion library.,http://python-colorm
 conda,,True,,24.5.0,,,"OS-agnostic, system-level binary package and environment manager.",https://docs.conda.io/projects/conda/en/stable/,True
 conda-smithy,,True,,3.36.2,,,The tool for managing conda-forge feedstocks,,True
 contextily,,False,,1.6.0,,,Context geo-tiles in Python,,True
-cookiecutter,,True,,2.6.0,,,"A command-line utility that creates projects from project templates, e.g.
-creating a Python package project from a Python package project template.",https://cookiecutter.readthedocs.io,True
+cookiecutter,,True,,2.6.0,,,"A command-line utility that creates projects from project templates, e.g. creating a Python package project from a Python package project template.",https://cookiecutter.readthedocs.io,True
 coverage,,False,,7.5.3,,,Code coverage measurement for Python,,True
 custom-inherit,,False,,2.4.1,,,A Python package that provides customized docstring inheritance schemes between derived classes and their parents.,https://github.com/rsokl/custom_inherit/blob/master/README.md,True
 cvxopt,,False,,1.3.2,statsmodels,,Convex optimization package,https://cvxopt.org/userguide,True
@@ -57,8 +53,7 @@ flake8,,True,,7.1.0,,,Your Tool For Style Guide Enforcement,http://flake8.pycqa.
 flake8-pyi,,True,,24.6.0,,,A plugin for flake8 to enable linting .pyi files.,,True
 flatten-dict,,True,,0.4.2,,,A flexible utility for flattening and unflattening dict-like objects in Python.,,True
 folium,,False,,0.17.0,,,Make beautiful maps with Leaflet.js and Python,,True
-gdal,,False,,3.9.0,networkx,,"GDAL is a translator library for raster and vector geospatial data formats that is released under an
-X/MIT style Open Source license by the Open Source Geospatial Foundation.",,True
+gdal,,False,,3.9.0,networkx,,GDAL is a translator library for raster and vector geospatial data formats that is released under an X/MIT style Open Source license by the Open Source Geospatial Foundation.,,True
 geojson,,False,,3.1.0,,,Python bindings and utilities for GeoJSON,,True
 geopandas,,False,,0.14.4,,,Geographic pandas extensions,,True
 geopy,,False,,2.4.1,,,Python Geocoding Toolbox.,,True
