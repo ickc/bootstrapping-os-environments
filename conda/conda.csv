@@ -98,7 +98,6 @@ nltk,,,True,,,Natural Language Toolkit,3.8.1,http://www.nltk.org/,True
 ipywidgets,,,False,,,Jupyter Interactive Widgets,8.1.3,https://ipywidgets.readthedocs.io/en/latest/,True
 line_profiler,,,True,,,A module for monitoring memory usage of a python program,4.1.1,https://github.com/pyutils/line_profiler,True
 snakeviz,,,True,,,An in-browser Python profile viewer,2.2.0,https://jiffyclub.github.io/snakeviz,True
-libiconv,,,True,,,Provides iconv for systems which don't have one (or that cannot convert from/to Unicode.),1.17,,False
 cytoolz,,,True,,,Cython implementation of Toolz. High performance functional utilities,0.12.3,https://pypi.python.org/pypi/cytoolz,True
 conda,,,True,,,"OS-agnostic, system-level binary package and environment manager.",24.5.0,https://docs.conda.io/projects/conda/en/stable/,True
 pyotp,,,False,,,Python One Time Password Library,2.6.0,https://pyotp.readthedocs.io/,True

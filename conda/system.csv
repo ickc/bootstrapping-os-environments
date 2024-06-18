@@ -20,6 +20,7 @@ hub,,,True,,,git + hub = github,2.14.2,,False
 imagemagick,,,False,,,"Software suite to create, edit, compose, or convert bitmap images.",7.1.0_57,,False
 joshuto,,dnachun,False,,,ranger-like terminal file manager written in Rust,0.9.8,,False
 jq,,,False,,,A command-line JSON processor.,1.7.1,,False
+libiconv,,,True,,,Provides iconv for systems which don't have one (or that cannot convert from/to Unicode.),1.17,,False
 lsdeluxe,,,False,,,The next gen ls command,1.1.2,,False
 lynx,,,True,,,Text-based web browser,2.8.9.1,http://lynx.invisible-island.net/lynx_help/,False
 mosh,,,False,,,Mobile shell that supports roaming and intelligent local echo,1.4.0,,False
