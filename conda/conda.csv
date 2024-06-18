@@ -182,8 +182,8 @@ ruamel.yaml,,False,,0.18.6,,,A YAML package for Python. It is a derivative of Ki
 schema,,False,,0.7.7,,,Schema validation just got Pythonic,,True
 scikit-image,,True,,0.23.2,,,Image processing in Python.,,True
 scikit-learn,,True,,1.5.0,,,A set of python modules for machine learning and data mining,,True
-scipy,,False,,1.13.1,pandas/numba/astropy,,Scientific Library for Python,http://www.scipy.org/docs.html,True
-seaborn,,False,,0.13.2,,,Statistical data visualization,https://seaborn.pydata.org,False
+scipy,,False,,1.13.1,pandas/numba/astropy/seaborn,,Scientific Library for Python,http://www.scipy.org/docs.html,True
+seaborn,,False,,0.13.2,,https://seaborn.pydata.org/installing.html#optional-dependencies,Statistical data visualization,https://seaborn.pydata.org,False
 setuptools,,False,,70.0.0,astropy/numba,,"Download, build, install, upgrade, and uninstall Python packages",http://pythonhosted.org/setuptools/,True
 snakeviz,,True,,2.2.0,,,An in-browser Python profile viewer,https://jiffyclub.github.io/snakeviz,True
 sortedcontainers,,False,,2.4.0,astropy,,"Python Sorted Container Types: SortedList, SortedDict, and SortedSet",http://www.grantjenks.com/docs/sortedcontainers/,True
