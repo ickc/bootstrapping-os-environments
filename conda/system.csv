@@ -6,7 +6,7 @@ curl,,,False,,,tool and library for transferring data with URL syntax,8.8.0,http
 dua-cli,,dnachun,False,,,"View disk space usage and delete unwanted data, fast",2.29.0,,False
 dust,,,False,,,du + rust = dust. Like du but more intuitive.,1.0.0,,False
 exiftool,,,False,,,"Read, Write and Edit Meta Information!",12.76,,False
-eza,,,False,,,"A modern, maintained replacement for ls.",0.18.18,,False
+eza,,,True,,,"A modern, maintained replacement for ls.",0.18.18,,False
 ffmpeg,,,False,,,"Cross-platform solution to record, convert and stream audio and video.",7.0.1,https://ffmpeg.org/documentation.html,False
 fzf,,,False,,,A command-line fuzzy finder,0.53.0,,False
 gh,,,False,,,Github CLI.,2.51.0,https://cli.github.com/,False
@@ -23,9 +23,8 @@ jq,,,False,,,A command-line JSON processor.,1.7.1,,False
 lsdeluxe,,,False,,,The next gen ls command,1.1.2,,False
 lynx,,,True,,,Text-based web browser,2.8.9.1,http://lynx.invisible-island.net/lynx_help/,False
 mosh,,,False,,,Mobile shell that supports roaming and intelligent local echo,1.4.0,,False
-mosh,,,False,,,Mobile shell that supports roaming and intelligent local echo,1.4.0,,False
 nano,,,False,,,"Nano's ANOther editor, an enhanced free Pico clone",8.0,https://www.nano-editor.org/docs.php,False
-ncdu,,,False,,,NCurses Disk Usage,1.16,https://dev.yorhel.nl/ncdu/man,False
+ncdu,,,True,,,NCurses Disk Usage,1.16,https://dev.yorhel.nl/ncdu/man,False
 openssh,,,False,,,A suite of secure networking utilities based on the SSH protocol,8.0p1,,False
 p7zip,,,True,,,"p7zip is a quick port of 7z.exe and 7za.exe (command line version of 7zip, see www.7-zip.org ) for Unix.",16.02,,False
 pandoc,,,False,,,The universal markup converter,3.2,http://pandoc.org/MANUAL.html,False
