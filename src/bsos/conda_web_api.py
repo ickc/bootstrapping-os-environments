@@ -259,6 +259,7 @@ def main(
     name_format: str = "py{version}",
     name_replace_from: str = ".",
     name_replace_to: str = "",
+    python: bool = True,
 ):
     """Generate conda environment files."""
     packages = CondaPackages.read_csv(csv)
@@ -271,7 +272,9 @@ def main(
         for version in versions:
             python_version: tuple[int, int] = tuple(map(int, version.split(".")))  # type: ignore[assignment]
             name = name_format.format(arch=arch, version=version).replace(name_replace_from, name_replace_to)
-            dependencies: list[str] = [f"python={version}"]
+            dependencies: list[str] = []
+            if python:
+                dependencies.append(f"python={version}")
             res = {
                 "name": name,
                 "channels": [default_channel],
