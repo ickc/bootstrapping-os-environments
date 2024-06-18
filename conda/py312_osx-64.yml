@@ -31,7 +31,6 @@ dependencies:
 - feedgen
 - fire
 - folium
-- gdal
 - geojson
 - geopandas
 - geopy
