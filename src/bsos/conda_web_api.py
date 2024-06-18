@@ -250,6 +250,7 @@ class CondaPackages:
 
 def main(
     csv: Path,
+    *,
     out_dir: Path = Path("conda"),
     # https://conda.io/projects/conda/en/latest/commands/env/create.html#named-arguments
     archs: list[str] = ["linux-64", "linux-aarch64", "linux-ppc64le", "osx-64", "osx-arm64"],
