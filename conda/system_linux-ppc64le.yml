@@ -1,0 +1,36 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.12
+- bat
+- clang-format
+- curl
+- exiftool
+- ffmpeg
+- fzf
+- gh
+- ghostscript
+- git
+- go-task
+- graphviz
+- htop
+- imagemagick
+- jq
+- lsdeluxe
+- mosh
+- mosh
+- nano
+- ncdu
+- openssh
+- parallel
+- poppler
+- sed
+- starship
+- tar
+- tmux
+- tree
+- unzip
+- wget
+- zsh
+- zstd
+name: system
