@@ -35,6 +35,7 @@ from IPython.display import display
 #
 # # mas
 
+
 # %%
 def read_mas_txt(path: Path) -> pd.DataFrame:
     """Read mas packages file and return a DataFrame of packages."""
@@ -170,6 +171,7 @@ if not df_remove.empty:
 # %% [markdown]
 # # brew
 
+
 # %%
 def read_brew_txt(path: Path) -> set[str]:
     packages = []
@@ -211,6 +213,7 @@ if packages_remove:
 
 # %% [markdown]
 # # brew cask
+
 
 # %%
 def get_brew_cask_installed() -> set[str]:

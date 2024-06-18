@@ -17,9 +17,9 @@
 from __future__ import annotations
 
 import logging
+import os
 import platform
 from collections import OrderedDict
-import os
 from pathlib import Path
 
 import pandas as pd
@@ -143,6 +143,7 @@ for version_check in ("3.10", "3.11", "3.12"):
 # This is done because probably some earlier version may not constraint against future Python,
 # so that the solver is giving false positive of a package supporting Python 3.10,
 # but later fails as all packages are solved together.
+
 
 # %%
 def get_latest_version(

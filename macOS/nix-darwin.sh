@@ -12,7 +12,6 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 # testing
 nix --version
 
-
 # nix-darwin
 # https://github.com/LnL7/nix-darwin
 mkdir -p ~/.config/nix-darwin
