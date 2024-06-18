@@ -99,7 +99,7 @@ mamba,,True,,1.5.8,,,"A fast drop-in alternative to conda, using libsolv for dep
 map_parallel,,False,,0.2.0,,,A drop-in replacement of map/starmap but in parallel with different backends.,,True
 markdown,,True,,3.6,,,Python implementation of Markdown.,https://python-markdown.github.io/,True
 markdown2,,True,,2.4.13,,,A fast and complete Python implementation of Markdown,,True
-matplotlib,,False,,3.8.4,pandas/astropy,,Publication quality figures in Python,http://matplotlib.org/contents.html,True
+matplotlib,,False,,3.8.4,pandas/astropy/statsmodels,,Publication quality figures in Python,http://matplotlib.org/contents.html,True
 mkl,,False,,2024.1.0,numpy,,Intel® oneAPI Math Kernel Library runtime libraries,https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html,False
 mpmath,,False,,1.3.0,astropy/sympy,,Python library for arbitrary-precision floating-point arithmetic,http://mpmath.org/doc/current/,True
 multipledispatch,,True,,0.6.0,,,Multiple dispatch,https://multiple-dispatch.readthedocs.io,True
@@ -193,7 +193,7 @@ sphinxcontrib-apidoc,,False,,0.3.0,,,A Sphinx extension for running sphinx-apido
 sphinxcontrib-contentui,,True,,0.2.5,,,This package contains the contentui Sphinx extension.,https://sphinxcontrib-contentui.readthedocs.io,True
 sphinxcontrib-napoleon,,False,,0.7,,,Sphinx 'napoleon' extension,,True
 sqlalchemy,,False,,2.0.30,pandas,,Database Abstraction Library.,https://docs.sqlalchemy.org/,True
-statsmodels,,False,,0.14.2,seaborn,,Statistical computations and models for use with SciPy,https://www.statsmodels.org/stable/,True
+statsmodels,,False,,0.14.2,seaborn,https://www.statsmodels.org/stable/install.html#optional-dependencies,Statistical computations and models for use with SciPy,https://www.statsmodels.org/stable/,True
 sympy,,False,,1.12.1,,,Python library for symbolic mathematics,https://docs.sympy.org/latest/index.html,True
 tabulate,,False,,0.9.0,pandas,,"Pretty-print tabular data in Python, a library and a command-line utility.",,True
 tbb,,False,,2021.12.0,numba,,TBB Libraries,https://software.intel.com/en-us/oneapi-tbb-documentation,False
