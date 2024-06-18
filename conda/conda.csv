@@ -72,7 +72,7 @@ healpy,,False,,1.16.6,,,Healpix tools package for Python,http://healpy.readthedo
 holoviews,,False,,1.19.0,,,Stop plotting your data - annotate your data and let it visualize itself.,http://holoviews.org/getting_started/index.html,True
 html5lib,,False,,1.1,pandas/astropy,,HTML parser based on the WHATWG HTML specification,,True
 httpx,,False,,0.27.0,,,A next-generation HTTP client for Python.,https://www.encode.io/httpx/,True
-ics,,False,,0.7,,,Pythonic iCalendar (RFC 5545) Parser,https://icspy.readthedocs.io/en/stable/,True
+ics,,True,,0.7,,,Pythonic iCalendar (RFC 5545) Parser,https://icspy.readthedocs.io/en/stable/,True
 imageio,,True,,2.34.1,,,A Python library for reading and writing image data,https://imageio.readthedocs.io,True
 intel-cmplr-lib-rt,,False,,2024.1.0,numba,,Runtime for Intel® C++ Compiler Classic,https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/dpc-compiler.html,False
 intel-openmp,,False,,2024.1.0,numba,,Intel® oneAPI Compiler OpenMP runtime,https://www.intel.com/content/www/us/en/developer/tools/overview.html,False
