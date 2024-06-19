@@ -31,6 +31,7 @@ sed -i -E \
 darwin-rebuild switch --flake ~/git/source/dotfiles/config/nix-darwin
 
 # update
+cd ~/git/source/dotfiles/config/nix-darwin
 nix flake update
 
 # GC
