@@ -19,16 +19,29 @@ print_line() {
 ########################################################################
 
 install() {
-    if [[ ${OSTYPE} == "linux-gnu"* ]]; then
-        downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-unknown-linux-gnu.tar.gz
-    elif [[ ${OSTYPE} == "darwin"* ]]; then
-        downloadUrl=https://github.com/Wilfred/difftastic/releases/latest/download/difft-x86_64-apple-darwin.tar.gz
-    else
-        echo "Unsupported OS: ${OSTYPE}"
-        exit 1
-    fi
+    # shellcheck disable=SC2312
+    SYSTEM="$(uname -s)-$(uname -m)"
 
-    filename="${downloadUrl##*/}"
+    # Determine the appropriate file based on the system information
+    case "${SYSTEM}" in
+    Darwin-aarch64)
+        filename="difft-aarch64-apple-darwin.tar.gz"
+        ;;
+    Linux-aarch64)
+        filename="difft-aarch64-unknown-linux-gnu.tar.gz"
+        ;;
+    Darwin-x86_64)
+        filename="difft-x86_64-apple-darwin.tar.gz"
+        ;;
+    Linux-x86_64)
+        filename="difft-x86_64-unknown-linux-gnu.tar.gz"
+        ;;
+    *)
+        echo "Unsupported system: $SYSTEM"
+        exit 1
+        ;;
+    esac
+    downloadUrl="https://github.com/Wilfred/difftastic/releases/latest/download/${filename}"
 
     print_double_line
     echo Downloading to temp dir "${DOWNLOADDIR}"
