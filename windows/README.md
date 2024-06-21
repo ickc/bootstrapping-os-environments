@@ -1,5 +1,7 @@
 # Install
 
+Open Microsoft Store once and update softwares there to ensure the account is authenticated. (And login Microsoft account beforehand.)
+
 Open Terminal with administrator rights to minimize the amount of interaction needed. (Note the security implications.)
 
 ```powershell
