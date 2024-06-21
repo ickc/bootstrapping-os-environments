@@ -8,6 +8,22 @@ On the old Mac:
 
 On the freshly installed Mac:
 
+> [!TIP]
+> 
+> Use the following to check what is changed after customizing settings to make it reproducible next time.
+>
+> ```bash
+> defaults read > defaults.pre.txt
+> 
+> # *make a change in Settings*
+> 
+> defaults read > defaults.post.txt
+> 
+> diff defaults.pre.txt defaults.post.txt
+> ```
+> 
+> C.f. [sickcodes/osx-optimizer: OSX Optimizer: Optimize MacOS - Shell scripts to speed up your mac boot time, accelerate loading, and prevent unnecessary throttling.](https://github.com/sickcodes/osx-optimizer)
+
 - ~~open App Store, sign in and install Xcode, and run the followings meanwhile.~~
 	- ~~You may need to open Xcode explicitly for all components to be installed^[See [ios - Xcode build fails and repetitive requires command line developer tools install - Stack Overflow](https://stackoverflow.com/questions/72583801/xcode-build-fails-and-repetitive-requires-command-line-developer-tools-install/73703946#73703946).].~~
 - In System Preferences, Sharing, activate remote ssh,
