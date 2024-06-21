@@ -9,14 +9,6 @@
           "Version": "24.07"
         },
         {
-          "Id": "Alacritty.Alacritty",
-          "Version": "0.13.2"
-        },
-        {
-          "Id": "AutoHotkey.AutoHotkey",
-          "Version": "2.0.16"
-        },
-        {
           "Id": "Maxon.CinebenchR23",
           "Version": "23.200"
         },
@@ -33,20 +25,8 @@
           "Version": "8.0.5"
         },
         {
-          "Id": "cURL.cURL",
-          "Version": "8.8.0.1"
-        },
-        {
-          "Id": "Gyan.FFmpeg",
-          "Version": "7.0.1"
-        },
-        {
           "Id": "Mozilla.Firefox",
           "Version": "127.0"
-        },
-        {
-          "Id": "Git.Git",
-          "Version": "2.45.2"
         },
         {
           "Id": "TechPowerUp.GPU-Z",
@@ -57,32 +37,8 @@
           "Version": "24.1.13.10"
         },
         {
-          "Id": "DominikReichl.KeePass",
-          "Version": "2.57.0"
-        },
-        {
-          "Id": "KeePassXCTeam.KeePassXC",
-          "Version": "2.7.9"
-        },
-        {
-          "Id": "GuinpinSoft.MakeMKV",
-          "Version": "v1.17.7"
-        },
-        {
           "Id": "OCBase.OCCT.Personal",
           "Version": "13.0.0.99"
-        },
-        {
-          "Id": "Logitech.Options",
-          "Version": "10.20.11"
-        },
-        {
-          "Id": "JohnMacFarlane.Pandoc",
-          "Version": "3.2"
-        },
-        {
-          "Id": "Python.Python.3.12",
-          "Version": "3.12.4"
         },
         {
           "Id": "Samsung.SamsungMagician",
