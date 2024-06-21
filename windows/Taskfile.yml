@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  sort:
+    cmds:
+      - |
+        jq '.Sources[0].Packages |= sort_by(.Id | split(".")[1:] | join(".") | ascii_downcase)' winget.json > winget.json.tmp
+        mv winget.json.tmp winget.json
+    silent: true
