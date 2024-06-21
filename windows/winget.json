@@ -5,68 +5,52 @@
     {
       "Packages": [
         {
-          "Id": "7zip.7zip",
-          "Version": "24.07"
+          "Id": "7zip.7zip"
         },
         {
-          "Id": "Maxon.CinebenchR23",
-          "Version": "23.200"
+          "Id": "Maxon.CinebenchR23"
         },
         {
-          "Id": "CPUID.CPU-Z",
-          "Version": "2.09"
+          "Id": "CPUID.CPU-Z"
         },
         {
-          "Id": "CrystalDewWorld.CrystalDiskInfo",
-          "Version": "9.3.1"
+          "Id": "CrystalDewWorld.CrystalDiskInfo"
         },
         {
-          "Id": "CrystalDewWorld.CrystalDiskMark",
-          "Version": "8.0.5"
+          "Id": "CrystalDewWorld.CrystalDiskMark"
         },
         {
-          "Id": "Mozilla.Firefox",
-          "Version": "127.0"
+          "Id": "Mozilla.Firefox"
         },
         {
-          "Id": "TechPowerUp.GPU-Z",
-          "Version": "2.59.0"
+          "Id": "TechPowerUp.GPU-Z"
         },
         {
-          "Id": "Intel.IntelDriverAndSupportAssistant",
-          "Version": "24.1.13.10"
+          "Id": "Intel.IntelDriverAndSupportAssistant"
         },
         {
-          "Id": "OCBase.OCCT.Personal",
-          "Version": "13.0.0.99"
+          "Id": "OCBase.OCCT.Personal"
         },
         {
-          "Id": "Samsung.SamsungMagician",
-          "Version": "4.1.0"
+          "Id": "Samsung.SamsungMagician"
         },
         {
-          "Id": "WesternDigital.SanDiskSSDDashboard",
-          "Version": "3.2.2.9"
+          "Id": "WesternDigital.SanDiskSSDDashboard"
         },
         {
-          "Id": "Almico.SpeedFan",
-          "Version": "4.52"
+          "Id": "Almico.SpeedFan"
         },
         {
-          "Id": "Valve.Steam",
-          "Version": "2.10.91.91"
+          "Id": "Valve.Steam"
         },
         {
-          "Id": "Microsoft.VisualStudioCode",
-          "Version": "1.90.2"
+          "Id": "Microsoft.VisualStudioCode"
         },
         {
-          "Id": "VideoLAN.VLC",
-          "Version": "3.0.20"
+          "Id": "VideoLAN.VLC"
         },
         {
-          "Id": "wez.wezterm",
-          "Version": "20240203-110809-5046fc22"
+          "Id": "wez.wezterm"
         }
       ],
       "SourceDetails": {
