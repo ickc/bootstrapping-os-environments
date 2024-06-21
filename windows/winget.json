@@ -1,5 +1,6 @@
 {
   "$schema": "https://aka.ms/winget-packages.schema.1.0.json",
+  "WinGetVersion": "0.3.11201",
   "Sources": [
     {
       "Packages": [
@@ -88,6 +89,10 @@
           "Version": "4.1.0"
         },
         {
+          "Id": "WesternDigital.SanDiskSSDDashboard",
+          "Version": "3.2.2.9"
+        },
+        {
           "Id": "Almico.SpeedFan",
           "Version": "4.52"
         },
@@ -102,6 +107,10 @@
         {
           "Id": "VideoLAN.VLC",
           "Version": "3.0.20"
+        },
+        {
+          "Id": "wez.wezterm",
+          "Version": "20240203-110809-5046fc22"
         }
       ],
       "SourceDetails": {
@@ -111,6 +120,5 @@
         "Type": "Microsoft.PreIndexed.Package"
       }
     }
-  ],
-  "WinGetVersion": "0.3.11201"
+  ]
 }
