@@ -26,9 +26,10 @@ sed -i -E \
     -e 's/x86_64-darwin/aarch64-darwin/' \
     flake.nix
 
-# check & apply
-# nix run nix-darwin -- switch --flake ~/git/source/dotfiles/config/nix-darwin
-darwin-rebuild switch --flake ~/git/source/dotfiles/config/nix-darwin
+# first time
+nix run nix-darwin -- switch --flake "$HOME/git/source/dotfiles/config/nix-darwin#simple"
+# subsequent runs
+darwin-rebuild switch --flake "$HOME/git/source/dotfiles/config/nix-darwin#simple"
 
 # update
 cd ~/git/source/dotfiles/config/nix-darwin
