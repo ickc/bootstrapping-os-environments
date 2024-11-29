@@ -2,8 +2,8 @@
 
 set -e
 
-MACPORTS_VERSION=2.8.1
-MACPORTS_OS_VERSION=14-Sonoma
+MACPORTS_VERSION=2.10.5
+MACPORTS_OS_VERSION=15-Sequoia
 
 # helpers ##############################################################
 
