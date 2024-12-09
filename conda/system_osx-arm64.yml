@@ -2,10 +2,10 @@ channels:
 - conda-forge
 dependencies:
 - bat
-- dnachun::bottom
+- bottom
 - clang-format
 - curl
-- dnachun::dua-cli
+- dua-cli
 - exiftool
 - ffmpeg
 - fzf
@@ -16,7 +16,7 @@ dependencies:
 - graphviz
 - htop
 - imagemagick
-- dnachun::joshuto
+- joshuto
 - jq
 - lsdeluxe
 - mosh
@@ -33,6 +33,6 @@ dependencies:
 - tree
 - unzip
 - wget
-- dnachun::zellij
+- zellij
 - zstd
 name: system

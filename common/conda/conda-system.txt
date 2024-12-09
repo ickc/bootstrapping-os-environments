@@ -57,9 +57,9 @@ pysnmp
 pystache
 zeroconf
 
-dnachun::zellij
-dnachun::joshuto
-dnachun::dua-cli
-dnachun::bottom
+zellij
+joshuto
+dua-cli
+bottom
 dust
 go-task
