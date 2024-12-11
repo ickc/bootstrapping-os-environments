@@ -1,9 +1,9 @@
 name,channel,ignored,version,latest_version,depended,notes,summary,doc_url,depends_on_python
 bat,,False,,0.24.0,,,A cat(1) clone with syntax highlighting and Git integration,,False
-bottom,dnachun,False,,0.9.6,,,Yet another cross-platform graphical process/system monitor,,False
+bottom,,False,,0.9.6,,,Yet another cross-platform graphical process/system monitor,,False
 clang-format,,False,,18.1.7,,,Development headers and libraries for Clang,,False
 curl,,False,,8.8.0,,,tool and library for transferring data with URL syntax,https://curl.haxx.se/docs/,False
-dua-cli,dnachun,False,,2.29.0,,,"View disk space usage and delete unwanted data, fast",,False
+dua-cli,,False,,2.29.0,,,"View disk space usage and delete unwanted data, fast",,False
 dust,,False,,1.0.0,,,du + rust = dust. Like du but more intuitive.,,False
 exiftool,,False,,12.76,,,"Read, Write and Edit Meta Information!",,False
 eza,,True,,0.18.18,,,"A modern, maintained replacement for ls.",,False
@@ -18,7 +18,7 @@ graphviz,,False,,11.0.0,,,Open Source graph visualization software.,https://grap
 htop,,False,,3.3.0,,,htop is an interactive text-mode process viewer for Unix systems. It aims to be a better 'top',,False
 hub,,True,,2.14.2,,,git + hub = github,,False
 imagemagick,,False,,7.1.0_57,,,"Software suite to create, edit, compose, or convert bitmap images.",,False
-joshuto,dnachun,False,,0.9.8,,,ranger-like terminal file manager written in Rust,,False
+joshuto,,False,,0.9.8,,,ranger-like terminal file manager written in Rust,,False
 jq,,False,,1.7.1,,,A command-line JSON processor.,,False
 libiconv,,True,,1.17,,,Provides iconv for systems which don't have one (or that cannot convert from/to Unicode.),,False
 lsdeluxe,,False,,1.1.2,,,The next gen ls command,,False
@@ -41,6 +41,6 @@ tree,,False,,2.1.1,,,Tree is a recursive directory listing command,http://oldman
 unzip,,False,,6.0,,,,,False
 w3m,,False,,0.5.3+git20220429,,,Text mode web browser/pager.,,False
 wget,,False,,1.21.4,,,utility for non-interactive download of files from the Web,https://www.gnu.org/software/wget/,False
-zellij,dnachun,False,,0.40.1,,,"Pluggable terminal workspace, with terminal multiplexer as the base feature",,False
+zellij,,False,,0.40.1,,,"Pluggable terminal workspace, with terminal multiplexer as the base feature",,False
 zsh,,False,,5.9,,,"Zsh is a shell designed for interactive use, although it is also a powerful scripting language.",http://zsh.sourceforge.net/Doc/Release/zsh_toc.html,False
 zstd,,False,,1.5.6,,,Zstandard - Fast real-time compression algorithm,https://facebook.github.io/zstd/zstd_manual.html,False
