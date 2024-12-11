@@ -3,7 +3,6 @@
 set -e
 
 PREFIX="${PREFIX:-${HOME}/.local}"
-# https://unix.stackexchange.com/a/84980/192799
 DOWNLOADDIR="$(mktemp -d 2> /dev/null || mktemp -d -t 'zsh')"
 
 # helpers ##############################################################
@@ -18,14 +17,54 @@ print_line() {
 
 ########################################################################
 
-downloadUrl=https://github.com/aristocratos/btop/releases/latest/download/btop-x86_64-linux-musl.tbz
-filename="${downloadUrl##*/}"
+ARCH=$(uname -m)
+OS=$(uname -s)
+
+case "${OS}" in
+    Linux)
+        case "${ARCH}" in
+            aarch64)
+                filename="btop-aarch64-linux-musl.tbz"
+                ;;
+            armv7l)
+                filename="btop-armv7l-linux-musleabihf.tbz"
+                ;;
+            arm)
+                filename="btop-arm-linux-musleabi.tbz"
+                ;;
+            i486)
+                filename="btop-i486-linux-musl.tbz"
+                ;;
+            i686)
+                filename="btop-i686-linux-musl.tbz"
+                ;;
+            powerpc64le)
+                filename="btop-powerpc64-linux-musl.tbz"
+                ;;
+            mips64)
+                filename="btop-mips64-linux-musl.tbz"
+                ;;
+            x86_64)
+                filename="btop-x86_64-linux-musl.tbz"
+                ;;
+            *)
+                echo "Unsupported architecture: ${ARCH}"
+                exit 1
+                ;;
+        esac
+        ;;
+    *)
+        echo "Unsupported OS: ${OS}"
+        exit 1
+        ;;
+esac
+
+downloadUrl="https://github.com/aristocratos/btop/releases/latest/download/${filename}"
 
 print_double_line
 echo Downloading to temp dir "${DOWNLOADDIR}"
 cd "${DOWNLOADDIR}"
-wget "${downloadUrl}"
-tar -xf "${filename}"
+wget -qO- "${downloadUrl}" | tar -xjf -
 
 print_double_line
 echo Installing...
