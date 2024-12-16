@@ -2,7 +2,7 @@
 
 . activate jupyterlab
 
-JUPYTER_CONFIG_DIR="${JUPYTER_CONFIG_DIR}:-${HOME}/.jupyter}"
+JUPYTER_CONFIG_DIR="${JUPYTER_CONFIG_DIR}:-${HOME}/.jupyter"
 mkdir -p "${JUPYTER_CONFIG_DIR}"
 
 if [[ $(uname) == Darwin ]]; then
