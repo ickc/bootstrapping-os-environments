@@ -11,5 +11,5 @@ dependencies:
   - jupyterlab>=4
   - jupytext
   - plotly
-  - python=3.12
+  - python=3.13
   - pyviz_comms
