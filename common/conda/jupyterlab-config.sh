@@ -24,4 +24,5 @@ c.JupyterHub.ssl_key = "${JUPYTER_CONFIG_DIR}/ssl.key"
 c.JupyterHub.ssl_cert = "${JUPYTER_CONFIG_DIR}/ssl.crt"
 EOF
 
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout "${JUPYTER_CONFIG_DIR}/ssl.key" -out "${HOME}/.jupyter/ssl.crt"
+mkdir -p "${JUPYTER_CONFIG_DIR}"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout "${JUPYTER_CONFIG_DIR}/ssl.key" -out "${JUPYTER_CONFIG_DIR}/ssl.crt"
