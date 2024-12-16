@@ -21,8 +21,10 @@ def parse_conda_build(build: str) -> tuple[int, int]:
 
     This does not attempt to be robust, just quick and dirty getting the job done here.
 
-    TODO: py313
+    TODO: py314
     """
+    if "py313" in build:
+        return 3, 13
     if "py312" in build:
         return 3, 12
     if "py311" in build:
@@ -279,7 +281,7 @@ def main(
     out_dir: Path = Path("conda"),
     # https://conda.io/projects/conda/en/latest/commands/env/create.html#named-arguments
     archs: list[str] = ["linux-64", "linux-aarch64", "linux-ppc64le", "osx-64", "osx-arm64"],
-    versions: list[str] = ["3.8", "3.9", "3.10", "3.11", "3.12"],
+    versions: list[str] = ["3.9", "3.10", "3.11", "3.12", "3.13"],
     default_channel: str = "conda-forge",
     name_format: str = "py{version}",
     name_replace_from: str = ".",
