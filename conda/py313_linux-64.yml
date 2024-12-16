@@ -1,7 +1,7 @@
 channels:
 - conda-forge
 dependencies:
-- python=3.9
+- python=3.13
 - adbc-driver-postgresql
 - adbc-driver-sqlite
 - archspec
@@ -24,6 +24,7 @@ dependencies:
 - compilers
 - contextily
 - coverage
+- cuda-python
 - custom-inherit
 - cvxopt
 - dautilpy
@@ -46,6 +47,7 @@ dependencies:
 - holoviews
 - html5lib
 - httpx
+- intel-cmplr-lib-rt
 - ipykernel
 - ipympl
 - ipyparallel
@@ -62,12 +64,12 @@ dependencies:
 - makefun
 - map_parallel
 - matplotlib
+- mkl
 - mpmath
 - mypy
 - nbconvert
 - nbsphinx
 - networkx
-- numba
 - numexpr
 - numpy
 - odfpy
@@ -142,4 +144,4 @@ dependencies:
 - yamlloader
 - zlib
 - zstandard
-name: py39
+name: py313

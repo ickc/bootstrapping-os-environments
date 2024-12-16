@@ -2,8 +2,11 @@ channels:
 - conda-forge
 dependencies:
 - bat
+- bottom
 - clang-format
 - curl
+- dua-cli
+- dust
 - exiftool
 - ffmpeg
 - fzf
@@ -14,6 +17,7 @@ dependencies:
 - graphviz
 - htop
 - imagemagick
+- joshuto
 - jq
 - lsdeluxe
 - mosh

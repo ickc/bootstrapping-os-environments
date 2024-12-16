@@ -6,6 +6,7 @@ dependencies:
 - clang-format
 - curl
 - dua-cli
+- dust
 - exiftool
 - ffmpeg
 - fzf
@@ -34,5 +35,6 @@ dependencies:
 - unzip
 - wget
 - zellij
+- zsh
 - zstd
 name: system

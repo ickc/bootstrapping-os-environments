@@ -30,6 +30,7 @@ dependencies:
 - defopt
 - emcee
 - ephem
+- fastcluster
 - fastparquet
 - feedgen
 - fire

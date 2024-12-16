@@ -1,46 +1,46 @@
 name,channel,ignored,version,latest_version,depended,notes,summary,doc_url,depends_on_python
 bat,,False,,0.24.0,,,A cat(1) clone with syntax highlighting and Git integration,,False
-bottom,,False,,0.9.6,,,Yet another cross-platform graphical process/system monitor,,False
-clang-format,,False,,18.1.7,,,Development headers and libraries for Clang,,False
-curl,,False,,8.8.0,,,tool and library for transferring data with URL syntax,https://curl.haxx.se/docs/,False
-dua-cli,,False,,2.29.0,,,"View disk space usage and delete unwanted data, fast",,False
-dust,,False,,1.0.0,,,du + rust = dust. Like du but more intuitive.,,False
+bottom,,False,,0.10.2,,,Yet another cross-platform graphical process/system monitor,,False
+clang-format,,False,,19.1.5,,,Development headers and libraries for Clang,,False
+curl,,False,,8.11.1,,,tool and library for transferring data with URL syntax,https://curl.haxx.se/docs/,False
+dua-cli,,False,,2.29.4,,,"View disk space usage and delete unwanted data, fast",,False
+dust,,False,,1.1.1,,,du + rust = dust. Like du but more intuitive.,,False
 exiftool,,False,,12.76,,,"Read, Write and Edit Meta Information!",,False
-eza,,True,,0.18.18,,,"A modern, maintained replacement for ls.",,False
-ffmpeg,,False,,7.0.1,,,"Cross-platform solution to record, convert and stream audio and video.",https://ffmpeg.org/documentation.html,False
-fzf,,False,,0.53.0,,,A command-line fuzzy finder,,False
-gh,,False,,2.51.0,,,Github CLI.,https://cli.github.com/,False
-ghostscript,,False,,10.03.1,,,An interpreter for the PostScript language and for PDF,,False
-git,,False,,2.45.2,,,distributed version control system,,False
-go-shfmt,,False,,3.8.0,,,"A shell parser, formatter, and interpreter. Supports POSIX Shell, Bash, and mksh",,False
-go-task,,False,,3.37.2,,,A task runner / simpler Make alternative written in Go.,https://taskfile.dev/,False
-graphviz,,False,,11.0.0,,,Open Source graph visualization software.,https://graphviz.gitlab.io/documentation/,False
+eza,,True,,0.20.12,,,"A modern, maintained replacement for ls.",,False
+ffmpeg,,False,,7.1.0,,,"Cross-platform solution to record, convert and stream audio and video.",https://ffmpeg.org/documentation.html,False
+fzf,,False,,0.57.0,,,A command-line fuzzy finder,,False
+gh,,False,,2.63.2,,,Github CLI.,https://cli.github.com/,False
+ghostscript,,False,,10.04.0,,,An interpreter for the PostScript language and for PDF,,False
+git,,False,,2.47.1,,,distributed version control system,,False
+go-shfmt,,False,,3.10.0,,,"A shell parser, formatter, and interpreter. Supports POSIX Shell, Bash, and mksh",,False
+go-task,,False,,3.40.1,,,A task runner / simpler Make alternative written in Go.,https://taskfile.dev/,False
+graphviz,,False,,12.0.0,,,Open Source graph visualization software.,https://graphviz.gitlab.io/documentation/,False
 htop,,False,,3.3.0,,,htop is an interactive text-mode process viewer for Unix systems. It aims to be a better 'top',,False
 hub,,True,,2.14.2,,,git + hub = github,,False
-imagemagick,,False,,7.1.0_57,,,"Software suite to create, edit, compose, or convert bitmap images.",,False
+imagemagick,,False,,7.1.1_3,,,"Software suite to create, edit, compose, or convert bitmap images.",,False
 joshuto,,False,,0.9.8,,,ranger-like terminal file manager written in Rust,,False
 jq,,False,,1.7.1,,,A command-line JSON processor.,,False
 libiconv,,True,,1.17,,,Provides iconv for systems which don't have one (or that cannot convert from/to Unicode.),,False
-lsdeluxe,,False,,1.1.2,,,The next gen ls command,,False
-lynx,,True,,2.8.9.1,,,Text-based web browser,http://lynx.invisible-island.net/lynx_help/,False
+lsdeluxe,,False,,1.1.5,,,The next gen ls command,,False
+lynx,,True,,2.9.2,,,Text-based web browser,http://lynx.invisible-island.net/lynx_help/,False
 mosh,,False,,1.4.0,,,Mobile shell that supports roaming and intelligent local echo,,False
-nano,,False,,8.0,,,"Nano's ANOther editor, an enhanced free Pico clone",https://www.nano-editor.org/docs.php,False
+nano,,False,,8.2,,,"Nano's ANOther editor, an enhanced free Pico clone",https://www.nano-editor.org/docs.php,False
 ncdu,,True,,1.16,,,NCurses Disk Usage,https://dev.yorhel.nl/ncdu/man,False
-openssh,,False,,8.0p1,,,A suite of secure networking utilities based on the SSH protocol,,False
+openssh,,False,,9.3p1,,,A suite of secure networking utilities based on the SSH protocol,,False
 p7zip,,True,,16.02,,,"p7zip is a quick port of 7z.exe and 7za.exe (command line version of 7zip, see www.7-zip.org ) for Unix.",,False
-pandoc,,False,,3.2,,,The universal markup converter,http://pandoc.org/MANUAL.html,False
-parallel,,False,,20240522,,,GNU parallel is a shell tool for executing jobs in parallel using one or more computers.,,False
-poppler,,False,,24.04.0,,,The Poppler PDF manipulation library.,,False
+pandoc,,False,,3.6,,,The universal markup converter,http://pandoc.org/MANUAL.html,False
+parallel,,False,,20241122,,,GNU parallel is a shell tool for executing jobs in parallel using one or more computers.,,False
+poppler,,False,,24.12.0,,,The Poppler PDF manipulation library.,,False
 sed,,False,,4.8,,,sed (stream editor) is a non-interactive command-line text editor.,,False
 shellcheck,,False,,0.10.0,,,"ShellCheck, a static analysis tool for shell scripts",,False
-starship,,False,,1.19.0,,,"The minimal, blazing-fast, and infinitely customizable prompt for any shell!",,False
+starship,,False,,1.21.1,,,"The minimal, blazing-fast, and infinitely customizable prompt for any shell!",,False
 tar,,False,,1.34,,,GNU tape archive program,,False
 tidy-html5,,True,,5.8.0,,,"The granddaddy of HTML tools, with support for modern standards.",http://www.html-tidy.org/,False
-tmux,,False,,3.4,,,A terminal multiplexer.,,False
-tree,,False,,2.1.1,,,Tree is a recursive directory listing command,http://oldmanprogrammer.net/source.php?dir=projects/tree,False
+tmux,,False,,3.5,,,A terminal multiplexer.,,False
+tree,,False,,2.2.1,,,Tree is a recursive directory listing command,http://oldmanprogrammer.net/source.php?dir=projects/tree,False
 unzip,,False,,6.0,,,,,False
 w3m,,False,,0.5.3+git20220429,,,Text mode web browser/pager.,,False
 wget,,False,,1.21.4,,,utility for non-interactive download of files from the Web,https://www.gnu.org/software/wget/,False
-zellij,,False,,0.40.1,,,"Pluggable terminal workspace, with terminal multiplexer as the base feature",,False
-zsh,,False,,5.9,,,"Zsh is a shell designed for interactive use, although it is also a powerful scripting language.",http://zsh.sourceforge.net/Doc/Release/zsh_toc.html,False
+zellij,,False,,0.41.2,,,"Pluggable terminal workspace, with terminal multiplexer as the base feature",,False
+zsh,,False,,5.9,,,"Zsh is a shell designed for interactive use, although it is also a powerful scripting language.",https://zsh.sourceforge.io/Doc/Release/zsh_toc.html,False
 zstd,,False,,1.5.6,,,Zstandard - Fast real-time compression algorithm,https://facebook.github.io/zstd/zstd_manual.html,False
