@@ -1,0 +1,5 @@
+name: jax
+channels:
+  - conda-forge
+dependencies:
+  - jax

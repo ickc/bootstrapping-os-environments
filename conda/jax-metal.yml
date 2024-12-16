@@ -1,0 +1,10 @@
+name: jax-metal
+channels:
+  - conda-forge
+dependencies:
+  - jax
+  - six
+  - wheel
+  - pip
+  - pip:
+    - jax-metal
