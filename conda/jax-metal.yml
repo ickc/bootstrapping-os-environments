@@ -2,6 +2,7 @@ name: jax-metal
 channels:
   - conda-forge
 dependencies:
+  - ipykernel
   - jax
   - six
   - wheel

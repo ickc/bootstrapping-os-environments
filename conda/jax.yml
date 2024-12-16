@@ -2,4 +2,5 @@ name: jax
 channels:
   - conda-forge
 dependencies:
+  - ipykernel
   - jax
