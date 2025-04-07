@@ -3,11 +3,14 @@ channels:
 dependencies:
 - bat
 - bottom
+- btop
 - clang-format
 - curl
+- difftastic
 - dua-cli
 - dust
 - exiftool
+- fastfetch
 - ffmpeg
 - fzf
 - gh
@@ -21,11 +24,15 @@ dependencies:
 - joshuto
 - jq
 - lsdeluxe
+- make
+- mediainfo
 - mosh
 - nano
+- nvtop
 - openssh
 - pandoc
 - parallel
+- pixi
 - poppler
 - sed
 - shellcheck

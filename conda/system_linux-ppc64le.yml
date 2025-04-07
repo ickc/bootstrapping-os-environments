@@ -5,9 +5,11 @@ dependencies:
 - bottom
 - clang-format
 - curl
+- difftastic
 - dua-cli
 - dust
 - exiftool
+- fastfetch
 - ffmpeg
 - fzf
 - gh
@@ -20,10 +22,13 @@ dependencies:
 - joshuto
 - jq
 - lsdeluxe
+- make
 - mosh
 - nano
+- nvtop
 - openssh
 - parallel
+- pixi
 - poppler
 - sed
 - starship
