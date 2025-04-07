@@ -1,11 +1,15 @@
 version: '3'
 
 tasks:
-  conda:
+  generate:
     desc: "Generate conda environment files."
     cmds:
-      - python -m bsos.conda_web_api conda/conda.csv
-      - python -m bsos.conda_web_api conda/system.csv -v 3.13 --name-format system --no-python
+      - python -m bsos.conda_web_api generate conda/conda.csv
+      - python -m bsos.conda_web_api generate conda/system.csv -v 3.13 --name-format system --no-python
+  clean:
+    desc: "Remove the bsos cache when using conda_web_api."
+    cmds:
+      - python -m bsos.conda_web_api clean
   list:depended:
     desc: "List all depended packages."
     cmds:

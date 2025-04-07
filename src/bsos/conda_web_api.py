@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import shutil
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
@@ -14,6 +15,8 @@ import pandas as pd
 import platformdirs
 import yaml
 import yamlloader  # type: ignore
+
+CACHE_DIR: Path = Path(platformdirs.user_cache_dir(appname="bsos", ensure_exists=True))
 
 
 def parse_conda_build(build: str) -> tuple[int, int]:
@@ -65,7 +68,7 @@ async def get_package_info(
     """
 
     async def fetch_package_info(owner: str, name: str) -> dict:
-        cache_dir: Path = Path(platformdirs.user_cache_dir(appname="bsos", ensure_exists=True))
+        cache_dir: Path = CACHE_DIR
         file_path: Path = cache_dir / owner / f"{name}.json"
 
         # Try to load from cache
@@ -275,7 +278,7 @@ class CondaPackages:
         self.df.to_csv(path)
 
 
-def main(
+def generate(
     csv: Path,
     *,
     out_dir: Path = Path("conda"),
@@ -320,8 +323,15 @@ def main(
                 yaml.dump(res, f, Dumper=yamlloader.ordereddict.CSafeDumper)
 
 
+def clean(
+    cache_dir: Path = CACHE_DIR,
+):
+    """Delete the cache directory."""
+    shutil.rmtree(cache_dir, ignore_errors=True)
+
+
 def cli():
-    defopt.run(main)
+    defopt.run([generate, clean])
 
 
 if __name__ == "__main__":
