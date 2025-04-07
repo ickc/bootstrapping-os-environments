@@ -220,15 +220,14 @@ class CondaPackages:
             },
             na_filter=False,
         )
-        df = df[
-            [
-                "channel",
-                "ignored",
-                "version",
-                "depended",
-                "notes",
-            ]
-        ].sort_index()
+        columns = [
+            "channel",
+            "ignored",
+            "version",
+            "depended",
+            "notes",
+        ]
+        df = df[columns]
         return cls(df, default_channel=default_channel)
 
     @cached_property
@@ -242,7 +241,7 @@ class CondaPackages:
     @cached_property
     def packages(self) -> list[CondaPackage]:
         res = []
-        for d, (name, row) in zip(self.data, self.df.iterrows()):
+        for d, (_, row) in zip(self.data, self.df.iterrows()):
             p = CondaPackage(d)
             p.version = row.version
             p.channel = row.channel
@@ -252,27 +251,42 @@ class CondaPackages:
             res.append(p)
         return res
 
+    @cached_property
+    def platforms(self) -> pd.DataFrame:
+        """Get all platforms from the packages."""
+        return (
+            pd.get_dummies(pd.Series((package.platforms.keys() for package in self.packages)).explode())
+            .groupby(level=0)
+            .max()
+        )
+
     def expand_from_data(self) -> None:
-        self.df["summary"] = [p.summary for p in self.packages]
-        self.df["latest_version"] = [p.latest_version for p in self.packages]
-        self.df["doc_url"] = [p.doc_url for p in self.packages]
-        self.df["depends_on_python"] = [p.depends_on_python for p in self.packages]
-        self.df.index = pd.Index([p.name for p in self.packages], name="name")
-        # name,version,channel,ignored,depended,notes,summary,latest_version,doc_url,depends_on_python
-        self.df = self.df[
-            [
-                "channel",
-                "ignored",
-                "version",
-                "latest_version",
-                "depended",
-                "notes",
-                "summary",
-                "doc_url",
-                "depends_on_python",
-            ]
-        ]
-        self.df = self.df.sort_index()
+        # drop index for concat
+        df = self.df.reset_index(drop=True)
+        platforms = self.platforms
+        df = pd.concat([df, platforms], axis=1)
+
+        df["summary"] = [p.summary for p in self.packages]
+        df["latest_version"] = [p.latest_version for p in self.packages]
+        df["doc_url"] = [p.doc_url for p in self.packages]
+        df["depends_on_python"] = [p.depends_on_python for p in self.packages]
+        # add back the index
+        df.index = pd.Index([p.name for p in self.packages], name="name")
+
+        columns = [
+            "channel",
+            "ignored",
+            "version",
+            "latest_version",
+            "depended",
+            "notes",
+            "summary",
+            "doc_url",
+            "depends_on_python",
+        ] + sorted(platforms.columns.tolist())
+        df = df[columns]
+        df.sort_index(inplace=True)
+        self.df = df
 
     def to_csv(self, path: Path) -> None:
         self.df.to_csv(path)
