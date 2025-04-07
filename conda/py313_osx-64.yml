@@ -24,6 +24,7 @@ dependencies:
 - compilers
 - contextily
 - coverage
+- cuda-python
 - custom-inherit
 - cvxopt
 - dautilpy
@@ -68,6 +69,7 @@ dependencies:
 - nbconvert
 - nbsphinx
 - networkx
+- numba
 - numexpr
 - numpy
 - odfpy

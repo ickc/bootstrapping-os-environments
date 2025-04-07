@@ -67,6 +67,7 @@ dependencies:
 - nbconvert
 - nbsphinx
 - networkx
+- numba
 - numexpr
 - numpy
 - odfpy

@@ -70,6 +70,7 @@ dependencies:
 - nbconvert
 - nbsphinx
 - networkx
+- numba
 - numexpr
 - numpy
 - odfpy
@@ -93,6 +94,7 @@ dependencies:
 - pylint
 - pymediainfo
 - pymysql
+- rapidsai::pynvjitlink
 - pyotp
 - pyreadstat
 - pyrss2gen

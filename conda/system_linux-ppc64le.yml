@@ -15,6 +15,7 @@ dependencies:
 - gh
 - ghostscript
 - git
+- go-shfmt
 - go-task
 - graphviz
 - htop
