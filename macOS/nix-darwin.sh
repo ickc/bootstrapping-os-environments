@@ -27,9 +27,9 @@ sed -i -E \
     flake.nix
 
 # first time
-nix run nix-darwin -- switch --flake "$HOME/git/source/dotfiles/config/nix-darwin#simple"
+nix run nix-darwin -- switch --flake "${HOME}/git/source/dotfiles/config/nix-darwin#simple"
 # subsequent runs
-darwin-rebuild switch --flake "$HOME/git/source/dotfiles/config/nix-darwin#simple"
+darwin-rebuild switch --flake "${HOME}/git/source/dotfiles/config/nix-darwin#simple"
 
 # update
 cd ~/git/source/dotfiles/config/nix-darwin
