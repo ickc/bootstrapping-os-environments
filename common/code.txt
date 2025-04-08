@@ -14,6 +14,8 @@ ibm.output-colorizer
 ickc.vscode-markdown-it-pandoc
 jdinhlife.gruvbox
 jnoortheen.nix-ide
+jonathanharty.gruvbox-material-icon-theme
+julialang.language-julia
 justusadam.language-haskell
 mads-hartmann.bash-ide-vscode
 ms-azuretools.vscode-docker
@@ -65,4 +67,3 @@ tamasfe.even-better-toml
 visualstudioexptteam.intellicode-api-usage-examples
 visualstudioexptteam.vscodeintellicode
 visualstudioexptteam.vscodeintellicode-completions
-vscode-icons-team.vscode-icons
