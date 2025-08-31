@@ -1,0 +1,1238 @@
+389-ds-base:
+  description: '389 Directory Server is an LDAPv3 compliant server.  The base package
+    includes : the LDAP server and command line utilities for server administration.'
+  executables:
+  - dbscan
+  - ds-logpipe.py
+  - ds-replcheck
+  - ldclt
+  - logconv.pl
+  - logconv.py
+  - ns-slapd
+  - openldap_to_ds
+  - pwdhash
+ImageMagick:
+  description: 'ImageMagick is an image display and manipulation tool for the X :
+    Window System. ImageMagick can read and write JPEG, TIFF, PNM, GIF, : and Photo
+    CD image formats. It can resize, rotate, sharpen, color : reduce, or add special
+    effects to an image, and when finished you can : either save the completed work
+    in the original format or a different : one. ImageMagick also includes command
+    line programs for creating : animated or transparent .gifs, creating composite
+    images, creating : thumbnail images, and more. : : ImageMagick is one of your
+    choices if you need a program to manipulate : and display images. If you want
+    to develop your own applications : which use ImageMagick code or APIs, you need
+    to install : ImageMagick-devel as well.'
+  executables:
+  - animate
+  - compare
+  - composite
+  - conjure
+  - convert
+  - display
+  - identify
+  - import
+  - magick
+  - magick-script
+  - mogrify
+  - montage
+  - stream
+ImageMagick-libs:
+  description: This packages contains a shared libraries to use within other applications.
+  executables: []
+ShellCheck:
+  description: 'The goals of ShellCheck are: : : * To point out and clarify typical
+    beginner''s syntax issues, :   that causes a shell to give cryptic error messages.
+    : : * To point out and clarify typical intermediate level semantic problems, :   that
+    causes a shell to behave strangely and counter-intuitively. : : * To point out
+    subtle caveats, corner cases and pitfalls, that may cause an :   advanced user''s
+    otherwise working script to fail under future circumstances.'
+  executables:
+  - shellcheck
+acpid:
+  description: acpid is a daemon that dispatches ACPI events to user-space programs.
+  executables:
+  - acpi_listen
+  - acpid
+  - kacpimon
+bash:
+  description: 'The GNU Bourne Again shell (Bash) is a shell or command language :
+    interpreter that is compatible with the Bourne shell (sh). Bash : incorporates
+    useful features from the Korn shell (ksh) and the C shell : (csh). Most sh scripts
+    can be run by bash without modification.'
+  executables:
+  - alias
+  - bash
+  - bashbug
+  - bashbug-64
+  - bg
+  - cd
+  - command
+  - fc
+  - fg
+  - getopts
+  - hash
+  - jobs
+  - read
+  - sh
+  - type
+  - ulimit
+  - umask
+  - unalias
+  - wait
+bash-completion:
+  description: 'bash-completion is a collection of shell functions that take advantage
+    : of the programmable completion feature of bash.'
+  executables: []
+bat:
+  description: A cat(1) clone with wings.
+  executables:
+  - bat
+btop:
+  description: 'Resource monitor that shows usage and stats for processor, : memory,
+    disks, network and processes. : : C++ version and continuation of bashtop and
+    bpytop.'
+  executables:
+  - btop
+bzip2:
+  description: 'Bzip2 is a freely available, patent-free, high quality data compressor.
+    : Bzip2 compresses files to within 10 to 15 percent of the capabilities : of the
+    best techniques available.  However, bzip2 has the added benefit : of being approximately
+    two times faster at compression and six times : faster at decompression than those
+    techniques.  Bzip2 is not the : fastest compression utility, but it does strike
+    a balance between speed : and compression capability. : : Install bzip2 if you
+    need a compression utility.'
+  executables:
+  - bunzip2
+  - bzcat
+  - bzcmp
+  - bzdiff
+  - bzegrep
+  - bzfgrep
+  - bzgrep
+  - bzip2
+  - bzip2recover
+  - bzless
+  - bzmore
+caca-utils:
+  description: 'This package contains utilities and demonstration programs for libcaca,
+    the : Colour AsCii Art library. : : cacaview is a simple image viewer for the
+    terminal. It opens most image formats : such as JPEG, PNG, GIF etc. and renders
+    them on the terminal using ASCII art. : The user can zoom and scroll the image,
+    set the dithering method or enable : anti-aliasing. : : cacaball is a tiny graphic
+    program that renders animated ASCII metaballs on the : screen, cacafire is a port
+    of AALib''s aafire and displays burning ASCII art : flames, and cacademo is a
+    simple application that shows the libcaca rendering : features such as line and
+    ellipses drawing, triangle filling and sprite : blitting.'
+  executables:
+  - cacaclock
+  - cacademo
+  - cacafire
+  - cacaplay
+  - cacaserver
+  - cacaview
+  - img2txt
+chromium:
+  description: Chromium is an open-source web browser, powered by WebKit (Blink).
+  executables:
+  - chromium-browser
+cifs-utils:
+  description: 'The SMB/CIFS protocol is a standard file sharing protocol widely deployed
+    : on Microsoft Windows machines. This package contains tools for mounting : shares
+    on Linux using the SMB/CIFS protocol. The tools in this package : work in conjunction
+    with support in the kernel to allow one to mount a : SMB/CIFS share onto a client
+    and use it as if it were a standard Linux : file system.'
+  executables:
+  - cifs.idmap
+  - cifs.upcall
+  - cifscreds
+  - getcifsacl
+  - mount.cifs
+  - mount.smb3
+  - setcifsacl
+clang:
+  description: 'clang: noun :     1. A loud, resonant, metallic sound. :     2. The
+    strident call of a crane or goose. :     3. C-language family front-end toolkit.
+    : : The goal of the Clang project is to create a new C, C++, Objective C : and
+    Objective C++ front-end for the LLVM compiler. Its tools are built : as libraries
+    and designed to be loosely-coupled and extensible. : : Install compiler-rt if
+    you want the Blocks C language extension or to : enable sanitization and profiling
+    options when building, and : libomp-devel to enable -fopenmp.'
+  executables:
+  - clang
+  - clang++
+  - clang++-19
+  - clang-19
+  - clang-cl
+  - clang-cpp
+clang-tools-extra:
+  description: A set of extra tools built using Clang's tooling API.
+  executables:
+  - amdgpu-arch
+  - c-index-test
+  - clang-apply-replacements
+  - clang-change-namespace
+  - clang-check
+  - clang-doc
+  - clang-extdef-mapping
+  - clang-format
+  - clang-format-diff
+  - clang-include-cleaner
+  - clang-include-fixer
+  - clang-installapi
+  - clang-linker-wrapper
+  - clang-move
+  - clang-nvlink-wrapper
+  - clang-offload-bundler
+  - clang-offload-packager
+  - clang-pseudo
+  - clang-query
+  - clang-refactor
+  - clang-rename
+  - clang-reorder-fields
+  - clang-repl
+  - clang-scan-deps
+  - clang-tidy
+  - clangd
+  - diagtool
+  - find-all-symbols
+  - hmaptool
+  - modularize
+  - nvptx-arch
+  - pp-trace
+  - run-clang-tidy
+cmake:
+  description: 'CMake is used to control the software compilation process using simple
+    : platform and compiler independent configuration files. CMake generates : native
+    makefiles and workspaces that can be used in the compiler : environment of your
+    choice. CMake is quite sophisticated: it is possible : to support complex environments
+    requiring system configuration, preprocessor : generation, code generation, and
+    template instantiation.'
+  executables:
+  - ccmake
+  - ccmake3
+  - cmake
+  - cmake3
+  - cpack
+  - cpack3
+  - ctest
+  - ctest3
+coreutils:
+  description: 'These are the GNU core utilities.  This package is the combination
+    of : the old GNU fileutils, sh-utils, and textutils packages.'
+  executables:
+  - '['
+  - arch
+  - b2sum
+  - base32
+  - base64
+  - basename
+  - basenc
+  - cat
+  - chcon
+  - chgrp
+  - chmod
+  - chown
+  - chroot
+  - cksum
+  - comm
+  - cp
+  - csplit
+  - cut
+  - date
+  - dd
+  - df
+  - dir
+  - dircolors
+  - dirname
+  - du
+  - echo
+  - env
+  - expand
+  - expr
+  - factor
+  - 'false'
+  - fmt
+  - fold
+  - groups
+  - head
+  - hostid
+  - id
+  - install
+  - join
+  - link
+  - ln
+  - logname
+  - ls
+  - md5sum
+  - mkdir
+  - mkfifo
+  - mknod
+  - mktemp
+  - mv
+  - nice
+  - nl
+  - nohup
+  - nproc
+  - numfmt
+  - od
+  - paste
+  - pathchk
+  - pinky
+  - pr
+  - printenv
+  - printf
+  - ptx
+  - pwd
+  - readlink
+  - realpath
+  - rm
+  - rmdir
+  - runcon
+  - seq
+  - sha1sum
+  - sha224sum
+  - sha256sum
+  - sha384sum
+  - sha512sum
+  - shred
+  - shuf
+  - sleep
+  - sort
+  - split
+  - stat
+  - stdbuf
+  - stty
+  - sum
+  - sync
+  - tac
+  - tail
+  - tee
+  - test
+  - timeout
+  - touch
+  - tr
+  - 'true'
+  - truncate
+  - tsort
+  - tty
+  - uname
+  - unexpand
+  - uniq
+  - unlink
+  - users
+  - vdir
+  - wc
+  - who
+  - whoami
+  - 'yes'
+cryptsetup:
+  description: 'The cryptsetup package contains a utility for setting up : disk encryption
+    using dm-crypt kernel module.'
+  executables:
+  - cryptsetup
+curl:
+  description: 'curl is a command line tool for transferring data with URL syntax,
+    supporting : FTP, FTPS, HTTP, HTTPS, SCP, SFTP, TFTP, TELNET, DICT, LDAP, LDAPS,
+    FILE, IMAP, : SMTP, POP3 and RTSP.  curl supports SSL certificates, HTTP POST,
+    HTTP PUT, FTP : uploading, HTTP form based upload, proxies, cookies, user+password
+    : authentication (Basic, Digest, NTLM, Negotiate, kerberos...), file transfer
+    : resume, proxy tunneling and a busload of other useful tricks.'
+  executables:
+  - curl
+debhelper:
+  description: 'A collection of programs that can be used in a debian/rules file to
+    : automate common tasks related to building Debian packages. Programs : are included
+    to install various files into your package, compress : files, fix file permissions,
+    integrate your package with the Debian : menu system, debconf, doc-base, etc.
+    Most Debian packages use debhelper : as part of their build process.'
+  executables:
+  - dh
+  - dh_assistant
+  - dh_auto_build
+  - dh_auto_clean
+  - dh_auto_configure
+  - dh_auto_install
+  - dh_auto_test
+  - dh_bugfiles
+  - dh_builddeb
+  - dh_clean
+  - dh_compress
+  - dh_dwz
+  - dh_fixperms
+  - dh_gencontrol
+  - dh_icons
+  - dh_install
+  - dh_installalternatives
+  - dh_installcatalogs
+  - dh_installchangelogs
+  - dh_installcron
+  - dh_installdeb
+  - dh_installdebconf
+  - dh_installdirs
+  - dh_installdocs
+  - dh_installemacsen
+  - dh_installexamples
+  - dh_installgsettings
+  - dh_installifupdown
+  - dh_installinfo
+  - dh_installinit
+  - dh_installinitramfs
+  - dh_installlogcheck
+  - dh_installlogrotate
+  - dh_installman
+  - dh_installmanpages
+  - dh_installmenu
+  - dh_installmime
+  - dh_installmodules
+  - dh_installpam
+  - dh_installppp
+  - dh_installsystemd
+  - dh_installsystemduser
+  - dh_installsysusers
+  - dh_installtmpfiles
+  - dh_installudev
+  - dh_installwm
+  - dh_installxfonts
+  - dh_link
+  - dh_lintian
+  - dh_listpackages
+  - dh_makeshlibs
+  - dh_md5sums
+  - dh_missing
+  - dh_movefiles
+  - dh_perl
+  - dh_prep
+  - dh_shlibdeps
+  - dh_strip
+  - dh_systemd_enable
+  - dh_systemd_start
+  - dh_testdir
+  - dh_testroot
+  - dh_ucf
+  - dh_update_autotools_config
+  - dh_usrlocal
+difftastic:
+  description: A structural diff that understands syntax.
+  executables:
+  - difft
+diffutils:
+  description: 'Diffutils includes four utilities: diff, cmp, diff3 and sdiff. Diff
+    : compares two files and shows the differences, line by line.  The cmp : command
+    shows the offset and line numbers where two files differ, or : cmp can show the
+    characters that differ between the two files.  The : diff3 command shows the differences
+    between three files.  Diff3 can be : used when two people have made independent
+    changes to a common : original; diff3 can produce a merged file that contains
+    both sets of : changes and warnings about conflicts.  The sdiff command can be
+    used : to merge two files interactively. : : Install diffutils if you need to
+    compare text files.'
+  executables:
+  - cmp
+  - diff
+  - diff3
+  - sdiff
+elinks:
+  description: 'Elinks is a text-based Web browser. Elinks does not display any images,
+    : but it does support frames, tables and most other HTML tags. Elinks'' : advantage
+    over graphical browsers is its speed--Elinks starts and exits : quickly and swiftly
+    displays Web pages.'
+  executables:
+  - elinks
+  - links
+ethtool:
+  description: 'This utility allows querying and changing settings such as speed,
+    : port, auto-negotiation, PCI locations and checksum offload on many : network
+    devices, especially of Ethernet devices.'
+  executables:
+  - ethtool
+fastfetch:
+  description: 'fastfetch is a neofetch-like tool for fetching system information
+    and : displaying them in a pretty way. It is written in c to achieve much better
+    : performance, in return only Linux and Android are supported. It also uses :
+    mechanisms like multithreading and caching to finish as fast as possible.'
+  executables:
+  - fastfetch
+ffmpeg-free:
+  description: 'FFmpeg is a leading multimedia framework, able to decode, encode,
+    transcode, : mux, demux, stream, filter and play pretty much anything that humans
+    and : machines have created. It supports the most obscure ancient formats up to
+    the : cutting edge. No matter if they were designed by some standards committee,
+    the : community or a corporation. : : : This build of ffmpeg is limited in the
+    number of codecs supported.'
+  executables:
+  - ffmpeg
+  - ffplay
+  - ffprobe
+file:
+  description: 'The file command is used to identify a particular file according to
+    the : type of data contained by the file.  File can identify many different :
+    file types, including ELF binaries, system libraries, RPM packages, and : different
+    graphics formats.'
+  executables:
+  - file
+filesystem:
+  description: 'The filesystem package is one of the basic packages that is installed
+    : on a Linux system. Filesystem contains the basic directory layout : for a Linux
+    operating system, including the correct permissions for : the directories.'
+  executables: []
+findutils:
+  description: 'The findutils package contains programs which will help you locate
+    : files on your system.  The find utility searches through a hierarchy : of directories
+    looking for files which match a certain set of criteria : (such as a file name
+    pattern).  The xargs utility builds and executes : command lines from standard
+    input arguments (usually lists of file : names generated by the find command).
+    : : You should install findutils because it includes tools that are very : useful
+    for finding things on your system.'
+  executables:
+  - find
+  - xargs
+fpc-src:
+  description: 'The fpc-src package contains the sources of Free Pascal, for documentation
+    or : automatical-code generation purposes.'
+  executables: []
+fzf:
+  description: 'fzf is a general-purpose command-line fuzzy finder. : : It''s an interactive
+    Unix filter for command-line that can be used with any : list; files, command
+    history, processes, hostnames, bookmarks, git commits, : etc.'
+  executables:
+  - fzf
+  - fzf-tmux
+gawk:
+  description: 'The gawk package contains the GNU version of AWK text processing utility.
+    AWK is : a programming language designed for text processing and typically used
+    as a data : extraction and reporting tool. : : The gawk utility can be used to
+    do quick and easy text pattern matching, : extracting or reformatting. It is considered
+    to be a standard Linux tool for : text processing.'
+  executables:
+  - awk
+  - gawk
+  - gawkbug
+ghostscript:
+  description: 'This package provides useful conversion utilities based on Ghostscript
+    software, : for converting PS, PDF and other document formats between each other.
+    : : Ghostscript is a suite of software providing an interpreter for Adobe Systems''
+    : PostScript (PS) and Portable Document Format (PDF) page description languages.
+    : Its primary purpose includes displaying (rasterization & rendering) and printing
+    : of document pages, as well as conversions between different document formats.'
+  executables:
+  - eps2eps
+  - ghostscript
+  - gs
+  - gsnd
+  - pdf2dsc
+  - pdf2ps
+  - ps2ascii
+  - ps2epsi
+  - ps2pdf
+  - ps2pdf12
+  - ps2pdf13
+  - ps2pdf14
+  - ps2pdfwr
+  - ps2ps
+  - ps2ps2
+git:
+  description: 'Git is a fast, scalable, distributed revision control system with
+    an : unusually rich command set that provides both high-level operations : and
+    full access to internals. : : The git rpm installs common set of tools which are
+    usually using with : small amount of dependencies. To install all git packages,
+    including : tools for integrating with other SCMs, install the git-all meta-package.'
+  executables: []
+gnome-tweaks:
+  description: 'GNOME Tweaks allows adjusting advanced configuration settings in GNOME
+    3. This : includes things like the fonts used in user interface elements, alternative
+    user : interface themes, changes in window management behavior, GNOME Shell appearance
+    : and extension, etc.'
+  executables:
+  - gnome-tweaks
+golang-github-task-slim-sprig-devel:
+  description: "Useful template functions for Go templates. : : This package contains\
+    \ the source code needed for building packages that : reference the following\
+    \ Go import paths: :  \u2013 github.com/go-task/slim-sprig"
+  executables: []
+graphviz:
+  description: 'A collection of tools for the manipulation and layout of graphs (as
+    in nodes : and edges, not as in barcharts).'
+  executables:
+  - acyclic
+  - bcomps
+  - ccomps
+  - circo
+  - cluster
+  - diffimg
+  - dijkstra
+  - dot
+  - dot2gxl
+  - edgepaint
+  - fdp
+  - gc
+  - gml2gv
+  - graphml2gv
+  - gv2gml
+  - gv2gxl
+  - gvcolor
+  - gvgen
+  - gvmap
+  - gvmap.sh
+  - gvpack
+  - gvpr
+  - gxl2dot
+  - gxl2gv
+  - mm2gv
+  - neato
+  - nop
+  - osage
+  - patchwork
+  - prune
+  - sccmap
+  - sfdp
+  - tred
+  - twopi
+  - unflatten
+  - vimdot
+grep:
+  description: 'The GNU versions of commonly used grep utilities. Grep searches through
+    : textual input for lines which contain a match to a specified pattern and then
+    : prints the matching lines. GNU''s grep utilities include grep, egrep and fgrep.
+    : : GNU grep is needed by many scripts, so it shall be installed on every system.'
+  executables:
+  - egrep
+  - fgrep
+  - grep
+gzip:
+  description: 'The gzip package contains the popular GNU gzip data compression :
+    program. Gzipped files have a .gz extension. : : Gzip should be installed on your
+    system, because it is a : very commonly used data compression program.'
+  executables:
+  - gunzip
+  - gzexe
+  - gzip
+  - zcat
+  - zcmp
+  - zdiff
+  - zegrep
+  - zfgrep
+  - zforce
+  - zgrep
+  - zless
+  - zmore
+  - znew
+hddtemp:
+  description: 'hddtemp is a tool that gives you the temperature of your hard drive
+    by : reading S.M.A.R.T. information.'
+  executables:
+  - hddtemp
+highlight:
+  description: 'A utility that converts sourcecode to HTML, XHTML, RTF, LaTeX, TeX,
+    : XSL-FO, XML or ANSI escape sequences with syntax highlighting. : It supports
+    several programming and markup languages. : Language descriptions are configurable
+    and support regular expressions. : The utility offers indentation and reformatting
+    capabilities. : It is easily possible to create new language definitions and colour
+    themes.'
+  executables:
+  - highlight
+htop:
+  description: 'htop is an interactive text-mode process viewer for Linux, similar
+    to : top(1).'
+  executables:
+  - htop
+iotop-c:
+  description: 'iotop-c does for I/O usage what top(1) does for CPU usage. It watches
+    I/O : usage information output by the Linux kernel and displays a table of : current
+    I/O usage by processes on the system. It is handy for answering : the question
+    "Why is the disk churning so much?". : : iotop-c requires a Linux kernel built
+    with the CONFIG_TASKSTATS, : CONFIG_TASK_DELAY_ACCT, CONFIG_TASK_IO_ACCOUNTING
+    and : CONFIG_VM_EVENT_COUNTERS config options on. : : iotop-c is an alternative
+    re-implementation of iotop in C, optimized for : performance. Normally a monitoring
+    tool intended to be used on a system : under heavy stress should use the least
+    additional resources as : possible.'
+  executables:
+  - iotop
+iperf3:
+  description: 'Iperf is a tool to measure maximum TCP bandwidth, allowing the tuning
+    of : various parameters and UDP characteristics. Iperf reports bandwidth, delay
+    : jitter, data-gram loss.'
+  executables:
+  - iperf3
+iputils:
+  description: 'The iputils package contains basic utilities for monitoring a network,
+    : including ping. The ping command sends a series of ICMP protocol : ECHO_REQUEST
+    packets to a specified network host to discover whether : the target machine is
+    alive and receiving network traffic.'
+  executables:
+  - arping
+  - clockdiff
+  - ifenslave
+  - ping
+  - ping6
+  - tracepath
+  - tracepath6
+jq:
+  description: "lightweight and flexible command-line JSON processor : :  jq is like\
+    \ sed for JSON data \u2013 you can use it to slice :  and filter and map and transform\
+    \ structured data with :  the same ease that sed, awk, grep and friends let you\
+    \ :  play with text. : :  It is written in portable C, and it has zero runtime\
+    \ :  dependencies. : :  jq can mangle the data format that you have into the :\
+    \  one that you want with very little effort, and the :  program to do so is often\
+    \ shorter and simpler than :  you'd expect."
+  executables:
+  - jq
+keepassxc:
+  description: 'KeePassXC is a community fork of KeePassX : KeePassXC is an application
+    for people with extremely high demands on secure : personal data management. :
+    KeePassXC saves many different information e.g. user names, passwords, urls, :
+    attachemts and comments in one single database. For a better management : user-defined
+    titles and icons can be specified for each single entry. : Furthermore the entries
+    are sorted in groups, which are customizable as well. : The integrated search
+    function allows to search in a single group or the : complete database. : KeePassXC
+    offers a little utility for secure password generation. The password : generator
+    is very customizable, fast and easy to use. Especially someone who : generates
+    passwords frequently will appreciate this feature. : The complete database is
+    always encrypted either with AES (alias Rijndael) or : Twofish encryption algorithm
+    using a 256 bit key. Therefore the saved : information can be considered as quite
+    safe.'
+  executables:
+  - keepassxc
+  - keepassxc-cli
+  - keepassxc-proxy
+kernel-debug-devel:
+  description: 'This package provides kernel headers and makefiles sufficient to build
+    modules : against the kernel package.'
+  executables: []
+less:
+  description: 'The less utility is a text file browser that resembles more, but has
+    : more capabilities.  Less allows you to move backwards in the file as : well
+    as forwards.  Since less doesn''t have to read the entire input file : before
+    it starts, less starts up more quickly than text editors (for : example, vi).
+    : : You should install less because it is a basic utility for viewing text : files,
+    and you''ll use it frequently.'
+  executables:
+  - less
+  - lessecho
+  - lesskey
+  - lesspipe.sh
+libarchive:
+  description: 'Libarchive is a programming library that can create and read several
+    different : streaming archive formats, including most popular tar variants, several
+    cpio : formats, and both BSD and GNU ar variants. It can also write shar archives
+    and : read ISO9660 CDROM images and ZIP archives.'
+  executables: []
+libbluray-bdj:
+  description: 'The libbluray-bdj package contains the jar file needed to add BD-J
+    support to : libbluray. BD-J support is still considered alpha.'
+  executables: []
+lm_sensors:
+  description: 'The lm_sensors package includes a collection of modules for general
+    SMBus : access and hardware monitoring.'
+  executables:
+  - fancontrol
+  - isadump
+  - isaset
+  - pwmconfig
+  - sensors
+  - sensors-conf-convert
+  - sensors-detect
+lm_sensors-sensord:
+  description: 'Daemon that periodically logs sensor readings to syslog or a round-robin
+    : database, and warns of sensor alarms.'
+  executables:
+  - sensord
+lynx:
+  description: 'Lynx is a text-based Web browser. Lynx does not display any images,
+    : but it does support frames, tables, and most other HTML tags. One : advantage
+    Lynx has over graphical browsers is speed; Lynx starts and : exits quickly and
+    swiftly displays web pages.'
+  executables:
+  - lynx
+lzop:
+  description: 'lzop is a compression utility which is designed to be a companion
+    to gzip. : It is based on the LZO data compression library and its main advantages
+    over : gzip are much higher compression and decompression speed at the cost of
+    some : compression ratio. The lzop compression utility was designed with the goals
+    : of reliability, speed, portability and with reasonable drop-in compatibility
+    : to gzip.'
+  executables:
+  - lzop
+make:
+  description: 'A GNU tool for controlling the generation of executables and other
+    : non-source files of a program from the program''s source files. Make : allows
+    users to build and install packages without any significant : knowledge about
+    the details of the build process. The details about : how the program should be
+    built are provided for make in the program''s : makefile.'
+  executables:
+  - gmake
+  - make
+mosh:
+  description: 'Mosh is a remote terminal application that supports: :   - intermittent
+    network connectivity, :   - roaming to different IP address without dropping the
+    connection, and :   - intelligent local echo and line editing to reduce the effects
+    :     of "network lag" on high-latency connections.'
+  executables:
+  - mosh
+  - mosh-client
+  - mosh-server
+mpich:
+  description: 'MPICH is a high-performance and widely portable implementation of
+    the Message : Passing Interface (MPI) standard (MPI-1, MPI-2 and MPI-3). The goals
+    of MPICH : are: (1) to provide an MPI implementation that efficiently supports
+    different : computation and communication platforms including commodity clusters
+    (desktop : systems, shared-memory systems, multicore architectures), high-speed
+    networks : (10 Gigabit Ethernet, InfiniBand, Myrinet, Quadrics) and proprietary
+    high-end : computing systems (Blue Gene, Cray) and (2) to enable cutting-edge
+    research in : MPI through an easy-to-extend modular framework for other derived
+    : implementations. : : The mpich binaries in this RPM packages were configured
+    to use the default : process manager (Hydra) using the default device (ch3). The
+    ch3 device : was configured with support for the nemesis channel that allows for
+    : shared-memory and TCP/IP sockets based communication. : : This build also include
+    support for using the ''module environment'' to select : which MPI implementation
+    to use when multiple implementations are installed. : If you want MPICH support
+    to be automatically loaded, you need to install the : mpich-autoload package.'
+  executables: []
+mpv:
+  description: 'Mpv is a movie player based on MPlayer and mplayer2. It supports a
+    wide variety : of video file formats, audio and video codecs, and subtitle types.
+    Special : input URL types are available to read input from a variety of sources
+    other : than disk files. Depending on platform, a variety of different video and
+    audio : output methods are supported. : : Mpv has an OpenGL, Vulkan, and D3D11
+    based video output that is capable of many : features loved by videophiles, such
+    as video scaling with popular high quality : algorithms, color management, frame
+    timing, interpolation, HDR, and more. : : While mpv strives for minimalism and
+    provides no real GUI, it has a small : controller on top of the video for basic
+    control. : : Mpv can leverage most hardware decoding APIs on all platforms. Hardware
+    : decoding can be enabled at runtime on demand. : : Powerful scripting capabilities
+    can make the player do almost anything. There : is a large selection of user scripts
+    on the wiki. : : A straightforward C API was designed from the ground up to make
+    mpv usable as : a library and facilitate easy integration into other applications.'
+  executables:
+  - mpv
+nano:
+  description: GNU nano is a small and friendly text editor.
+  executables:
+  - nano
+  - rnano
+ncdu:
+  description: 'ncdu (NCurses Disk Usage) is a curses-based version of the well-known
+    ''du'', : and provides a fast way to see what directories are using your disk
+    space.'
+  executables:
+  - ncdu
+ncurses-base:
+  description: 'This package contains descriptions of common terminals. Other terminal
+    : descriptions are included in the ncurses-term package.'
+  executables: []
+nmap:
+  description: 'Nmap is a utility for network exploration or security auditing.  It
+    supports : ping scanning (determine which hosts are up), many port scanning techniques
+    : (determine what services the hosts are offering), and TCP/IP fingerprinting
+    : (remote host operating system identification). Nmap also offers flexible target
+    : and port specification, decoy scanning, determination of TCP sequence : predictability
+    characteristics, reverse-identd scanning, and more. In addition : to the classic
+    command-line nmap executable, the Nmap suite includes a flexible : data transfer,
+    redirection, and debugging tool (netcat utility ncat), a utility : for comparing
+    scan results (ndiff), and a packet generation and response : analysis tool (nping).'
+  executables:
+  - nmap
+  - nping
+nvtop:
+  description: 'Nvtop stands for Neat Videocard TOP, a (h)top like task monitor for
+    various GPUs : including AMD, Apple, Huawei, Intel, NVIDIA and Qualcomm. It can
+    handle multiple : GPUs and print information about them in a htop familiar way.'
+  executables:
+  - nvtop
+onefetch:
+  description: Command-line Git information tool.
+  executables:
+  - onefetch
+openssh:
+  description: 'SSH (Secure SHell) is a program for logging into and executing : commands
+    on a remote machine. SSH is intended to replace rlogin and : rsh, and to provide
+    secure encrypted communications between two : untrusted hosts over an insecure
+    network. X11 connections and : arbitrary TCP/IP ports can also be forwarded over
+    the secure channel. : : OpenSSH is OpenBSD''s version of the last free version
+    of SSH, bringing : it up to date in terms of security and features. : : This package
+    includes the core files necessary for both the OpenSSH : client and server. To
+    make this package useful, you should also : install openssh-clients, openssh-server,
+    or both.'
+  executables:
+  - ssh-keygen
+openssh-server:
+  description: 'OpenSSH is a free version of SSH (Secure SHell), a program for logging
+    : into and executing commands on a remote machine. This package contains : the
+    secure shell daemon (sshd). The sshd daemon allows SSH clients to : securely connect
+    to your SSH server.'
+  executables:
+  - sshd
+pandoc:
+  description: 'This package provides a command-line executable that uses : the pandoc
+    library to convert between markup formats. : : For pdf output please also install
+    pandoc-pdf or weasyprint.'
+  executables:
+  - pandoc
+  - pandoc-lua
+parallel:
+  description: 'GNU Parallel is a shell tool for executing jobs in parallel using
+    one or more : machines. A job is typically a single command or a small script
+    that has to be : run for each of the lines in the input. The typical input is
+    a list of files, a : list of hosts, a list of users, or a list of tables. : :
+    If you use xargs today you will find GNU Parallel very easy to use. If you : write
+    loops in shell, you will find GNU Parallel may be able to replace most of : the
+    loops and make them run faster by running jobs in parallel. If you use ppss :
+    or pexec you will find GNU Parallel will often make the command easier to read.
+    : : GNU Parallel also makes sure output from the commands is the same output as
+    you : would get had you run the commands sequentially. This makes it possible
+    to use : output from GNU Parallel as input for other programs. : : GNU Parallel
+    is command-line-compatible with moreutils'' parallel, but offers : additional
+    features.'
+  executables:
+  - env_parallel
+  - env_parallel.ash
+  - env_parallel.bash
+  - env_parallel.csh
+  - env_parallel.dash
+  - env_parallel.fish
+  - env_parallel.ksh
+  - env_parallel.mksh
+  - env_parallel.pdksh
+  - env_parallel.sh
+  - env_parallel.tcsh
+  - env_parallel.zsh
+  - niceload
+  - parallel
+  - parcat
+  - parset
+  - parsort
+  - sem
+  - sql
+patch:
+  description: 'The patch program applies diff files to originals.  The diff command
+    : is used to compare an original to a changed file.  Diff lists the : changes
+    made to the file.  A person who has the original file can then : use the patch
+    command with the diff file to add the changes to their : original file (patching
+    the file). : : Patch should be installed because it is a common way of upgrading
+    : applications.'
+  executables:
+  - patch
+pcp-system-tools:
+  description: 'This PCP module contains additional system monitoring tools written
+    : in the Python language.'
+  executables:
+  - dstat
+  - pcp2csv
+  - pmiostat
+  - pmrep
+perl-Image-ExifTool:
+  description: 'ExifTool is a Perl module with an included command-line application
+    for : reading and writing meta information in image, audio, and video files. :
+    It reads EXIF, GPS, IPTC, XMP, JFIF, MakerNotes, C2PA JUMBF, GeoTIFF, : ICC Profile,
+    Photoshop IRB, FlashPix, AFCP, ID3 and Lyric3 meta : information from JPG, JP2,
+    TIFF, GIF, PNG, MNG, JNG, MIFF, EPS, PS, AI, : PDF, PSD, BMP, THM, CRW, CR2, MRW,
+    NEF, PEF, ORF, DNG, and many other : types of images. ExifTool also extracts information
+    from the maker : notes of many digital cameras by various manufacturers including
+    Canon, : Casio, DJI, FLIR, FujiFilm, GE, GoPro, HP, JVC/Victor, Kodak, Leaf, :
+    Minolta/Konica-Minolta, Motorola, Nikon, Nintendo, Olympus/Epson, : Panasonic/Leica,
+    Pentax/Asahi, Phase One, Reconyx, Ricoh, Samsung, Sanyo, : Sigma/Foveon, and Sony.'
+  executables:
+  - exiftool
+pmix-devel:
+  description: 'The pmix-devel package contains libraries and header files for : developing
+    applications that use pmix.'
+  executables: []
+poppler:
+  description: poppler is a PDF rendering library.
+  executables: []
+poppler-utils:
+  description: 'Command line tools for manipulating PDF files and converting them
+    to : other formats.'
+  executables:
+  - pdfattach
+  - pdfdetach
+  - pdffonts
+  - pdfimages
+  - pdfinfo
+  - pdfseparate
+  - pdfsig
+  - pdftocairo
+  - pdftohtml
+  - pdftoppm
+  - pdftops
+  - pdftotext
+  - pdfunite
+potrace:
+  description: 'Potrace is a utility for tracing a bitmap, which means, transforming
+    a bitmap : into a smooth, scalable image. The input is a bitmap (PBM, PGM, PPM,
+    or BMP : format), and the default output is an encapsulated PostScript file (EPS).
+    : A typical use is to create EPS files from scanned data, such as company or :
+    university logos, handwritten notes, etc. The resulting image is not "jaggy" :
+    like a bitmap, but smooth. It can then be rendered at any resolution. : : Potrace
+    can currently produce the following output formats: EPS, PostScript, : PDF, SVG
+    (scalable vector graphics), Xfig, Gimppath, and PGM (for easy : antialiasing).
+    Additional backends might be added in the future. : : Mkbitmap is a program distributed
+    with Potrace which can be used to pre-process : the input for better tracing behavior
+    on greyscale and color images.'
+  executables:
+  - mkbitmap
+  - potrace
+procps-ng:
+  description: 'The procps package contains a set of system utilities that provide
+    : system information. Procps includes ps, free, skill, pkill, pgrep, : snice,
+    tload, top, uptime, vmstat, pidof, pmap, slabtop, w, watch, : pwdx and pidwait.
+    : The ps command displays a snapshot of running processes. The top command : provides
+    a repetitive update of the statuses of running processes. : The free command displays
+    the amounts of free and used memory on your : system. The skill command sends
+    a terminate command (or another : specified signal) to a specified set of processes.
+    The snice : command is used to change the scheduling priority of specified : processes.
+    The tload command prints a graph of the current system : load average to a specified
+    tty. The uptime command displays the : current time, how long the system has been
+    running, how many users : are logged on, and system load averages for the past
+    one, five, : and fifteen minutes. The w command displays a list of the users :
+    who are currently logged on and what they are running. The watch : program watches
+    a running program. The vmstat command displays : virtual memory statistics about
+    processes, memory, paging, block : I/O, traps, and CPU activity. The pwdx command
+    reports the current : working directory of a process or processes. The pidwait
+    command : waits for processes of specified names.'
+  executables:
+  - free
+  - pgrep
+  - pidof
+  - pidwait
+  - pkill
+  - pmap
+  - ps
+  - pwdx
+  - skill
+  - slabtop
+  - snice
+  - sysctl
+  - tload
+  - top
+  - uptime
+  - vmstat
+  - w
+  - watch
+pv:
+  description: 'PV ("Pipe Viewer") is a tool for monitoring the progress of data through
+    a : pipeline.  It can be inserted into any normal pipeline between two processes
+    : to give a visual indication of how quickly data is passing through, how long
+    : it has taken, how near to completion it is, and an estimate of how long it :
+    will be until completion.'
+  executables:
+  - pv
+python3-chardet:
+  description: ": Chardet: The Universal Character Encoding Detector : : Detects:\
+    \ : :   \u2022 ASCII, UTF-8, UTF-16 (2 variants), UTF-32 (4 variants) :   \u2022\
+    \ Big5, GB2312, EUC-TW, HZ-GB-2312, ISO-2022-CN (Traditional and Simplified :\
+    \     Chinese) :   \u2022 EUC-JP, SHIFT_JIS, CP932, ISO-2022-JP (Japanese) : \
+    \  \u2022 EUC-KR, ISO-2022-KR, Johab (Korean) :   \u2022 KOI8-R, MacCyrillic,\
+    \ IBM855, IBM866, ISO-8859-5, windows-1251 (Cyrillic) :   \u2022 ISO-8859-5, windows-1251\
+    \ (Bulgarian) :   \u2022 ISO-8859-1, windows-1252 (Western European languages)\
+    \ :   \u2022 ISO-8859-7, windows-1253 (Greek) :   \u2022 ISO-8859-8, windows-1255\
+    \ (Visual and Logical Hebrew) :   \u2022 TIS-620 (Thai) : : ISO-8859-2 and windows-1250\
+    \ (Hungarian) probers have been temporarily : disabled."
+  executables:
+  - chardetect
+python3-cpuinfo:
+  description: 'Py-cpuinfo gets CPU info with pure Python. Py-cpuinfo should work
+    without : any extra programs or libraries, beyond what your OS provides. : : These
+    approaches are used for getting info: :     Windows Registry :     /proc/cpuinfo
+    :     sysctl :     dmesg :     isainfo and psrinfo :     Querying x86 CPUID register'
+  executables:
+  - cpuinfo
+python3-psutil:
+  description: 'psutil is a module providing an interface for retrieving information
+    on all : running processes and system utilization (CPU, memory, disks, network,
+    users) in : a portable way by using Python 3, implementing many functionalities
+    offered by : command line tools such as: ps, top, df, kill, free, lsof, free,
+    netstat, : ifconfig, nice, ionice, iostat, iotop, uptime, pidof, tty, who, taskset,
+    pmap.'
+  executables: []
+rhc-worker-playbook:
+  description: 'A worker for yggdrasil that receives Ansible playbooks and executes
+    them against : the local host.'
+  executables: []
+ripgrep:
+  description: 'Ripgrep is a line-oriented search tool that recursively searches the
+    : current directory for a regex pattern while respecting gitignore rules. : ripgrep
+    has first class support on Windows, macOS and Linux.'
+  executables:
+  - rg
+rsync:
+  description: 'Rsync uses a reliable algorithm to bring remote and host files into
+    : sync very quickly. Rsync is fast because it just sends the differences : in
+    the files over the network instead of sending the complete : files. Rsync is often
+    used as a very powerful mirroring process or : just as a more capable replacement
+    for the rcp command. A technical : report which describes the rsync algorithm
+    is included in this : package.'
+  executables:
+  - rsync
+  - rsync-ssl
+samba:
+  description: 'Samba is the standard Windows interoperability suite of programs for
+    Linux and : Unix.'
+  executables:
+  - eventlogadm
+  - nmbd
+  - smbd
+  - smbstatus
+sed:
+  description: 'The sed (Stream EDitor) editor is a stream or batch (non-interactive)
+    : editor.  Sed takes text as input, performs an operation or set of : operations
+    on the text and outputs the modified text.  The operations : that sed performs
+    (substitutions, deletions, insertions, etc.) can be : specified in a script file
+    or from the command line.'
+  executables:
+  - sed
+smartmontools:
+  description: 'The smartmontools package contains two utility programs (smartctl
+    : and smartd) to control and monitor storage systems using the Self- : Monitoring,
+    Analysis and Reporting Technology System (SMART) built : into most modern ATA
+    and SCSI hard disks. In many cases, these : utilities will provide advanced warning
+    of disk degradation and : failure.'
+  executables:
+  - smartctl
+  - smartd
+  - update-smart-drivedb
+sysstat:
+  description: 'The sysstat package contains the sar, sadf, mpstat, iostat, tapestat,
+    : pidstat, cifsiostat and sa tools for Linux. : The sar command collects and reports
+    system activity information. : The information collected by sar can be saved in
+    a file in a binary : format for future inspection. The statistics reported by
+    sar concern : I/O transfer rates, paging activity, process-related activities,
+    : interrupts, network activity, memory and swap space utilization, CPU : utilization,
+    kernel activities and TTY statistics, among others. Both : UP and SMP machines
+    are fully supported. : The sadf command may  be used to display data collected
+    by sar in : various formats (CSV, PCP, XML, etc.). : The iostat command reports
+    CPU utilization and I/O statistics for disks. : The tapestat command reports statistics
+    for tapes connected to the system. : The mpstat command reports global and per-processor
+    statistics. : The pidstat command reports statistics for Linux tasks (processes).
+    : The cifsiostat command reports I/O statistics for CIFS file systems.'
+  executables:
+  - cifsiostat
+  - iostat
+  - mpstat
+  - pidstat
+  - sadf
+  - sar
+  - tapestat
+tar:
+  description: 'The GNU tar program saves many files together in one archive and can
+    : restore individual files (or all of the files) from that archive. Tar : can
+    also be used to add supplemental files to an archive and to update : or list files
+    in the archive. Tar includes multivolume support, : automatic archive compression/decompression,
+    the ability to perform : remote archives, and the ability to perform incremental
+    and full : backups. : : If you want to use tar for remote backups, you also need
+    to install : the rmt package on the remote box.'
+  executables:
+  - gtar
+  - tar
+texlive:
+  description: 'The TeX Live software distribution offers a complete TeX system for
+    a : variety of Unix, Macintosh, Windows and other platforms. It : encompasses
+    programs for editing, typesetting, previewing and printing : of TeX documents
+    in many different languages, and a large collection : of TeX macros and font libraries.
+    : : The distribution includes extensive general documentation about TeX, : as
+    well as the documentation for the included software packages.'
+  executables: []
+time:
+  description: 'The GNU time utility runs another program, collects information about
+    : the resources used by that program while it is running, and displays : the results.'
+  executables:
+  - time
+tmux:
+  description: 'tmux is a "terminal multiplexer."  It enables a number of terminals
+    (or : windows) to be accessed and controlled from a single terminal.  tmux is
+    : intended to be a simple, modern, BSD-licensed alternative to programs such :
+    as GNU Screen.'
+  executables:
+  - tmux
+tree:
+  description: 'The tree utility recursively displays the contents of directories
+    in a : tree-like format.  Tree is basically a UNIX port of the DOS tree : utility.'
+  executables:
+  - tree
+units:
+  description: 'Units converts an amount from one unit to another, or tells you what
+    : mathematical operation you need to perform to convert from one unit to : another.
+    The units program can handle multiplicative scale changes as : well as conversions
+    such as Fahrenheit to Celsius.'
+  executables:
+  - units
+  - units_cur
+unzip:
+  description: 'The unzip utility is used to list, test, or extract files from a zip
+    : archive.  Zip archives are commonly found on MS-DOS systems.  The zip : utility,
+    included in the zip package, creates zip archives.  Zip and : unzip are both compatible
+    with archives created by PKWARE(R)''s PKZIP : for MS-DOS, but the programs'' options
+    and default behaviors do differ : in some respects. : : Install the unzip package
+    if you need to list, test or extract files from : a zip archive.'
+  executables:
+  - funzip
+  - unzip
+  - unzipsfx
+  - zipgrep
+  - zipinfo
+vlc:
+  description: 'VLC media player is a highly portable multimedia player and multimedia
+    framework : capable of reading most audio and video formats as well as DVDs, Audio
+    CDs VCDs, : and various streaming protocols. : It can also be used as a media
+    converter or a server to stream in uni-cast or : multi-cast in IPv4 or IPv6 on
+    networks.'
+  executables: []
+w3m:
+  description: 'The w3m program is a pager (or text file viewer) that can also be
+    used : as a text-mode Web browser. W3m features include the following: when :
+    reading an HTML document, you can follow links and view images using : an external
+    image viewer; its internet message mode determines the : type of document from
+    the header; if the Content-Type field of the : document is text/html, the document
+    is displayed as an HTML document; : you can change a URL description like ''http://hogege.net''
+    in plain : text into a link to that URL. : If you want to display the inline images
+    on w3m, you need to install : w3m-img package as well.'
+  executables:
+  - w3m
+  - w3mman
+wget:
+  description: 'GNU Wget is a file retrieval utility which can use either the HTTP
+    or : FTP protocols. Wget features include the ability to work in the : background
+    while you are logged out, recursive retrieval of : directories, file name wildcard
+    matching, remote file timestamp : storage and comparison, use of Rest with FTP
+    servers and Range with : HTTP servers to retrieve files over slow or unstable
+    connections, : support for Proxy servers, and configurability.'
+  executables:
+  - wget
+which:
+  description: 'The which command shows the full pathname of a specified program,
+    if : the specified program is in your PATH.'
+  executables:
+  - which
+xkeyboard-config:
+  description: 'This package contains configuration data used by the X Keyboard Extension
+    (XKB), : which allows selection of keyboard layouts when using a graphical interface.'
+  executables: []
+xsel:
+  description: 'XSel is a command line or script utility, similar to xclip, that can
+    copy the : primary and secondary X selection, or any highlighted text, to or from
+    a file, : stdin or stdout. It can also append to and delete the clipboard or buffer
+    that : you would paste with the middle mouse button.'
+  executables:
+  - xsel
+yarnpkg:
+  description: Fast, reliable, and secure dependency management.
+  executables:
+  - yarn
+  - yarnpkg
+zsh:
+  description: 'The zsh shell is a command interpreter usable as an interactive login
+    : shell and as a shell script command processor.  Zsh resembles the ksh : shell
+    (the Korn shell), but includes many enhancements.  Zsh supports : command line
+    editing, built-in spelling correction, programmable : command completion, shell
+    functions (with autoloading), a history : mechanism, and more.'
+  executables:
+  - zsh
+zstd:
+  description: 'Zstd, short for Zstandard, is a fast lossless compression algorithm,
+    : targeting real-time compression scenarios at zlib-level compression ratio.'
+  executables:
+  - pzstd
+  - unzstd
+  - zstd
+  - zstdcat
+  - zstdgrep
+  - zstdless
+  - zstdmt
