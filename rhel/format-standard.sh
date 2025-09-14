@@ -56,7 +56,7 @@ EOF
 #############################################
 # Parse arguments
 #############################################
-TARGET_DEV="$DEFAULT_DEV"
+TARGET_DEV=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -75,6 +75,14 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+# Check if device was provided
+if [[ -z "$TARGET_DEV" ]]; then
+  echo "ERROR: Device must be specified." >&2
+  echo
+  usage
+  exit 1
+fi
 
 #############################################
 # Root check
