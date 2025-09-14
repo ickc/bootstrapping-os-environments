@@ -2,7 +2,7 @@
 #
 # Automated drive partitioning for RHEL installation:
 # - Single device (e.g., sdi, nvme0n1, etc.)
-# - GPT partitioning:
+# - GPT or MBR partitioning (user choice):
 #   p1: 512MiB  (EFI System Partition, FAT32)
 #   p2: 1GiB    (XFS /boot)
 #   p3: remainder (XFS /)
@@ -14,6 +14,7 @@ set -euo pipefail
 # Configuration
 #############################################
 DEFAULT_DEV="/dev/sdi"
+DEFAULT_PARTITION_TYPE="gpt"
 
 # Filesystem labels
 EFI_LABEL="EFI"
@@ -22,6 +23,7 @@ ROOT_LABEL="ROOT"
 
 # Flags / options
 ASSUME_YES=0
+PARTITION_TYPE="$DEFAULT_PARTITION_TYPE"
 
 #############################################
 usage() {
@@ -30,6 +32,8 @@ Usage: $0 [options] [DEVICE]
 
 Options:
   --yes              Non-interactive (assume yes).
+  --gpt              Use GPT partition table (default).
+  --mbr              Use MBR partition table (keeps UEFI partition).
   --help             Show this help.
 
 Arguments:
@@ -37,10 +41,15 @@ Arguments:
                     Examples: sdi, nvme0n1, sda, etc.
                     Will be prefixed with /dev/ if not already present.
 
-Example:
-  $0 --yes sdi
-  $0 --yes /dev/nvme0n1
-  $0 sda
+Notes:
+  - Both GPT and MBR modes create a UEFI ESP partition
+  - MBR mode uses primary partitions with protective MBR for UEFI compatibility
+  - GPT is recommended for modern systems and drives >2TB
+
+Examples:
+  $0 --yes --gpt sdi
+  $0 --yes --mbr /dev/nvme0n1
+  $0 --mbr sda
 EOF
 }
 
@@ -52,6 +61,8 @@ TARGET_DEV="$DEFAULT_DEV"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --yes) ASSUME_YES=1 ;;
+    --gpt) PARTITION_TYPE="gpt" ;;
+    --mbr) PARTITION_TYPE="msdos" ;;
     --help) usage; exit 0 ;;
     *)
       # Treat as device name
@@ -81,9 +92,25 @@ if [[ ! -b "$TARGET_DEV" ]]; then
   exit 1
 fi
 
-# Get device size for display
+# Get device size for display and validation
 device_size=$(blockdev --getsize64 "$TARGET_DEV")
+device_size_gb=$((device_size / 1024 / 1024 / 1024))
+
 echo "Target device: $TARGET_DEV ($(numfmt --to=iec "$device_size"))"
+echo "Partition type: ${PARTITION_TYPE^^}"
+
+# Warn about MBR limitations
+if [[ "$PARTITION_TYPE" == "msdos" && $device_size_gb -gt 2048 ]]; then
+  echo "WARNING: Device is larger than 2TB. MBR partition table may not support full capacity."
+  echo "Consider using --gpt for drives larger than 2TB."
+  if [[ $ASSUME_YES -ne 1 ]]; then
+    read -rp "Continue with MBR anyway? [yes/NO] " ans
+    if [[ "$ans" != "yes" ]]; then
+      echo "Aborted. Use --gpt for large drives."
+      exit 1
+    fi
+  fi
+fi
 
 #############################################
 # Check if device is mounted and unmount
@@ -108,7 +135,12 @@ fi
 # Confirm destructive action
 #############################################
 if [[ $ASSUME_YES -ne 1 ]]; then
-  read -rp "About to DESTROY ALL DATA on $TARGET_DEV. Continue? [yes/NO] " ans
+  echo
+  echo "About to DESTROY ALL DATA on $TARGET_DEV"
+  echo "Partition type: ${PARTITION_TYPE^^}"
+  echo "Device size: $(numfmt --to=iec "$device_size")"
+  echo
+  read -rp "Continue? [yes/NO] " ans
   if [[ "$ans" != "yes" ]]; then
     echo "Aborted."
     exit 1
@@ -124,23 +156,43 @@ wipefs -af "$TARGET_DEV" || true
 #############################################
 # Partitioning with parted
 #############################################
-echo "Creating GPT partition table on $TARGET_DEV..."
-parted -s "$TARGET_DEV" mklabel gpt
+echo "Creating $PARTITION_TYPE partition table on $TARGET_DEV..."
+parted -s "$TARGET_DEV" mklabel "$PARTITION_TYPE"
 
 echo "Creating partitions..."
-# Partition 1: EFI System Partition (512MiB)
-# Start at 1MiB for proper alignment, end at 513MiB
-parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary fat32 1 513
-parted -s "$TARGET_DEV" set 1 esp on
-parted -s "$TARGET_DEV" set 1 boot on
 
-# Partition 2: /boot (1GiB)
-# Start at 513MiB, end at 1537MiB (513 + 1024)
-parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary xfs 513 1537
+if [[ "$PARTITION_TYPE" == "gpt" ]]; then
+  # GPT partitioning
+  echo "Using GPT partitioning scheme..."
+  
+  # Partition 1: EFI System Partition (512MiB)
+  parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary fat32 1 513
+  parted -s "$TARGET_DEV" set 1 esp on
+  parted -s "$TARGET_DEV" set 1 boot on
 
-# Partition 3: / (remainder)
-# Start at 1537MiB, use percentage for end to avoid alignment issues
-parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary xfs 1537 100%
+  # Partition 2: /boot (1GiB)
+  parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary xfs 513 1537
+
+  # Partition 3: / (remainder)
+  parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary xfs 1537 100%
+
+else
+  # MBR partitioning (keeping UEFI support)
+  echo "Using MBR partitioning scheme with UEFI compatibility..."
+  
+  # Partition 1: EFI System Partition (512MiB) - marked as FAT32 and bootable
+  parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary fat32 1 513
+  parted -s "$TARGET_DEV" set 1 boot on
+
+  # Partition 2: /boot (1GiB)
+  parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary xfs 513 1537
+
+  # Partition 3: / (remainder)
+  parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary xfs 1537 100%
+  
+  # Note: In MBR mode, we can't set the ESP flag, but the boot flag on partition 1
+  # combined with FAT32 formatting will make it work for UEFI systems
+fi
 
 echo "Partition table created:"
 parted "$TARGET_DEV" unit MiB print
@@ -168,6 +220,19 @@ else
 fi
 
 #############################################
+# Verify partitions exist
+#############################################
+echo "Verifying partitions exist..."
+for partition in "$P1" "$P2" "$P3"; do
+  if [[ ! -b "$partition" ]]; then
+    echo "ERROR: Partition $partition not found after creation." >&2
+    echo "Available partitions:"
+    ls -la "${TARGET_DEV}"* || true
+    exit 1
+  fi
+done
+
+#############################################
 # Format filesystems
 #############################################
 echo "Formatting EFI partition ($P1) as FAT32..."
@@ -185,6 +250,10 @@ mkfs.xfs -f -L "$ROOT_LABEL" "$P3"
 echo
 echo "Partitioning and formatting completed successfully!"
 echo
+echo "Configuration used:"
+echo "  Partition table: ${PARTITION_TYPE^^}"
+echo "  Device: $TARGET_DEV ($(numfmt --to=iec "$device_size"))"
+echo
 echo "Partition layout:"
 lsblk "$TARGET_DEV"
 echo
@@ -194,6 +263,11 @@ echo
 echo "The device is now ready for RHEL installation."
 echo
 echo "Partition assignments:"
-echo "  $P1 -> EFI System Partition (FAT32)"
+echo "  $P1 -> EFI System Partition (FAT32) - UEFI bootable"
 echo "  $P2 -> /boot (XFS)"
 echo "  $P3 -> / (XFS)"
+echo
+if [[ "$PARTITION_TYPE" == "msdos" ]]; then
+  echo "Note: Using MBR with UEFI ESP. Modern UEFI systems should boot correctly."
+  echo "The first partition is formatted as FAT32 and marked bootable for UEFI compatibility."
+fi
