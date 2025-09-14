@@ -130,17 +130,17 @@ parted -s "$TARGET_DEV" mklabel gpt
 echo "Creating partitions..."
 # Partition 1: EFI System Partition (512MiB)
 # Start at 1MiB for proper alignment, end at 513MiB
-parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary 1 513
+parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary fat32 1 513
 parted -s "$TARGET_DEV" set 1 esp on
 parted -s "$TARGET_DEV" set 1 boot on
 
 # Partition 2: /boot (1GiB)
 # Start at 513MiB, end at 1537MiB (513 + 1024)
-parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary 513 1537
+parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary xfs 513 1537
 
 # Partition 3: / (remainder)
-# Start at 1537MiB, end at 100%
-parted -s -a optimal "$TARGET_DEV" mkpart primary 1537 100%
+# Start at 1537MiB, use percentage for end to avoid alignment issues
+parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary xfs 1537 100%
 
 echo "Partition table created:"
 parted "$TARGET_DEV" unit MiB print
