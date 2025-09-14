@@ -4,7 +4,7 @@
 # - Single device (e.g., sdi, nvme0n1, etc.)
 # - GPT partitioning:
 #   p1: 512MiB  (EFI System Partition, FAT32)
-#   p2: 1GiB    (ext4 /boot)
+#   p2: 1GiB    (XFS /boot)
 #   p3: remainder (XFS /)
 # - All partitions aligned to 1MiB and ending at 100%
 #
@@ -173,8 +173,8 @@ fi
 echo "Formatting EFI partition ($P1) as FAT32..."
 mkfs.vfat -F32 -n "$EFI_LABEL" "$P1"
 
-echo "Formatting boot partition ($P2) as ext4..."
-mkfs.ext4 -L "$BOOT_LABEL" "$P2"
+echo "Formatting boot partition ($P2) as XFS..."
+mkfs.xfs -f -L "$BOOT_LABEL" "$P2"
 
 echo "Formatting root partition ($P3) as XFS..."
 mkfs.xfs -f -L "$ROOT_LABEL" "$P3"
