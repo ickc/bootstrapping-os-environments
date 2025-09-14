@@ -1,198 +1,199 @@
-#!/bin/bash
-
-# RHEL Drive Partitioning Script
-# Usage: ./partition_drive.sh <device>
-# Example: ./partition_drive.sh sdi
-
+#!/usr/bin/env bash
+#
+# Automated drive partitioning for RHEL installation:
+# - Single device (e.g., sdi, nvme0n1, etc.)
+# - GPT partitioning:
+#   p1: 512MiB  (EFI System Partition, FAT32)
+#   p2: 1GiB    (ext4 /boot)
+#   p3: remainder (XFS /)
+# - All partitions aligned to 1MiB and ending at 100%
+#
 set -euo pipefail
 
-# Color codes for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+#############################################
+# Configuration
+#############################################
+DEFAULT_DEV="/dev/sdi"
 
-# Function to print colored output
-print_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+# Filesystem labels
+EFI_LABEL="EFI"
+BOOT_LABEL="BOOT"
+ROOT_LABEL="ROOT"
+
+# Flags / options
+ASSUME_YES=0
+
+#############################################
+usage() {
+  cat <<EOF
+Usage: $0 [options] [DEVICE]
+
+Options:
+  --yes              Non-interactive (assume yes).
+  --help             Show this help.
+
+Arguments:
+  DEVICE            Block device to partition (default: $DEFAULT_DEV)
+                    Examples: sdi, nvme0n1, sda, etc.
+                    Will be prefixed with /dev/ if not already present.
+
+Example:
+  $0 --yes sdi
+  $0 --yes /dev/nvme0n1
+  $0 sda
+EOF
 }
 
-print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
+#############################################
+# Parse arguments
+#############################################
+TARGET_DEV="$DEFAULT_DEV"
 
-print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
-}
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --yes) ASSUME_YES=1 ;;
+    --help) usage; exit 0 ;;
+    *)
+      # Treat as device name
+      if [[ "$1" =~ ^/dev/ ]]; then
+        TARGET_DEV="$1"
+      else
+        TARGET_DEV="/dev/$1"
+      fi
+      ;;
+  esac
+  shift
+done
 
-print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
-}
+#############################################
+# Root check
+#############################################
+if [[ $EUID -ne 0 ]]; then
+  echo "Must run as root." >&2
+  exit 1
+fi
 
-# Function to check if running as root
-check_root() {
-    if [[ $EUID -ne 0 ]]; then
-        print_error "This script must be run as root"
+#############################################
+# Validate block device
+#############################################
+if [[ ! -b "$TARGET_DEV" ]]; then
+  echo "Device $TARGET_DEV not found or not a block device." >&2
+  exit 1
+fi
+
+# Get device size for display
+device_size=$(blockdev --getsize64 "$TARGET_DEV")
+echo "Target device: $TARGET_DEV ($(numfmt --to=iec "$device_size"))"
+
+#############################################
+# Check if device is mounted and unmount
+#############################################
+echo "Checking for mounted partitions on $TARGET_DEV..."
+mounted_parts=$(mount | grep "^$TARGET_DEV" | awk '{print $1}' || true)
+if [[ -n "$mounted_parts" ]]; then
+  echo "Found mounted partitions, unmounting..."
+  echo "$mounted_parts" | while read -r partition; do
+    echo "Unmounting $partition"
+    umount "$partition" || {
+      echo "Failed to unmount $partition, attempting lazy unmount..."
+      umount -l "$partition" || {
+        echo "Failed to unmount $partition even with lazy unmount" >&2
         exit 1
-    fi
-}
+      }
+    }
+  done
+fi
 
-# Function to validate device argument
-validate_device() {
-    local device=$1
-    
-    # Check if device starts with /dev/
-    if [[ ! "$device" =~ ^/dev/ ]]; then
-        device="/dev/$device"
-    fi
-    
-    # Check if device exists
-    if [[ ! -b "$device" ]]; then
-        print_error "Device $device does not exist or is not a block device"
-        exit 1
-    fi
-    
-    echo "$device"
-}
+#############################################
+# Confirm destructive action
+#############################################
+if [[ $ASSUME_YES -ne 1 ]]; then
+  read -rp "About to DESTROY ALL DATA on $TARGET_DEV. Continue? [yes/NO] " ans
+  if [[ "$ans" != "yes" ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+fi
 
-# Function to unmount all partitions on the device
-unmount_device() {
-    local device=$1
-    print_info "Unmounting all partitions on $device..."
-    
-    # Find all mounted partitions for this device
-    local mounted_partitions=$(mount | grep "^$device" | awk '{print $1}' || true)
-    
-    if [[ -n "$mounted_partitions" ]]; then
-        while IFS= read -r partition; do
-            if [[ -n "$partition" ]]; then
-                print_info "Unmounting $partition"
-                umount "$partition" || print_warning "Failed to unmount $partition (may not be mounted)"
-            fi
-        done <<< "$mounted_partitions"
-    else
-        print_info "No mounted partitions found on $device"
-    fi
-}
+#############################################
+# Wipe existing filesystem signatures
+#############################################
+echo "Wiping filesystem signatures from $TARGET_DEV..."
+wipefs -af "$TARGET_DEV" || true
 
-# Function to destroy existing partition table
-destroy_partition_table() {
-    local device=$1
-    print_info "Destroying existing partition table on $device..."
-    
-    # Use parted to create a new GPT label (this destroys existing partitions)
-    parted -s "$device" mklabel gpt
-    print_success "Partition table destroyed and GPT label created"
-}
+#############################################
+# Partitioning with parted
+#############################################
+echo "Creating GPT partition table on $TARGET_DEV..."
+parted -s "$TARGET_DEV" mklabel gpt
 
-# Function to create partitions
-create_partitions() {
-    local device=$1
-    print_info "Creating partitions on $device..."
-    
-    # Create EFI partition (1st partition): 1MiB to 513MiB
-    print_info "Creating EFI partition (512MiB)..."
-    parted -s "$device" mkpart primary fat32 1MiB 513MiB
-    parted -s "$device" set 1 esp on
-    
-    # Create /boot partition (2nd partition): 513MiB to 1537MiB (513 + 1024)
-    print_info "Creating /boot partition (1GiB)..."
-    parted -s "$device" mkpart primary ext4 513MiB 1537MiB
-    
-    # Create root partition (3rd partition): 1537MiB to 100%
-    print_info "Creating root partition (remaining space)..."
-    parted -s "$device" mkpart primary xfs 1537MiB 100%
-    
-    # Ensure all changes are written
-    parted -s "$device" align-check optimal 1
-    parted -s "$device" align-check optimal 2
-    parted -s "$device" align-check optimal 3
-    
-    print_success "All partitions created successfully"
-}
+echo "Creating partitions..."
+# Partition 1: EFI System Partition (512MiB)
+# Start at 1MiB for proper alignment, end at 513MiB
+parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary 1 513
+parted -s "$TARGET_DEV" set 1 esp on
+parted -s "$TARGET_DEV" set 1 boot on
 
-# Function to format partitions
-format_partitions() {
-    local device=$1
-    print_info "Formatting partitions..."
-    
-    # Wait a moment for the kernel to recognize the new partitions
-    sleep 2
-    partprobe "$device"
-    sleep 2
-    
-    # Format EFI partition as FAT32
-    print_info "Formatting EFI partition (${device}1) as FAT32..."
-    mkfs.fat -F32 "${device}1"
-    
-    # Format /boot partition as ext4
-    print_info "Formatting /boot partition (${device}2) as ext4..."
-    mkfs.ext4 -F "${device}2"
-    
-    # Format root partition as XFS
-    print_info "Formatting root partition (${device}3) as XFS..."
-    mkfs.xfs -f "${device}3"
-    
-    print_success "All partitions formatted successfully"
-}
+# Partition 2: /boot (1GiB)
+# Start at 513MiB, end at 1537MiB (513 + 1024)
+parted -s -a optimal "$TARGET_DEV" unit MiB mkpart primary 513 1537
 
-# Function to display partition information
-show_partition_info() {
-    local device=$1
-    print_info "Partition layout for $device:"
-    parted -s "$device" print
-    
-    print_info "Filesystem information:"
-    lsblk -f "$device"
-}
+# Partition 3: / (remainder)
+# Start at 1537MiB, end at 100%
+parted -s -a optimal "$TARGET_DEV" mkpart primary 1537 100%
 
-# Main function
-main() {
-    # Check if device argument is provided
-    if [[ $# -ne 1 ]]; then
-        print_error "Usage: $0 <device>"
-        print_error "Example: $0 sdi"
-        print_error "Example: $0 /dev/sdi"
-        exit 1
-    fi
-    
-    # Check if running as root
-    check_root
-    
-    # Validate and normalize device path
-    local device=$(validate_device "$1")
-    
-    print_warning "WARNING: This will DESTROY ALL DATA on $device!"
-    print_warning "The following operations will be performed:"
-    echo "  1. Unmount all partitions on $device"
-    echo "  2. Destroy existing partition table"
-    echo "  3. Create new GPT partition table"
-    echo "  4. Create EFI partition (512MiB, FAT32)"
-    echo "  5. Create /boot partition (1GiB, ext4)"
-    echo "  6. Create root partition (remaining space, XFS)"
-    echo "  7. Format all partitions"
-    echo ""
-    read -p "Are you sure you want to continue? (yes/no): " -r
-    
-    if [[ ! $REPLY =~ ^[Yy][Ee][Ss]$ ]]; then
-        print_info "Operation cancelled by user"
-        exit 0
-    fi
-    
-    print_info "Starting partitioning process for $device..."
-    
-    # Execute partitioning steps
-    unmount_device "$device"
-    destroy_partition_table "$device"
-    create_partitions "$device"
-    format_partitions "$device"
-    
-    print_success "Drive partitioning completed successfully!"
-    show_partition_info "$device"
-    
-    print_info "Your drive is now ready for RHEL installation with:"
-    echo "  ${device}1 - EFI System Partition (512MiB, FAT32)"
-    echo "  ${device}2 - Boot Partition (1GiB, ext4)"
-    echo "  ${device}3 - Root Partition (remaining space, XFS)"
-}
+echo "Partition table created:"
+parted "$TARGET_DEV" unit MiB print
+
+#############################################
+# Wait for kernel to recognize new partitions
+#############################################
+echo "Waiting for kernel to recognize new partitions..."
+udevadm settle
+partprobe "$TARGET_DEV"
+sleep 2
+
+#############################################
+# Determine partition naming scheme
+#############################################
+# Handle different device naming schemes (sda1 vs nvme0n1p1)
+if [[ "$TARGET_DEV" =~ nvme|mmcblk ]]; then
+  P1="${TARGET_DEV}p1"
+  P2="${TARGET_DEV}p2"
+  P3="${TARGET_DEV}p3"
+else
+  P1="${TARGET_DEV}1"
+  P2="${TARGET_DEV}2"
+  P3="${TARGET_DEV}3"
+fi
+
+#############################################
+# Format filesystems
+#############################################
+echo "Formatting EFI partition ($P1) as FAT32..."
+mkfs.vfat -F32 -n "$EFI_LABEL" "$P1"
+
+echo "Formatting boot partition ($P2) as ext4..."
+mkfs.ext4 -L "$BOOT_LABEL" "$P2"
+
+echo "Formatting root partition ($P3) as XFS..."
+mkfs.xfs -f -L "$ROOT_LABEL" "$P3"
+
+#############################################
+# Display results
+#############################################
+echo
+echo "Partitioning and formatting completed successfully!"
+echo
+echo "Partition layout:"
+lsblk "$TARGET_DEV"
+echo
+echo "Filesystem information:"
+blkid | grep "$TARGET_DEV"
+echo
+echo "The device is now ready for RHEL installation."
+echo
+echo "Partition assignments:"
+echo "  $P1 -> EFI System Partition (FAT32)"
+echo "  $P2 -> /boot (XFS)"
+echo "  $P3 -> / (XFS)"
