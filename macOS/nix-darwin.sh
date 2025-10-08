@@ -14,8 +14,8 @@ nix --version
 
 # nix-darwin
 # https://github.com/LnL7/nix-darwin
-mkdir -p ~/.config/nix
-cd ~/.config/nix
+mkdir -p ~/git/source/envoy/nix
+cd ~/git/source/envoy/nix
 nix flake init -t nix-darwin
 # inspect and tailor
 # nixpkgs.hostPlatform to aarch64-darwin
@@ -27,12 +27,12 @@ sed -i -E \
     flake.nix
 
 # first time
-nix run nix-darwin -- switch --flake "${HOME}/git/source/dotfiles/config/nix#simple"
+nix run nix-darwin -- switch --flake "${HOME}/git/source/envoy/nix#simple"
 # subsequent runs
-darwin-rebuild switch --flake "${HOME}/git/source/dotfiles/config/nix#simple"
+darwin-rebuild switch --flake "${HOME}/git/source/envoy/nix#simple"
 
 # update
-cd ~/git/source/dotfiles/config/nix
+cd ~/git/source/envoy/nix
 nix flake update
 
 # GC
