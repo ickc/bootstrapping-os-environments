@@ -13,17 +13,17 @@ channels:
 dependencies:
   # host:
   - pip
-  - python >=3.8
-  - poetry >=1,<2
+  - python >=3.10
+  - poetry
   # run:
-  - defopt >=6,<7
+  - defopt
   - numpy
   - pandas
   - psutil
   - conda
   - map_parallel
   # run_constrained:
-  - coloredlogs >=14,<16
+  - coloredlogs
   # tests:
   - coverage
   - coveralls
@@ -32,7 +32,7 @@ dependencies:
   - sphinx
   - sphinx_bootstrap_theme
   - sphinxcontrib-apidoc
-  - nbsphinx >=0.8
+  - nbsphinx
   - lxml-html-clean
   - ipykernel
   - pantable
@@ -43,8 +43,8 @@ dependencies:
   - bandit
   - black
   - bump2version
-  - ghp-import >=2,<3
-  - nbconvert >=6,<7
+  - ghp-import
+  - nbconvert
   - pylint
   - rstcheck
   - types-pyyaml

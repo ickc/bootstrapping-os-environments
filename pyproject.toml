@@ -39,15 +39,15 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8"
-defopt = "^7"
+python = ">=3.10"
+defopt = "*"
 numpy = "*"
 pandas = "*"
 psutil = "*"
 map_parallel = "*"
 
 # extras
-coloredlogs = { optional = true, version = ">=14,<16" }
+coloredlogs = { optional = true, version = "*" }
 
 # tests
 coverage = { optional = true, version = "*" }
@@ -55,10 +55,10 @@ coveralls = { optional = true, version = "*" }
 pytest = { optional = true, version = "*" }
 
 # docs
-sphinx = { optional = true, version = "^7.1" }
+sphinx = { optional = true, version = "*" }
 sphinx-bootstrap-theme = { optional = true, version = "*" }
 sphinxcontrib-apidoc = { optional = true, version = "*" }
-nbsphinx = { optional = true, version = ">=0.8" }
+nbsphinx = { optional = true, version = "*" }
 ipykernel = { optional = true, version = "*" }
 pantable = { optional = true, version = "*" }
 
@@ -68,8 +68,8 @@ mypy = "*"
 bandit = "*"
 black = "*"
 bump2version = "*"
-ghp-import = "^2"
-nbconvert = "^7"
+ghp-import = "*"
+nbconvert = "*"
 pylint = "*"
 rstcheck = "*"
 types-PyYAML = "*"
