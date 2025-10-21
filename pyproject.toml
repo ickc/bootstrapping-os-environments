@@ -40,7 +40,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = ">=3.8"
-defopt = "^6"
+defopt = "^7"
 numpy = "*"
 pandas = "*"
 psutil = "*"
