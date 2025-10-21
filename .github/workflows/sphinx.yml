@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - 3.14
+          - 3.13
         pandoc-version:
           - latest
     steps:
