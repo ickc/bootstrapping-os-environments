@@ -3,5 +3,5 @@ bsos.conda\_helper module
 
 .. automodule:: bsos.conda_helper
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

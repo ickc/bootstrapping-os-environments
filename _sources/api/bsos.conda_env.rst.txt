@@ -3,5 +3,5 @@ bsos.conda\_env module
 
 .. automodule:: bsos.conda_env
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

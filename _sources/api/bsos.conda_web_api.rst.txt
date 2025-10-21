@@ -3,5 +3,5 @@ bsos.conda\_web\_api module
 
 .. automodule:: bsos.conda_web_api
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
