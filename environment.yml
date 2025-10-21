@@ -33,6 +33,7 @@ dependencies:
   - sphinx_bootstrap_theme
   - sphinxcontrib-apidoc
   - nbsphinx >=0.8
+  - lxml-html-clean
   - ipykernel
   - pantable
   # dev:
