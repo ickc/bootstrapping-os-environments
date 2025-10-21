@@ -55,7 +55,7 @@ coveralls = { optional = true, version = "*" }
 pytest = { optional = true, version = "*" }
 
 # docs
-sphinx = { optional = true, version = "^3.3" }
+sphinx = { optional = true, version = "^7.1" }
 sphinx-bootstrap-theme = { optional = true, version = "*" }
 sphinxcontrib-apidoc = { optional = true, version = "*" }
 nbsphinx = { optional = true, version = ">=0.8" }
