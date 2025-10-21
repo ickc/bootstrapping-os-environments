@@ -18,9 +18,9 @@ jobs:
         include:
           - python-version: "3.10"
             pandoc-version: "2.15"
-          - python-version: "3.12"
+          - python-version: "3.11"
             pandoc-version: "3.0"
-          - python-version: "3.13"
+          - python-version: "3.12"
             pandoc-version: "latest"
     steps:
     - uses: actions/checkout@v5
