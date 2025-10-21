@@ -14,5 +14,6 @@ Submodules
 
    bsos.conda_env
    bsos.conda_helper
+   bsos.conda_web_api
    bsos.core
    bsos.util

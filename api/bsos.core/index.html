@@ -6,18 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>bsos.core module &#8212; bsos 0.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92c9d732" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=02ca0aaa" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=3b405b93" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/css/_table.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ickc/markdown-latex-css/fonts/fonts.min.css" />
     <script src="../../_static/documentation_options.js?v=b2731ba4"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex/" />
     <link rel="search" title="Search" href="../../search/" />
     <link rel="next" title="bsos.util module" href="../bsos.util/" />
-    <link rel="prev" title="bsos.conda_helper module" href="../bsos.conda_helper/" />
+    <link rel="prev" title="bsos.conda_web_api module" href="../bsos.conda_web_api/" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -116,7 +116,7 @@
               
                 
   <li>
-    <a href="../bsos.conda_helper/" title="Previous Chapter: bsos.conda_helper module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; bsos.conda_he...</span>
+    <a href="../bsos.conda_web_api/" title="Previous Chapter: bsos.conda_web_api module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; bsos.conda_we...</span>
     </a>
   </li>
   <li>
@@ -146,7 +146,62 @@
 
 <div class="container">
   <div class="row">
-    <div class="body col-md-12 content" role="main">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">bsos.core module</a><ul>
+<li><a class="reference internal" href="#bsos.core.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li><a class="reference internal" href="#bsos.core.Config.check_duplicate"><code class="docutils literal notranslate"><span class="pre">Config.check_duplicate</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.dataframe"><code class="docutils literal notranslate"><span class="pre">Config.dataframe</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.from_csv"><code class="docutils literal notranslate"><span class="pre">Config.from_csv()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.from_dataframe"><code class="docutils literal notranslate"><span class="pre">Config.from_dataframe()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.from_file"><code class="docutils literal notranslate"><span class="pre">Config.from_file()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.from_txt"><code class="docutils literal notranslate"><span class="pre">Config.from_txt()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.names"><code class="docutils literal notranslate"><span class="pre">Config.names</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.package_spec"><code class="docutils literal notranslate"><span class="pre">Config.package_spec</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.packages"><code class="docutils literal notranslate"><span class="pre">Config.packages</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.to_csv"><code class="docutils literal notranslate"><span class="pre">Config.to_csv()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Config.to_dict"><code class="docutils literal notranslate"><span class="pre">Config.to_dict</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bsos.core.Package"><code class="docutils literal notranslate"><span class="pre">Package</span></code></a><ul>
+<li><a class="reference internal" href="#bsos.core.Package.KEYS"><code class="docutils literal notranslate"><span class="pre">Package.KEYS</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.channel"><code class="docutils literal notranslate"><span class="pre">Package.channel</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.from_txt_line"><code class="docutils literal notranslate"><span class="pre">Package.from_txt_line()</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.ignored"><code class="docutils literal notranslate"><span class="pre">Package.ignored</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.kwargs"><code class="docutils literal notranslate"><span class="pre">Package.kwargs</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.match_spec"><code class="docutils literal notranslate"><span class="pre">Package.match_spec</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.name"><code class="docutils literal notranslate"><span class="pre">Package.name</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.to_dict"><code class="docutils literal notranslate"><span class="pre">Package.to_dict</span></code></a></li>
+<li><a class="reference internal" href="#bsos.core.Package.version"><code class="docutils literal notranslate"><span class="pre">Package.version</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bsos.core.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <li>
+    <a href="../bsos.conda_web_api/" title="Previous Chapter: bsos.conda_web_api module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; bsos.conda_we...</span>
+    </a>
+  </li>
+  <li>
+    <a href="../bsos.util/" title="Next Chapter: bsos.util module"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">bsos.util module &raquo;</span>
+    </a>
+  </li>
+<div id="sourcelink">
+  <a href="../../_sources/api/bsos.core.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../../search/" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
       
   <section id="module-bsos.core">
 <span id="bsos-core-module"></span><h1>bsos.core module<a class="headerlink" href="#module-bsos.core" title="Link to this heading">¶</a></h1>
@@ -298,8 +353,8 @@
     </p>
     <p>
         &copy; Copyright 2021, Kolen Cheung.<br/>
-      Last updated on May 08, 2024.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br/>
+      Last updated on Oct 21, 2025.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br/>
     </p>
   </div>
 </footer>
