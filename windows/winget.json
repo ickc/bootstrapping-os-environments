@@ -5,7 +5,7 @@
     {
       "Packages": [
         {
-          "Id": "7zip.7zip"
+          "Id": "Google.Chrome"
         },
         {
           "Id": "Maxon.CinebenchR23"
@@ -20,6 +20,9 @@
           "Id": "CrystalDewWorld.CrystalDiskMark"
         },
         {
+          "Id": "Microsoft.Edge"
+        },
+        {
           "Id": "Mozilla.Firefox"
         },
         {
@@ -27,6 +30,9 @@
         },
         {
           "Id": "Intel.IntelDriverAndSupportAssistant"
+        },
+        {
+          "Id": "Notion.Notion"
         },
         {
           "Id": "OCBase.OCCT.Personal"
@@ -41,13 +47,13 @@
           "Id": "Valve.Steam"
         },
         {
+          "Id": "Microsoft.Teams"
+        },
+        {
           "Id": "Microsoft.VisualStudioCode"
         },
         {
-          "Id": "VideoLAN.VLC"
-        },
-        {
-          "Id": "wez.wezterm"
+          "Id": "Zoom.Zoom"
         }
       ],
       "SourceDetails": {
