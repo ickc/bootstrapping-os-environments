@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     - name: Set up Python ${{ matrix.python-version }}
-      uses: mamba-org/setup-micromamba@v2
+      uses: mamba-org/setup-micromamba@v3
       with:
         cache-environment: true
         create-args: >-
