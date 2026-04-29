@@ -21,3 +21,5 @@ starship completions bash > "${_BASH_DIR}/_starship"
 starship completions zsh > "${_ZSH_DIR}/_starship"
 zellij setup --generate-completion bash > "${_BASH_DIR}/_zellij"
 zellij setup --generate-completion zsh > "${_ZSH_DIR}/_zellij"
+
+echo "Completions generated in ${_BASH_DIR} and ${_ZSH_DIR}"
