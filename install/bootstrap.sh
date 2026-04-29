@@ -31,8 +31,8 @@ github_download_file_to() {
 
 download_dotfiles() {
     echo 'Temporarily downloading dotfiles'
-    github_download_file_to ickc dotfiles master config/zsh/.zshenv ~/.zshenv
-    github_download_file_to ickc dotfiles master config/zsh/.zshrc ~/.zshrc
+    github_download_file_to ickc dotfiles master home/.zshenv ~/.zshenv
+    github_download_file_to ickc dotfiles master home/.zshrc ~/.zshrc
 }
 
 download_dotfiles
