@@ -62,7 +62,7 @@ main() {
     rm -f ~/.zshrc
 
     # this clone sman-snippets so it must be after ssh_keygen_and_login
-    # sman and envoy also touches ${ZDOTDIR}/functions so must be after dotfiles
+    # sman and envoy also touches ${XDG_CONFIG_HOME}/zsh/functions so must be after dotfiles
     print_double_line
     echo 'Installing sman'
     sman_install

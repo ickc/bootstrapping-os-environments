@@ -29,8 +29,8 @@ sman_install_bin() {
 }
 
 sman_install_rc() {
-    mkdir -p "${ZDOTDIR}/functions"
-    github_download_file_to ickc sman master sman.rc "${ZDOTDIR}/functions/sman.rc"
+    mkdir -p "${XDG_CONFIG_HOME}/zsh/functions"
+    github_download_file_to ickc sman master sman.rc "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
 }
 
 sman_install_snippets() {
@@ -51,6 +51,6 @@ sman_install() {
 }
 
 sman_uninstall() {
-    rm -f "${BINDIR}/sman" "${ZDOTDIR}/functions/sman.rc"
+    rm -f "${BINDIR}/sman" "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
     rm -rf ~/git/source/sman-snippets
 }
