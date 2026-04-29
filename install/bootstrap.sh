@@ -44,7 +44,7 @@ download_dotfiles
 __OPT_ROOT="${__OPT_ROOT:-"${HOME}/.local"}"
 MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-"${HOME}/.miniforge3"}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"${HOME}/.config"}"
-ZDOTDIR="${ZDOTDIR:-"${XDG_CONFIG_HOME}/zsh"}"
+ZDOTDIR="${ZDOTDIR:-"${HOME}"}"
 print_double_line() {
     echo '================================================================================'
 }
@@ -263,8 +263,8 @@ sman_install_bin() {
 }
 
 sman_install_rc() {
-    mkdir -p "${ZDOTDIR}/functions"
-    github_download_file_to ickc sman master sman.rc "${ZDOTDIR}/functions/sman.rc"
+    mkdir -p "${XDG_CONFIG_HOME}/zsh/functions"
+    github_download_file_to ickc sman master sman.rc "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
 }
 
 sman_install_snippets() {
@@ -285,7 +285,7 @@ sman_install() {
 }
 
 sman_uninstall() {
-    rm -f "${BINDIR}/sman" "${ZDOTDIR}/functions/sman.rc"
+    rm -f "${BINDIR}/sman" "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
     rm -rf ~/git/source/sman-snippets
 }
 ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
@@ -333,7 +333,7 @@ main() {
     rm -f ~/.zshrc
 
     # this clone sman-snippets so it must be after ssh_keygen_and_login
-    # sman and envoy also touches ${ZDOTDIR}/functions so must be after dotfiles
+    # sman and envoy also touches ${XDG_CONFIG_HOME}/zsh/functions so must be after dotfiles
     print_double_line
     echo 'Installing sman'
     sman_install
