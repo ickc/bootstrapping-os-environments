@@ -5,6 +5,7 @@ set -eo pipefail
 __MAMBA_ENV_DOWNLOAD=1
 
 source ../lib/util/git.sh
+# source ../lib/dotfiles.sh
 
 download_dotfiles() {
     echo 'Temporarily downloading dotfiles'
@@ -29,12 +30,21 @@ source ../lib/zim.sh
 
 main() {
 
+    # print_double_line
+    # echo 'Installing dotfiles'
+    # dotfiles_install
+    # # shellcheck disable=SC1090
+    # . ~/.bashrc || true
+
     print_double_line
     echo 'Installing VSCode CLI'
     code_install
     print_double_line
     echo "Installing mamba to ${MAMBA_ROOT_PREFIX}"
     mamba_install
+    # shellcheck disable=SC1090
+    # . ~/.bashrc || true
+
     print_double_line
     echo 'Installing system environment via mamba'
     mamba_env_install
