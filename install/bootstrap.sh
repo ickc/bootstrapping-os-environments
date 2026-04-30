@@ -28,6 +28,7 @@ github_download_file_to() {
     mkdir -p "${dest%/*}"
     curl -fSL "https://raw.githubusercontent.com/${user}/${repo}/refs/heads/${branch}/${file}" -o "${dest}"
 }
+# source ../lib/dotfiles.sh
 
 download_dotfiles() {
     echo 'Temporarily downloading dotfiles'
@@ -300,12 +301,21 @@ zim_uninstall() {
 
 main() {
 
+    # print_double_line
+    # echo 'Installing dotfiles'
+    # dotfiles_install
+    # # shellcheck disable=SC1090
+    # . ~/.bashrc || true
+
     print_double_line
     echo 'Installing VSCode CLI'
     code_install
     print_double_line
     echo "Installing mamba to ${MAMBA_ROOT_PREFIX}"
     mamba_install
+    # shellcheck disable=SC1090
+    # . ~/.bashrc || true
+
     print_double_line
     echo 'Installing system environment via mamba'
     mamba_env_install
