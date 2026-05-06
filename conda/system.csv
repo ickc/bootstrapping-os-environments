@@ -3,37 +3,37 @@ bash,,False,,5.2.37,,,Bourne Again Shell,https://www.gnu.org/software/bash/manua
 bat,,False,,0.26.1,,,A cat(1) clone with syntax highlighting and Git integration,,False,True,True,True,False,True,True,False,True,False
 bat-extras,,False,,2024.08.24,,,Bash scripts that integrate bat with various command line tools,,False,False,False,False,True,False,False,False,False,False
 bottom,,False,,0.12.2,,,Yet another cross-platform graphical process/system monitor,,False,True,True,True,False,True,True,False,True,False
-btop,,False,,1.4.5,,,"Resource monitor that shows usage and stats for processor, memory, disks, network and processes.",,False,True,True,False,False,True,True,False,False,False
+btop,,False,,1.4.7,,,"Resource monitor that shows usage and stats for processor, memory, disks, network and processes.",,False,True,True,False,False,True,True,False,False,False
 bzip2,,False,,1.0.8,,,high-quality data compressor,http://www.bzip.org/docs.html,False,True,True,True,False,True,True,True,True,True
-clang-format,,False,,22.1.3,,,Development headers and libraries for Clang,,False,True,True,True,False,True,True,False,True,False
+clang-format,,False,,22.1.4,,,Development headers and libraries for Clang,,False,True,True,True,False,True,True,False,True,False
 coreutils,,False,,9.5,,,"The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system.",https://www.gnu.org/software/coreutils/manual/html_node/index.html,False,True,True,True,False,True,True,False,False,False
-curl,,False,,8.19.0,,,tool and library for transferring data with URL syntax,https://curl.haxx.se/docs/,False,True,True,True,False,True,True,True,True,False
-difftastic,,False,,0.68.0,,,Diff that understands syntax,,False,True,True,True,False,True,True,False,False,False
+curl,,False,,8.20.0,,,tool and library for transferring data with URL syntax,https://curl.haxx.se/docs/,False,True,True,True,False,True,True,True,True,False
+difftastic,,False,,0.69.0,,,Diff that understands syntax,,False,True,True,True,False,True,True,False,False,False
 diffutils,,False,,3.12,,,GNU Diffutils is a package of several programs related to finding differences between files.,https://www.gnu.org/software/diffutils/manual/html_node/index.html,False,True,True,True,False,True,True,False,False,False
 direnv,,False,,2.37.1,,,unclutter your .profile,,False,True,True,True,False,True,True,False,True,False
 dua-cli,,False,,2.34.0,,,"View disk space usage and delete unwanted data, fast",,False,True,True,True,False,True,True,False,True,False
 dust,,False,,1.2.4,,,du + rust = dust. Like du but more intuitive.,,False,True,True,True,False,True,True,False,True,False
-exiftool,,False,,13.55,,,"Read, Write and Edit Meta Information!",,False,True,True,True,False,True,True,False,True,False
+exiftool,,False,,13.58,,,"Read, Write and Edit Meta Information!",,False,True,True,True,False,True,True,False,True,False
 fastfetch,,False,,2.49.0,,,"Like neofetch, but much faster because written mostly in C",,False,True,True,True,False,True,True,False,False,False
 fd-find,,False,,10.4.2,,,"A simple, fast and user-friendly alternative to 'find'",,False,True,True,True,False,True,True,False,True,False
-ffmpeg,,False,,8.0.1,,,"Cross-platform solution to record, convert and stream audio and video.",https://ffmpeg.org/documentation.html,False,True,True,True,False,True,True,True,True,False
+ffmpeg,,False,,8.1.1,,,"Cross-platform solution to record, convert and stream audio and video.",https://ffmpeg.org/documentation.html,False,True,True,True,False,True,True,True,True,False
 file,,False,,5.47,,,Fine Free File Command,,False,True,True,True,False,True,True,False,False,False
 findutils,,False,,4.10.0,,,The GNU Find Utilities are the basic directory searching utilities of the GNU operating system.,https://www.gnu.org/software/findutils/manual/find.html,False,True,True,True,False,True,True,False,False,False
-fzf,,False,,0.71.0,,,A command-line fuzzy finder,,False,True,True,True,False,True,True,False,True,False
-gawk,,False,,5.3.1,,,The awk utility interprets a special-purpose programming language that makes it easy to handle simple data-reformatting jobs.,https://www.gnu.org/software/gawk/manual/gawk.html,False,True,True,True,False,True,True,False,False,False
-gh,,False,,2.88.1,,,Github CLI.,https://cli.github.com/,False,True,True,True,False,True,True,False,True,False
+fzf,,False,,0.72.0,,,A command-line fuzzy finder,,False,True,True,True,False,True,True,False,True,False
+gawk,,False,,5.4.0,,,The awk utility interprets a special-purpose programming language that makes it easy to handle simple data-reformatting jobs.,https://www.gnu.org/software/gawk/manual/gawk.html,False,True,True,True,False,True,True,False,False,False
+gh,,False,,2.92.0,,,Github CLI.,https://cli.github.com/,False,True,True,True,False,True,True,False,True,False
 ghostscript,,False,,10.07.0,,,An interpreter for the PostScript language and for PDF,,False,True,True,True,False,True,True,False,True,False
-git,,False,,2.53.0,,,distributed version control system,,False,True,True,True,False,True,True,True,True,False
+git,,False,,2.54.0,,,distributed version control system,,False,True,True,True,False,True,True,True,True,False
 git-delta,,False,,0.19.2,,,"A syntax-highlighting pager for git, diff, and grep output.",,False,True,True,True,False,True,True,False,True,False
 gnu-units,,False,,2.22,,,GNU Units converts quantities expressed in various systems of measurement to their equivalents in other systems of measurement,,False,True,True,True,False,True,True,False,False,False
 go-shfmt,,False,,3.13.1,,,"A shell parser, formatter, and interpreter. Supports POSIX Shell, Bash, and mksh",,False,True,True,True,False,True,True,False,True,False
-go-task,,False,,3.49.1,,,A task runner / simpler Make alternative written in Go.,https://taskfile.dev/,False,True,True,True,False,True,True,False,True,False
+go-task,,False,,3.50.0,,,A task runner / simpler Make alternative written in Go.,https://taskfile.dev/,False,True,True,True,False,True,True,False,True,False
 graphviz,,False,,14.1.2,,,Open Source graph visualization software.,https://graphviz.gitlab.io/documentation/,False,True,True,True,False,True,True,True,True,False
 grep,,False,,3.12,,,Grep searches one or more input files for lines containing a match to a specified pattern,https://www.gnu.org/software/grep/manual/,False,True,True,True,False,True,True,False,False,False
 gzip,,False,,1.14,,,The GNU zip complession utility,https://www.gnu.org/software/gzip/manual/gzip.html,False,True,True,True,False,True,True,False,False,False
-htop,,False,,3.4.1,,,htop is an interactive text-mode process viewer for Unix systems. It aims to be a better 'top',,False,True,True,True,False,True,True,False,False,False
+htop,,False,,3.5.1,,,htop is an interactive text-mode process viewer for Unix systems. It aims to be a better 'top',,False,True,True,True,False,True,True,False,False,False
 hyperfine,,False,,1.20.0,,,A command-line benchmarking tool,,False,True,True,True,False,True,True,False,True,False
-imagemagick,,False,,7.1.1_21,,,"Software suite to create, edit, compose, or convert bitmap images.",,False,True,True,True,False,True,True,False,False,False
+imagemagick,,False,,7.1.0_47,,,"Software suite to create, edit, compose, or convert bitmap images.",,False,True,True,True,False,True,True,False,False,False
 inetutils,,False,,2.7,,,Inetutils is a collection of common network programs,,False,True,True,True,False,True,True,False,False,False
 iperf,,False,,3.20,,,"A TCP, UDP, and SCTP network bandwidth measurement tool",http://software.es.net/iperf/,False,True,False,False,False,True,False,False,False,False
 joshuto,,False,,0.9.9,,,ranger-like terminal file manager written in Rust,,False,True,True,True,False,True,True,False,False,False
@@ -51,29 +51,29 @@ nvtop,,False,,3.3.2,,,Neat Videocard TOP,,False,True,True,True,False,True,True,F
 onefetch,,False,,2.27.1,,,Command-line Git information tool,,False,True,True,True,False,True,True,False,True,False
 openssh,,False,,9.8p1,,,A suite of secure networking utilities based on the SSH protocol,,False,True,True,True,False,True,True,False,False,False
 pandoc,,False,,3.9.0.2,,,The universal markup converter,http://pandoc.org/MANUAL.html,False,True,True,False,False,True,True,True,True,False
-parallel,,False,,20260122,,,GNU parallel is a shell tool for executing jobs in parallel using one or more computers.,,False,True,True,True,False,True,True,False,True,False
+parallel,,False,,20260422,,,GNU parallel is a shell tool for executing jobs in parallel using one or more computers.,,False,True,True,True,False,True,True,False,True,False
 patch,,False,,2.8,,,Utility to apply diffs to files,,False,True,True,True,False,True,True,False,False,False
 pdf2svg,,False,,0.2.4,,,A simple PDF to SVG converter using the Poppler and Cairo libraries,,False,True,True,False,False,True,True,False,False,False
-pixi,,False,,0.67.0,,,"pixi is a cross-platform, multi-language package manager and workflow tool build on the shoulders of the conda ecosystem.",,False,True,True,True,False,True,True,False,True,False
+pixi,,False,,0.67.2,,,"pixi is a cross-platform, multi-language package manager and workflow tool build on the shoulders of the conda ecosystem.",,False,True,True,True,False,True,True,False,True,False
 poppler,,False,,26.02.0,,,The Poppler PDF manipulation library.,,False,True,True,True,False,True,True,False,True,False
 potrace,bioconda,False,,1.11,,,"A tool for tracing a bitmap, which means, transforming a bitmap into a smooth, scalable image",,False,True,False,False,False,True,False,False,False,False
-prettier,,False,,3.8.2,,,Prettier is an opinionated code formatter.,,False,True,True,False,False,True,True,False,True,False
+prettier,,False,,3.8.3,,,Prettier is an opinionated code formatter.,,False,True,True,False,False,True,True,False,True,False
 ripgrep,,False,,15.1.0,,,ripgrep recursively searches directories for a regex pattern,,False,True,True,True,False,True,True,False,True,True
 rsync,,False,,3.4.1,,,Tool for fast incremental file transfer,https://rsync.samba.org/documentation.html,False,True,True,True,False,True,True,False,False,False
-sed,,False,,4.9,,,sed (stream editor) is a non-interactive command-line text editor.,,False,True,True,True,False,True,True,False,False,False
+sed,,False,,4.10,,,sed (stream editor) is a non-interactive command-line text editor.,,False,True,True,True,False,True,True,False,False,False
 shellcheck,,False,,0.11.0,,,"ShellCheck, a static analysis tool for shell scripts",,False,True,True,False,False,True,True,False,True,False
-starship,,False,,1.24.2,,,"The minimal, blazing-fast, and infinitely customizable prompt for any shell!",,False,True,True,True,False,True,True,False,True,False
+starship,,False,,1.25.1,,,"The minimal, blazing-fast, and infinitely customizable prompt for any shell!",,False,True,True,True,False,True,True,False,True,False
 tar,,False,,1.35,,,GNU tape archive program,,False,True,True,True,False,True,True,False,False,False
-time,,True,,1.9,,,time command from GNU,http://man7.org/linux/man-pages/man1/time.1.html,False,True,True,True,False,True,True,False,False,False
+time,,True,,1.10,,,time command from GNU,http://man7.org/linux/man-pages/man1/time.1.html,False,True,True,True,False,True,True,False,False,False
 tmux,,False,,3.6,,,A terminal multiplexer.,,False,True,True,True,False,True,True,False,False,False
 tokei,,False,,14.0.0,,,"Tokei is a program that displays statistics about your code. Tokei will show the number of files, total lines within those files and code, comments, and blanks grouped by language.",https://github.com/XAMPPRocky/tokei#how-to-use-tokei,False,True,True,True,False,True,True,False,True,False
 tree,,False,,2.3.2,,,Tree is a recursive directory listing command,http://oldmanprogrammer.net/source.php?dir=projects/tree,False,True,True,True,False,True,True,False,False,False
 unzip,,False,,6.0,,,simple program for unzipping files,,False,True,True,True,False,True,True,False,False,False
-uv,,False,,0.11.6,,,"An extremely fast Python package installer and resolver, written in Rust.",https://docs.astral.sh/uv,False,True,True,True,False,True,True,False,True,False
+uv,,False,,0.11.10,,,"An extremely fast Python package installer and resolver, written in Rust.",https://docs.astral.sh/uv,False,True,True,True,False,True,True,False,True,False
 w3m,,False,,0.5.3+git20220429,,,Text mode web browser/pager.,,False,True,False,False,False,True,False,False,False,False
 watch,,False,,4.0.6,,,"Command line and full screen utilities for browsing procfs, a ""pseudo"" file system dynamically generated by the kernel to provide information about the status of entries in its process table.",,False,True,True,True,False,True,True,False,False,False
 wget,,False,,1.25.0,,,utility for non-interactive download of files from the Web,https://www.gnu.org/software/wget/,False,True,True,True,False,True,True,False,False,False
-which,,False,,2.23,,,Shows the full path of (shell) commands,,False,True,True,True,False,True,True,False,False,False
-zellij,,False,,0.44.1,,,"Pluggable terminal workspace, with terminal multiplexer as the base feature",,False,True,True,False,False,True,True,False,False,False
+which,,False,,2.23,,,Shows the full path of (shell) commands,https://carlowood.github.io/which/,False,True,True,True,False,True,True,False,False,False
+zellij,,False,,0.44.2,,,"Pluggable terminal workspace, with terminal multiplexer as the base feature",,False,True,True,False,False,True,True,False,False,False
 zsh,,False,,5.9,,,"Zsh is a shell designed for interactive use, although it is also a powerful scripting language.",https://zsh.sourceforge.io/Doc/Release/zsh_toc.html,False,True,True,True,False,True,True,False,False,False
 zstd,,False,,1.5.7,,,Zstandard - Fast real-time compression algorithm,https://facebook.github.io/zstd/zstd_manual.html,False,True,True,True,False,True,True,True,True,True
