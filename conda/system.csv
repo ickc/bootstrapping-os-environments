@@ -46,6 +46,7 @@ make,,False,,4.4.1,,,GNU Make is a tool which controls the generation of executa
 mediainfo,,False,,26.01,,,Convenient unified display of the most relevant technical and tag data for video and audio files,https://mediaarea.net/MediaInfo,False,True,True,True,False,True,True,False,True,False
 mosh,,False,,1.4.0,,,Mobile shell that supports roaming and intelligent local echo,,False,True,True,True,False,True,True,False,False,False
 nano,,False,,9.0,,,"Nano's ANOther editor, an enhanced free Pico clone",https://www.nano-editor.org/docs.php,False,True,True,True,False,True,True,False,False,False
+navi,,False,,2.24.0,,,Interactive cheatsheet tool for the command-line,,False,True,True,True,False,True,True,False,True,False
 nvtop,,False,,3.3.2,,,Neat Videocard TOP,,False,True,True,True,False,True,True,False,False,False
 onefetch,,False,,2.27.1,,,Command-line Git information tool,,False,True,True,True,False,True,True,False,True,False
 openssh,,False,,9.8p1,,,A suite of secure networking utilities based on the SSH protocol,,False,True,True,True,False,True,True,False,False,False
