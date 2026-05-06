@@ -168,21 +168,31 @@ class CondaPackage:
     def dev_url(self) -> str:
         return (self.data.get("dev_url") or "").strip()
 
-    @property
+    @cached_property
+    def latest_uploaded_file(self) -> dict:
+        files = [file for file in self.data.get("files", []) if file.get("upload_time")]
+        return max(files, key=lambda file: file["upload_time"]) if files else {}
+
+    @cached_property
     def latest_version(self) -> str:
-        return self.data["latest_version"]
+        return self.latest_uploaded_file.get("version") or self.data["latest_version"]
 
     @property
     def license(self) -> str:
         return (self.data.get("license") or "").strip()
 
-    @property
+    @cached_property
     def platforms(self) -> dict[str, str]:
-        return self.data["platforms"]
+        platforms = {file["attrs"]["subdir"]: file["version"] for file in self.latest_version_files}
+        return platforms or self.data["platforms"]
 
     @cached_property
     def platform_set(self) -> set[tuple[str, str]]:
         return set(self.platforms.items())
+
+    @cached_property
+    def latest_version_files(self) -> list[dict]:
+        return [file for file in self.data["files"] if file["version"] == self.latest_version]
 
     @property
     def doc_url(self) -> str:
@@ -209,6 +219,9 @@ class CondaPackage:
 
     @property
     def latest_upload_time(self) -> str:
+        upload_time = self.latest_uploaded_file.get("upload_time")
+        if upload_time:
+            return format_upload_date(upload_time)
         upload_times = [
             file["upload_time"] for file in self.latest_files_with_latest_build_number if file.get("upload_time")
         ]
