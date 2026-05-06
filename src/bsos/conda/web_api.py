@@ -19,6 +19,51 @@ import yamlloader  # type: ignore
 
 CACHE_DIR: Path = Path(platformdirs.user_cache_dir(appname="bsos", ensure_exists=True))
 
+CSV_SOURCE_PACKAGE_COLUMNS: tuple[str, ...] = (
+    "channel",
+    "ignored",
+    "version",
+)
+
+CSV_SOURCE_ANNOTATION_COLUMNS: tuple[str, ...] = (
+    "depended",
+    "notes",
+)
+
+CSV_SOURCE_COLUMNS: tuple[str, ...] = CSV_SOURCE_PACKAGE_COLUMNS + CSV_SOURCE_ANNOTATION_COLUMNS
+
+ANACONDA_API_VERSION_COLUMNS: tuple[str, ...] = (
+    "latest_version",
+    "latest_upload_time",
+)
+
+ANACONDA_API_DETAILS_COLUMNS: tuple[str, ...] = (
+    "summary",
+    "home_url",
+    "dev_url",
+    "doc_url",
+    "license",
+    # "runtime_depends",
+    "direct_dep_count",
+    "direct_dep_names",
+    # "virtual_dep_count",
+    # "virtual_dep_names",
+    "depends_on_python",
+    "depends_on_nodejs",
+    "depends_on_perl",
+    "depends_on_ruby",
+    "depends_on_java",
+)
+
+ANACONDA_API_METADATA_COLUMNS: tuple[str, ...] = ANACONDA_API_VERSION_COLUMNS + ANACONDA_API_DETAILS_COLUMNS
+
+CSV_METADATA_COLUMNS: tuple[str, ...] = (
+    *CSV_SOURCE_PACKAGE_COLUMNS,
+    *ANACONDA_API_VERSION_COLUMNS,
+    *CSV_SOURCE_ANNOTATION_COLUMNS,
+    *ANACONDA_API_DETAILS_COLUMNS,
+)
+
 
 def parse_conda_build(build: str, regex=re.compile(r"py(\d)(\d+)")) -> tuple[int, int]:
     """Parse conda build string and return python version as tuple.
@@ -32,6 +77,14 @@ def parse_conda_build(build: str, regex=re.compile(r"py(\d)(\d+)")) -> tuple[int
         return major_version, minor_version
     else:
         raise ValueError(f"Cannot parse {build}")
+
+
+def parse_conda_dependency_name(dependency: str, regex=re.compile(r"^\s*([^\s=<>!~]+)")) -> str:
+    """Parse a conda match spec enough to extract the package name."""
+    match = regex.search(dependency)
+    if match:
+        return match.group(1).split("::")[-1]
+    return dependency.strip()
 
 
 async def get_package_info(
@@ -100,8 +153,20 @@ class CondaPackage:
         return self.data["summary"].strip().replace("\n", " ")
 
     @property
+    def home_url(self) -> str:
+        return (self.data.get("home") or "").strip()
+
+    @property
+    def dev_url(self) -> str:
+        return (self.data.get("dev_url") or "").strip()
+
+    @property
     def latest_version(self) -> str:
         return self.data["latest_version"]
+
+    @property
+    def license(self) -> str:
+        return (self.data.get("license") or "").strip()
 
     @property
     def platforms(self) -> dict[str, str]:
@@ -134,13 +199,69 @@ class CondaPackage:
     def latest_files_with_latest_build_number(self) -> list[dict]:
         return [file for file in self.latest_files if file["attrs"]["build_number"] == self.latest_build_number]
 
+    @property
+    def latest_upload_time(self) -> str:
+        upload_times = [
+            file["upload_time"] for file in self.latest_files_with_latest_build_number if file.get("upload_time")
+        ]
+        return max(upload_times, default="")
+
+    @cached_property
+    def direct_dep_specs(self) -> tuple[str, ...]:
+        specs = {dep for file in self.latest_files_with_latest_build_number for dep in file["attrs"].get("depends", [])}
+        return tuple(sorted(specs))
+
+    @cached_property
+    def direct_dep_name_set(self) -> set[str]:
+        return {parse_conda_dependency_name(dep) for dep in self.direct_dep_specs}
+
+    @cached_property
+    def installable_direct_dep_names(self) -> tuple[str, ...]:
+        return tuple(sorted(name for name in self.direct_dep_name_set if not name.startswith("__")))
+
+    @cached_property
+    def virtual_direct_dep_names(self) -> tuple[str, ...]:
+        return tuple(sorted(name for name in self.direct_dep_name_set if name.startswith("__")))
+
+    @property
+    def runtime_depends(self) -> str:
+        return "/".join(self.direct_dep_specs)
+
+    @property
+    def direct_dep_names(self) -> str:
+        return "/".join(self.installable_direct_dep_names)
+
+    @property
+    def direct_dep_count(self) -> int:
+        return len(self.installable_direct_dep_names)
+
+    @property
+    def virtual_dep_names(self) -> str:
+        return "/".join(self.virtual_direct_dep_names)
+
+    @property
+    def virtual_dep_count(self) -> int:
+        return len(self.virtual_direct_dep_names)
+
     @cached_property
     def depends_on_python(self) -> bool:
-        for file in self.latest_files_with_latest_build_number:
-            for dep in file["attrs"].get("depends", []):
-                if dep.startswith("python"):
-                    return True
-        return False
+        return "python" in self.direct_dep_name_set or "python_abi" in self.direct_dep_name_set
+
+    @property
+    def depends_on_nodejs(self) -> bool:
+        return "nodejs" in self.direct_dep_name_set
+
+    @property
+    def depends_on_perl(self) -> bool:
+        return "perl" in self.direct_dep_name_set
+
+    @property
+    def depends_on_ruby(self) -> bool:
+        return "ruby" in self.direct_dep_name_set
+
+    @property
+    def depends_on_java(self) -> bool:
+        return bool({"java-jdk", "java-jre", "jdk", "openjdk"} & self.direct_dep_name_set)
 
     def support(self, platform: str, python_version: tuple[int, int]) -> bool:
         for file in reversed(self.data["files"]):
@@ -167,9 +288,22 @@ class CondaPackage:
             "owner": self.owner,
             "summary": self.summary,
             "latest_version": self.latest_version,
+            "latest_upload_time": self.latest_upload_time,
             "platforms": self.platforms,
+            "home_url": self.home_url,
+            "dev_url": self.dev_url,
             "doc_url": self.doc_url,
+            "license": self.license,
+            "runtime_depends": self.runtime_depends,
+            "direct_dep_count": self.direct_dep_count,
+            "direct_dep_names": self.direct_dep_names,
+            "virtual_dep_count": self.virtual_dep_count,
+            "virtual_dep_names": self.virtual_dep_names,
             "depends_on_python": self.depends_on_python,
+            "depends_on_nodejs": self.depends_on_nodejs,
+            "depends_on_perl": self.depends_on_perl,
+            "depends_on_ruby": self.depends_on_ruby,
+            "depends_on_java": self.depends_on_java,
             "latest_files_with_latest_build_number": self.latest_files_with_latest_build_number,
         }
 
@@ -205,14 +339,7 @@ class CondaPackages:
             },
             na_filter=False,
         )
-        columns = [
-            "channel",
-            "ignored",
-            "version",
-            "depended",
-            "notes",
-        ]
-        df = df[columns]
+        df = df[list(CSV_SOURCE_COLUMNS)]
         return cls(df, default_channel=default_channel)
 
     @cached_property
@@ -252,25 +379,10 @@ class CondaPackages:
         platforms = self.platforms
         df = pd.concat([df, platforms], axis=1)
 
-        for col in [
-            "latest_version",
-            "summary",
-            "doc_url",
-            "depends_on_python",
-        ]:
+        for col in ANACONDA_API_METADATA_COLUMNS:
             df[col] = [getattr(p, col) for p in self.packages]
 
-        columns = [
-            "channel",
-            "ignored",
-            "version",
-            "latest_version",
-            "depended",
-            "notes",
-            "summary",
-            "doc_url",
-            "depends_on_python",
-        ] + sorted(platforms.columns.tolist())
+        columns = list(CSV_METADATA_COLUMNS) + sorted(platforms.columns.tolist())
         df = df[columns]
         self.df = df
 
