@@ -7,6 +7,7 @@ import json
 import re
 import shutil
 from dataclasses import dataclass
+from datetime import datetime
 from functools import cached_property
 from pathlib import Path
 
@@ -85,6 +86,13 @@ def parse_conda_dependency_name(dependency: str, regex=re.compile(r"^\s*([^\s=<>
     if match:
         return match.group(1).split("::")[-1]
     return dependency.strip()
+
+
+def format_upload_date(upload_time: str) -> str:
+    """Return the date component of an Anaconda upload timestamp."""
+    if not upload_time:
+        return ""
+    return datetime.fromisoformat(upload_time).date().isoformat()
 
 
 async def get_package_info(
@@ -204,7 +212,7 @@ class CondaPackage:
         upload_times = [
             file["upload_time"] for file in self.latest_files_with_latest_build_number if file.get("upload_time")
         ]
-        return max(upload_times, default="")
+        return format_upload_date(max(upload_times, default=""))
 
     @cached_property
     def direct_dep_specs(self) -> tuple[str, ...]:
