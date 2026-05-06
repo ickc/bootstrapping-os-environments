@@ -4,7 +4,6 @@ dependencies:
 - bash
 - bat
 - bat-extras
-- bottom
 - bzip2
 - clang-format
 - coreutils
@@ -58,6 +57,7 @@ dependencies:
 - sed
 - starship
 - tar
+- time
 - tmux
 - tokei
 - tree

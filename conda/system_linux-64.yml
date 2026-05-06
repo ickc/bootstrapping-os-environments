@@ -4,7 +4,6 @@ dependencies:
 - bash
 - bat
 - bat-extras
-- bottom
 - btop
 - bzip2
 - clang-format
@@ -59,13 +58,13 @@ dependencies:
 - pixi
 - poppler
 - bioconda::potrace
-- prettier
 - ripgrep
 - rsync
 - sed
 - shellcheck
 - starship
 - tar
+- time
 - tmux
 - tokei
 - tree

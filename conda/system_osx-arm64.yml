@@ -4,7 +4,6 @@ dependencies:
 - bash
 - bat
 - bat-extras
-- bottom
 - btop
 - bzip2
 - clang-format
@@ -57,13 +56,13 @@ dependencies:
 - pdf2svg
 - pixi
 - poppler
-- prettier
 - ripgrep
 - rsync
 - sed
 - shellcheck
 - starship
 - tar
+- time
 - tmux
 - tokei
 - tree
