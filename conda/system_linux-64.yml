@@ -48,6 +48,7 @@ dependencies:
 - mediainfo
 - mosh
 - nano
+- navi
 - nvtop
 - onefetch
 - openssh
