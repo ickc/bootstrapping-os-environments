@@ -29,18 +29,20 @@ sman_install_bin() {
 }
 
 sman_install_rc() {
-    mkdir -p "${XDG_CONFIG_HOME}/zsh/functions"
-    github_download_file_to ickc sman master sman.rc "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
+    mkdir -p "${XDG_DATA_HOME}/sman"
+    github_download_file_to ickc sman main sman.rc "${XDG_DATA_HOME}/sman/sman.rc"
 }
 
 sman_install_snippets() {
-    if [[ -d ~/git/source/sman-snippets ]]; then
-        cd ~/git/source/sman-snippets
+    local snippets_dir="${XDG_DATA_HOME}/sman/snippets"
+    if [[ -d ${snippets_dir} ]]; then
+        cd "${snippets_dir}"
         git pull
     else
-        mkdir -p ~/git/source
-        cd ~/git/source
+        mkdir -p "${XDG_DATA_HOME}/sman"
+        cd "${XDG_DATA_HOME}/sman"
         github_clone_git ickc sman-snippets
+        mv sman-snippets snippets
     fi
 }
 
@@ -51,6 +53,6 @@ sman_install() {
 }
 
 sman_uninstall() {
-    rm -f "${BINDIR}/sman" "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
-    rm -rf ~/git/source/sman-snippets
+    rm -f "${BINDIR}/sman" "${XDG_DATA_HOME}/sman/sman.rc"
+    rm -rf "${XDG_DATA_HOME}/sman/snippets"
 }

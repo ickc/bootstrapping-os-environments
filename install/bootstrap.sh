@@ -32,8 +32,8 @@ github_download_file_to() {
 
 download_dotfiles() {
     echo 'Temporarily downloading dotfiles'
-    github_download_file_to ickc dotfiles master home/.zshenv ~/.zshenv
-    github_download_file_to ickc dotfiles master home/.zshrc ~/.zshrc
+    github_download_file_to ickc dotfiles main home/.zshenv ~/.zshenv
+    github_download_file_to ickc dotfiles main home/.zshrc ~/.zshrc
 }
 
 download_dotfiles
@@ -42,8 +42,8 @@ download_dotfiles
 # shellcheck disable=SC1090
 . ~/.zshrc || true
 # this must be after sourcing dotfiles
-__OPT_ROOT="${__OPT_ROOT:-"${HOME}/.local"}"
-MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-"${HOME}/.miniforge3"}"
+__OPT_ROOT="${__OPT_ROOT:-"${HOME}/.local/opt/${__OSTYPE}-${__ARCH}"}"
+MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-"${__OPT_ROOT}/miniforge3"}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"${HOME}/.config"}"
 ZDOTDIR="${ZDOTDIR:-"${HOME}"}"
 print_double_line() {
@@ -264,18 +264,20 @@ sman_install_bin() {
 }
 
 sman_install_rc() {
-    mkdir -p "${XDG_CONFIG_HOME}/zsh/functions"
-    github_download_file_to ickc sman master sman.rc "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
+    mkdir -p "${XDG_DATA_HOME}/sman"
+    github_download_file_to ickc sman main sman.rc "${XDG_DATA_HOME}/sman/sman.rc"
 }
 
 sman_install_snippets() {
-    if [[ -d ~/git/source/sman-snippets ]]; then
-        cd ~/git/source/sman-snippets
+    local snippets_dir="${XDG_DATA_HOME}/sman/snippets"
+    if [[ -d ${snippets_dir} ]]; then
+        cd "${snippets_dir}"
         git pull
     else
-        mkdir -p ~/git/source
-        cd ~/git/source
+        mkdir -p "${XDG_DATA_HOME}/sman"
+        cd "${XDG_DATA_HOME}/sman"
         github_clone_git ickc sman-snippets
+        mv sman-snippets snippets
     fi
 }
 
@@ -286,8 +288,8 @@ sman_install() {
 }
 
 sman_uninstall() {
-    rm -f "${BINDIR}/sman" "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
-    rm -rf ~/git/source/sman-snippets
+    rm -f "${BINDIR}/sman" "${XDG_DATA_HOME}/sman/sman.rc"
+    rm -rf "${XDG_DATA_HOME}/sman/snippets"
 }
 ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
 

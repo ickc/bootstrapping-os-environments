@@ -9,8 +9,8 @@ source ../lib/util/git.sh
 
 download_dotfiles() {
     echo 'Temporarily downloading dotfiles'
-    github_download_file_to ickc dotfiles master home/.zshenv ~/.zshenv
-    github_download_file_to ickc dotfiles master home/.zshrc ~/.zshrc
+    github_download_file_to ickc dotfiles main home/.zshenv ~/.zshenv
+    github_download_file_to ickc dotfiles main home/.zshrc ~/.zshrc
 }
 
 download_dotfiles
