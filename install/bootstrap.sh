@@ -332,6 +332,8 @@ main() {
     echo 'Generating SSH key and login to GitHub'
     ssh_keygen_and_login
 
+    mkdir -p ~/git/source
+    cd ~/git/source
     if [[ ! -d ~/git/source/dotfiles ]]; then
         print_double_line
         echo 'Cloning dotfiles'
