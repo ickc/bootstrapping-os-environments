@@ -344,7 +344,6 @@ main() {
     echo 'Installing dotfiles'
     # this will overwrite ~/.zshenv
     make all
-    rm -f ~/.zshrc
 
     # this clone sman-snippets so it must be after ssh_keygen_and_login
     # sman and envoy also touches ${XDG_CONFIG_HOME}/zsh/functions so must be after dotfiles
