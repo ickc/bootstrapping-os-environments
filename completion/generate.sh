@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"${HOME}/.config"}"
-_ZSH_DIR="${XDG_CONFIG_HOME}/zsh/functions"
-
 XDG_DATA_HOME="${XDG_DATA_HOME:-"${HOME}/.local/share"}"
+_ZSH_DIR="${XDG_DATA_HOME}/zsh/functions"
 BASH_COMPLETION_USER_DIR="${BASH_COMPLETION_USER_DIR:-"${XDG_DATA_HOME}/bash-completion"}"
 _BASH_DIR="${BASH_COMPLETION_USER_DIR}/completions"
 
