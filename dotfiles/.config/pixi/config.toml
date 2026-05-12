@@ -1,4 +1,0 @@
-detached-environments = true
-
-[shell]
-change-ps1 = false

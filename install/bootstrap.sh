@@ -53,9 +53,12 @@ export __LOCAL_ROOT="${__LOCAL_ROOT:-${__APPDIR:+${__APPDIR}/local}}"
 export __LOCAL_ROOT="${__LOCAL_ROOT:-${HOME}/.local}"
 export __OPT_ROOT="${__OPT_ROOT:-${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}}"
 export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/miniforge3}"
+export PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
+export ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-${__LOCAL_ROOT}/share}"
-export ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${__LOCAL_ROOT}/state}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
 print_double_line() {
     echo '================================================================================'
 }
