@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ../state/env.sh
+source ../../../env.sh
 source ../lib/gh.sh
 
 case "${1:-}" in

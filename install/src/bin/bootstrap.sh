@@ -19,7 +19,7 @@ download_dotfiles
 # shellcheck disable=SC1090
 . ~/.zshrc || true
 # this must be after sourcing dotfiles
-source ../state/env.sh
+source ../../../env.sh
 source ../lib/util/helpers.sh
 source ../lib/util/ssh.sh
 source ../lib/code.sh
