@@ -2,7 +2,7 @@
 
 . activate jupyterlab
 
-JUPYTER_CONFIG_DIR="${JUPYTER_CONFIG_DIR}:-${HOME}/.jupyter"
+JUPYTER_CONFIG_DIR="${JUPYTER_CONFIG_DIR:-${HOME}/.conda/jupyter}"
 mkdir -p "${JUPYTER_CONFIG_DIR}"
 
 if [[ $(uname) == Darwin ]]; then
@@ -22,6 +22,7 @@ cat << EOF > "${JUPYTER_CONFIG_DIR}/jupyterhub_config.py"
 c.Spawner.default_url = "/lab"
 c.JupyterHub.ssl_key = "${JUPYTER_CONFIG_DIR}/ssl.key"
 c.JupyterHub.ssl_cert = "${JUPYTER_CONFIG_DIR}/ssl.crt"
+c.Authenticator.allow_all = True
 EOF
 
 mkdir -p "${JUPYTER_CONFIG_DIR}"
