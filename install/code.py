@@ -46,14 +46,6 @@ def _extract_tar(data: io.BytesIO, dest_dir: Path) -> None:
             tar.extractall(dest_dir)
 
 
-def download_file(url: str, dest: PathLike) -> None:
-    """Download *url* to a local file at *dest*."""
-    dest = Path(dest)
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    with _open_url(url) as resp, dest.open("wb") as f:
-        shutil.copyfileobj(resp, f)
-
-
 def download_and_extract_tar(url: str, dest_dir: PathLike) -> None:
     """Download a tar archive and extract into *dest_dir*."""
     dest_dir = Path(dest_dir)
@@ -178,59 +170,7 @@ class EnvConfig:
         return env
 
 
-def generate_env_sh() -> str:
-    """Generate the shell ``env.sh`` script from the Python definitions.
-
-    Functionally equivalent to the env derivation above: same variable
-    names, same ``${VAR:-default}`` fallback semantics.  This function is
-    the single generator — ``env.sh`` is a derived artifact, so other
-    shells can keep sourcing it while ``_env.py`` is the source of truth.
-    """
-    return """\
-# Shell library: envoy installer path detection.
-# Source from shell startup to set envoy-managed paths.
-# Respects pre-existing values — dotfiles may set __APPDIR, XDG vars, etc. first.
-#
-# GENERATED from bsos.installers._env — do not edit. Regenerate with:
-#   pixi run generate-env-sh
-
-# Platform detection (always re-detected — pure platform facts)
-# shellcheck disable=SC2312
-read -r __OSTYPE __ARCH <<< "$(uname -sm)"
-export __OSTYPE __ARCH
-
-# Path derivation (respects __APPDIR if pre-set by dotfiles)
-export __LOCAL_ROOT="${__LOCAL_ROOT:-${__APPDIR:+${__APPDIR}/local}}"
-export __LOCAL_ROOT="${__LOCAL_ROOT:-${HOME}/.local}"
-export __OPT_ROOT="${__OPT_ROOT:-${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}}"
-
-# Tool paths
-export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/miniforge3}"
-export PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
-export ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
-
-# XDG base dirs
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-${__LOCAL_ROOT}/share}"
-export XDG_STATE_HOME="${XDG_STATE_HOME:-${__LOCAL_ROOT}/state}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
-"""
-
-
 # --- _subprocess ---
-
-
-def find_command(name: str) -> Optional[str]:
-    """Locate an executable on ``PATH``, like ``which``."""
-    return shutil.which(name)
-
-
-def require_command(name: str) -> str:
-    """Locate an executable or raise :class:`RuntimeError`."""
-    path = find_command(name)
-    if path is None:
-        raise RuntimeError(f"Required command not found: {name}")
-    return path
 
 
 def run(

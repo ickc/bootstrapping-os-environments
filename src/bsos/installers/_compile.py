@@ -73,13 +73,56 @@ def resolve_dependencies(target: str) -> List[str]:
     return order
 
 
+def _get_top_level_defs(source: str) -> Dict[str, ast.stmt]:
+    """Map name → AST node for each top-level definition (funcs, classes, assigns)."""
+    defs: Dict[str, ast.stmt] = {}
+    for node in ast.parse(source).body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            defs[node.name] = node
+        elif isinstance(node, ast.Assign):
+            for t in node.targets:
+                if isinstance(t, ast.Name):
+                    defs[t.id] = node
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            defs[node.target.id] = node
+    return defs
+
+
+def _transitive_needed(seed: Set[str], defs: Dict[str, ast.stmt]) -> Set[str]:
+    """Return all names in *defs* reachable from *seed* via Name references."""
+    all_names = set(defs)
+    needed = set(seed) & all_names
+    queue = list(needed)
+    while queue:
+        name = queue.pop()
+        for child in ast.walk(defs[name]):
+            if isinstance(child, ast.Name) and child.id in all_names and child.id not in needed:
+                needed.add(child.id)
+                queue.append(child.id)
+    return needed
+
+
+def _collect_dep_imports(source: str) -> Dict[str, Set[str]]:
+    """Return ``{dep_module: {imported_names}}`` for all intra-package imports."""
+    result: Dict[str, Set[str]] = {}
+    for node in ast.parse(source).body:
+        if not isinstance(node, ast.ImportFrom) or not _is_intra_package(node):
+            continue
+        names = {alias.name for alias in node.names}
+        for dep in _extract_intra_deps(node):
+            result.setdefault(dep, set()).update(names)
+    return result
+
+
 def _segment(lines: List[str], node: ast.stmt) -> str:
     """Return the full source text of *node* (handles multi-line statements)."""
     end = node.end_lineno or node.lineno
     return "\n".join(lines[node.lineno - 1 : end])
 
 
-def _classify(source: str) -> Tuple[List[str], List[str], List[str], List[str], List[str]]:
+def _classify(
+    source: str, needed: Optional[Set[str]] = None
+) -> Tuple[List[str], List[str], List[str], List[str], List[str]]:
     """Split *source* into (future, stdlib, baked, code, main_block).
 
     *future* and *stdlib* are full import statements; intra-package
@@ -131,6 +174,19 @@ def _classify(source: str) -> Tuple[List[str], List[str], List[str], List[str], 
         consumed.update(range(main_start, len(lines) + 1))
     else:
         main_block = []
+
+    if needed is not None:
+        for node in tree.body:
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                if node.name not in needed:
+                    consumed.update(range(node.lineno, (node.end_lineno or node.lineno) + 1))
+            elif isinstance(node, ast.Assign):
+                target_names = [t.id for t in node.targets if isinstance(t, ast.Name)]
+                if target_names and not any(n in needed for n in target_names):
+                    consumed.update(range(node.lineno, (node.end_lineno or node.lineno) + 1))
+            elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+                if node.target.id not in needed:
+                    consumed.update(range(node.lineno, (node.end_lineno or node.lineno) + 1))
 
     code = [lines[i] for i in range(len(lines)) if (i + 1) not in consumed]
     return future, stdlib, baked, code, main_block
@@ -184,14 +240,38 @@ def _bake_imports(segments: List[str]) -> List[str]:
 
 def compile_module(target: str) -> str:
     """Compile *target* into a self-contained script."""
+    order = resolve_dependencies(target)
+
+    # For each module, record which names it imports from each intra-package dep.
+    dep_imports: Dict[str, Dict[str, Set[str]]] = {
+        mod: _collect_dep_imports(_read_source(mod)) for mod in order
+    }
+
+    # Backward pass: compute the set of top-level names needed from each dep module.
+    # The target module is always included in full (needed = None).
+    # Dep modules include only names reachable from what their importers explicitly use.
+    needed_names: Dict[str, Optional[Set[str]]] = {}
+    needed_from: Dict[str, Set[str]] = {}  # accumulated seeds for each dep
+
+    for mod in reversed(order):
+        if mod == target:
+            needed_names[mod] = None  # include everything
+        else:
+            seed = needed_from.get(mod, set())
+            defs = _get_top_level_defs(_read_source(mod))
+            needed_names[mod] = _transitive_needed(seed, defs)
+        # Propagate: whatever this module imports from its own deps is needed there.
+        for dep, names in dep_imports[mod].items():
+            needed_from.setdefault(dep, set()).update(names)
+
     all_future = []  # type: List[str]
     all_stdlib = []  # type: List[str]
     all_baked = []  # type: List[str]
     all_code = []  # type: List[str]
     target_main = []  # type: List[str]
 
-    for mod in resolve_dependencies(target):
-        future, stdlib, baked, code, main_block = _classify(_read_source(mod))
+    for mod in order:
+        future, stdlib, baked, code, main_block = _classify(_read_source(mod), needed_names[mod])
         all_future.extend(future)
         all_stdlib.extend(stdlib)
         all_baked.extend(baked)
