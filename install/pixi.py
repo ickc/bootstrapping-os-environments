@@ -7,7 +7,6 @@ Downloads the latest pixi binary from GitHub releases and installs it to
 
 import argparse
 import io
-import json
 import os
 import platform
 import shutil
@@ -197,20 +196,8 @@ _TARGETS = {
     "Darwin-arm64": "aarch64-apple-darwin",
 }
 
-_RELEASES_API = "https://api.github.com/repos/prefix-dev/pixi/releases/latest"
-
-
-def _latest_version() -> str:
-    req = urllib.request.Request(
-        _RELEASES_API,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-        },
-    )
-    with urllib.request.urlopen(req) as resp:  # noqa: S310
-        data = json.loads(resp.read())
-    return data["tag_name"].lstrip("v")
+# Use the /releases/latest/download/ redirect — no GitHub API call, no rate limit.
+_URL_TEMPLATE = "https://github.com/prefix-dev/pixi/releases/latest/download/pixi-{target}.tar.gz"
 
 
 def install(env: Optional[EnvConfig] = None) -> None:
@@ -221,8 +208,7 @@ def install(env: Optional[EnvConfig] = None) -> None:
         print(f"Unsupported platform: {key}", file=sys.stderr)
         sys.exit(1)
 
-    version = _latest_version()
-    url = f"https://github.com/prefix-dev/pixi/releases/download/v{version}/pixi-{target}.tar.gz"
+    url = _URL_TEMPLATE.format(target=target)
     tmp = download_to_tempdir(url, extract="tar")
     try:
         src = tmp / "pixi"
@@ -237,7 +223,7 @@ def install(env: Optional[EnvConfig] = None) -> None:
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
-    print(f"Installed pixi {version} to {dest}")
+    print(f"Installed pixi (latest) to {dest}")
 
 
 def uninstall(env: Optional[EnvConfig] = None) -> None:

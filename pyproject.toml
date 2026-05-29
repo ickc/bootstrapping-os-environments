@@ -163,47 +163,48 @@ nix-format = { cmd = "find nix -name '*.nix' -exec nixfmt '{}' +", description =
 brew-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/brews.nix --sort", description = "Annotate a brews.nix file with brew descriptions." }
 brew-cask-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/casks.nix --sort --cask", description = "Annotate a casks.nix file with brew descriptions." }
 
-# installers — env
+# installers — generate-*
 generate-env-sh = { cmd = "python -m bsos.installers._env > env.sh", description = "Regenerate env.sh from Python definitions." }
-
-# installers — VS Code CLI
-compile-code = { cmd = "python -m bsos.installers._compile code -o install/code.py", description = "Compile code installer to a self-contained script." }
-install-code = { cmd = "python -m bsos.installers.code install", description = "Install VS Code CLI." }
-uninstall-code = { cmd = "python -m bsos.installers.code uninstall", description = "Uninstall VS Code CLI." }
-test-code = { cmd = "python -m bsos.installers.code test", description = "Validate the code install on this platform (skips cleanly if unsupported)." }
-
-# installers — pixi
-compile-pixi = { cmd = "python -m bsos.installers._compile pixi -o install/pixi.py", description = "Compile pixi installer to a self-contained script." }
-install-pixi = { cmd = "python -m bsos.installers.pixi install", description = "Install pixi." }
-uninstall-pixi = { cmd = "python -m bsos.installers.pixi uninstall", description = "Uninstall pixi." }
-test-pixi = { cmd = "python -m bsos.installers.pixi test", description = "Validate the pixi install on this platform (skips cleanly if unsupported)." }
-
-# installers — mamba (Miniforge3)
-compile-mamba = { cmd = "python -m bsos.installers._compile mamba -o install/mamba.py", description = "Compile mamba installer to a self-contained script." }
-install-mamba = { cmd = "python -m bsos.installers.mamba install", description = "Install Miniforge3 (mamba)." }
-uninstall-mamba = { cmd = "python -m bsos.installers.mamba uninstall", description = "Uninstall mamba." }
-test-mamba = { cmd = "python -m bsos.installers.mamba test", description = "Validate the mamba install on this platform (skips cleanly if unsupported)." }
-
-# installers — mamba-env (conda environment)
-compile-mamba-env = { cmd = "python -m bsos.installers._compile mamba_env -o install/mamba_env.py", description = "Compile mamba_env installer to a self-contained script." }
-install-system-env = { cmd = "python -m bsos.installers.mamba_env install --name system", description = "Install the system conda environment." }
-uninstall-system-env = { cmd = "python -m bsos.installers.mamba_env uninstall --name system", description = "Uninstall the system conda environment." }
-test-system-env = { cmd = "python -m bsos.installers.mamba_env test --name system", description = "Validate the system conda env install (skips cleanly if unsupported)." }
-
-# installers — sman
-compile-sman = { cmd = "python -m bsos.installers._compile sman -o install/sman.py", description = "Compile sman installer to a self-contained script." }
-install-sman = { cmd = "python -m bsos.installers.sman install", description = "Install sman binary and sman.rc." }
-uninstall-sman = { cmd = "python -m bsos.installers.sman uninstall", description = "Uninstall sman." }
-test-sman = { cmd = "python -m bsos.installers.sman test", description = "Validate the sman install on this platform (skips cleanly if unsupported)." }
-
-# installers — zim
-compile-zim = { cmd = "python -m bsos.installers._compile zim -o install/zim.py", description = "Compile zim installer to a self-contained script." }
-install-zim = { cmd = "python -m bsos.installers.zim install", description = "Install zimfw." }
-uninstall-zim = { cmd = "python -m bsos.installers.zim uninstall", description = "Uninstall zim." }
-test-zim = { cmd = "python -m bsos.installers.zim test", description = "Validate the zim install." }
-
-# completions
 generate-completions = { cmd = "python -m bsos.installers.completion generate", description = "Generate shell completions for installed tools into XDG_DATA_HOME dirs." }
 
-# tests
-test = { cmd = "pytest", description = "Run the test suite." }
+# installers — compile-*
+compile-code = { cmd = "python -m bsos.installers._compile code -o install/code.py", description = "Compile code installer to a self-contained script." }
+compile-pixi = { cmd = "python -m bsos.installers._compile pixi -o install/pixi.py", description = "Compile pixi installer to a self-contained script." }
+compile-mamba = { cmd = "python -m bsos.installers._compile mamba -o install/mamba.py", description = "Compile mamba installer to a self-contained script." }
+compile-mamba-env = { cmd = "python -m bsos.installers._compile mamba_env -o install/mamba_env.py", description = "Compile mamba_env installer to a self-contained script." }
+compile-sman = { cmd = "python -m bsos.installers._compile sman -o install/sman.py", description = "Compile sman installer to a self-contained script." }
+compile-zim = { cmd = "python -m bsos.installers._compile zim -o install/zim.py", description = "Compile zim installer to a self-contained script." }
+compile = { depends-on = ["compile-pixi", "compile-mamba", "compile-mamba-env", "compile-sman", "compile-zim", "compile-code"], description = "Compile all installer modules to standalone scripts." }
+
+# installers — install-*
+# Order follows the bootstrap sequence: pixi → mamba → system env → zim → sman → code.
+# mamba_env (install-system-env) must run after install-mamba; the cmd chain enforces this.
+install-pixi = { cmd = "python -m bsos.installers.pixi install", description = "Install pixi." }
+install-mamba = { cmd = "python -m bsos.installers.mamba install", description = "Install Miniforge3 (mamba)." }
+install-system-env = { cmd = "python -m bsos.installers.mamba_env install --name system", description = "Install the system conda environment." }
+install-zim = { cmd = "python -m bsos.installers.zim install", description = "Install zimfw." }
+install-sman = { cmd = "python -m bsos.installers.sman install", description = "Install sman binary and sman.rc." }
+install-code = { cmd = "python -m bsos.installers.code install", description = "Install VS Code CLI." }
+install = { cmd = "python -m bsos.installers.pixi install && python -m bsos.installers.mamba install && python -m bsos.installers.mamba_env install --name system && python -m bsos.installers.zim install && python -m bsos.installers.sman install && python -m bsos.installers.code install", description = "Install all managed tools in bootstrap order (pixi → mamba → system env → zim → sman → code)." }
+
+# installers — uninstall-*
+# Reverse of install order: code → sman → zim → system env → mamba → pixi.
+uninstall-code = { cmd = "python -m bsos.installers.code uninstall", description = "Uninstall VS Code CLI." }
+uninstall-sman = { cmd = "python -m bsos.installers.sman uninstall", description = "Uninstall sman." }
+uninstall-zim = { cmd = "python -m bsos.installers.zim uninstall", description = "Uninstall zim." }
+uninstall-system-env = { cmd = "python -m bsos.installers.mamba_env uninstall --name system", description = "Uninstall the system conda environment." }
+uninstall-mamba = { cmd = "python -m bsos.installers.mamba uninstall", description = "Uninstall mamba." }
+uninstall-pixi = { cmd = "python -m bsos.installers.pixi uninstall", description = "Uninstall pixi." }
+uninstall = { cmd = "python -m bsos.installers.code uninstall; python -m bsos.installers.sman uninstall; python -m bsos.installers.zim uninstall; python -m bsos.installers.mamba_env uninstall --name system; python -m bsos.installers.mamba uninstall; python -m bsos.installers.pixi uninstall", description = "Uninstall all managed tools in reverse bootstrap order." }
+
+# installers — test-* (per-installer smoke)
+test-pixi = { cmd = "python -m bsos.installers.pixi test", description = "Validate the pixi install on this platform (skips cleanly if unsupported)." }
+test-mamba = { cmd = "python -m bsos.installers.mamba test", description = "Validate the mamba install on this platform (skips cleanly if unsupported)." }
+test-system-env = { cmd = "python -m bsos.installers.mamba_env test --name system", description = "Validate the system conda env install (skips cleanly if unsupported)." }
+test-zim = { cmd = "python -m bsos.installers.zim test", description = "Validate the zim install." }
+test-sman = { cmd = "python -m bsos.installers.sman test", description = "Validate the sman install on this platform (skips cleanly if unsupported)." }
+test-code = { cmd = "python -m bsos.installers.code test", description = "Validate the code install on this platform (skips cleanly if unsupported)." }
+smoke = { depends-on = ["test-pixi", "test-mamba", "test-system-env", "test-zim", "test-sman", "test-code"], description = "Validate all installer installs on this platform." }
+
+# unit tests
+test = { cmd = "pytest", description = "Run the pytest unit-test suite." }
