@@ -20,8 +20,7 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities",
 ]
@@ -39,7 +38,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.10"
 defopt = "^6"
 httpx = "*"
 pandas = "*"
@@ -111,7 +110,7 @@ max-line-length = 120
 
 [tool.black]
 line-length = 120
-target-version = ['py38']
+target-version = ['py310']
 
 [tool.jupytext]
 formats = "ipynb,py:percent"
@@ -128,6 +127,7 @@ pandas = ">=2.2.3,<3"
 platformdirs = ">=4.3.7,<5"
 pyyaml = ">=6.0.2,<7"
 yamlloader = ">=1.5.1,<2"
+pytest = "*"
 
 [tool.pixi.pypi-dependencies]
 bsos = { path = ".", editable = true}
@@ -162,3 +162,13 @@ nix-format = { cmd = "find nix -name '*.nix' -exec nixfmt '{}' +", description =
 # brew
 brew-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/brews.nix --sort", description = "Annotate a brews.nix file with brew descriptions." }
 brew-cask-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/casks.nix --sort --cask", description = "Annotate a casks.nix file with brew descriptions." }
+
+# installers
+compile-code = { cmd = "python -m bsos.installers._compile code -o install/code.py", description = "Compile code installer to a self-contained script." }
+generate-env-sh = { cmd = "python -m bsos.installers._env > env.sh", description = "Regenerate env.sh from Python definitions." }
+install-code = { cmd = "python -m bsos.installers.code install", description = "Install VS Code CLI." }
+uninstall-code = { cmd = "python -m bsos.installers.code uninstall", description = "Uninstall VS Code CLI." }
+test-code = { cmd = "python -m bsos.installers.code test", description = "Validate the code install on this platform (skips cleanly if unsupported)." }
+
+# tests
+test = { cmd = "pytest", description = "Run the test suite." }
