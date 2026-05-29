@@ -210,9 +210,6 @@ def install(
 
     *env_file* may be a local path or an ``http(s)://`` URL; if omitted the
     bundled ``conda/`` file for the current platform is used.
-
-    Exits 0 (skip) when mamba is not installed — mamba is a prerequisite that
-    must be set up beforehand.
     """
     env = env or EnvConfig()
     key = platform_key()
@@ -223,10 +220,10 @@ def install(
     mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
     if not mamba_bin.exists():
         print(
-            f"mamba not installed at {mamba_bin}; skipping (install mamba first)",
+            f"mamba not found at {mamba_bin}; install mamba first (run install/mamba.py install)",
             file=sys.stderr,
         )
-        return  # prerequisite absent — skip rather than fail
+        sys.exit(1)
 
     tmp_path: Optional[Path] = None
     try:
@@ -280,7 +277,8 @@ def uninstall(name: str = "system", env: Optional[EnvConfig] = None) -> None:
 def test_install(name: str = "system", env: Optional[EnvConfig] = None) -> int:
     """Validate that the named conda env exists on the current platform.
 
-    Skips cleanly (exit 0) on unsupported platforms or when mamba is absent.
+    Skips cleanly (exit 0) on unsupported platforms.  Fails (exit 1) if mamba
+    is absent — that is a missing prerequisite, not a platform limitation.
     """
     env = env or EnvConfig()
     key = platform_key()
@@ -289,8 +287,11 @@ def test_install(name: str = "system", env: Optional[EnvConfig] = None) -> int:
         return 0
     mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
     if not mamba_bin.exists():
-        print(f"mamba not installed at {mamba_bin}; skipping mamba_env test", file=sys.stderr)
-        return 0
+        print(
+            f"mamba not found at {mamba_bin}; install mamba first (run install/mamba.py install)",
+            file=sys.stderr,
+        )
+        return 1
     prefix = env.opt_root / name
     if not prefix.exists():
         print(f"Conda env {name!r} not found at {prefix}; run install first", file=sys.stderr)
