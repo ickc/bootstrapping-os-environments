@@ -1,0 +1,50 @@
+name: test-installers
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Run the compiled curl|python3 installers end-to-end on every supported
+  # platform. Platform support lives in the installers themselves (each script
+  # skips cleanly via `--test` on an unsupported platform), so this matrix only
+  # needs the runners that map to a supported `$(uname -sm)`:
+  #   ubuntu-latest   -> Linux-x86_64
+  #   ubuntu-24.04-arm -> Linux-aarch64
+  #   macos-latest    -> Darwin-arm64
+  #   macos-26-intel  -> Darwin-x86_64
+  # Looping over install/*.py keeps this generic as more installers are added.
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - macos-latest
+          - macos-26-intel
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: install and test each compiled installer
+        shell: bash
+        run: |
+          set -euo pipefail
+          for script in install/*.py; do
+            echo "::group::${script}"
+            python3 "${script}" install
+            python3 "${script}" test
+            echo "::endgroup::"
+          done
+
+  # Unit tests: pins env.sh / install/*.py artifacts to their source modules
+  # and exercises the env-derivation logic.
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: prefix-dev/setup-pixi@v0.8.10
+      - run: pixi run test
