@@ -128,6 +128,9 @@ platformdirs = ">=4.3.7,<5"
 pyyaml = ">=6.0.2,<7"
 yamlloader = ">=1.5.1,<2"
 pytest = "*"
+ruff = ">=0.9,<1"
+mypy = ">=1.14,<2"
+pyright = ">=1.1,<2"
 
 [tool.pixi.pypi-dependencies]
 bsos = { path = ".", editable = true}
@@ -174,7 +177,10 @@ compile-mamba = { cmd = "python -m bsos.installers._compile mamba -o install/mam
 compile-mamba-env = { cmd = "python -m bsos.installers._compile mamba_env -o install/mamba_env.py", description = "Compile mamba_env installer to a self-contained script." }
 compile-sman = { cmd = "python -m bsos.installers._compile sman -o install/sman.py", description = "Compile sman installer to a self-contained script." }
 compile-zim = { cmd = "python -m bsos.installers._compile zim -o install/zim.py", description = "Compile zim installer to a self-contained script." }
-compile = { depends-on = ["compile-pixi", "compile-mamba", "compile-mamba-env", "compile-sman", "compile-zim", "compile-code"], description = "Compile all installer modules to standalone scripts." }
+compile-clifton = { cmd = "python -m bsos.installers._compile clifton -o install/clifton.py", description = "Compile clifton installer to a self-contained script." }
+compile-gh = { cmd = "python -m bsos.installers._compile gh -o install/gh.py", description = "Compile gh installer to a self-contained script." }
+compile-codex = { cmd = "python -m bsos.installers._compile codex -o install/codex.py", description = "Compile codex installer to a self-contained script." }
+compile = { depends-on = ["compile-pixi", "compile-mamba", "compile-mamba-env", "compile-sman", "compile-zim", "compile-code", "compile-clifton", "compile-gh", "compile-codex"], description = "Compile all installer modules to standalone scripts." }
 
 # installers — install-*
 # Order follows the bootstrap sequence: pixi → mamba → system env → zim → sman → code.
@@ -185,10 +191,16 @@ install-system-env = { cmd = "python -m bsos.installers.mamba_env install --name
 install-zim = { cmd = "python -m bsos.installers.zim install", description = "Install zimfw." }
 install-sman = { cmd = "python -m bsos.installers.sman install", description = "Install sman binary and sman.rc." }
 install-code = { cmd = "python -m bsos.installers.code install", description = "Install VS Code CLI." }
+install-gh = { cmd = "python -m bsos.installers.gh install", description = "Install GitHub CLI (gh)." }
+install-codex = { cmd = "python -m bsos.installers.codex install", description = "Install OpenAI Codex CLI." }
+install-clifton = { cmd = "python -m bsos.installers.clifton install", description = "Install Clifton HPC tool." }
 install = { cmd = "python -m bsos.installers.pixi install && python -m bsos.installers.mamba install && python -m bsos.installers.mamba_env install --name system && python -m bsos.installers.zim install && python -m bsos.installers.sman install && python -m bsos.installers.code install", description = "Install all managed tools in bootstrap order (pixi → mamba → system env → zim → sman → code)." }
 
 # installers — uninstall-*
 # Reverse of install order: code → sman → zim → system env → mamba → pixi.
+uninstall-clifton = { cmd = "python -m bsos.installers.clifton uninstall", description = "Uninstall Clifton HPC tool." }
+uninstall-gh = { cmd = "python -m bsos.installers.gh uninstall", description = "Uninstall GitHub CLI (gh)." }
+uninstall-codex = { cmd = "python -m bsos.installers.codex uninstall", description = "Uninstall OpenAI Codex CLI." }
 uninstall-code = { cmd = "python -m bsos.installers.code uninstall", description = "Uninstall VS Code CLI." }
 uninstall-sman = { cmd = "python -m bsos.installers.sman uninstall", description = "Uninstall sman." }
 uninstall-zim = { cmd = "python -m bsos.installers.zim uninstall", description = "Uninstall zim." }
@@ -204,7 +216,54 @@ test-system-env = { cmd = "python -m bsos.installers.mamba_env test --name syste
 test-zim = { cmd = "python -m bsos.installers.zim test", description = "Validate the zim install." }
 test-sman = { cmd = "python -m bsos.installers.sman test", description = "Validate the sman install on this platform (skips cleanly if unsupported)." }
 test-code = { cmd = "python -m bsos.installers.code test", description = "Validate the code install on this platform (skips cleanly if unsupported)." }
-smoke = { depends-on = ["test-pixi", "test-mamba", "test-system-env", "test-zim", "test-sman", "test-code"], description = "Validate all installer installs on this platform." }
+test-gh = { cmd = "python -m bsos.installers.gh test", description = "Validate the gh install on this platform (skips cleanly if unsupported)." }
+test-codex = { cmd = "python -m bsos.installers.codex test", description = "Validate the codex install on this platform (skips cleanly if unsupported)." }
+test-clifton = { cmd = "python -m bsos.installers.clifton test", description = "Validate the clifton install on this platform (skips cleanly if unsupported)." }
+smoke = { depends-on = ["test-pixi", "test-mamba", "test-system-env", "test-zim", "test-sman", "test-code"], description = "Validate core installer installs on this platform." }
+
+# lint and format
+format-sh = { cmd = "find . -type f -name '*.sh' -exec sed -i -E -e 's/\\$([a-zA-Z_][a-zA-Z0-9_]*|[0-9]+)/${\\1}/g' -e 's/([^[])[[]([^]]+)[]]([^]])/\\1[[\\2]]\\3/g' {} + -exec shfmt --write --simplify --indent 4 --case-indent --space-redirects {} +", description = "Format all shell scripts with sed fixups and shfmt." }
+format-py = { cmd = "ruff check --fix src tests && ruff format src tests", description = "Lint-fix and format Python files with ruff." }
+format = { depends-on = ["format-sh", "format-py"], description = "Run all formatters." }
+lint-sh = { cmd = "find . -type f -name '*.sh' -exec shellcheck --norc --enable=all --shell=bash --severity=style {} +", description = "Lint all shell scripts with shellcheck." }
+lint-mypy = { cmd = "mypy src", description = "Type-check Python files with mypy." }
+lint-pyright = { cmd = "pyright src", description = "Type-check Python files with pyright." }
+lint-py = { depends-on = ["lint-mypy", "lint-pyright"], description = "Type-check Python files with mypy and pyright." }
+lint = { depends-on = ["lint-sh", "lint-py"], description = "Run all linters." }
 
 # unit tests
 test = { cmd = "pytest", description = "Run the pytest unit-test suite." }
+
+# go-shfmt and shellcheck are not available on linux-ppc64le via conda-forge.
+[tool.pixi.target.linux-64.dependencies]
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.pixi.target.linux-aarch64.dependencies]
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.pixi.target.osx-64.dependencies]
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.pixi.target.osx-arm64.dependencies]
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["I", "F401", "F841"]
+
+[tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "standard"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unreachable = true
+show_error_codes = true
+pretty = true

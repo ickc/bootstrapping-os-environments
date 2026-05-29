@@ -86,7 +86,7 @@ def test_install(env: Optional[EnvConfig] = None) -> int:
     if not sman_bin.exists():
         print(f"{sman_bin} not found; run install first", file=sys.stderr)
         return 1
-    result = run([str(sman_bin), "--version"], env=env.subprocess_env(), check=False)
+    result = run([str(sman_bin), "-h"], env=env.subprocess_env(), check=False)
     return result.returncode
 
 
