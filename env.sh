@@ -1,6 +1,9 @@
 # Shell library: envoy installer path detection.
 # Source from shell startup to set envoy-managed paths.
 # Respects pre-existing values — dotfiles may set __APPDIR, XDG vars, etc. first.
+#
+# GENERATED from bsos.installers._env — do not edit. Regenerate with:
+#   pixi run generate-env-sh
 
 # Platform detection (always re-detected — pure platform facts)
 # shellcheck disable=SC2312
