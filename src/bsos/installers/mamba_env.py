@@ -1,0 +1,145 @@
+"""Conda environment installer using mamba.
+
+Creates or updates a named conda environment from an environment YAML file.
+The environment is installed to ``$__OPT_ROOT/$NAME`` (default: ``system``).
+
+When run from within the envoy repository, the bundled ``conda/`` environment
+files are discovered automatically.  Otherwise, supply ``--env-file``::
+
+    python3 install/mamba_env.py install --name system --env-file /path/to/env.yml
+"""
+
+import argparse
+import shutil
+import sys
+from pathlib import Path
+from typing import Optional
+
+from bsos.installers._env import EnvConfig, platform_key
+from bsos.installers._subprocess import run
+
+_PLATFORM_MAP = {
+    "Darwin-arm64": "osx-arm64",
+    "Darwin-x86_64": "osx-64",
+    "Linux-x86_64": "linux-64",
+    "Linux-aarch64": "linux-aarch64",
+    "Linux-ppc64le": "linux-ppc64le",
+}
+
+
+def _find_bundled_env_file(name: str) -> Optional[Path]:
+    """Search for ``conda/${name}_${platform}.yml`` near the script."""
+    key = platform_key()
+    conda_arch = _PLATFORM_MAP.get(key)
+    if conda_arch is None:
+        return None
+    filename = f"{name}_{conda_arch}.yml"
+    # Search upward from the script's directory so this works both when run as
+    # a source module (src/bsos/installers/) and as a compiled standalone
+    # (install/mamba_env.py — conda/ is one level up).
+    script_dir = Path(__file__).resolve().parent
+    for search_root in [script_dir, *list(script_dir.parents)[:4]]:
+        candidate = search_root / "conda" / filename
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def install(
+    name: str = "system",
+    env_file: Optional[Path] = None,
+    env: Optional[EnvConfig] = None,
+) -> None:
+    env = env or EnvConfig()
+    key = platform_key()
+    if key not in _PLATFORM_MAP:
+        print(f"Unsupported platform: {key}", file=sys.stderr)
+        sys.exit(1)
+
+    if env_file is None:
+        env_file = _find_bundled_env_file(name)
+    if env_file is None:
+        print(
+            f"No env file found for name={name!r} on {key}. "
+            "Pass --env-file <path> to specify one.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
+    if not mamba_bin.exists():
+        print(f"mamba not found at {mamba_bin}; install mamba first", file=sys.stderr)
+        sys.exit(1)
+
+    prefix = env.opt_root / name
+    if prefix.exists():
+        print(f"Updating conda env {name!r} at {prefix} ...")
+        run(
+            [str(mamba_bin), "env", "update", "-f", str(env_file), "-p", str(prefix), "-y", "--prune"],
+            env=env.subprocess_env(),
+        )
+    else:
+        print(f"Creating conda env {name!r} at {prefix} ...")
+        run(
+            [str(mamba_bin), "env", "create", "-f", str(env_file), "-p", str(prefix), "-y"],
+            env=env.subprocess_env(),
+        )
+    print(f"Conda env {name!r} ready at {prefix}")
+
+
+def uninstall(name: str = "system", env: Optional[EnvConfig] = None) -> None:
+    env = env or EnvConfig()
+    prefix = env.opt_root / name
+    if prefix.exists():
+        shutil.rmtree(prefix)
+        print(f"Removed conda env at {prefix}")
+    else:
+        print(f"{prefix} not found", file=sys.stderr)
+
+
+def test_install(name: str = "system", env: Optional[EnvConfig] = None) -> int:
+    """Validate that the named conda env exists on the current platform.
+
+    Skips cleanly (exit 0) on unsupported platforms.
+    """
+    env = env or EnvConfig()
+    key = platform_key()
+    if key not in _PLATFORM_MAP:
+        print(f"Platform {key} unsupported by mamba_env installer; skipping", file=sys.stderr)
+        return 0
+    prefix = env.opt_root / name
+    if not prefix.exists():
+        print(f"Conda env {name!r} not found at {prefix}; run install first", file=sys.stderr)
+        return 1
+    mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
+    result = run([str(mamba_bin), "env", "list"], env=env.subprocess_env(), check=False)
+    return result.returncode
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("action", choices=["install", "uninstall", "test"])
+    parser.add_argument(
+        "--name",
+        default="system",
+        help="Conda env name and prefix subdirectory (default: system)",
+    )
+    parser.add_argument(
+        "--env-file",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="Path to conda env YAML (auto-detected from repo when omitted)",
+    )
+    args = parser.parse_args()
+    env = EnvConfig()
+    if args.action == "install":
+        install(args.name, args.env_file, env)
+    elif args.action == "uninstall":
+        uninstall(args.name, env)
+    else:
+        sys.exit(test_install(args.name, env))
+
+
+if __name__ == "__main__":
+    main()
