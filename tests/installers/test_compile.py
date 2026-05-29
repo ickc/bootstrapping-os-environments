@@ -11,9 +11,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 _COMPILED_MODULES = ["code", "pixi", "mamba", "mamba_env", "sman", "zim"]
 
-# mamba_env uses only _env/_subprocess (no _download), so __version__ is not
-# imported and therefore not baked into the compiled output.
-_MODULES_WITH_VERSION = [m for m in _COMPILED_MODULES if m != "mamba_env"]
+# All compiled modules import _download (directly or transitively), so __version__
+# is always baked into the compiled output.
+_MODULES_WITH_VERSION = _COMPILED_MODULES
 
 
 def test_code_dependencies_are_topologically_ordered():

@@ -33,7 +33,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for script in install/*.py; do
+          # Sort explicitly with C locale to guarantee alphabetical byte order.
+          # This matters because mamba_env.py depends on mamba.py having run first,
+          # and APFS/HFS+ filesystem ordering is not alphabetical.
+          for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
             echo "::group::${script}"
             python3 "${script}" install
             python3 "${script}" test

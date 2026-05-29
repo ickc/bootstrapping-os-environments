@@ -5,19 +5,62 @@
 Creates or updates a named conda environment from an environment YAML file.
 The environment is installed to ``$__OPT_ROOT/$NAME`` (default: ``system``).
 
-When run from within the envoy repository, the bundled ``conda/`` environment
-files are discovered automatically.  Otherwise, supply ``--env-file``::
+When run from within the envoy repository the bundled ``conda/`` files are
+discovered automatically.  Otherwise pass ``--env-file`` with a local path
+or a URL::
 
-    python3 install/mamba_env.py install --name system --env-file /path/to/env.yml"""
+    # auto-detect bundled file (envoy repo clone):
+    python3 install/mamba_env.py install --name system
+
+    # explicit local file:
+    python3 install/mamba_env.py install --name system --env-file /path/to/env.yml
+
+    # URL (downloaded to a temp file, then used):
+    python3 install/mamba_env.py install --name system \
+        --env-file https://raw.githubusercontent.com/ickc/envoy/main/conda/system_linux-64.yml
+
+    # curl | python3 variant:
+    curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/mamba_env.py | \
+        python3 - install --name system \
+        --env-file https://raw.githubusercontent.com/ickc/envoy/main/conda/system_linux-64.yml"""
 
 import argparse
+import io
 import os
 import platform
 import shutil
 import subprocess
 import sys
+import tarfile
+import tempfile
+import urllib.request
+import zipfile
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
+
+# Baked from the bsos package at compile time.
+__version__ = '0.1.0'
+
+# --- _download ---
+
+
+_USER_AGENT = f"bsos-installer/{__version__}"
+
+PathLike = Union[str, Path]
+
+
+def _open_url(url: str):
+    req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
+    return urllib.request.urlopen(req)  # noqa: S310 — URL is from our own dispatch table
+
+
+def download_file(url: str, dest: PathLike) -> None:
+    """Download *url* to a local file at *dest*."""
+    dest = Path(dest)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with _open_url(url) as resp, dest.open("wb") as f:
+        shutil.copyfileobj(resp, f)
+
 
 # --- _env ---
 
@@ -139,15 +182,17 @@ _PLATFORM_MAP = {
 
 
 def _find_bundled_env_file(name: str) -> Optional[Path]:
-    """Search for ``conda/${name}_${platform}.yml`` near the script."""
+    """Search for ``conda/${name}_${platform}.yml`` near the script.
+
+    Works both when running as a source module (``src/bsos/installers/``) and
+    as a compiled standalone script (``install/mamba_env.py`` — the repo root
+    is one level up).
+    """
     key = platform_key()
     conda_arch = _PLATFORM_MAP.get(key)
     if conda_arch is None:
         return None
     filename = f"{name}_{conda_arch}.yml"
-    # Search upward from the script's directory so this works both when run as
-    # a source module (src/bsos/installers/) and as a compiled standalone
-    # (install/mamba_env.py — conda/ is one level up).
     script_dir = Path(__file__).resolve().parent
     for search_root in [script_dir, *list(script_dir.parents)[:4]]:
         candidate = search_root / "conda" / filename
@@ -158,44 +203,68 @@ def _find_bundled_env_file(name: str) -> Optional[Path]:
 
 def install(
     name: str = "system",
-    env_file: Optional[Path] = None,
+    env_file: Optional[str] = None,
     env: Optional[EnvConfig] = None,
 ) -> None:
+    """Install or update a named conda environment.
+
+    *env_file* may be a local path or an ``http(s)://`` URL; if omitted the
+    bundled ``conda/`` file for the current platform is used.
+
+    Exits 0 (skip) when mamba is not installed — mamba is a prerequisite that
+    must be set up beforehand.
+    """
     env = env or EnvConfig()
     key = platform_key()
     if key not in _PLATFORM_MAP:
         print(f"Unsupported platform: {key}", file=sys.stderr)
         sys.exit(1)
 
-    if env_file is None:
-        env_file = _find_bundled_env_file(name)
-    if env_file is None:
-        print(
-            f"No env file found for name={name!r} on {key}. "
-            "Pass --env-file <path> to specify one.",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
     mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
     if not mamba_bin.exists():
-        print(f"mamba not found at {mamba_bin}; install mamba first", file=sys.stderr)
-        sys.exit(1)
+        print(
+            f"mamba not installed at {mamba_bin}; skipping (install mamba first)",
+            file=sys.stderr,
+        )
+        return  # prerequisite absent — skip rather than fail
 
-    prefix = env.opt_root / name
-    if prefix.exists():
-        print(f"Updating conda env {name!r} at {prefix} ...")
-        run(
-            [str(mamba_bin), "env", "update", "-f", str(env_file), "-p", str(prefix), "-y", "--prune"],
-            env=env.subprocess_env(),
-        )
-    else:
-        print(f"Creating conda env {name!r} at {prefix} ...")
-        run(
-            [str(mamba_bin), "env", "create", "-f", str(env_file), "-p", str(prefix), "-y"],
-            env=env.subprocess_env(),
-        )
-    print(f"Conda env {name!r} ready at {prefix}")
+    tmp_path: Optional[Path] = None
+    try:
+        if env_file is not None and env_file.startswith(("http://", "https://")):
+            fd, tmp_str = tempfile.mkstemp(suffix=".yml", prefix="bsos-env-")
+            import os; os.close(fd)
+            tmp_path = Path(tmp_str)
+            download_file(env_file, tmp_path)
+            resolved = tmp_path
+        elif env_file is not None:
+            resolved = Path(env_file)
+        else:
+            resolved = _find_bundled_env_file(name)
+            if resolved is None:
+                print(
+                    f"No env file found for name={name!r} on {key}. "
+                    "Pass --env-file <path-or-url>.",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
+
+        prefix = env.opt_root / name
+        if prefix.exists():
+            print(f"Updating conda env {name!r} at {prefix} ...")
+            run(
+                [str(mamba_bin), "env", "update", "-f", str(resolved), "-p", str(prefix), "-y", "--prune"],
+                env=env.subprocess_env(),
+            )
+        else:
+            print(f"Creating conda env {name!r} at {prefix} ...")
+            run(
+                [str(mamba_bin), "env", "create", "-f", str(resolved), "-p", str(prefix), "-y"],
+                env=env.subprocess_env(),
+            )
+        print(f"Conda env {name!r} ready at {prefix}")
+    finally:
+        if tmp_path is not None:
+            tmp_path.unlink(missing_ok=True)
 
 
 def uninstall(name: str = "system", env: Optional[EnvConfig] = None) -> None:
@@ -211,18 +280,21 @@ def uninstall(name: str = "system", env: Optional[EnvConfig] = None) -> None:
 def test_install(name: str = "system", env: Optional[EnvConfig] = None) -> int:
     """Validate that the named conda env exists on the current platform.
 
-    Skips cleanly (exit 0) on unsupported platforms.
+    Skips cleanly (exit 0) on unsupported platforms or when mamba is absent.
     """
     env = env or EnvConfig()
     key = platform_key()
     if key not in _PLATFORM_MAP:
         print(f"Platform {key} unsupported by mamba_env installer; skipping", file=sys.stderr)
         return 0
+    mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
+    if not mamba_bin.exists():
+        print(f"mamba not installed at {mamba_bin}; skipping mamba_env test", file=sys.stderr)
+        return 0
     prefix = env.opt_root / name
     if not prefix.exists():
         print(f"Conda env {name!r} not found at {prefix}; run install first", file=sys.stderr)
         return 1
-    mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
     result = run([str(mamba_bin), "env", "list"], env=env.subprocess_env(), check=False)
     return result.returncode
 
@@ -237,10 +309,9 @@ def main() -> None:
     )
     parser.add_argument(
         "--env-file",
-        type=Path,
         default=None,
-        metavar="PATH",
-        help="Path to conda env YAML (auto-detected from repo when omitted)",
+        metavar="PATH_OR_URL",
+        help="Path or URL to conda env YAML (auto-detected from repo when omitted)",
     )
     args = parser.parse_args()
     env = EnvConfig()
