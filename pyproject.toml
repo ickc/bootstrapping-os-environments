@@ -170,56 +170,13 @@ brew-cask-add-description = { cmd = "python -m bsos.brew.helper add-description 
 generate-env-sh = { cmd = "python -m bsos.installers._env > env.sh", description = "Regenerate env.sh from Python definitions." }
 generate-completions = { cmd = "python -m bsos.shell.completion generate", description = "Generate shell completions for installed tools into XDG_DATA_HOME dirs." }
 
-# installers — compile-*
-compile-code = { cmd = "python -m bsos.installers._compile code -o install/code.py", description = "Compile code installer to a self-contained script." }
-compile-pixi = { cmd = "python -m bsos.installers._compile pixi -o install/pixi.py", description = "Compile pixi installer to a self-contained script." }
-compile-mamba = { cmd = "python -m bsos.installers._compile mamba -o install/mamba.py", description = "Compile mamba installer to a self-contained script." }
-compile-mamba-env = { cmd = "python -m bsos.installers._compile mamba_env -o install/mamba_env.py", description = "Compile mamba_env installer to a self-contained script." }
-compile-sman = { cmd = "python -m bsos.installers._compile sman -o install/sman.py", description = "Compile sman installer to a self-contained script." }
-compile-zim = { cmd = "python -m bsos.installers._compile zim -o install/zim.py", description = "Compile zim installer to a self-contained script." }
-compile-clifton = { cmd = "python -m bsos.installers._compile clifton -o install/clifton.py", description = "Compile clifton installer to a self-contained script." }
-compile-gh = { cmd = "python -m bsos.installers._compile gh -o install/gh.py", description = "Compile gh installer to a self-contained script." }
-compile-codex = { cmd = "python -m bsos.installers._compile codex -o install/codex.py", description = "Compile codex installer to a self-contained script." }
-compile = { depends-on = ["compile-pixi", "compile-mamba", "compile-mamba-env", "compile-sman", "compile-zim", "compile-code", "compile-clifton", "compile-gh", "compile-codex"], description = "Compile all installer modules to standalone scripts." }
-
-# installers — install-*
-# Order follows the bootstrap sequence: pixi → mamba → system env → zim → sman → code.
-# mamba_env (install-system-env) must run after install-mamba; the cmd chain enforces this.
-install-pixi = { cmd = "python -m bsos.installers.pixi install", description = "Install pixi." }
-install-mamba = { cmd = "python -m bsos.installers.mamba install", description = "Install Miniforge3 (mamba)." }
-install-system-env = { cmd = "python -m bsos.installers.mamba_env install --name system", description = "Install the system conda environment." }
-install-zim = { cmd = "python -m bsos.installers.zim install", description = "Install zimfw." }
-install-sman = { cmd = "python -m bsos.installers.sman install", description = "Install sman binary and sman.rc." }
-install-code = { cmd = "python -m bsos.installers.code install", description = "Install VS Code CLI." }
-install-gh = { cmd = "python -m bsos.installers.gh install", description = "Install GitHub CLI (gh)." }
-install-codex = { cmd = "python -m bsos.installers.codex install", description = "Install OpenAI Codex CLI." }
-install-clifton = { cmd = "python -m bsos.installers.clifton install", description = "Install Clifton HPC tool." }
-install = { cmd = "python -m bsos.installers.pixi install && python -m bsos.installers.mamba install && python -m bsos.installers.mamba_env install --name system && python -m bsos.installers.zim install && python -m bsos.installers.sman install && python -m bsos.installers.code install", description = "Install all managed tools in bootstrap order (pixi → mamba → system env → zim → sman → code)." }
-
-# installers — uninstall-*
-# Reverse of install order: code → sman → zim → system env → mamba → pixi.
-uninstall-clifton = { cmd = "python -m bsos.installers.clifton uninstall", description = "Uninstall Clifton HPC tool." }
-uninstall-gh = { cmd = "python -m bsos.installers.gh uninstall", description = "Uninstall GitHub CLI (gh)." }
-uninstall-codex = { cmd = "python -m bsos.installers.codex uninstall", description = "Uninstall OpenAI Codex CLI." }
-uninstall-code = { cmd = "python -m bsos.installers.code uninstall", description = "Uninstall VS Code CLI." }
-uninstall-sman = { cmd = "python -m bsos.installers.sman uninstall", description = "Uninstall sman." }
-uninstall-zim = { cmd = "python -m bsos.installers.zim uninstall", description = "Uninstall zim." }
-uninstall-system-env = { cmd = "python -m bsos.installers.mamba_env uninstall --name system", description = "Uninstall the system conda environment." }
-uninstall-mamba = { cmd = "python -m bsos.installers.mamba uninstall", description = "Uninstall mamba." }
-uninstall-pixi = { cmd = "python -m bsos.installers.pixi uninstall", description = "Uninstall pixi." }
-uninstall = { cmd = "python -m bsos.installers.code uninstall; python -m bsos.installers.sman uninstall; python -m bsos.installers.zim uninstall; python -m bsos.installers.mamba_env uninstall --name system; python -m bsos.installers.mamba uninstall; python -m bsos.installers.pixi uninstall", description = "Uninstall all managed tools in reverse bootstrap order." }
-
-# installers — test-* (per-installer smoke)
-test-pixi = { cmd = "python -m bsos.installers.pixi test", description = "Validate the pixi install on this platform (skips cleanly if unsupported)." }
-test-mamba = { cmd = "python -m bsos.installers.mamba test", description = "Validate the mamba install on this platform (skips cleanly if unsupported)." }
-test-system-env = { cmd = "python -m bsos.installers.mamba_env test --name system", description = "Validate the system conda env install (skips cleanly if unsupported)." }
-test-zim = { cmd = "python -m bsos.installers.zim test", description = "Validate the zim install." }
-test-sman = { cmd = "python -m bsos.installers.sman test", description = "Validate the sman install on this platform (skips cleanly if unsupported)." }
-test-code = { cmd = "python -m bsos.installers.code test", description = "Validate the code install on this platform (skips cleanly if unsupported)." }
-test-gh = { cmd = "python -m bsos.installers.gh test", description = "Validate the gh install on this platform (skips cleanly if unsupported)." }
-test-codex = { cmd = "python -m bsos.installers.codex test", description = "Validate the codex install on this platform (skips cleanly if unsupported)." }
-test-clifton = { cmd = "python -m bsos.installers.clifton test", description = "Validate the clifton install on this platform (skips cleanly if unsupported)." }
-smoke = { depends-on = ["test-pixi", "test-mamba", "test-system-env", "test-zim", "test-sman", "test-code"], description = "Validate core installer installs on this platform." }
+# installers — compile / install / uninstall / smoke
+# All tasks auto-discover modules (files in src/bsos/installers/ not starting with _).
+# Pass a name after -- to target a single module: e.g. `pixi run compile -- code`
+compile = { cmd = "python -m bsos.installers._compile", description = "Compile all installer modules to standalone scripts in install/." }
+install = { cmd = "python -m bsos.installers install", description = "Install all (or named) tools: `pixi run install -- code gh`." }
+uninstall = { cmd = "python -m bsos.installers uninstall", description = "Uninstall all (or named) tools: `pixi run uninstall -- code gh`." }
+smoke = { cmd = "python -m bsos.installers test", description = "Smoke-test all (or named) installs: `pixi run smoke -- pixi`." }
 
 # lint and format
 format-sh = { cmd = "find . -type f -name '*.sh' -exec sed -i -E -e 's/\\$([a-zA-Z_][a-zA-Z0-9_]*|[0-9]+)/${\\1}/g' -e 's/([^[])[[]([^]]+)[]]([^]])/\\1[[\\2]]\\3/g' {} + -exec shfmt --write --simplify --indent 4 --case-indent --space-redirects {} +", description = "Format all shell scripts with sed fixups and shfmt." }

@@ -17,6 +17,16 @@ from typing import Dict, List, Optional, Set, Tuple
 
 _PACKAGE = "bsos.installers"
 _PACKAGE_DIR = Path(__file__).resolve().parent
+_INSTALL_DIR = _PACKAGE_DIR.parents[2] / "install"
+
+
+def discover_modules() -> List[str]:
+    """Return all installer module names (non-private, non-dunder) sorted by name."""
+    return sorted(
+        p.stem
+        for p in _PACKAGE_DIR.glob("*.py")
+        if not p.stem.startswith("_")
+    )
 
 
 def _module_path(name: str) -> Path:
@@ -320,21 +330,29 @@ def compile_module(target: str) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Compile a bsos installer module.")
-    parser.add_argument("target", help="Module name (e.g. 'code')")
-    parser.add_argument("-o", "--output", help="Output file path (default: stdout)")
+    parser = argparse.ArgumentParser(description="Compile bsos installer module(s).")
+    parser.add_argument("target", nargs="?", help="Module name (e.g. 'code'); omit to compile all")
+    parser.add_argument("-o", "--output", help="Output file (single-module mode only; default: stdout)")
     args = parser.parse_args()
 
-    text = compile_module(args.target)
-
-    if args.output:
-        out = Path(args.output)
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(text)
-        out.chmod(0o755)
-        print(f"Compiled {args.target} → {out}", file=sys.stderr)
+    if args.target:
+        text = compile_module(args.target)
+        if args.output:
+            out = Path(args.output)
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(text)
+            out.chmod(0o755)
+            print(f"Compiled {args.target} → {out}", file=sys.stderr)
+        else:
+            print(text, end="")
     else:
-        print(text, end="")
+        _INSTALL_DIR.mkdir(parents=True, exist_ok=True)
+        for name in discover_modules():
+            text = compile_module(name)
+            out = _INSTALL_DIR / f"{name}.py"
+            out.write_text(text)
+            out.chmod(0o755)
+            print(f"Compiled {name} → {out}", file=sys.stderr)
 
 
 if __name__ == "__main__":
