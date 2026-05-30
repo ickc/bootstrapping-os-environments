@@ -179,7 +179,13 @@ def _classify(
         for node in tree.body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
                 if node.name not in needed:
-                    consumed.update(range(node.lineno, (node.end_lineno or node.lineno) + 1))
+                    # node.lineno is the def/class keyword; any decorators sit
+                    # above it and must be consumed too, or a tree-shaken
+                    # @decorator (e.g. @dataclass) leaks as an orphan line.
+                    start = node.lineno
+                    for dec in node.decorator_list:
+                        start = min(start, dec.lineno)
+                    consumed.update(range(start, (node.end_lineno or node.lineno) + 1))
             elif isinstance(node, ast.Assign):
                 target_names = [t.id for t in node.targets if isinstance(t, ast.Name)]
                 if target_names and not any(n in needed for n in target_names):

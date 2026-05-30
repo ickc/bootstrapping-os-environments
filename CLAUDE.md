@@ -4,6 +4,18 @@ Guidance for Claude Code when working in this repository.
 
 ## Installer conventions (`src/bsos/installers/`)
 
+### Add installers as recipes
+Each tool installer is a thin module that declares a `RECIPE` and calls
+`run_cli` — the shared engine in `_recipe.py` handles download, unpack, place,
+verify, and uninstall, so `install`/`uninstall`/`test` come for free. To add a
+tool, define its `RECIPE` (usually a single `github_binary(...)` call) plus the
+matching `compile-*` / `install-*` / `test-*` / `uninstall-*` pixi tasks, then
+recompile. Reach for the full `Recipe`/`Artifact` form only for quirks: a
+per-OS archive type, a binary nested in a subdirectory, multiple artifacts, or
+a run-the-downloaded-script install (`RunScript`, as `mamba` uses). `mamba_env`
+and `completion` are intentionally *not* recipes — they need a running mamba /
+already-installed tools rather than a download-and-place flow.
+
 ### No GitHub API calls
 Never call `api.github.com` to resolve "latest" release versions. The API is
 rate-limited at 60 req/hour for unauthenticated clients; shared CI runners hit

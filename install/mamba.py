@@ -3,8 +3,8 @@
 """Miniforge3 (mamba) installer.
 
 Downloads and runs the official Miniforge3 shell installer for the current
-platform.  Performs a fresh install or an in-place update depending on
-whether ``$MAMBA_ROOT_PREFIX`` already exists."""
+platform — a fresh install, or an in-place update when ``$MAMBA_ROOT_PREFIX``
+already exists."""
 
 import argparse
 import io
@@ -18,8 +18,9 @@ import tarfile
 import tempfile
 import urllib.request
 import zipfile
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Set, Tuple, Union
 
 # Baked from the bsos package at compile time.
 __version__ = '0.1.0'
@@ -37,6 +38,16 @@ def _open_url(url: str):
     return urllib.request.urlopen(req)  # noqa: S310 — URL is from our own dispatch table
 
 
+def _extract_tar(data: io.BytesIO, dest_dir: Path) -> None:
+    with tarfile.open(fileobj=data, mode="r:*") as tar:
+        # filter="data" (PEP 706) rejects absolute/parent paths and strips
+        # unsafe mode bits (CVE-2007-4559). Fall back on Pythons that predate it.
+        try:
+            tar.extractall(dest_dir, filter="data")
+        except TypeError:
+            tar.extractall(dest_dir)
+
+
 def download_file(url: str, dest: PathLike) -> None:
     """Download *url* to a local file at *dest*."""
     dest = Path(dest)
@@ -44,6 +55,55 @@ def download_file(url: str, dest: PathLike) -> None:
     with _open_url(url) as resp, dest.open("wb") as f:
         shutil.copyfileobj(resp, f)
 
+
+def download_and_extract_tar(url: str, dest_dir: PathLike) -> None:
+    """Download a tar archive and extract into *dest_dir*."""
+    dest_dir = Path(dest_dir)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    with _open_url(url) as resp:
+        data = io.BytesIO(resp.read())
+    _extract_tar(data, dest_dir)
+
+
+def download_and_extract_zip(url: str, dest_dir: PathLike) -> None:
+    """Download a zip archive and extract into *dest_dir*."""
+    dest_dir = Path(dest_dir)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    with _open_url(url) as resp:
+        data = io.BytesIO(resp.read())
+    with zipfile.ZipFile(data) as zf:
+        zf.extractall(dest_dir)
+
+
+def resolve_latest_github_tag(owner: str, repo: str) -> str:
+    """Return the latest release tag for a GitHub repo without calling the GitHub API.
+
+    Follows the /releases/latest redirect URL; the final URL ends with /tag/<tagname>.
+    Avoids the GitHub API (60 req/hour unauthenticated limit).
+    """
+    url = f"https://github.com/{owner}/{repo}/releases/latest"
+    with _open_url(url) as resp:
+        final_url = resp.url
+    tag = final_url.rstrip("/").split("/")[-1]
+    if not tag or tag in {"latest", "releases"}:
+        raise RuntimeError(f"Could not resolve latest release tag for {owner}/{repo}")
+    return tag
+
+
+def download_to_tempdir(url: str, extract: str = "tar") -> Path:
+    """Download and extract an archive into a fresh temp directory.
+
+    Returns the temp directory path (caller is responsible for cleanup).
+    *extract* is ``"tar"`` or ``"zip"``.
+    """
+    tmp = Path(tempfile.mkdtemp(prefix="bsos-"))
+    if extract == "tar":
+        download_and_extract_tar(url, tmp)
+    elif extract == "zip":
+        download_and_extract_zip(url, tmp)
+    else:
+        raise ValueError(f"Unknown extract format: {extract}")
+    return tmp
 
 # --- _env ---
 
@@ -152,87 +212,349 @@ def run(
     """
     return subprocess.run(cmd, env=env, check=check, **kwargs)
 
-# --- mamba ---
+# --- _recipe ---
 
 
-_URLS = {
-    "Darwin-arm64": "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Darwin-arm64.sh",
-    "Darwin-x86_64": "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Darwin-x86_64.sh",
-    "Linux-x86_64": "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh",
-    "Linux-aarch64": "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh",
-    "Linux-ppc64le": "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-ppc64le.sh",
-}
+# ─────────────────────────────────────────────────────────────────────────────
+# Stage 1 — version: how to fill ``{version}`` in a download URL.
+# ─────────────────────────────────────────────────────────────────────────────
+class VersionSpec:
+    """Strategy for resolving the ``{version}`` token of a download URL."""
+
+    def resolve(self) -> str:
+        raise NotImplementedError
 
 
-def install(env: Optional[EnvConfig] = None) -> None:
-    env = env or EnvConfig()
-    key = platform_key()
-    url = _URLS.get(key)
-    if url is None:
+@dataclass
+class Latest(VersionSpec):
+    """No version lookup — the URL uses the ``/releases/latest/download/`` redirect."""
+
+    def resolve(self) -> str:
+        return "latest"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Stage 2 — archive kind and destination.
+# ─────────────────────────────────────────────────────────────────────────────
+@dataclass(frozen=True)
+class Archive:
+    """An archive format: its filename extension and its extractor kind.
+
+    Frozen (immutable, hashable) so the ``RAW`` constant is usable as the
+    ``Artifact.archive`` field default — these are shared value constants.
+    """
+
+    ext: str
+    kind: Optional[str]  # "tar" | "zip" | None (raw, not an archive)
+
+
+RAW = Archive("", None)
+
+
+@dataclass
+class Dest:
+    """A destination: an :class:`EnvConfig` directory attribute plus a relative path."""
+
+    area: str  # an EnvConfig attribute name, e.g. "bin_dir", "pixi_home"
+    rel: str = ""
+
+    def path(self, env: EnvConfig) -> Path:
+        base: Path = getattr(env, self.area)
+        return base / self.rel if self.rel else base
+
+    @classmethod
+    def bin(cls, name: str) -> "Dest":
+        """Shorthand for ``$__OPT_ROOT/bin/<name>``."""
+        return cls("bin_dir", name)
+
+
+@dataclass
+class RunScript:
+    """Install by *running* the downloaded file (e.g. an official ``.sh`` installer).
+
+    *fresh_args* / *update_args* are argv templates (each element may reference
+    ``{script}`` and ``{dest}``); *update_marker* is a path under *dest* whose
+    presence selects *update_args* over *fresh_args*.
+    """
+
+    fresh_args: List[str]
+    update_args: List[str]
+    update_marker: str
+
+
+@dataclass
+class Artifact:
+    """One download that results in one placed file (or one run script).
+
+    ``url_template`` may reference ``{target}`` (the per-platform token),
+    ``{version}`` and ``{ext}`` (the resolved archive extension).  ``member``
+    is the path of the wanted file *inside* the extracted archive (templated
+    the same way); ``None`` means the download itself is the file.
+    """
+
+    url_template: str
+    dest: Dest
+    targets: Optional[Dict[str, str]] = None  # platform_key -> token; None = platform-independent
+    version: VersionSpec = field(default_factory=Latest)
+    archive: Union[Archive, Dict[str, Archive]] = RAW  # scalar, or per-platform mapping
+    member: Optional[str] = None
+    executable: bool = True
+    action: Optional["RunScript"] = None  # forward ref keeps RunScript out of place-only scripts
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Stages 4 & 5 — verify and uninstall.
+# ─────────────────────────────────────────────────────────────────────────────
+@dataclass
+class Verify:
+    """How ``test`` validates an install.
+
+    *args* is the argv passed to the installed binary (``None`` ⇒ existence
+    check only).  When *contains* is set, success means the substring appears
+    in stdout/stderr (the return code is ignored — for tools with idiosyncratic
+    exit codes).  *path* overrides which file is probed (default: the first
+    artifact's destination).
+    """
+
+    args: Optional[List[str]] = field(default_factory=lambda: ["--version"])
+    contains: Optional[str] = None
+    path: Optional[Dest] = None
+
+
+@dataclass
+class Remove:
+    """How ``uninstall`` removes an install.
+
+    Default (``tree=None``) unlinks every artifact's destination.  Set *tree*
+    to ``rmtree`` a directory the install created instead (e.g. a conda prefix).
+    """
+
+    tree: Optional[Dest] = None
+
+
+@dataclass
+class Recipe:
+    name: str
+    artifacts: List[Artifact]
+    verify: Verify = field(default_factory=Verify)
+    remove: Remove = field(default_factory=Remove)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Engine — the five stages, implemented once.
+# ─────────────────────────────────────────────────────────────────────────────
+def _target_for(art: Artifact, key: str) -> Optional[str]:
+    """Resolve the per-platform token, exiting 1 on an unsupported platform."""
+    if art.targets is None:
+        return None
+    token = art.targets.get(key)
+    if token is None:
         print(f"Unsupported platform: {key}", file=sys.stderr)
         sys.exit(1)
+    return token
 
-    tmp = Path(tempfile.mkdtemp(prefix="bsos-mamba-"))
+
+def _archive_for(art: Artifact, key: str) -> Archive:
+    """Resolve the archive format, which may vary per platform."""
+    archive = art.archive
+    if isinstance(archive, dict):
+        selected = archive.get(key)
+        if selected is None:
+            print(f"Unsupported platform: {key}", file=sys.stderr)
+            sys.exit(1)
+        return selected
+    return archive
+
+
+def _run_script(action: RunScript, url: str, dest: Path, env: EnvConfig) -> None:
+    tmp = Path(tempfile.mkdtemp(prefix="bsos-"))
     try:
-        installer = tmp / "Miniforge3.sh"
-        download_file(url, installer)
-        installer.chmod(installer.stat().st_mode | stat.S_IEXEC)
-
-        update = (env.mamba_root_prefix / "etc" / "profile.d" / "conda.sh").exists()
-        flag = "-ubsp" if update else "-fbsp"
-        action = "Updating" if update else "Installing"
-        print(f"{action} mamba to {env.mamba_root_prefix} ...")
-        run([str(installer), flag, str(env.mamba_root_prefix)], env=env.subprocess_env())
+        script = tmp / "installer.sh"
+        download_file(url, script)
+        script.chmod(script.stat().st_mode | stat.S_IEXEC)
+        marker = dest / action.update_marker
+        argv_template = action.update_args if marker.exists() else action.fresh_args
+        argv = [arg.format(script=str(script), dest=str(dest)) for arg in argv_template]
+        print(f"{'Updating' if marker.exists() else 'Installing'} → {dest} ...")
+        run(argv, env=env.subprocess_env())
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
-    print(f"Installed mamba to {env.mamba_root_prefix}")
 
+def _install_artifact(art: Artifact, env: EnvConfig) -> Path:
+    key = platform_key()
+    target = _target_for(art, key)
+    archive = _archive_for(art, key)
+    version = art.version.resolve()
+    token = target if target is not None else ""
+    url = art.url_template.format(target=token, version=version, ext=archive.ext)
+    dest = art.dest.path(env)
 
-def uninstall(env: Optional[EnvConfig] = None) -> None:
-    env = env or EnvConfig()
-    if env.mamba_root_prefix.exists():
-        shutil.rmtree(env.mamba_root_prefix)
-        print(f"Removed {env.mamba_root_prefix}")
+    if art.action is not None:
+        _run_script(art.action, url, dest, env)
+        return dest
+
+    if archive.kind is None:
+        download_file(url, dest)
     else:
-        print(f"{env.mamba_root_prefix} not found", file=sys.stderr)
+        tmp = download_to_tempdir(url, extract=archive.kind)
+        try:
+            member = (art.member or "").format(target=token, version=version, ext=archive.ext)
+            src = tmp / member
+            if not src.exists():
+                print(f"Expected payload {member!r} not found in archive", file=sys.stderr)
+                sys.exit(1)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(src), str(dest))
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    if art.executable:
+        dest.chmod(0o755)
+    return dest
 
 
-def test_install(env: Optional[EnvConfig] = None) -> int:
-    """Validate the mamba install on the current platform.
+def install(recipe: Recipe, env: Optional[EnvConfig] = None) -> None:
+    env = env or EnvConfig()
+    for art in recipe.artifacts:
+        dest = _install_artifact(art, env)
+        print(f"Installed {recipe.name} → {dest}")
 
-    Skips cleanly (exit 0) on unsupported platforms.
+
+def uninstall(recipe: Recipe, env: Optional[EnvConfig] = None) -> None:
+    env = env or EnvConfig()
+    if recipe.remove.tree is not None:
+        target = recipe.remove.tree.path(env)
+        if target.exists():
+            shutil.rmtree(target)
+            print(f"Removed {target}")
+        else:
+            print(f"{target} not found", file=sys.stderr)
+        return
+    for art in recipe.artifacts:
+        target = art.dest.path(env)
+        if target.exists():
+            target.unlink()
+            print(f"Removed {target}")
+        else:
+            print(f"{target} not found", file=sys.stderr)
+
+
+def _supported_platforms(recipe: Recipe) -> Optional[Set[str]]:
+    """Union of platform keys across platform-specific artifacts.
+
+    ``None`` means the recipe is platform-independent (never skipped by ``test``).
+    """
+    keys: Set[str] = set()
+    specific = False
+    for art in recipe.artifacts:
+        if art.targets is not None:
+            specific = True
+            keys.update(art.targets)
+    return keys if specific else None
+
+
+def test_install(recipe: Recipe, env: Optional[EnvConfig] = None) -> int:
+    """Validate an install on the current platform.
+
+    Skips cleanly (exit 0) on an unsupported platform; fails (exit 1) when the
+    expected file is missing on a supported platform.
     """
     env = env or EnvConfig()
     key = platform_key()
-    if key not in _URLS:
-        print(f"Platform {key} unsupported by mamba installer; skipping", file=sys.stderr)
+    supported = _supported_platforms(recipe)
+    if supported is not None and key not in supported:
+        print(f"Platform {key} unsupported by {recipe.name} installer; skipping", file=sys.stderr)
         return 0
-    mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
-    if not mamba_bin.exists():
-        print(f"{mamba_bin} not found; run install first", file=sys.stderr)
+
+    verify = recipe.verify
+    probe_dest = verify.path if verify.path is not None else recipe.artifacts[0].dest
+    probe = probe_dest.path(env)
+    if not probe.exists():
+        print(f"{probe} not found; run install first", file=sys.stderr)
         return 1
-    result = run([str(mamba_bin), "--version"], env=env.subprocess_env(), check=False)
-    return result.returncode
+
+    if verify.args is None:
+        print(f"{probe} found")
+        return 0
+
+    if verify.contains is not None:
+        result = run(
+            [str(probe), *verify.args],
+            env=env.subprocess_env(),
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        output = f"{result.stdout or ''}{result.stderr or ''}".strip()
+        if verify.contains.lower() in output.lower():
+            print(output)
+            return 0
+        print(
+            f"{recipe.name} {' '.join(verify.args)} did not identify itself (rc={result.returncode}): {output!r}",
+            file=sys.stderr,
+        )
+        return 1
+
+    result = run([str(probe), *verify.args], env=env.subprocess_env(), check=False)
+    return int(result.returncode)
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+def run_cli(recipe: Recipe) -> None:
+    """Standard ``install`` / ``uninstall`` / ``test`` command-line dispatch."""
+    parser = argparse.ArgumentParser(description=f"{recipe.name} installer")
     parser.add_argument(
         "action",
         choices=["install", "uninstall", "test"],
-        help="install/uninstall Miniforge3, or test validates an install "
+        help=f"install/uninstall {recipe.name}, or test validates an install "
         "(skips cleanly if the platform is unsupported)",
     )
     args = parser.parse_args()
     env = EnvConfig()
     if args.action == "install":
-        install(env)
+        install(recipe, env)
     elif args.action == "uninstall":
-        uninstall(env)
+        uninstall(recipe, env)
     else:
-        sys.exit(test_install(env))
+        sys.exit(test_install(recipe, env))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Convenience constructor for the common case: one binary from a GitHub release.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+# --- mamba ---
+
+
+_PREFIX = Dest("mamba_root_prefix")
+
+RECIPE = Recipe(
+    name="mamba",
+    artifacts=[
+        Artifact(
+            url_template="https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-{target}.sh",
+            targets={
+                "Darwin-arm64": "Darwin-arm64",
+                "Darwin-x86_64": "Darwin-x86_64",
+                "Linux-x86_64": "Linux-x86_64",
+                "Linux-aarch64": "Linux-aarch64",
+                "Linux-ppc64le": "Linux-ppc64le",
+            },
+            archive=RAW,
+            dest=_PREFIX,
+            # -b batch, -s skip running init, -p prefix; -f fresh, -u update.
+            action=RunScript(
+                fresh_args=["{script}", "-fbsp", "{dest}"],
+                update_args=["{script}", "-ubsp", "{dest}"],
+                update_marker="etc/profile.d/conda.sh",
+            ),
+        )
+    ],
+    verify=Verify(path=Dest("mamba_root_prefix", "bin/mamba")),
+    remove=Remove(tree=_PREFIX),
+)
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(RECIPE)
