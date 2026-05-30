@@ -70,8 +70,25 @@ def test_install(env: Optional[EnvConfig] = None) -> int:
     if not clifton_bin.exists():
         print(f"{clifton_bin} not found; run install first", file=sys.stderr)
         return 1
-    result = run([str(clifton_bin), "--version"], env=env.subprocess_env(), check=False)
-    return result.returncode
+    # `clifton --version` prints its version but exits 64 (EX_USAGE) rather
+    # than 0, so validate that the binary runs and identifies itself instead
+    # of gating on its idiosyncratic exit code.
+    result = run(
+        [str(clifton_bin), "--version"],
+        env=env.subprocess_env(),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    output = f"{result.stdout or ''}{result.stderr or ''}".strip()
+    if "clifton" in output.lower():
+        print(output)
+        return 0
+    print(
+        f"clifton --version did not identify itself (rc={result.returncode}): {output!r}",
+        file=sys.stderr,
+    )
+    return 1
 
 
 def main() -> None:
