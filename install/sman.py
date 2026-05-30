@@ -30,8 +30,6 @@ __version__ = '0.1.0'
 
 _USER_AGENT = f"bsos-installer/{__version__}"
 
-PathLike = Union[str, Path]
-
 
 def _open_url(url: str):
     req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
@@ -280,20 +278,6 @@ class Dest:
 
 
 @dataclass
-class RunScript:
-    """Install by *running* the downloaded file (e.g. an official ``.sh`` installer).
-
-    *fresh_args* / *update_args* are argv templates (each element may reference
-    ``{script}`` and ``{dest}``); *update_marker* is a path under *dest* whose
-    presence selects *update_args* over *fresh_args*.
-    """
-
-    fresh_args: List[str]
-    update_args: List[str]
-    update_marker: str
-
-
-@dataclass
 class Artifact:
     """One download that results in one placed file (or one run script).
 
@@ -377,21 +361,6 @@ def _archive_for(art: Artifact, key: str) -> Archive:
     return archive
 
 
-def _run_script(action: RunScript, url: str, dest: Path, env: EnvConfig) -> None:
-    tmp = Path(tempfile.mkdtemp(prefix="bsos-"))
-    try:
-        script = tmp / "installer.sh"
-        download_file(url, script)
-        script.chmod(script.stat().st_mode | stat.S_IEXEC)
-        marker = dest / action.update_marker
-        argv_template = action.update_args if marker.exists() else action.fresh_args
-        argv = [arg.format(script=str(script), dest=str(dest)) for arg in argv_template]
-        print(f"{'Updating' if marker.exists() else 'Installing'} → {dest} ...")
-        run(argv, env=env.subprocess_env())
-    finally:
-        shutil.rmtree(tmp, ignore_errors=True)
-
-
 def _install_artifact(art: Artifact, env: EnvConfig) -> Path:
     key = platform_key()
     target = _target_for(art, key)
@@ -402,7 +371,7 @@ def _install_artifact(art: Artifact, env: EnvConfig) -> Path:
     dest = art.dest.path(env)
 
     if art.action is not None:
-        _run_script(art.action, url, dest, env)
+        art.action.execute(url, dest, env)
         return dest
 
     if archive.kind is None:

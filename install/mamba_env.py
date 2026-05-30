@@ -46,8 +46,6 @@ __version__ = '0.1.0'
 
 _USER_AGENT = f"bsos-installer/{__version__}"
 
-PathLike = Union[str, Path]
-
 
 def _open_url(url: str):
     req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})

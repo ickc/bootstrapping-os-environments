@@ -131,6 +131,7 @@ pytest = "*"
 ruff = ">=0.9,<1"
 mypy = ">=1.14,<2"
 pyright = ">=1.1,<2"
+vulture = ">=2.14,<3"
 
 [tool.pixi.pypi-dependencies]
 bsos = { path = ".", editable = true}
@@ -186,7 +187,8 @@ lint-sh = { cmd = "find . -type f -name '*.sh' -exec shellcheck --norc --enable=
 lint-mypy = { cmd = "mypy src", description = "Type-check Python files with mypy." }
 lint-pyright = { cmd = "pyright src", description = "Type-check Python files with pyright." }
 lint-py = { depends-on = ["lint-mypy", "lint-pyright"], description = "Type-check Python files with mypy and pyright." }
-lint = { depends-on = ["lint-sh", "lint-py"], description = "Run all linters." }
+lint-compiled = { cmd = "vulture install/ --min-confidence 80", description = "Detect dead code in compiled installer scripts (install/*.py)." }
+lint = { depends-on = ["lint-sh", "lint-py", "lint-compiled"], description = "Run all linters." }
 
 # unit tests
 test = { cmd = "pytest", description = "Run the pytest unit-test suite." }

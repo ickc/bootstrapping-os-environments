@@ -98,6 +98,30 @@ def _get_top_level_defs(source: str) -> Dict[str, ast.stmt]:
     return defs
 
 
+def _walk_skip_annotations(node: ast.AST):
+    """Walk an AST node's descendants, skipping type annotation subtrees.
+
+    Type annotations (argument annotations, return annotations, variable
+    annotations) are pure hints — they create no runtime dependency on the
+    names they mention, so the tree-shaker must not follow them.
+    """
+    from collections import deque
+
+    todo: deque[ast.AST] = deque([node])
+    while todo:
+        cur = todo.popleft()
+        yield cur
+        for field, value in ast.iter_fields(cur):
+            if field == "annotation":
+                continue
+            if field == "returns" and isinstance(cur, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+            if isinstance(value, list):
+                todo.extend(v for v in value if isinstance(v, ast.AST))
+            elif isinstance(value, ast.AST):
+                todo.append(value)
+
+
 def _transitive_needed(seed: Set[str], defs: Dict[str, ast.stmt]) -> Set[str]:
     """Return all names in *defs* reachable from *seed* via Name references."""
     all_names = set(defs)
@@ -105,7 +129,7 @@ def _transitive_needed(seed: Set[str], defs: Dict[str, ast.stmt]) -> Set[str]:
     queue = list(needed)
     while queue:
         name = queue.pop()
-        for child in ast.walk(defs[name]):
+        for child in _walk_skip_annotations(defs[name]):
             if isinstance(child, ast.Name) and child.id in all_names and child.id not in needed:
                 needed.add(child.id)
                 queue.append(child.id)
