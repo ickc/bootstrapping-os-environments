@@ -168,7 +168,7 @@ brew-cask-add-description = { cmd = "python -m bsos.brew.helper add-description 
 
 # installers — generate-*
 generate-env-sh = { cmd = "python -m bsos.installers._env > env.sh", description = "Regenerate env.sh from Python definitions." }
-generate-completions = { cmd = "python -m bsos.installers.completion generate", description = "Generate shell completions for installed tools into XDG_DATA_HOME dirs." }
+generate-completions = { cmd = "python -m bsos.shell.completion generate", description = "Generate shell completions for installed tools into XDG_DATA_HOME dirs." }
 
 # installers — compile-*
 compile-code = { cmd = "python -m bsos.installers._compile code -o install/code.py", description = "Compile code installer to a self-contained script." }
