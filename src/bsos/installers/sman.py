@@ -20,7 +20,7 @@ RECIPE = Recipe(
     name="sman",
     artifacts=[
         Artifact(
-            url_template="https://github.com/ickc/sman/releases/download/v{version}/sman-{target}-v{version}.tgz",
+            url_template="https://github.com/ickc/sman/releases/download/{tag}/sman-{target}-v{version}.tgz",
             version=GitHubRedirect("ickc", "sman", strip_v=True),
             archive=TAR,
             targets={

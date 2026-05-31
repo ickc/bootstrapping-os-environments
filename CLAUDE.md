@@ -28,23 +28,26 @@ tools rather than a download-and-place flow.
 - No (e.g. a CDN URL like VS Code): omit `version=`; `--version` will error
   cleanly at runtime with no extra code.
 
-**2. Does the repo tag with a leading `v`?** (e.g. `v1.2.3`)
-- Yes (most repos): `strip_v=True` in `GitHubRedirect`; hardcode `v` in the
-  URL template: `.../releases/download/v{version}/asset-{target}.tar.gz`.
-  `github_binary` sets this by default.
-- No (e.g. Miniforge tags like `26.3.2-2`): `strip_v=False`; omit the `v` in
-  the URL template: `.../releases/download/{version}/...`.
+**2. What tag format does the repo use?**
+
+Always use `{tag}` in the URL *path* — it resolves to the full git tag exactly
+as released and works for any format:
+- Standard `v`-prefix (e.g. `v1.2.3`): `{tag}` → `v1.2.3`.  `github_binary` does this by default.
+- No prefix (e.g. Miniforge `26.3.2-2`): `{tag}` → `26.3.2-2`.  Also works with no extra flags.
+- Unusual prefix (e.g. codex `rust-v0.135.0`): `{tag}` → `rust-v0.135.0`.  Same.
 
 **3. Does the version appear in the asset filename or archive member?**
-- If yes, embed `{version}` there too (it resolves to the same bare version
-  string). Example: `sman-{target}-v{version}.tgz` / member
-  `sman-{target}-v{version}`. The `v` before `{version}` in the filename is
-  part of the literal template, not a special token.
+- If yes, use `{version}` there — it strips a leading `v` when `strip_v=True`
+  (default).  Example: `sman-{target}-v{version}.tgz` / member
+  `sman-{target}-v{version}`.  The literal `v` before `{version}` in the
+  filename is part of the template string, not a special token.
+- Use `strip_v=False` only when the tag has no `v` to strip AND `{version}`
+  appears in the filename (rare; for most such repos `{version}` won't be in
+  the filename at all, so `strip_v` doesn't matter).
 
 **`--version` convention**: the user passes the git tag as-is (e.g.
-`v1.2.3` or `26.3.2-2`). `strip_v` is applied to the user-supplied override
-exactly as it is to the auto-resolved tag, so the right bare version lands in
-`{version}` regardless of whether the user includes the `v`.
+`v1.2.3` or `rust-v0.135.0`).  `{tag}` resolves to the raw override;
+`{version}` strips a leading `v` when `strip_v=True`.
 
 ### No GitHub API calls
 Never call `api.github.com` to resolve "latest" release versions. The API is

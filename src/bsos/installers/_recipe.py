@@ -40,13 +40,25 @@ from bsos.installers._subprocess import run
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Stage 1 — version: how to fill ``{version}`` in a download URL.
+# Stage 1 — version: how to fill ``{version}`` and ``{tag}`` in a download URL.
 # ─────────────────────────────────────────────────────────────────────────────
 class VersionSpec:
-    """Strategy for resolving the ``{version}`` token of a download URL."""
+    """Strategy for resolving the ``{version}`` and ``{tag}`` tokens of a download URL.
+
+    ``{tag}`` is the full git tag as released (e.g. ``v1.2.3``, ``rust-v0.135.0``,
+    ``26.3.2-2``).  ``{version}`` is the bare version string — the tag with any
+    leading ``v`` stripped (e.g. ``1.2.3``).  Use ``{tag}`` in the URL *path*
+    (it always matches the release URL exactly) and ``{version}`` in filenames
+    or archive members where the convention omits the ``v``.
+    """
+
+    def resolve_both(self, override: Optional[str] = None) -> "tuple[str, str]":
+        """Return ``(tag, version)`` — a single call to avoid redundant network requests."""
+        raise NotImplementedError
 
     def resolve(self, override: Optional[str] = None) -> str:
-        raise NotImplementedError
+        """Return ``{version}`` — the bare version string (leading ``v`` stripped if present)."""
+        return self.resolve_both(override)[1]
 
 
 @dataclass
@@ -57,8 +69,8 @@ class Latest(VersionSpec):
     ``--version`` flag is rejected at the ``run_cli`` level before this is reached.
     """
 
-    def resolve(self, override: Optional[str] = None) -> str:
-        return "latest"
+    def resolve_both(self, override: Optional[str] = None) -> "tuple[str, str]":
+        return "latest", "latest"
 
 
 @dataclass
@@ -66,14 +78,16 @@ class Pinned(VersionSpec):
     """A fixed version string baked into the recipe.
 
     The stored *value* is the bare version (no leading ``v``).  ``--version``
-    overrides it; the leading ``v`` is stripped from the override so the URL
-    template's hardcoded ``v{version}`` pattern stays consistent.
+    overrides it; the leading ``v`` is stripped from the override.
+    ``{tag}`` resolves to the raw override (or *value* as-is); ``{version}``
+    resolves to the same string with any leading ``v`` stripped.
     """
 
     value: str
 
-    def resolve(self, override: Optional[str] = None) -> str:
-        return (override or self.value).lstrip("v")
+    def resolve_both(self, override: Optional[str] = None) -> "tuple[str, str]":
+        raw = override or self.value
+        return raw, raw.lstrip("v")
 
 
 @dataclass
@@ -81,22 +95,24 @@ class GitHubRedirect(VersionSpec):
     """Resolve the latest release tag via the ``/releases/latest`` redirect.
 
     Never calls the GitHub API (rate-limited at 60 req/hour unauthenticated).
-    Set *strip_v* to drop a leading ``v`` from the tag — use this when the URL
-    template hardcodes ``v{version}`` in the download path (the common GitHub
-    convention).  Leave *strip_v* False for repos whose tags have no ``v``
-    prefix (e.g. ``conda-forge/miniforge`` tags like ``26.3.2-2``).
+    ``{tag}`` in a URL template always resolves to the full git tag as released,
+    so it works for any tag format (``v1.2.3``, ``26.3.2-2``, ``rust-v0.135.0``).
+    ``{version}`` strips a leading ``v`` when *strip_v* is ``True`` — useful for
+    filenames or archive members where the convention omits the ``v``.
 
     ``--version`` overrides the auto-resolved tag; *strip_v* is applied to the
-    override identically to the resolved tag.
+    override identically to the resolved tag, so ``{version}`` is consistent
+    whether the user supplies the ``v`` or not.
     """
 
     owner: str
     repo: str
-    strip_v: bool = False
+    strip_v: bool = True
 
-    def resolve(self, override: Optional[str] = None) -> str:
+    def resolve_both(self, override: Optional[str] = None) -> "tuple[str, str]":
         tag = override if override is not None else resolve_latest_github_tag(self.owner, self.repo)
-        return tag.lstrip("v") if self.strip_v else tag
+        version = tag.lstrip("v") if self.strip_v else tag
+        return tag, version
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -169,9 +185,11 @@ class Artifact:
     """One download that results in one placed file (or one run script).
 
     ``url_template`` may reference ``{target}`` (the per-platform token),
-    ``{version}`` and ``{ext}`` (the resolved archive extension).  ``member``
-    is the path of the wanted file *inside* the extracted archive (templated
-    the same way); ``None`` means the download itself is the file.
+    ``{tag}`` (the full git tag as released, e.g. ``v1.2.3``), ``{version}``
+    (the bare version — leading ``v`` stripped when *strip_v* is set on the
+    :class:`VersionSpec`) and ``{ext}`` (the resolved archive extension).
+    ``member`` is the path of the wanted file *inside* the extracted archive
+    (templated the same way); ``None`` means the download itself is the file.
     """
 
     url_template: str
@@ -252,9 +270,9 @@ def _install_artifact(art: Artifact, env: EnvConfig, version_override: Optional[
     key = platform_key()
     target = _target_for(art, key)
     archive = _archive_for(art, key)
-    version = art.version.resolve(version_override)
+    tag, version = art.version.resolve_both(version_override)
     token = target if target is not None else ""
-    url = art.url_template.format(target=token, version=version, ext=archive.ext)
+    url = art.url_template.format(target=token, version=version, tag=tag, ext=archive.ext)
     dest = art.dest.path(env)
 
     if art.action is not None:
@@ -266,7 +284,7 @@ def _install_artifact(art: Artifact, env: EnvConfig, version_override: Optional[
     else:
         tmp = download_to_tempdir(url, extract=archive.kind)
         try:
-            member = (art.member or "").format(target=token, version=version, ext=archive.ext)
+            member = (art.member or "").format(target=token, version=version, tag=tag, ext=archive.ext)
             src = tmp / member
             if not src.exists():
                 print(f"Expected payload {member!r} not found in archive", file=sys.stderr)
@@ -385,7 +403,7 @@ def run_cli(recipe: Recipe) -> None:
     )
     args = parser.parse_args()
     if args.version_override is not None:
-        has_slot = any("{version}" in a.url_template for a in recipe.artifacts)
+        has_slot = any("{version}" in a.url_template or "{tag}" in a.url_template for a in recipe.artifacts)
         if not has_slot:
             print(
                 f"{recipe.name}: --version is not supported (no {{version}} slot in URL)",
@@ -426,17 +444,21 @@ def github_binary(
     """Build a single-binary GitHub-release recipe.
 
     *repo* is ``owner/name``.  *asset* is the release asset filename (may
-    contain ``{target}``); the archive format is inferred from its extension.
-    *member* is the path of the binary inside the archive (omit for a raw,
-    un-archived asset).  *version* defaults to :class:`GitHubRedirect` (resolve
-    the latest tag without the API); pass :class:`Latest` to use the
-    ``/releases/latest/download/`` redirect, or :class:`Pinned` for a fixed tag.
+    contain ``{target}`` or ``{version}``); the archive format is inferred from
+    its extension.  *member* is the path of the binary inside the archive (omit
+    for a raw, un-archived asset).  *version* defaults to
+    :class:`GitHubRedirect` (resolve the latest tag without the API).
+
+    The download URL uses ``{tag}`` — the full git tag exactly as released —
+    so it works for any tag format (``v1.2.3``, ``26.3.2-2``, ``rust-v0.135.0``)
+    without any hardcoded prefix.  Use ``{version}`` in *asset* or *member*
+    when the filename convention omits the leading ``v``.
     """
     if version is None:
         owner, _, repo_name = repo.partition("/")
-        version = GitHubRedirect(owner, repo_name, strip_v=True)
+        version = GitHubRedirect(owner, repo_name)
     archive = _infer_archive(asset)
-    url_template = f"https://github.com/{repo}/releases/download/v{{version}}/{asset}"
+    url_template = f"https://github.com/{repo}/releases/download/{{tag}}/{asset}"
     artifact = Artifact(
         url_template=url_template,
         dest=dest if dest is not None else Dest.bin(name),

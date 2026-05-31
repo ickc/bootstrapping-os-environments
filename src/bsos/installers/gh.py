@@ -13,14 +13,13 @@ Usage::
 
 from bsos.installers._recipe import TAR, ZIP, Artifact, Dest, GitHubRedirect, Recipe, run_cli
 
-# The archive unpacks to a directory named after the asset (minus extension),
-# with the binary at <dir>/bin/gh. The tag keeps a leading 'v' that the asset
-# name drops, so strip it and re-add 'v' in the URL.
+# {tag} puts the full git tag (e.g. v2.70.0) in the URL path.
+# {version} (strip_v=True) gives the bare version (2.70.0) for asset name and member.
 RECIPE = Recipe(
     name="gh",
     artifacts=[
         Artifact(
-            url_template="https://github.com/cli/cli/releases/download/v{version}/gh_{version}_{target}.{ext}",
+            url_template="https://github.com/cli/cli/releases/download/{tag}/gh_{version}_{target}.{ext}",
             version=GitHubRedirect("cli", "cli", strip_v=True),
             targets={
                 "Linux-x86_64": "linux_amd64",

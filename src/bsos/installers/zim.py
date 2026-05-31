@@ -10,8 +10,8 @@ RECIPE = Recipe(
     name="zim",
     artifacts=[
         Artifact(
-            url_template="https://github.com/zimfw/zimfw/releases/download/v{version}/zimfw.zsh",
-            version=GitHubRedirect("zimfw", "zimfw", strip_v=True),
+            url_template="https://github.com/zimfw/zimfw/releases/download/{tag}/zimfw.zsh",
+            version=GitHubRedirect("zimfw", "zimfw"),
             archive=RAW,
             dest=Dest("zim_home", "zimfw.zsh"),
             executable=False,

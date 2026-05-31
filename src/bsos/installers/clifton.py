@@ -10,27 +10,21 @@ Usage::
     python -m bsos.installers.clifton test
 """
 
-from bsos.installers._recipe import Artifact, Dest, GitHubRedirect, RAW, Recipe, Verify, run_cli
+from bsos.installers._recipe import Verify, github_binary, run_cli
 
-# clifton tags have no leading `v` (e.g. "0.3.0"), so we use Recipe/Artifact
-# directly with strip_v=False and no `v` in the URL template.
+# clifton tags have no leading `v` (e.g. "0.3.0") — github_binary uses {tag}
+# in the URL path, so this works without any special-casing.
 # `clifton --version` exits 64 (EX_USAGE), so verify by substring match only.
-RECIPE = Recipe(
+RECIPE = github_binary(
     name="clifton",
-    artifacts=[
-        Artifact(
-            url_template="https://github.com/isambard-sc/clifton/releases/download/{version}/{target}",
-            dest=Dest.bin("clifton"),
-            targets={
-                "Darwin-arm64": "clifton-macos-aarch64",
-                "Darwin-x86_64": "clifton-macos-x86_64",
-                "Linux-x86_64": "clifton-linux-musl-x86_64",
-                "Linux-aarch64": "clifton-linux-musl-aarch64",
-            },
-            version=GitHubRedirect("isambard-sc", "clifton", strip_v=False),
-            archive=RAW,
-        ),
-    ],
+    repo="isambard-sc/clifton",
+    asset="{target}",
+    targets={
+        "Darwin-arm64": "clifton-macos-aarch64",
+        "Darwin-x86_64": "clifton-macos-x86_64",
+        "Linux-x86_64": "clifton-linux-musl-x86_64",
+        "Linux-aarch64": "clifton-linux-musl-aarch64",
+    },
     verify=Verify(contains="clifton"),
 )
 
