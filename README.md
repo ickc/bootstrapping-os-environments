@@ -23,8 +23,8 @@ use:
 curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/code.py | python3 - install
 ```
 
-With pixi available, use the tasks instead (`pixi run install-code`,
-`pixi run compile-code`, `pixi run test`, …).
+With pixi available, use the tasks instead (`pixi run install -- code`,
+`pixi run compile`, `pixi run test`, …).
 
 ## Continuous integration
 

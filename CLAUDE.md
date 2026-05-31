@@ -9,8 +9,8 @@ Each tool installer is a thin module that declares a `RECIPE` and calls
 `run_cli` — the shared engine in `_recipe.py` handles download, unpack, place,
 verify, and uninstall, so `install`/`uninstall`/`test` (plus `--version`) come
 for free. To add a tool, define its `RECIPE` (usually a single
-`github_binary(...)` call) plus the matching `compile-*` / `install-*` /
-`test-*` / `uninstall-*` pixi tasks, then recompile. Reach for the full
+`github_binary(...)` call), then recompile (`pixi run compile`) — installer
+modules are auto-discovered, so no per-tool pixi tasks are needed. Reach for the full
 `Recipe`/`Artifact` form only for quirks: a per-OS archive type, a binary
 nested in a subdirectory, multiple artifacts, or a run-the-downloaded-script
 install (`RunScript`, as `mamba` uses). `mamba_env` and `completion` are
@@ -64,7 +64,8 @@ installed wasn't. Print a clear error message and exit 1.
 
 ### Compile after every source edit
 Each installer module has a compiled counterpart in `install/`. After editing
-any source module, recompile it (`pixi run compile-<name>`) before committing.
+any source module, recompile (`pixi run compile`, or `pixi run compile -- <name>`
+for a single module) before committing.
 The unit tests enforce freshness: a stale `install/*.py` fails CI.
 
 ### Stdlib only in `bsos.installers`

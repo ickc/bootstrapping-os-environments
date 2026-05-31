@@ -51,8 +51,8 @@ def test_compiled_bakes_version(module):
 
 @pytest.mark.parametrize("module", _COMPILED_MODULES)
 def test_checked_in_script_is_up_to_date(module):
-    # Compiled output keeps the module name verbatim (e.g. mamba_env.py); the
-    # compile-task name swaps '_' for '-' (pixi run compile-mamba-env).
+    # Compiled output keeps the module name verbatim (e.g. mamba_env.py);
+    # `pixi run compile` regenerates every install/*.py from its source module.
     artifact_path = REPO_ROOT / "install" / f"{module}.py"
     artifact = artifact_path.read_text()
     assert artifact == compile_module(module), f"install/{module}.py is stale; regenerate with `pixi run compile`"
