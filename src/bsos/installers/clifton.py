@@ -10,7 +10,7 @@ Usage::
     python -m bsos.installers.clifton test
 """
 
-from bsos.installers._recipe import Latest, Verify, github_binary, run_cli
+from bsos.installers._recipe import Verify, github_binary, run_cli
 
 # `clifton --version` prints its version but exits 64 (EX_USAGE) rather than 0,
 # so verify that the binary runs and identifies itself (substring match) rather
@@ -18,8 +18,7 @@ from bsos.installers._recipe import Latest, Verify, github_binary, run_cli
 RECIPE = github_binary(
     name="clifton",
     repo="isambard-sc/clifton",
-    version=Latest(),
-    asset="{target}",  # no version in the filename — /releases/latest/download/ works directly
+    asset="{target}",
     targets={
         "Darwin-arm64": "clifton-macos-aarch64",
         "Darwin-x86_64": "clifton-macos-x86_64",

@@ -9,6 +9,7 @@ from bsos.installers._recipe import (
     RAW,
     Artifact,
     Dest,
+    GitHubRedirect,
     Recipe,
     Remove,
     RunScript,
@@ -22,7 +23,9 @@ RECIPE = Recipe(
     name="mamba",
     artifacts=[
         Artifact(
-            url_template="https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-{target}.sh",
+            # Miniforge tags have no leading 'v' (e.g. 26.3.2-2), so strip_v=False.
+            url_template="https://github.com/conda-forge/miniforge/releases/download/{version}/Miniforge3-{target}.sh",
+            version=GitHubRedirect("conda-forge", "miniforge", strip_v=False),
             targets={
                 "Darwin-arm64": "Darwin-arm64",
                 "Darwin-x86_64": "Darwin-x86_64",

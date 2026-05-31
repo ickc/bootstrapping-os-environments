@@ -4,13 +4,14 @@ Downloads ``zimfw.zsh`` from the latest GitHub release into ``$ZIM_HOME``.
 Platform-independent: a single sourced script, not an executable.
 """
 
-from bsos.installers._recipe import RAW, Artifact, Dest, Recipe, Remove, Verify, run_cli
+from bsos.installers._recipe import RAW, Artifact, Dest, GitHubRedirect, Recipe, Remove, Verify, run_cli
 
 RECIPE = Recipe(
     name="zim",
     artifacts=[
         Artifact(
-            url_template="https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh",
+            url_template="https://github.com/zimfw/zimfw/releases/download/v{version}/zimfw.zsh",
+            version=GitHubRedirect("zimfw", "zimfw", strip_v=True),
             archive=RAW,
             dest=Dest("zim_home", "zimfw.zsh"),
             executable=False,

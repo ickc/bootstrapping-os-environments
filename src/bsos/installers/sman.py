@@ -10,20 +10,18 @@ from bsos.installers._recipe import (
     TAR,
     Artifact,
     Dest,
-    Pinned,
+    GitHubRedirect,
     Recipe,
     Verify,
     run_cli,
 )
-
-_VERSION = Pinned("1.0.4")
 
 RECIPE = Recipe(
     name="sman",
     artifacts=[
         Artifact(
             url_template="https://github.com/ickc/sman/releases/download/v{version}/sman-{target}-v{version}.tgz",
-            version=_VERSION,
+            version=GitHubRedirect("ickc", "sman", strip_v=True),
             archive=TAR,
             targets={
                 "Darwin-arm64": "darwin-arm64",

@@ -7,26 +7,51 @@ Guidance for Claude Code when working in this repository.
 ### Add installers as recipes
 Each tool installer is a thin module that declares a `RECIPE` and calls
 `run_cli` — the shared engine in `_recipe.py` handles download, unpack, place,
-verify, and uninstall, so `install`/`uninstall`/`test` come for free. To add a
-tool, define its `RECIPE` (usually a single `github_binary(...)` call) plus the
-matching `compile-*` / `install-*` / `test-*` / `uninstall-*` pixi tasks, then
-recompile. Reach for the full `Recipe`/`Artifact` form only for quirks: a
-per-OS archive type, a binary nested in a subdirectory, multiple artifacts, or
-a run-the-downloaded-script install (`RunScript`, as `mamba` uses). `mamba_env`
-and `completion` are intentionally *not* recipes — they need a running mamba /
-already-installed tools rather than a download-and-place flow.
+verify, and uninstall, so `install`/`uninstall`/`test` (plus `--version`) come
+for free. To add a tool, define its `RECIPE` (usually a single
+`github_binary(...)` call) plus the matching `compile-*` / `install-*` /
+`test-*` / `uninstall-*` pixi tasks, then recompile. Reach for the full
+`Recipe`/`Artifact` form only for quirks: a per-OS archive type, a binary
+nested in a subdirectory, multiple artifacts, or a run-the-downloaded-script
+install (`RunScript`, as `mamba` uses). `mamba_env` and `completion` are
+intentionally *not* recipes — they need a running mamba / already-installed
+tools rather than a download-and-place flow.
+
+### Writing a new recipe — three decisions
+
+**1. Does it come from GitHub releases?**
+- Yes, single binary: use `github_binary(name, repo, asset, targets, ...)`.
+  `--version` works automatically.
+- Yes, with quirks (multiple artifacts, `RunScript`, etc.): use
+  `Recipe`/`Artifact` directly with `version=GitHubRedirect(owner, repo, ...)`.
+  `--version` works as long as `{version}` appears in the URL template.
+- No (e.g. a CDN URL like VS Code): omit `version=`; `--version` will error
+  cleanly at runtime with no extra code.
+
+**2. Does the repo tag with a leading `v`?** (e.g. `v1.2.3`)
+- Yes (most repos): `strip_v=True` in `GitHubRedirect`; hardcode `v` in the
+  URL template: `.../releases/download/v{version}/asset-{target}.tar.gz`.
+  `github_binary` sets this by default.
+- No (e.g. Miniforge tags like `26.3.2-2`): `strip_v=False`; omit the `v` in
+  the URL template: `.../releases/download/{version}/...`.
+
+**3. Does the version appear in the asset filename or archive member?**
+- If yes, embed `{version}` there too (it resolves to the same bare version
+  string). Example: `sman-{target}-v{version}.tgz` / member
+  `sman-{target}-v{version}`. The `v` before `{version}` in the filename is
+  part of the literal template, not a special token.
+
+**`--version` convention**: the user passes the git tag as-is (e.g.
+`v1.2.3` or `26.3.2-2`). `strip_v` is applied to the user-supplied override
+exactly as it is to the auto-resolved tag, so the right bare version lands in
+`{version}` regardless of whether the user includes the `v`.
 
 ### No GitHub API calls
 Never call `api.github.com` to resolve "latest" release versions. The API is
 rate-limited at 60 req/hour for unauthenticated clients; shared CI runners hit
-this limit routinely and get a 403. Use the redirect URL instead:
-
-```
-https://github.com/<org>/<repo>/releases/latest/download/<filename>
-```
-
-GitHub resolves this to the current release with an HTTP redirect — no API
-call, no rate limit.
+this limit routinely and get a 403. Instead, `GitHubRedirect` follows the
+`/releases/latest` redirect to read the final URL and extract the tag name —
+one cheap HTTP request, no API key, no rate limit.
 
 ### Fail hard on missing prerequisites
 `test` actions may exit 0 to skip cleanly on *unsupported platforms* (the
