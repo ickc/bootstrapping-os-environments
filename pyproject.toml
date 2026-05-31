@@ -186,7 +186,8 @@ format = { depends-on = ["format-sh", "format-py"], description = "Run all forma
 lint-sh = { cmd = "bash -lc \"find . \\! -path './install/src/*' -type f -name '*.sh' -exec shellcheck --norc --enable=all --shell=bash --severity=style {} +\"", description = "Lint all shell scripts with shellcheck." }
 lint-mypy = { cmd = "mypy src", description = "Type-check Python files with mypy." }
 lint-pyright = { cmd = "pyright src", description = "Type-check Python files with pyright." }
-lint-py = { cmd = "ruff check src tests && ruff format --check src tests", description = "Lint and format-check Python files with ruff." }
+lint-ruff = { cmd = "ruff check src tests && ruff format --check src tests", description = "Lint and format-check Python files with ruff." }
+lint-py = { depends-on = ["lint-ruff", "lint-mypy", "lint-pyright"], description = "Run all Python linters."}
 lint-compiled = { cmd = "vulture install/ --min-confidence 80", description = "Detect dead code in compiled installer scripts (install/*.py)." }
 lint = { depends-on = ["lint-sh", "lint-py", "lint-compiled"], description = "Run all linters." }
 
