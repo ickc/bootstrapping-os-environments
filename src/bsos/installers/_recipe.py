@@ -240,6 +240,21 @@ class Recipe:
     remove: Remove = field(default_factory=Remove)
 
 
+_VERSION_OVERRIDE_TOKENS = ("{version}", "{tag}")
+
+
+def _has_version_override_token(text: Optional[str]) -> bool:
+    return text is not None and any(token in text for token in _VERSION_OVERRIDE_TOKENS)
+
+
+def supports_version_override(recipe: Recipe) -> bool:
+    """Return True when a recipe can consume an explicit release tag."""
+    return any(
+        _has_version_override_token(art.url_template) or _has_version_override_token(art.member)
+        for art in recipe.artifacts
+    )
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Engine — the five stages, implemented once.
 # ─────────────────────────────────────────────────────────────────────────────
@@ -427,10 +442,9 @@ def run_cli(recipe: Recipe) -> None:
     )
     args = parser.parse_args()
     if args.version_override is not None:
-        has_slot = any("{version}" in a.url_template or "{tag}" in a.url_template for a in recipe.artifacts)
-        if not has_slot:
+        if not supports_version_override(recipe):
             print(
-                f"{recipe.name}: --version is not supported (no {{version}} slot in URL)",
+                f"{recipe.name}: --version is not supported (no {{version}}/{{tag}} slot)",
                 file=sys.stderr,
             )
             sys.exit(1)

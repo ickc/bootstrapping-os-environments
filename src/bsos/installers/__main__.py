@@ -25,6 +25,7 @@ from bsos.installers._compile import discover_modules
 from bsos.installers._env import EnvConfig
 from bsos.installers._recipe import Recipe
 from bsos.installers._recipe import install as _recipe_install
+from bsos.installers._recipe import supports_version_override
 from bsos.installers._recipe import test_install as _recipe_test
 from bsos.installers._recipe import uninstall as _recipe_uninstall
 
@@ -92,9 +93,8 @@ def main() -> None:
             print(f"{name}: --version is not supported (no RECIPE)", file=sys.stderr)
             sys.exit(1)
         recipe: Recipe = mod.RECIPE
-        has_slot = any("{version}" in a.url_template for a in recipe.artifacts)
-        if not has_slot:
-            print(f"{name}: --version is not supported (no {{version}} slot in URL)", file=sys.stderr)
+        if not supports_version_override(recipe):
+            print(f"{name}: --version is not supported (no {{version}}/{{tag}} slot)", file=sys.stderr)
             sys.exit(1)
 
     sys.exit(_dispatch(args.action, names, args.version_override))
