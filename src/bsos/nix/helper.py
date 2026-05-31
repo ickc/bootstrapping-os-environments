@@ -93,17 +93,19 @@ def parse_nix_paths(
     paths = get_executable_paths(nix_bin_dir)
     df = pd.DataFrame(
         (parse_nix_path(path) for path in paths),
-        columns=[
-            "executable",
-            "install",
-            "interpreter",
-            "package",
-            "version",
-            "date",
-            "git",
-            "is_bin",
-            "path",
-        ],
+        columns=pd.Index(
+            [
+                "executable",
+                "install",
+                "interpreter",
+                "package",
+                "version",
+                "date",
+                "git",
+                "is_bin",
+                "path",
+            ]
+        ),
     )
     df.set_index("executable", inplace=True)
     return df

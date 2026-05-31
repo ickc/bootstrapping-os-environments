@@ -365,12 +365,16 @@ class CondaPackages:
             },
             na_filter=False,
         )
-        df = df[list(CSV_SOURCE_COLUMNS)]
+        df = cast(pd.DataFrame, df.loc[:, list(CSV_SOURCE_COLUMNS)])
         return cls(df, default_channel=default_channel)
 
     @cached_property
     def username_package_pairs(self) -> list[tuple[str, str]]:
-        return [(row.channel or self.default_channel, name) for name, row in self.df.iterrows()]
+        pairs: list[tuple[str, str]] = []
+        for name, row in self.df.iterrows():
+            channel = cast(str, row["channel"]) or self.default_channel
+            pairs.append((channel, str(name)))
+        return pairs
 
     @cached_property
     def data(self) -> list[dict[str, Any]]:
@@ -392,10 +396,11 @@ class CondaPackages:
     @cached_property
     def platforms(self) -> pd.DataFrame:
         """Get all platforms from the packages."""
-        platforms = (
+        platforms = cast(
+            pd.DataFrame,
             pd.get_dummies(pd.Series((package.platforms.keys() for package in self.packages)).explode())
             .groupby(level=0)
-            .max()
+            .max(),
         )
         platforms.index = self.df.index
         return platforms
@@ -408,8 +413,8 @@ class CondaPackages:
         for col in ANACONDA_API_METADATA_COLUMNS:
             df[col] = [getattr(p, col) for p in self.packages]
 
-        columns = list(CSV_METADATA_COLUMNS) + sorted(platforms.columns.tolist())
-        df = df[columns]
+        columns = list(CSV_METADATA_COLUMNS) + sorted(str(column) for column in platforms.columns.tolist())
+        df = cast(pd.DataFrame, df.loc[:, columns])
         self.df = df
 
     def to_csv(self, path: Path) -> None:
