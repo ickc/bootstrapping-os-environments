@@ -219,16 +219,43 @@ def run(
 class VersionSpec:
     """Strategy for resolving the ``{version}`` token of a download URL."""
 
-    def resolve(self) -> str:
+    def resolve(self, override: Optional[str] = None) -> str:
         raise NotImplementedError
 
 
 @dataclass
 class Latest(VersionSpec):
-    """No version lookup — the URL uses the ``/releases/latest/download/`` redirect."""
+    """No version lookup — the URL uses the ``/releases/latest/download/`` redirect.
 
-    def resolve(self) -> str:
+    Only for non-GitHub-releases URLs that have no ``{version}`` slot.  The
+    ``--version`` flag is rejected at the ``run_cli`` level before this is reached.
+    """
+
+    def resolve(self, override: Optional[str] = None) -> str:
         return "latest"
+
+
+@dataclass
+class GitHubRedirect(VersionSpec):
+    """Resolve the latest release tag via the ``/releases/latest`` redirect.
+
+    Never calls the GitHub API (rate-limited at 60 req/hour unauthenticated).
+    Set *strip_v* to drop a leading ``v`` from the tag — use this when the URL
+    template hardcodes ``v{version}`` in the download path (the common GitHub
+    convention).  Leave *strip_v* False for repos whose tags have no ``v``
+    prefix (e.g. ``conda-forge/miniforge`` tags like ``26.3.2-2``).
+
+    ``--version`` overrides the auto-resolved tag; *strip_v* is applied to the
+    override identically to the resolved tag.
+    """
+
+    owner: str
+    repo: str
+    strip_v: bool = False
+
+    def resolve(self, override: Optional[str] = None) -> str:
+        tag = override if override is not None else resolve_latest_github_tag(self.owner, self.repo)
+        return tag.lstrip("v") if self.strip_v else tag
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -378,11 +405,11 @@ def _archive_for(art: Artifact, key: str) -> Archive:
     return archive
 
 
-def _install_artifact(art: Artifact, env: EnvConfig) -> Path:
+def _install_artifact(art: Artifact, env: EnvConfig, version_override: Optional[str] = None) -> Path:
     key = platform_key()
     target = _target_for(art, key)
     archive = _archive_for(art, key)
-    version = art.version.resolve()
+    version = art.version.resolve(version_override)
     token = target if target is not None else ""
     url = art.url_template.format(target=token, version=version, ext=archive.ext)
     dest = art.dest.path(env)
@@ -411,10 +438,10 @@ def _install_artifact(art: Artifact, env: EnvConfig) -> Path:
     return dest
 
 
-def install(recipe: Recipe, env: Optional[EnvConfig] = None) -> None:
+def install(recipe: Recipe, env: Optional[EnvConfig] = None, version_override: Optional[str] = None) -> None:
     env = env or EnvConfig()
     for art in recipe.artifacts:
-        dest = _install_artifact(art, env)
+        dest = _install_artifact(art, env, version_override)
         print(f"Installed {recipe.name} → {dest}")
 
 
@@ -506,10 +533,25 @@ def run_cli(recipe: Recipe) -> None:
         help=f"install/uninstall {recipe.name}, or test validates an install "
         "(skips cleanly if the platform is unsupported)",
     )
+    parser.add_argument(
+        "--version",
+        dest="version_override",
+        metavar="TAG",
+        default=None,
+        help="git release tag to install (e.g. v1.2.3); default: latest",
+    )
     args = parser.parse_args()
+    if args.version_override is not None:
+        has_slot = any("{version}" in a.url_template for a in recipe.artifacts)
+        if not has_slot:
+            print(
+                f"{recipe.name}: --version is not supported (no {{version}} slot in URL)",
+                file=sys.stderr,
+            )
+            sys.exit(1)
     env = EnvConfig()
     if args.action == "install":
-        install(recipe, env)
+        install(recipe, env, args.version_override)
     elif args.action == "uninstall":
         uninstall(recipe, env)
     else:
@@ -530,7 +572,9 @@ RECIPE = Recipe(
     name="mamba",
     artifacts=[
         Artifact(
-            url_template="https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-{target}.sh",
+            # Miniforge tags have no leading 'v' (e.g. 26.3.2-2), so strip_v=False.
+            url_template="https://github.com/conda-forge/miniforge/releases/download/{version}/Miniforge3-{target}.sh",
+            version=GitHubRedirect("conda-forge", "miniforge", strip_v=False),
             targets={
                 "Darwin-arm64": "Darwin-arm64",
                 "Darwin-x86_64": "Darwin-x86_64",

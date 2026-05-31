@@ -219,15 +219,19 @@ def run(
 class VersionSpec:
     """Strategy for resolving the ``{version}`` token of a download URL."""
 
-    def resolve(self) -> str:
+    def resolve(self, override: Optional[str] = None) -> str:
         raise NotImplementedError
 
 
 @dataclass
 class Latest(VersionSpec):
-    """No version lookup — the URL uses the ``/releases/latest/download/`` redirect."""
+    """No version lookup — the URL uses the ``/releases/latest/download/`` redirect.
 
-    def resolve(self) -> str:
+    Only for non-GitHub-releases URLs that have no ``{version}`` slot.  The
+    ``--version`` flag is rejected at the ``run_cli`` level before this is reached.
+    """
+
+    def resolve(self, override: Optional[str] = None) -> str:
         return "latest"
 
 
@@ -352,11 +356,11 @@ def _archive_for(art: Artifact, key: str) -> Archive:
     return archive
 
 
-def _install_artifact(art: Artifact, env: EnvConfig) -> Path:
+def _install_artifact(art: Artifact, env: EnvConfig, version_override: Optional[str] = None) -> Path:
     key = platform_key()
     target = _target_for(art, key)
     archive = _archive_for(art, key)
-    version = art.version.resolve()
+    version = art.version.resolve(version_override)
     token = target if target is not None else ""
     url = art.url_template.format(target=token, version=version, ext=archive.ext)
     dest = art.dest.path(env)
@@ -385,10 +389,10 @@ def _install_artifact(art: Artifact, env: EnvConfig) -> Path:
     return dest
 
 
-def install(recipe: Recipe, env: Optional[EnvConfig] = None) -> None:
+def install(recipe: Recipe, env: Optional[EnvConfig] = None, version_override: Optional[str] = None) -> None:
     env = env or EnvConfig()
     for art in recipe.artifacts:
-        dest = _install_artifact(art, env)
+        dest = _install_artifact(art, env, version_override)
         print(f"Installed {recipe.name} → {dest}")
 
 
@@ -480,10 +484,25 @@ def run_cli(recipe: Recipe) -> None:
         help=f"install/uninstall {recipe.name}, or test validates an install "
         "(skips cleanly if the platform is unsupported)",
     )
+    parser.add_argument(
+        "--version",
+        dest="version_override",
+        metavar="TAG",
+        default=None,
+        help="git release tag to install (e.g. v1.2.3); default: latest",
+    )
     args = parser.parse_args()
+    if args.version_override is not None:
+        has_slot = any("{version}" in a.url_template for a in recipe.artifacts)
+        if not has_slot:
+            print(
+                f"{recipe.name}: --version is not supported (no {{version}} slot in URL)",
+                file=sys.stderr,
+            )
+            sys.exit(1)
     env = EnvConfig()
     if args.action == "install":
-        install(recipe, env)
+        install(recipe, env, args.version_override)
     elif args.action == "uninstall":
         uninstall(recipe, env)
     else:
