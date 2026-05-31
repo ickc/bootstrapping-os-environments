@@ -28,6 +28,7 @@ from bsos.installers._recipe import (
     RunScript,
     Verify,
     _is_installed,
+    _supported_platforms,
     install,
 )
 
@@ -97,6 +98,43 @@ def _mamba_env(tmp_path: Path) -> EnvConfig:
             "MAMBA_ROOT_PREFIX": str(mamba_prefix),
         }
     )
+
+
+def test_supported_platforms_is_platform_independent_when_unconstrained():
+    assert _supported_platforms(_plain_recipe()) is None
+
+
+def test_supported_platforms_intersects_platform_specific_artifacts():
+    recipe = Recipe(
+        name="multi",
+        artifacts=[
+            Artifact(
+                url_template="https://example.com/tool-{target}",
+                dest=Dest("bin_dir", "tool"),
+                targets={"Linux-x86_64": "linux", "Darwin-arm64": "darwin"},
+                version=Latest(),
+                archive=RAW,
+            ),
+            Artifact(
+                url_template="https://example.com/helper-{target}",
+                dest=Dest("bin_dir", "helper"),
+                targets={"Linux-x86_64": "linux"},
+                version=Latest(),
+                archive=RAW,
+            ),
+            Artifact(
+                url_template="https://example.com/readme",
+                dest=Dest("xdg_data_home", "tool/readme"),
+                targets=None,
+                version=Latest(),
+                archive=RAW,
+                executable=False,
+            ),
+        ],
+        verify=Verify(args=None),
+    )
+
+    assert _supported_platforms(recipe) == {"Linux-x86_64"}
 
 
 @contextlib.contextmanager
@@ -266,6 +304,13 @@ def test_reinstall_runscript_marker_gone_uses_fresh_path(tmp_path):
 
 
 # ── mamba_env ─────────────────────────────────────────────────────────────────
+
+
+def test_mamba_env_default_env_dir_uses_remote_when_piped_from_stdin(monkeypatch):
+    monkeypatch.delitem(mamba_env_mod.__dict__, "__file__", raising=False)
+
+    assert mamba_env_mod._find_bundled_conda_dir() is None
+    assert mamba_env_mod._default_env_dir() == mamba_env_mod._REMOTE_ENV_DIR
 
 
 def test_mamba_env_install_creates_when_absent(tmp_path):

@@ -23,6 +23,16 @@ _INHERIT_KEYS = (
     "TMPDIR",
     "SHELL",
     "SSH_AUTH_SOCK",
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "ALL_PROXY",
+    "http_proxy",
+    "https_proxy",
+    "no_proxy",
+    "all_proxy",
+    "GITHUB_TOKEN",
+    "GH_TOKEN",
 )
 
 

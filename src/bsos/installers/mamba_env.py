@@ -62,6 +62,8 @@ def _find_bundled_conda_dir() -> Optional[Path]:
     Works both as a source module (``src/bsos/installers/``) and as a compiled
     standalone script (``install/mamba_env.py`` — the repo root is one level up).
     """
+    if "__file__" not in globals():
+        return None
     script_dir = Path(__file__).resolve().parent
     for root in [script_dir, *list(script_dir.parents)[:4]]:
         candidate = root / "conda"

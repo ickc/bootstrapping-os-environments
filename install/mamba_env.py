@@ -40,7 +40,7 @@ import urllib.request
 import warnings
 import zipfile
 from pathlib import Path
-from typing import Dict, Iterator, List, Optional, Tuple, Union
+from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
 # Baked from the bsos package at compile time.
 __version__ = '0.1.0'
@@ -54,7 +54,7 @@ _OPEN_URL_TIMEOUT = 60
 _TRANSIENT_HTTP_STATUS = {408, 429, 500, 502, 503, 504}
 
 
-def _open_url(url: str):
+def _open_url(url: str) -> Any:
     for attempt in range(_OPEN_URL_ATTEMPTS):
         req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
@@ -77,8 +77,15 @@ def download_file(url: str, dest: PathLike) -> None:
     """Download *url* to a local file at *dest*."""
     dest = Path(dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with _open_url(url) as resp, dest.open("wb") as f:
-        shutil.copyfileobj(resp, f)
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{dest.name}.", suffix=".tmp", dir=dest.parent)
+    tmp = Path(tmp_name)
+    try:
+        with os.fdopen(fd, "wb") as f, _open_url(url) as resp:
+            shutil.copyfileobj(resp, f)
+        tmp.replace(dest)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
 
 
 # --- _env ---
@@ -96,6 +103,16 @@ _INHERIT_KEYS = (
     "TMPDIR",
     "SHELL",
     "SSH_AUTH_SOCK",
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "ALL_PROXY",
+    "http_proxy",
+    "https_proxy",
+    "no_proxy",
+    "all_proxy",
+    "GITHUB_TOKEN",
+    "GH_TOKEN",
 )
 
 
@@ -215,6 +232,8 @@ def _find_bundled_conda_dir() -> Optional[Path]:
     Works both as a source module (``src/bsos/installers/``) and as a compiled
     standalone script (``install/mamba_env.py`` — the repo root is one level up).
     """
+    if "__file__" not in globals():
+        return None
     script_dir = Path(__file__).resolve().parent
     for root in [script_dir, *list(script_dir.parents)[:4]]:
         candidate = root / "conda"

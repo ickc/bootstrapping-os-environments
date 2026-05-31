@@ -362,18 +362,26 @@ def uninstall(recipe: Recipe, env: Optional[EnvConfig] = None) -> None:
             print(f"{target} not found", file=sys.stderr)
 
 
+def _platform_constraints(art: Artifact) -> Optional[Set[str]]:
+    keys: Optional[Set[str]] = set(art.targets) if art.targets is not None else None
+    if isinstance(art.archive, dict):
+        archive_keys = set(art.archive)
+        keys = archive_keys if keys is None else keys & archive_keys
+    return keys
+
+
 def _supported_platforms(recipe: Recipe) -> Optional[Set[str]]:
-    """Union of platform keys across platform-specific artifacts.
+    """Intersection of platform keys required by constrained artifacts.
 
     ``None`` means the recipe is platform-independent (never skipped by ``test``).
     """
-    keys: Set[str] = set()
-    specific = False
+    supported: Optional[Set[str]] = None
     for art in recipe.artifacts:
-        if art.targets is not None:
-            specific = True
-            keys.update(art.targets)
-    return keys if specific else None
+        constraints = _platform_constraints(art)
+        if constraints is None:
+            continue
+        supported = set(constraints) if supported is None else supported & constraints
+    return supported
 
 
 def test_install(recipe: Recipe, env: Optional[EnvConfig] = None) -> int:

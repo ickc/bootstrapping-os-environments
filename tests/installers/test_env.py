@@ -61,3 +61,20 @@ def test_subprocess_env_includes_managed_vars():
         assert sp[key] == value
     # values are plain strings (suitable as subprocess env)
     assert all(isinstance(v, str) for v in sp.values())
+
+
+def test_subprocess_env_inherits_network_and_github_auth_vars(monkeypatch):
+    inherited = {
+        "HTTPS_PROXY": "http://proxy.example:8080",
+        "http_proxy": "http://lower-proxy.example:8080",
+        "NO_PROXY": "localhost,127.0.0.1",
+        "GITHUB_TOKEN": "ghs_example",
+        "GH_TOKEN": "ghp_example",
+    }
+    for key, value in inherited.items():
+        monkeypatch.setenv(key, value)
+
+    sp = EnvConfig({"HOME": "/home/frank"}).subprocess_env()
+
+    for key, value in inherited.items():
+        assert sp[key] == value

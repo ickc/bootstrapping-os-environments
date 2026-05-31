@@ -10,8 +10,8 @@ on:
 jobs:
   # Run the compiled curl|python3 installers end-to-end on every supported
   # platform. Platform support lives in the installers themselves (each script
-  # skips cleanly via `--test` on an unsupported platform), so this matrix only
-  # needs the runners that map to a supported `$(uname -sm)`:
+  # skips cleanly via the `test` action on an unsupported platform), so this
+  # matrix only needs the runners that map to a supported `$(uname -sm)`:
   #   ubuntu-latest   -> Linux-x86_64
   #   ubuntu-24.04-arm -> Linux-aarch64
   #   macos-latest    -> Darwin-arm64

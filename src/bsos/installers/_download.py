@@ -1,6 +1,7 @@
 """Download and archive extraction helpers — stdlib only."""
 
 import io
+import os
 import shutil
 import tarfile
 import tempfile
@@ -10,7 +11,7 @@ import urllib.request
 import warnings
 import zipfile
 from pathlib import Path
-from typing import Union
+from typing import Any, Union
 
 from bsos import __version__
 
@@ -22,7 +23,7 @@ _TRANSIENT_HTTP_STATUS = {408, 429, 500, 502, 503, 504}
 PathLike = Union[str, Path]
 
 
-def _open_url(url: str):
+def _open_url(url: str) -> Any:
     for attempt in range(_OPEN_URL_ATTEMPTS):
         req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
@@ -86,8 +87,15 @@ def download_file(url: str, dest: PathLike) -> None:
     """Download *url* to a local file at *dest*."""
     dest = Path(dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with _open_url(url) as resp, dest.open("wb") as f:
-        shutil.copyfileobj(resp, f)
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{dest.name}.", suffix=".tmp", dir=dest.parent)
+    tmp = Path(tmp_name)
+    try:
+        with os.fdopen(fd, "wb") as f, _open_url(url) as resp:
+            shutil.copyfileobj(resp, f)
+        tmp.replace(dest)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
 
 
 def download_and_extract_tar(url: str, dest_dir: PathLike) -> None:
@@ -117,8 +125,13 @@ def resolve_latest_github_tag(owner: str, repo: str) -> str:
     """
     url = f"https://github.com/{owner}/{repo}/releases/latest"
     with _open_url(url) as resp:
-        final_url = resp.url
-    tag = final_url.rstrip("/").split("/")[-1]
+        final_url = str(resp.url).rstrip("/")
+    if "/tag/" not in final_url:
+        raise RuntimeError(
+            f"Could not resolve latest release tag for {owner}/{repo}: "
+            f"{url} ended at {final_url!r}, not a release tag URL"
+        )
+    tag = final_url.rsplit("/tag/", 1)[1].split("/", 1)[0]
     if not tag or tag in {"latest", "releases"}:
         raise RuntimeError(f"Could not resolve latest release tag for {owner}/{repo}")
     return tag
@@ -131,10 +144,14 @@ def download_to_tempdir(url: str, extract: str = "tar") -> Path:
     *extract* is ``"tar"`` or ``"zip"``.
     """
     tmp = Path(tempfile.mkdtemp(prefix="bsos-"))
-    if extract == "tar":
-        download_and_extract_tar(url, tmp)
-    elif extract == "zip":
-        download_and_extract_zip(url, tmp)
-    else:
-        raise ValueError(f"Unknown extract format: {extract}")
-    return tmp
+    try:
+        if extract == "tar":
+            download_and_extract_tar(url, tmp)
+        elif extract == "zip":
+            download_and_extract_zip(url, tmp)
+        else:
+            raise ValueError(f"Unknown extract format: {extract}")
+        return tmp
+    except Exception:
+        shutil.rmtree(tmp, ignore_errors=True)
+        raise

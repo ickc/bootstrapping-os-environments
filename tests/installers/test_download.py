@@ -4,11 +4,18 @@ import io
 import tarfile
 import urllib.error
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 import pytest
 
-from bsos.installers._download import _extract_tar_legacy_safe, _open_url
+import bsos.installers._download as download_mod
+from bsos.installers._download import (
+    _extract_tar_legacy_safe,
+    _open_url,
+    download_file,
+    download_to_tempdir,
+    resolve_latest_github_tag,
+)
 
 
 def _tarfile_with_members(*members: tuple[str, bytes]) -> io.BytesIO:
@@ -27,13 +34,13 @@ def test_open_url_retries_transient_http_error() -> None:
     error = urllib.error.HTTPError("https://example.invalid", 502, "Bad Gateway", hdrs=None, fp=None)
 
     with (
-        patch("bsos.installers._download.urllib.request.urlopen", side_effect=[error, response]) as urlopen,
+        patch("bsos.installers._download.urllib.request.urlopen", side_effect=[error, error, response]) as urlopen,
         patch("bsos.installers._download.time.sleep") as sleep,
     ):
         assert _open_url("https://example.invalid") is response
 
-    assert urlopen.call_count == 2
-    sleep.assert_called_once_with(1)
+    assert urlopen.call_count == 3
+    assert sleep.call_args_list == [call(1), call(2)]
 
 
 def test_open_url_retries_read_timeout() -> None:
@@ -43,14 +50,15 @@ def test_open_url_retries_read_timeout() -> None:
 
     with (
         patch(
-            "bsos.installers._download.urllib.request.urlopen", side_effect=[TimeoutError("read timed out"), response]
+            "bsos.installers._download.urllib.request.urlopen",
+            side_effect=[TimeoutError("read timed out"), TimeoutError("read timed out"), response],
         ) as urlopen,
         patch("bsos.installers._download.time.sleep") as sleep,
     ):
         assert _open_url("https://example.invalid") is response
 
-    assert urlopen.call_count == 2
-    sleep.assert_called_once_with(1)
+    assert urlopen.call_count == 3
+    assert sleep.call_args_list == [call(1), call(2)]
 
 
 def test_open_url_does_not_retry_non_transient_http_error() -> None:
@@ -65,6 +73,77 @@ def test_open_url_does_not_retry_non_transient_http_error() -> None:
 
     assert urlopen.call_count == 1
     sleep.assert_not_called()
+
+
+class _FailingResponse:
+    url = "https://example.invalid/file"
+
+    def __init__(self) -> None:
+        self._sent_partial = False
+
+    def __enter__(self) -> "_FailingResponse":
+        return self
+
+    def __exit__(self, *exc_info: object) -> None:
+        return None
+
+    def read(self, size: int = -1) -> bytes:
+        if not self._sent_partial:
+            self._sent_partial = True
+            return b"partial"
+        raise TimeoutError("read timed out")
+
+
+def test_download_file_removes_partial_destination_on_read_failure(tmp_path: Path) -> None:
+    dest = tmp_path / "tool"
+
+    with (
+        patch("bsos.installers._download._open_url", return_value=_FailingResponse()),
+        pytest.raises(TimeoutError, match="read timed out"),
+    ):
+        download_file("https://example.invalid/tool", dest)
+
+    assert not dest.exists()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_download_to_tempdir_cleans_up_failed_extract(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    leaked = tmp_path / "bsos-leak"
+
+    def fake_mkdtemp(prefix: str) -> str:
+        leaked.mkdir()
+        return str(leaked)
+
+    def fail_extract(url: str, dest: Path) -> None:
+        (dest / "partial").write_text("partial")
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(download_mod.tempfile, "mkdtemp", fake_mkdtemp)
+    monkeypatch.setattr(download_mod, "download_and_extract_tar", fail_extract)
+
+    with pytest.raises(RuntimeError, match="boom"):
+        download_to_tempdir("https://example.invalid/archive.tar.gz")
+
+    assert not leaked.exists()
+
+
+class _RedirectResponse:
+    def __init__(self, url: str) -> None:
+        self.url = url
+
+    def __enter__(self) -> "_RedirectResponse":
+        return self
+
+    def __exit__(self, *exc_info: object) -> None:
+        return None
+
+
+def test_resolve_latest_github_tag_requires_tag_url() -> None:
+    with (
+        patch("bsos.installers._download._open_url", return_value=_RedirectResponse("https://github.com/o/r/releases")),
+        pytest.raises(RuntimeError, match="not a release tag URL"),
+    ):
+        resolve_latest_github_tag("o", "r")
 
 
 def test_legacy_tar_extracts_safe_member(tmp_path: Path) -> None:

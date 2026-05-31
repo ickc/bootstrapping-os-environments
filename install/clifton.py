@@ -30,7 +30,7 @@ import warnings
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 # Baked from the bsos package at compile time.
 __version__ = '0.1.0'
@@ -44,7 +44,7 @@ _OPEN_URL_TIMEOUT = 60
 _TRANSIENT_HTTP_STATUS = {408, 429, 500, 502, 503, 504}
 
 
-def _open_url(url: str):
+def _open_url(url: str) -> Any:
     for attempt in range(_OPEN_URL_ATTEMPTS):
         req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
@@ -108,8 +108,15 @@ def download_file(url: str, dest: PathLike) -> None:
     """Download *url* to a local file at *dest*."""
     dest = Path(dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with _open_url(url) as resp, dest.open("wb") as f:
-        shutil.copyfileobj(resp, f)
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{dest.name}.", suffix=".tmp", dir=dest.parent)
+    tmp = Path(tmp_name)
+    try:
+        with os.fdopen(fd, "wb") as f, _open_url(url) as resp:
+            shutil.copyfileobj(resp, f)
+        tmp.replace(dest)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
 
 
 def download_and_extract_tar(url: str, dest_dir: PathLike) -> None:
@@ -139,8 +146,13 @@ def resolve_latest_github_tag(owner: str, repo: str) -> str:
     """
     url = f"https://github.com/{owner}/{repo}/releases/latest"
     with _open_url(url) as resp:
-        final_url = resp.url
-    tag = final_url.rstrip("/").split("/")[-1]
+        final_url = str(resp.url).rstrip("/")
+    if "/tag/" not in final_url:
+        raise RuntimeError(
+            f"Could not resolve latest release tag for {owner}/{repo}: "
+            f"{url} ended at {final_url!r}, not a release tag URL"
+        )
+    tag = final_url.rsplit("/tag/", 1)[1].split("/", 1)[0]
     if not tag or tag in {"latest", "releases"}:
         raise RuntimeError(f"Could not resolve latest release tag for {owner}/{repo}")
     return tag
@@ -153,13 +165,17 @@ def download_to_tempdir(url: str, extract: str = "tar") -> Path:
     *extract* is ``"tar"`` or ``"zip"``.
     """
     tmp = Path(tempfile.mkdtemp(prefix="bsos-"))
-    if extract == "tar":
-        download_and_extract_tar(url, tmp)
-    elif extract == "zip":
-        download_and_extract_zip(url, tmp)
-    else:
-        raise ValueError(f"Unknown extract format: {extract}")
-    return tmp
+    try:
+        if extract == "tar":
+            download_and_extract_tar(url, tmp)
+        elif extract == "zip":
+            download_and_extract_zip(url, tmp)
+        else:
+            raise ValueError(f"Unknown extract format: {extract}")
+        return tmp
+    except Exception:
+        shutil.rmtree(tmp, ignore_errors=True)
+        raise
 
 # --- _env ---
 
@@ -176,6 +192,16 @@ _INHERIT_KEYS = (
     "TMPDIR",
     "SHELL",
     "SSH_AUTH_SOCK",
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "ALL_PROXY",
+    "http_proxy",
+    "https_proxy",
+    "no_proxy",
+    "all_proxy",
+    "GITHUB_TOKEN",
+    "GH_TOKEN",
 )
 
 
@@ -544,18 +570,26 @@ def uninstall(recipe: Recipe, env: Optional[EnvConfig] = None) -> None:
             print(f"{target} not found", file=sys.stderr)
 
 
+def _platform_constraints(art: Artifact) -> Optional[Set[str]]:
+    keys: Optional[Set[str]] = set(art.targets) if art.targets is not None else None
+    if isinstance(art.archive, dict):
+        archive_keys = set(art.archive)
+        keys = archive_keys if keys is None else keys & archive_keys
+    return keys
+
+
 def _supported_platforms(recipe: Recipe) -> Optional[Set[str]]:
-    """Union of platform keys across platform-specific artifacts.
+    """Intersection of platform keys required by constrained artifacts.
 
     ``None`` means the recipe is platform-independent (never skipped by ``test``).
     """
-    keys: Set[str] = set()
-    specific = False
+    supported: Optional[Set[str]] = None
     for art in recipe.artifacts:
-        if art.targets is not None:
-            specific = True
-            keys.update(art.targets)
-    return keys if specific else None
+        constraints = _platform_constraints(art)
+        if constraints is None:
+            continue
+        supported = set(constraints) if supported is None else supported & constraints
+    return supported
 
 
 def test_install(recipe: Recipe, env: Optional[EnvConfig] = None) -> int:
