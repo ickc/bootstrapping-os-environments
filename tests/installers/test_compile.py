@@ -55,9 +55,7 @@ def test_checked_in_script_is_up_to_date(module):
     # compile-task name swaps '_' for '-' (pixi run compile-mamba-env).
     artifact_path = REPO_ROOT / "install" / f"{module}.py"
     artifact = artifact_path.read_text()
-    assert artifact == compile_module(module), (
-        f"install/{module}.py is stale; regenerate with `pixi run compile`"
-    )
+    assert artifact == compile_module(module), f"install/{module}.py is stale; regenerate with `pixi run compile`"
 
 
 @pytest.mark.parametrize("module", _COMPILED_MODULES)

@@ -27,7 +27,11 @@ _TOOLS: List[Tuple[str, Optional[List[str]], Optional[List[str]]]] = [
     ("pandoc", ["pandoc", "--bash-completion"], None),
     ("pixi", ["pixi", "completion", "--shell", "bash"], ["pixi", "completion", "--shell", "zsh"]),
     ("starship", ["starship", "completions", "bash"], ["starship", "completions", "zsh"]),
-    ("zellij", ["zellij", "setup", "--generate-completion", "bash"], ["zellij", "setup", "--generate-completion", "zsh"]),
+    (
+        "zellij",
+        ["zellij", "setup", "--generate-completion", "bash"],
+        ["zellij", "setup", "--generate-completion", "zsh"],
+    ),
 ]
 
 

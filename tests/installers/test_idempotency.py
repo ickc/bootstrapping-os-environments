@@ -16,14 +16,13 @@ from pathlib import Path
 from typing import Iterator
 from unittest.mock import patch
 
-import pytest
-
+import bsos.installers.mamba_env as mamba_env_mod
 from bsos.installers._env import EnvConfig
 from bsos.installers._recipe import (
+    RAW,
     Artifact,
     Dest,
     Latest,
-    RAW,
     Recipe,
     Remove,
     RunScript,
@@ -31,8 +30,6 @@ from bsos.installers._recipe import (
     _is_installed,
     install,
 )
-import bsos.installers.mamba_env as mamba_env_mod
-
 
 # ── shared helpers ────────────────────────────────────────────────────────────
 
@@ -239,7 +236,9 @@ def test_reinstall_plain_removes_then_installs(tmp_path, capsys):
 
     with patch("bsos.installers._recipe._install_artifact", return_value=dest) as mock_ia:
         # uninstall() removes the file; install() re-places it
-        from bsos.installers._recipe import uninstall, install as recipe_install
+        from bsos.installers._recipe import install as recipe_install
+        from bsos.installers._recipe import uninstall
+
         uninstall(recipe, env)
         recipe_install(recipe, env)
         mock_ia.assert_called_once()
@@ -256,6 +255,7 @@ def test_reinstall_runscript_marker_gone_uses_fresh_path(tmp_path):
     marker.touch()
 
     from bsos.installers._recipe import uninstall
+
     uninstall(recipe, env)
 
     # marker gone → _is_installed is False → install will call _install_artifact

@@ -23,9 +23,8 @@ import sys
 
 from bsos.installers._compile import discover_modules
 from bsos.installers._env import EnvConfig
-from bsos.installers._recipe import Recipe
+from bsos.installers._recipe import Recipe, supports_version_override
 from bsos.installers._recipe import install as _recipe_install
-from bsos.installers._recipe import supports_version_override
 from bsos.installers._recipe import test_install as _recipe_test
 from bsos.installers._recipe import uninstall as _recipe_uninstall
 
@@ -71,7 +70,9 @@ def main() -> None:
         "reinstall: uninstall then install each from scratch; "
         "uninstall: remove; test: validate installs",
     )
-    parser.add_argument("names", nargs="*", metavar="name", help="Installer module names (default: all, sorted by name)")
+    parser.add_argument(
+        "names", nargs="*", metavar="name", help="Installer module names (default: all, sorted by name)"
+    )
     parser.add_argument(
         "--version",
         dest="version_override",

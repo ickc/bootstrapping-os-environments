@@ -186,13 +186,8 @@ class EnvConfig:
         self.home = Path(env.get("HOME") or Path.home())
 
         appdir = env.get("__APPDIR", "")
-        self.local_root = Path(
-            env.get("__LOCAL_ROOT")
-            or (f"{appdir}/local" if appdir else self.home / ".local")
-        )
-        self.opt_root = Path(
-            env.get("__OPT_ROOT") or self.local_root / "opt" / f"{self.ostype}-{self.arch}"
-        )
+        self.local_root = Path(env.get("__LOCAL_ROOT") or (f"{appdir}/local" if appdir else self.home / ".local"))
+        self.opt_root = Path(env.get("__OPT_ROOT") or self.local_root / "opt" / f"{self.ostype}-{self.arch}")
 
         self.mamba_root_prefix = Path(env.get("MAMBA_ROOT_PREFIX") or self.opt_root / "miniforge3")
         self.pixi_home = Path(env.get("PIXI_HOME") or self.opt_root / "pixi")

@@ -15,9 +15,7 @@ ENV_SH = REPO_ROOT / "env.sh"
 
 
 def test_env_sh_matches_generated():
-    assert ENV_SH.read_text() == generate_env_sh(), (
-        "env.sh is stale; regenerate with `pixi run generate-env-sh`"
-    )
+    assert ENV_SH.read_text() == generate_env_sh(), "env.sh is stale; regenerate with `pixi run generate-env-sh`"
 
 
 def test_defaults_from_home():
