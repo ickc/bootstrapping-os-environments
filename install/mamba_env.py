@@ -35,6 +35,7 @@ import sys
 import tarfile
 import tempfile
 import urllib.request
+import warnings
 import zipfile
 from pathlib import Path
 from typing import Dict, Iterator, List, Optional, Tuple, Union

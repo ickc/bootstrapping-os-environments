@@ -18,6 +18,7 @@ import sys
 import tarfile
 import tempfile
 import urllib.request
+import warnings
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -40,11 +41,42 @@ def _open_url(url: str):
 def _extract_tar(data: io.BytesIO, dest_dir: Path) -> None:
     with tarfile.open(fileobj=data, mode="r:*") as tar:
         # filter="data" (PEP 706) rejects absolute/parent paths and strips
-        # unsafe mode bits (CVE-2007-4559). Fall back on Pythons that predate it.
+        # unsafe mode bits (CVE-2007-4559). Use an explicit validator on
+        # Pythons that predate it instead of the unsafe legacy extractall path.
         try:
             tar.extractall(dest_dir, filter="data")
         except TypeError:
-            tar.extractall(dest_dir)
+            _extract_tar_legacy_safe(tar, dest_dir)
+
+
+def _is_relative_to(path: Path, root: Path) -> bool:
+    try:
+        path.relative_to(root)
+    except ValueError:
+        return False
+    return True
+
+
+def _extract_tar_legacy_safe(tar: tarfile.TarFile, dest_dir: Path) -> None:
+    """Extract tar members safely on Pythons without tarfile data filters."""
+    root = dest_dir.resolve()
+    members = []
+    for member in tar.getmembers():
+        target = (dest_dir / member.name).resolve()
+        if not _is_relative_to(target, root):
+            raise RuntimeError(f"Unsafe tar member path: {member.name!r}")
+        if member.isdev():
+            raise RuntimeError(f"Unsafe tar member type: {member.name!r}")
+        if member.issym() or member.islnk():
+            link = Path(member.linkname)
+            link_target = (target.parent / link).resolve() if not link.is_absolute() else link.resolve()
+            if not _is_relative_to(link_target, root):
+                raise RuntimeError(f"Unsafe tar link target: {member.name!r} -> {member.linkname!r}")
+        member.mode &= 0o755
+        members.append(member)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
+        tar.extractall(dest_dir, members=members)
 
 
 def download_file(url: str, dest: PathLike) -> None:
