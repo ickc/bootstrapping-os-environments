@@ -2,11 +2,13 @@
 
 import io
 import tarfile
+import urllib.error
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
-from bsos.installers._download import _extract_tar_legacy_safe
+from bsos.installers._download import _extract_tar_legacy_safe, _open_url
 
 
 def _tarfile_with_members(*members: tuple[str, bytes]) -> io.BytesIO:
@@ -18,6 +20,34 @@ def _tarfile_with_members(*members: tuple[str, bytes]) -> io.BytesIO:
             tar.addfile(info, io.BytesIO(payload))
     data.seek(0)
     return data
+
+
+def test_open_url_retries_transient_http_error() -> None:
+    response = object()
+    error = urllib.error.HTTPError("https://example.invalid", 502, "Bad Gateway", hdrs=None, fp=None)
+
+    with (
+        patch("bsos.installers._download.urllib.request.urlopen", side_effect=[error, response]) as urlopen,
+        patch("bsos.installers._download.time.sleep") as sleep,
+    ):
+        assert _open_url("https://example.invalid") is response
+
+    assert urlopen.call_count == 2
+    sleep.assert_called_once_with(1)
+
+
+def test_open_url_does_not_retry_non_transient_http_error() -> None:
+    error = urllib.error.HTTPError("https://example.invalid", 404, "Not Found", hdrs=None, fp=None)
+
+    with (
+        patch("bsos.installers._download.urllib.request.urlopen", side_effect=error) as urlopen,
+        patch("bsos.installers._download.time.sleep") as sleep,
+        pytest.raises(urllib.error.HTTPError),
+    ):
+        _open_url("https://example.invalid")
+
+    assert urlopen.call_count == 1
+    sleep.assert_not_called()
 
 
 def test_legacy_tar_extracts_safe_member(tmp_path: Path) -> None:

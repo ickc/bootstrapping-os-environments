@@ -4,6 +4,8 @@ import io
 import shutil
 import tarfile
 import tempfile
+import time
+import urllib.error
 import urllib.request
 import warnings
 import zipfile
@@ -13,13 +15,26 @@ from typing import Union
 from bsos import __version__
 
 _USER_AGENT = f"bsos-installer/{__version__}"
+_OPEN_URL_ATTEMPTS = 3
+_OPEN_URL_TIMEOUT = 60
+_TRANSIENT_HTTP_STATUS = {408, 429, 500, 502, 503, 504}
 
 PathLike = Union[str, Path]
 
 
 def _open_url(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
-    return urllib.request.urlopen(req)  # noqa: S310 — URL is from our own dispatch table
+    for attempt in range(_OPEN_URL_ATTEMPTS):
+        req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
+        try:
+            return urllib.request.urlopen(req, timeout=_OPEN_URL_TIMEOUT)  # noqa: S310 — URL is from our dispatch table
+        except urllib.error.HTTPError as exc:
+            if exc.code not in _TRANSIENT_HTTP_STATUS or attempt == _OPEN_URL_ATTEMPTS - 1:
+                raise
+        except urllib.error.URLError:
+            if attempt == _OPEN_URL_ATTEMPTS - 1:
+                raise
+        time.sleep(2**attempt)
+    raise RuntimeError(f"Could not open URL after retries: {url}")
 
 
 def _extract_tar(data: io.BytesIO, dest_dir: Path) -> None:
