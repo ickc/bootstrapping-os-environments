@@ -10,13 +10,14 @@ from dataclasses import dataclass
 from datetime import datetime
 from functools import cached_property
 from pathlib import Path
+from typing import Any, cast
 
-import defopt  # type: ignore
+import defopt
 import httpx
 import pandas as pd
 import platformdirs
 import yaml
-import yamlloader  # type: ignore
+import yamlloader
 
 CACHE_DIR: Path = Path(platformdirs.user_cache_dir(appname="bsos", ensure_exists=True))
 
@@ -66,7 +67,7 @@ CSV_METADATA_COLUMNS: tuple[str, ...] = (
 )
 
 
-def parse_conda_build(build: str, regex=re.compile(r"py(\d)(\d+)")) -> tuple[int, int]:
+def parse_conda_build(build: str, regex: re.Pattern[str] = re.compile(r"py(\d)(\d+)")) -> tuple[int, int]:
     """Parse conda build string and return python version as tuple.
 
     This does not attempt to be robust, just quick and dirty getting the job done here.
@@ -80,7 +81,7 @@ def parse_conda_build(build: str, regex=re.compile(r"py(\d)(\d+)")) -> tuple[int
         raise ValueError(f"Cannot parse {build}")
 
 
-def parse_conda_dependency_name(dependency: str, regex=re.compile(r"^\s*([^\s=<>!~]+)")) -> str:
+def parse_conda_dependency_name(dependency: str, regex: re.Pattern[str] = re.compile(r"^\s*([^\s=<>!~]+)")) -> str:
     """Parse a conda match spec enough to extract the package name."""
     match = regex.search(dependency)
     if match:
@@ -99,7 +100,7 @@ async def get_package_info(
     username_package_pairs: list[tuple[str, str]],
     # html page is at https://anaconda.org/{owner}/{name}
     url_format: str = "https://api.anaconda.org/package/{owner}/{name}",
-) -> list[dict]:
+) -> list[dict[str, Any]]:
     """
     Fetch package information from the Anaconda API and return a list of dictionaries.
 
@@ -110,14 +111,14 @@ async def get_package_info(
         list[dict]: A list of dictionaries containing package information.
     """
 
-    async def fetch_package_info(owner: str, name: str) -> dict:
+    async def fetch_package_info(owner: str, name: str) -> dict[str, Any]:
         cache_dir: Path = CACHE_DIR
         file_path: Path = cache_dir / owner / f"{name}.json"
 
         # Try to load from cache
         if file_path.is_file():
             with file_path.open("r") as f:
-                return json.load(f)
+                return cast(dict[str, Any], json.load(f))
 
         # Fetch from API and cache
         file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -125,7 +126,7 @@ async def get_package_info(
             try:
                 response = await client.get(url_format.format(owner=owner, name=name))
                 response.raise_for_status()
-                data = response.json()
+                data = cast(dict[str, Any], response.json())
             except Exception as e:
                 print(f"Failed to fetch {owner}/{name}: {e}")
                 raise e
@@ -141,7 +142,7 @@ async def get_package_info(
 
 @dataclass
 class CondaPackage:
-    data: dict
+    data: dict[str, Any]
     version: str = ""
     channel: str = ""
     ignored: bool = False
@@ -150,15 +151,16 @@ class CondaPackage:
 
     @property
     def name(self) -> str:
-        return self.data["name"]
+        return cast(str, self.data["name"])
 
     @property
     def owner(self) -> str:
-        return self.data["owner"]["login"]
+        return cast(str, self.data["owner"]["login"])
 
     @property
     def summary(self) -> str:
-        return self.data["summary"].strip().replace("\n", " ")
+        summary = cast(str, self.data["summary"])
+        return summary.strip().replace("\n", " ")
 
     @property
     def home_url(self) -> str:
@@ -169,13 +171,13 @@ class CondaPackage:
         return (self.data.get("dev_url") or "").strip()
 
     @cached_property
-    def latest_uploaded_file(self) -> dict:
-        files = [file for file in self.data.get("files", []) if file.get("upload_time")]
+    def latest_uploaded_file(self) -> dict[str, Any]:
+        files = [file for file in cast(list[dict[str, Any]], self.data.get("files", [])) if file.get("upload_time")]
         return max(files, key=lambda file: file["upload_time"]) if files else {}
 
     @cached_property
     def latest_version(self) -> str:
-        return self.latest_uploaded_file.get("version") or self.data["latest_version"]
+        return cast(str, self.latest_uploaded_file.get("version") or self.data["latest_version"])
 
     @property
     def license(self) -> str:
@@ -183,24 +185,27 @@ class CondaPackage:
 
     @cached_property
     def platforms(self) -> dict[str, str]:
-        platforms = {file["attrs"]["subdir"]: file["version"] for file in self.latest_version_files}
-        return platforms or self.data["platforms"]
+        platforms = {
+            cast(str, file["attrs"]["subdir"]): cast(str, file["version"]) for file in self.latest_version_files
+        }
+        return platforms or cast(dict[str, str], self.data["platforms"])
 
     @cached_property
     def platform_set(self) -> set[tuple[str, str]]:
         return set(self.platforms.items())
 
     @cached_property
-    def latest_version_files(self) -> list[dict]:
-        return [file for file in self.data["files"] if file["version"] == self.latest_version]
+    def latest_version_files(self) -> list[dict[str, Any]]:
+        files = cast(list[dict[str, Any]], self.data["files"])
+        return [file for file in files if file["version"] == self.latest_version]
 
     @property
     def doc_url(self) -> str:
-        return self.data["doc_url"]
+        return cast(str, self.data["doc_url"])
 
     @cached_property
-    def latest_files(self) -> list[dict]:
-        files = self.data["files"]
+    def latest_files(self) -> list[dict[str, Any]]:
+        files = cast(list[dict[str, Any]], self.data["files"])
         platforms = self.platform_set
         res = [file for file in files if (file["attrs"]["subdir"], file["version"]) in platforms]
         return res
@@ -214,7 +219,7 @@ class CondaPackage:
         return res
 
     @cached_property
-    def latest_files_with_latest_build_number(self) -> list[dict]:
+    def latest_files_with_latest_build_number(self) -> list[dict[str, Any]]:
         return [file for file in self.latest_files if file["attrs"]["build_number"] == self.latest_build_number]
 
     @property
@@ -303,7 +308,7 @@ class CondaPackage:
                     return True
         return False
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "name": self.name,
             "owner": self.owner,
@@ -365,10 +370,10 @@ class CondaPackages:
 
     @cached_property
     def username_package_pairs(self) -> list[tuple[str, str]]:
-        return [(row.channel or self.default_channel, name) for name, row in self.df.iterrows()]  # type: ignore[misc]
+        return [(row.channel or self.default_channel, name) for name, row in self.df.iterrows()]
 
     @cached_property
-    def data(self) -> list[dict]:
+    def data(self) -> list[dict[str, Any]]:
         return asyncio.run(get_package_info(self.username_package_pairs))
 
     @cached_property
@@ -423,7 +428,7 @@ def generate(
     name_replace_from: str = ".",
     name_replace_to: str = "",
     python: bool = True,
-):
+) -> None:
     """Generate conda environment files."""
     packages = CondaPackages.read_csv(csv)
 
@@ -433,7 +438,8 @@ def generate(
 
     for arch in archs:
         for version in versions:
-            python_version: tuple[int, int] = tuple(map(int, version.split(".")))  # type: ignore[assignment]
+            version_parts = version.split(".")
+            python_version = (int(version_parts[0]), int(version_parts[1]))
             name = name_format.format(arch=arch, version=version).replace(name_replace_from, name_replace_to)
             dependencies: list[str] = []
             if python:
@@ -458,12 +464,12 @@ def generate(
 
 def clean(
     cache_dir: Path = CACHE_DIR,
-):
+) -> None:
     """Delete the cache directory."""
     shutil.rmtree(cache_dir, ignore_errors=True)
 
 
-def cli():
+def cli() -> None:
     defopt.run([generate, clean])
 
 

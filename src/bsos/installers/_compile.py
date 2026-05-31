@@ -13,7 +13,7 @@ import argparse
 import ast
 import sys
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Set, Tuple
+from typing import Dict, Iterable, Iterator, List, Optional, Set, Tuple
 
 _PACKAGE = "bsos.installers"
 _PACKAGE_DIR = Path(__file__).resolve().parent
@@ -94,7 +94,7 @@ def _get_top_level_defs(source: str) -> Dict[str, ast.stmt]:
     return defs
 
 
-def _walk_skip_annotations(node: ast.AST):
+def _walk_skip_annotations(node: ast.AST) -> Iterator[ast.AST]:
     """Walk an AST node's descendants, skipping type annotation subtrees.
 
     Type annotations (argument annotations, return annotations, variable
@@ -314,8 +314,9 @@ def compile_module(target: str) -> str:
         else:
             seed = needed_from.get(mod, set())
             defs = _get_top_level_defs(src)
-            needed_names[mod] = _transitive_needed(seed, defs)
-            referenced = _names_referenced(defs[name] for name in needed_names[mod])
+            needed = _transitive_needed(seed, defs)
+            needed_names[mod] = needed
+            referenced = _names_referenced(defs[name] for name in needed)
         # Propagate to deps only the imported names this module's *retained*
         # code actually references. Merely importing a name is not enough — its
         # sole user may have been tree-shaken out (e.g. resolve_latest_github_tag

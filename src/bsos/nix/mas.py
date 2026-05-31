@@ -11,12 +11,21 @@ from pathlib import Path
 
 
 def mas_list(
-    regex=re.compile(r" {2,}"),
+    regex: re.Pattern[str] = re.compile(r" {2,}"),
 ) -> list[tuple[str, str, str]]:
     """Parse the output of `mas list` and return a list of tuples with the app id, name, and version."""
     out = subprocess.check_output(["/opt/homebrew/bin/mas", "list"], text=True)
     lines = out.split("\n")
-    return [tuple(regex.split(line)) for line in lines if line]
+    apps: list[tuple[str, str, str]] = []
+    for line in lines:
+        if not line:
+            continue
+        parts = regex.split(line, maxsplit=2)
+        if len(parts) != 3:
+            raise ValueError(f"Could not parse mas line: {line}")
+        app_id, name, version = parts
+        apps.append((app_id, name, version))
+    return apps
 
 
 def format_mas_to_nix(apps: list[tuple[str, str, str]]) -> list[str]:
@@ -46,7 +55,7 @@ def main(path: Path) -> None:
     write_nix_from_nas(path, nix_content)
 
 
-def cli():
+def cli() -> None:
     """CLI entry point."""
     parser = argparse.ArgumentParser(description="Update flake.nix with the latest mas apps")
     parser.add_argument("path", type=Path, help="The path to the flake.nix file")

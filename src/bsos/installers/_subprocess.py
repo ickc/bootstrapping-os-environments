@@ -2,7 +2,7 @@
 
 import shutil
 import subprocess
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 
 def find_command(name: str) -> Optional[str]:
@@ -22,8 +22,8 @@ def run(
     cmd: List[str],
     env: Optional[Dict[str, str]] = None,
     check: bool = True,
-    **kwargs: object,
-) -> "subprocess.CompletedProcess":
+    **kwargs: Any,
+) -> "subprocess.CompletedProcess[Any]":
     """Run *cmd* with an explicit environment.
 
     Pass *env* from :meth:`EnvConfig.subprocess_env` to isolate the child

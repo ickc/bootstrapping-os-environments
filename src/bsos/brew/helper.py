@@ -38,7 +38,7 @@ import json
 import re
 import subprocess
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 import defopt
 
@@ -65,7 +65,7 @@ def _parse_brew_names(lines: List[str]) -> List[str]:
     return names
 
 
-def _call_brew_info(name: str, cask: bool = False) -> Optional[Dict]:
+def _call_brew_info(name: str, cask: bool = False) -> Optional[Dict[str, Any]]:
     """Run `brew info <name> --json=v2` and return parsed JSON or None on failure."""
     command = ["brew", "info", name, "--json=v2"]
     if cask:
@@ -85,12 +85,12 @@ def _call_brew_info(name: str, cask: bool = False) -> Optional[Dict]:
         return None
 
     try:
-        return json.loads(proc.stdout)
+        return cast(Dict[str, Any], json.loads(proc.stdout))
     except json.JSONDecodeError:
         return None
 
 
-def _extract_description(brew_json: Optional[Dict], cask: bool = False) -> Optional[str]:
+def _extract_description(brew_json: Optional[Dict[str, Any]], cask: bool = False) -> Optional[str]:
     """Extract `formulae[0]['desc']` from brew JSON if present."""
     key = "casks" if cask else "formulae"
     if not brew_json:

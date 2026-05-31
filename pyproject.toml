@@ -227,3 +227,15 @@ strict = true
 warn_unreachable = true
 show_error_codes = true
 pretty = true
+
+[[tool.mypy.overrides]]
+module = [
+    "defopt",
+    "pandas",
+    "pandas.*",
+    "yaml",
+    "yaml.*",
+    "yamlloader",
+    "yamlloader.*",
+]
+ignore_missing_imports = true
