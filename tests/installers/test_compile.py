@@ -1,6 +1,8 @@
 """Tests for the installer compile system."""
 
 import ast
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -56,3 +58,24 @@ def test_checked_in_script_is_up_to_date(module):
     assert artifact == compile_module(module), (
         f"install/{module}.py is stale; regenerate with `pixi run compile`"
     )
+
+
+@pytest.mark.parametrize("module", _COMPILED_MODULES)
+def test_compiled_script_runs(module):
+    """The shipped standalone must actually run, not merely parse.
+
+    Parsing alone (above) never catches a def-time error — e.g. the tree-shaker
+    dropping an annotation-only name like ``_download.PathLike`` while leaving
+    the annotation in the signature. Invoking ``--help`` as a subprocess runs
+    the whole module top level (imports, dataclass defs, RECIPE construction)
+    in a real ``__main__`` and exits 0 via argparse, before any install action.
+    """
+    script = REPO_ROOT / "install" / f"{module}.py"
+    result = subprocess.run(
+        [sys.executable, str(script), "--help"],
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert result.returncode == 0, f"{script} failed to run:\n{result.stderr}"
+    assert "usage:" in result.stdout

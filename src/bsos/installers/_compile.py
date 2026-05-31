@@ -104,6 +104,11 @@ def _walk_skip_annotations(node: ast.AST):
     Type annotations (argument annotations, return annotations, variable
     annotations) are pure hints — they create no runtime dependency on the
     names they mention, so the tree-shaker must not follow them.
+
+    This holds only because the compiled output emits ``from __future__ import
+    annotations`` (see :func:`compile_module`), which stringizes every
+    annotation; without it, dropping an annotation-only name (e.g.
+    ``_download.PathLike``) would crash at def-time.
     """
     from collections import deque
 
@@ -304,7 +309,12 @@ def compile_module(target: str) -> str:
         for dep, names in dep_imports[mod].items():
             needed_from.setdefault(dep, set()).update(names)
 
-    all_future = []  # type: List[str]
+    # Always stringize annotations in compiled output. The tree-shaker drops
+    # annotation-only names (e.g. _download.PathLike) but leaves the annotations
+    # that mention them in the emitted signatures; PEP 563 makes those a no-op at
+    # runtime instead of a def-time NameError. Merges/dedupes with any module's
+    # own __future__ imports via _render_imports.
+    all_future = ["from __future__ import annotations"]  # type: List[str]
     all_stdlib = []  # type: List[str]
     all_baked = []  # type: List[str]
     all_code = []  # type: List[str]
