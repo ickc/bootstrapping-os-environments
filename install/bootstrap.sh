@@ -376,7 +376,6 @@ main() {
         echo 'Cloning envoy'
         github_clone_git ickc envoy
     fi
-    envoy/completion/generate.sh
 
     print_double_line
     echo 'Installing to ~/.ssh'
