@@ -13,7 +13,7 @@ import argparse
 import ast
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 _PACKAGE = "bsos.installers"
 _PACKAGE_DIR = Path(__file__).resolve().parent
@@ -135,6 +135,22 @@ def _transitive_needed(seed: Set[str], defs: Dict[str, ast.stmt]) -> Set[str]:
                 needed.add(child.id)
                 queue.append(child.id)
     return needed
+
+
+def _names_referenced(nodes: Iterable[ast.AST]) -> Set[str]:
+    """Return every ``ast.Name`` id referenced in *nodes*, skipping annotations.
+
+    Annotation subtrees are excluded for the same reason the tree-shaker skips
+    them (see :func:`_walk_skip_annotations`): the compiled output emits
+    ``from __future__ import annotations``, so annotations are strings at
+    runtime and bind no dependency.
+    """
+    refs: Set[str] = set()
+    for node in nodes:
+        for child in _walk_skip_annotations(node):
+            if isinstance(child, ast.Name):
+                refs.add(child.id)
+    return refs
 
 
 def _collect_dep_imports(source: str) -> Dict[str, Set[str]]:
@@ -291,15 +307,21 @@ def compile_module(target: str) -> str:
     needed_from: Dict[str, Set[str]] = {}  # accumulated seeds for each dep
 
     for mod in reversed(order):
+        src = _read_source(mod)
         if mod == target:
-            needed_names[mod] = None  # include everything
+            needed_names[mod] = None  # target is kept whole
+            referenced = _names_referenced(ast.parse(src).body)
         else:
             seed = needed_from.get(mod, set())
-            defs = _get_top_level_defs(_read_source(mod))
+            defs = _get_top_level_defs(src)
             needed_names[mod] = _transitive_needed(seed, defs)
-        # Propagate: whatever this module imports from its own deps is needed there.
+            referenced = _names_referenced(defs[name] for name in needed_names[mod])
+        # Propagate to deps only the imported names this module's *retained*
+        # code actually references. Merely importing a name is not enough — its
+        # sole user may have been tree-shaken out (e.g. resolve_latest_github_tag
+        # survives only where GitHubRedirect does).
         for dep, names in dep_imports[mod].items():
-            needed_from.setdefault(dep, set()).update(names)
+            needed_from.setdefault(dep, set()).update(names & referenced)
 
     # Always stringize annotations in compiled output. The tree-shaker drops
     # annotation-only names (e.g. _download.PathLike) but leaves the annotations

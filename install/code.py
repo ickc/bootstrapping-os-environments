@@ -122,21 +122,6 @@ def download_and_extract_zip(url: str, dest_dir: PathLike) -> None:
         zf.extractall(dest_dir)
 
 
-def resolve_latest_github_tag(owner: str, repo: str) -> str:
-    """Return the latest release tag for a GitHub repo without calling the GitHub API.
-
-    Follows the /releases/latest redirect URL; the final URL ends with /tag/<tagname>.
-    Avoids the GitHub API (60 req/hour unauthenticated limit).
-    """
-    url = f"https://github.com/{owner}/{repo}/releases/latest"
-    with _open_url(url) as resp:
-        final_url = resp.url
-    tag = final_url.rstrip("/").split("/")[-1]
-    if not tag or tag in {"latest", "releases"}:
-        raise RuntimeError(f"Could not resolve latest release tag for {owner}/{repo}")
-    return tag
-
-
 def download_to_tempdir(url: str, extract: str = "tar") -> Path:
     """Download and extract an archive into a fresh temp directory.
 
