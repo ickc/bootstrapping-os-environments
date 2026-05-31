@@ -282,7 +282,6 @@ class Archive:
 
 
 TAR = Archive("tar.gz", "tar")
-ZIP = Archive("zip", "zip")
 RAW = Archive("", None)
 
 
@@ -543,66 +542,33 @@ def run_cli(recipe: Recipe) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 # Convenience constructor for the common case: one binary from a GitHub release.
 # ─────────────────────────────────────────────────────────────────────────────
-def _infer_archive(asset: str) -> Archive:
-    if asset.endswith((".tar.gz", ".tgz", ".tar")):
-        return TAR
-    if asset.endswith(".zip"):
-        return ZIP
-    return RAW
 
-
-def github_binary(
-    name: str,
-    repo: str,
-    targets: Dict[str, str],
-    asset: str,
-    member: Optional[str] = None,
-    version: Optional[VersionSpec] = None,
-    dest: Optional[Dest] = None,
-    executable: bool = True,
-    verify: Optional[Verify] = None,
-) -> Recipe:
-    """Build a single-binary GitHub-release recipe.
-
-    *repo* is ``owner/name``.  *asset* is the release asset filename (may
-    contain ``{target}``); the archive format is inferred from its extension.
-    *member* is the path of the binary inside the archive (omit for a raw,
-    un-archived asset).  *version* defaults to :class:`GitHubRedirect` (resolve
-    the latest tag without the API); pass :class:`Latest` to use the
-    ``/releases/latest/download/`` redirect, or :class:`Pinned` for a fixed tag.
-    """
-    if version is None:
-        owner, _, repo_name = repo.partition("/")
-        version = GitHubRedirect(owner, repo_name, strip_v=True)
-    archive = _infer_archive(asset)
-    url_template = f"https://github.com/{repo}/releases/download/v{{version}}/{asset}"
-    artifact = Artifact(
-        url_template=url_template,
-        dest=dest if dest is not None else Dest.bin(name),
-        targets=targets,
-        version=version,
-        archive=archive,
-        member=member,
-        executable=executable,
-    )
-    return Recipe(name=name, artifacts=[artifact], verify=verify if verify is not None else Verify())
 
 # --- codex ---
 
 
-# The binary is unpacked directly at the root of the tar (no subdirectory) and
-# is named after the platform target.
-RECIPE = github_binary(
+# openai/codex tags have a "rust-v" prefix (e.g. "rust-v0.135.0"), not the
+# conventional "v" prefix, so github_binary's default URL template would
+# produce "vrust-v0.135.0" → 404.  Use Recipe/Artifact directly with
+# strip_v=False and no leading "v" in the URL template.
+RECIPE = Recipe(
     name="codex",
-    repo="openai/codex",
-    asset="codex-{target}.tar.gz",
-    member="codex-{target}",
-    targets={
-        "Linux-x86_64": "x86_64-unknown-linux-musl",
-        "Linux-aarch64": "aarch64-unknown-linux-musl",
-        "Darwin-x86_64": "x86_64-apple-darwin",
-        "Darwin-arm64": "aarch64-apple-darwin",
-    },
+    artifacts=[
+        Artifact(
+            url_template="https://github.com/openai/codex/releases/download/{version}/codex-{target}.tar.gz",
+            dest=Dest.bin("codex"),
+            targets={
+                "Linux-x86_64": "x86_64-unknown-linux-musl",
+                "Linux-aarch64": "aarch64-unknown-linux-musl",
+                "Darwin-x86_64": "x86_64-apple-darwin",
+                "Darwin-arm64": "aarch64-apple-darwin",
+            },
+            version=GitHubRedirect("openai", "codex", strip_v=False),
+            archive=TAR,
+            member="codex-{target}",
+        ),
+    ],
+    verify=Verify(),
 )
 
 
