@@ -6,6 +6,8 @@ Entry point convention shared by all installers (so CI can drive them
 generically): ``install`` / ``uninstall`` / ``test`` actions, where ``test``
 validates an install on the current platform."""
 
+from __future__ import annotations
+
 import argparse
 import io
 import os

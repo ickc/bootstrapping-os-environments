@@ -6,6 +6,8 @@ Downloads and runs the official Miniforge3 shell installer for the current
 platform — a fresh install, or an in-place update when ``$MAMBA_ROOT_PREFIX``
 already exists."""
 
+from __future__ import annotations
+
 import argparse
 import io
 import os

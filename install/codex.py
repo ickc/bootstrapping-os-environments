@@ -12,6 +12,8 @@ Usage::
     python -m bsos.installers.codex uninstall
     python -m bsos.installers.codex test"""
 
+from __future__ import annotations
+
 import argparse
 import io
 import os

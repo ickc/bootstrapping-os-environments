@@ -6,6 +6,8 @@ Installs the ``sman`` binary and its shell-integration file ``sman.rc``.  The
 sman-snippets repository is managed separately (clone it to
 ``$XDG_DATA_HOME/sman/snippets`` via git)."""
 
+from __future__ import annotations
+
 import argparse
 import io
 import os

@@ -5,6 +5,8 @@
 Downloads the latest pixi binary from GitHub releases and installs it to
 ``$PIXI_HOME/bin/pixi``."""
 
+from __future__ import annotations
+
 import argparse
 import io
 import os

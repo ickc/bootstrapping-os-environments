@@ -11,6 +11,8 @@ Usage::
     python -m bsos.installers.clifton uninstall
     python -m bsos.installers.clifton test"""
 
+from __future__ import annotations
+
 import argparse
 import io
 import os

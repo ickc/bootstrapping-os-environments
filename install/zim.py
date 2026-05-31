@@ -5,6 +5,8 @@
 Downloads ``zimfw.zsh`` from the latest GitHub release into ``$ZIM_HOME``.
 Platform-independent: a single sourced script, not an executable."""
 
+from __future__ import annotations
+
 import argparse
 import io
 import os
