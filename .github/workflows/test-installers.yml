@@ -99,6 +99,23 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.10
       - run: pixi run test
 
+  generated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: prefix-dev/setup-pixi@v0.8.10
+      - run: pixi run format
+      - run: pixi run compile
+      - name: verify formatted and generated files are committed
+        run: git diff --exit-code
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: prefix-dev/setup-pixi@v0.8.10
+      - run: pixi run lint
+
   # Dead-code check: vulture verifies no unused functions/classes leak into
   # the compiled standalone scripts under install/.
   lint-compiled:
