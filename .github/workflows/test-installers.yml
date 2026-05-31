@@ -32,7 +32,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: install and test each compiled installer
+
+      - name: fresh install and test
         shell: bash
         run: |
           set -euo pipefail
@@ -42,6 +43,41 @@ jobs:
           for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
             echo "::group::${script}"
             python3 "${script}" install
+            python3 "${script}" test
+            echo "::endgroup::"
+          done
+
+      - name: idempotency check — install skips when already present
+        shell: bash
+        run: |
+          set -euo pipefail
+          for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
+            echo "::group::${script}"
+            out=$(python3 "${script}" install)
+            echo "${out}"
+            echo "${out}" | grep -qE "already installed|already exists" || \
+              { echo "FAIL: ${script} install should skip when already present"; exit 1; }
+            echo "::endgroup::"
+          done
+
+      - name: update and test
+        shell: bash
+        run: |
+          set -euo pipefail
+          for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
+            echo "::group::${script}"
+            python3 "${script}" update
+            python3 "${script}" test
+            echo "::endgroup::"
+          done
+
+      - name: reinstall and test
+        shell: bash
+        run: |
+          set -euo pipefail
+          for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
+            echo "::group::${script}"
+            python3 "${script}" reinstall
             python3 "${script}" test
             echo "::endgroup::"
           done

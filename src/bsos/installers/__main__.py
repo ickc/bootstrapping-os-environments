@@ -32,18 +32,25 @@ from bsos.installers._recipe import uninstall as _recipe_uninstall
 def _dispatch(action: str, names: list[str], version_override: str | None = None) -> int:
     env = EnvConfig()
     rc = 0
+    force = action == "update"
     for name in names:
         mod = importlib.import_module(f"bsos.installers.{name}")
         if hasattr(mod, "RECIPE"):
             recipe: Recipe = mod.RECIPE
-            if action == "install":
+            if action in ("install", "update"):
+                _recipe_install(recipe, env, version_override, force=force)
+            elif action == "reinstall":
+                _recipe_uninstall(recipe, env)
                 _recipe_install(recipe, env, version_override)
             elif action == "uninstall":
                 _recipe_uninstall(recipe, env)
             else:
                 rc |= _recipe_test(recipe, env)
         else:
-            if action == "install":
+            if action in ("install", "update"):
+                mod.install(env=env, force=force)
+            elif action == "reinstall":
+                mod.uninstall(env=env)
                 mod.install(env=env)
             elif action == "uninstall":
                 mod.uninstall(env=env)
@@ -56,7 +63,13 @@ def _dispatch(action: str, names: list[str], version_override: str | None = None
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("action", choices=["install", "uninstall", "test"])
+    parser.add_argument(
+        "action",
+        choices=["install", "update", "reinstall", "uninstall", "test"],
+        help="install: place each tool if absent; update: force re-download/re-run for all; "
+        "reinstall: uninstall then install each from scratch; "
+        "uninstall: remove; test: validate installs",
+    )
     parser.add_argument("names", nargs="*", metavar="name", help="Installer module names (default: all, sorted by name)")
     parser.add_argument(
         "--version",

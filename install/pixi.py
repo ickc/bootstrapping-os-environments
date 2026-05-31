@@ -429,8 +429,30 @@ def _install_artifact(art: Artifact, env: EnvConfig, version_override: Optional[
     return dest
 
 
-def install(recipe: Recipe, env: Optional[EnvConfig] = None, version_override: Optional[str] = None) -> None:
+def _is_installed(recipe: Recipe, env: EnvConfig) -> bool:
+    """Return True when every artifact destination already exists on disk."""
+    for art in recipe.artifacts:
+        dest = art.dest.path(env)
+        if art.action is not None:
+            # RunScript: installed when the update_marker exists inside the dest dir.
+            if not (dest / art.action.update_marker).exists():
+                return False
+        else:
+            if not dest.exists():
+                return False
+    return True
+
+
+def install(
+    recipe: Recipe,
+    env: Optional[EnvConfig] = None,
+    version_override: Optional[str] = None,
+    force: bool = False,
+) -> None:
     env = env or EnvConfig()
+    if not force and _is_installed(recipe, env):
+        print(f"{recipe.name} already installed; run 'update' to refresh")
+        return
     for art in recipe.artifacts:
         dest = _install_artifact(art, env, version_override)
         print(f"Installed {recipe.name} → {dest}")
@@ -516,13 +538,15 @@ def test_install(recipe: Recipe, env: Optional[EnvConfig] = None) -> int:
 
 
 def run_cli(recipe: Recipe) -> None:
-    """Standard ``install`` / ``uninstall`` / ``test`` command-line dispatch."""
+    """Standard ``install`` / ``update`` / ``uninstall`` / ``test`` command-line dispatch."""
     parser = argparse.ArgumentParser(description=f"{recipe.name} installer")
     parser.add_argument(
         "action",
-        choices=["install", "uninstall", "test"],
-        help=f"install/uninstall {recipe.name}, or test validates an install "
-        "(skips cleanly if the platform is unsupported)",
+        choices=["install", "update", "reinstall", "uninstall", "test"],
+        help=f"install: place {recipe.name} if not already present; "
+        "update: force re-download/re-run even if already installed; "
+        "reinstall: uninstall then install from scratch; "
+        "uninstall: remove; test: validate (skips cleanly if platform unsupported)",
     )
     parser.add_argument(
         "--version",
@@ -542,6 +566,11 @@ def run_cli(recipe: Recipe) -> None:
             sys.exit(1)
     env = EnvConfig()
     if args.action == "install":
+        install(recipe, env, args.version_override)
+    elif args.action == "update":
+        install(recipe, env, args.version_override, force=True)
+    elif args.action == "reinstall":
+        uninstall(recipe, env)
         install(recipe, env, args.version_override)
     elif args.action == "uninstall":
         uninstall(recipe, env)

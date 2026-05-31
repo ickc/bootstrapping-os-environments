@@ -241,16 +241,18 @@ def install(
     name: str = "system",
     env_dir: Optional[str] = None,
     env: Optional[EnvConfig] = None,
+    force: bool = False,
 ) -> None:
-    """Install or update a named conda environment.
+    """Create a named conda environment, or skip if it already exists.
+
+    With *force=True* (the ``update`` action), an existing env is updated via
+    ``mamba env update --prune``; a missing env is created as normal.
 
     The env YAML is ``<env_dir>/<name>_<conda-arch>.yml``; *env_dir* may be a
     local directory or an ``http(s)://`` base URL (default: the bundled
     ``conda/`` dir, else the canonical remote base).
     """
     env = env or EnvConfig()
-    filename = f"{name}_{_conda_arch()}.yml"
-    base = env_dir if env_dir is not None else _default_env_dir()
 
     mamba_bin = env.mamba_root_prefix / "bin" / "mamba"
     if not mamba_bin.exists():
@@ -261,6 +263,12 @@ def install(
         sys.exit(1)
 
     prefix = env.opt_root / name
+    if not force and prefix.exists():
+        print(f"Conda env {name!r} already exists at {prefix}; run 'update' to refresh")
+        return
+
+    filename = f"{name}_{_conda_arch()}.yml"
+    base = env_dir if env_dir is not None else _default_env_dir()
     with _env_yaml(base, filename) as spec:
         if prefix.exists():
             print(f"Updating conda env {name!r} at {prefix} ...")
@@ -313,7 +321,14 @@ def main() -> None:
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument("action", choices=["install", "uninstall", "test"])
+    parser.add_argument(
+        "action",
+        choices=["install", "update", "reinstall", "uninstall", "test"],
+        help="install: create env if absent, skip if already present; "
+        "update: force mamba env update even if env exists; "
+        "reinstall: remove env then create fresh; "
+        "uninstall: remove env; test: validate",
+    )
     parser.add_argument(
         "--name",
         default="system",
@@ -329,6 +344,11 @@ def main() -> None:
     args = parser.parse_args()
     env = EnvConfig()
     if args.action == "install":
+        install(args.name, args.env_dir, env)
+    elif args.action == "update":
+        install(args.name, args.env_dir, env, force=True)
+    elif args.action == "reinstall":
+        uninstall(args.name, env)
         install(args.name, args.env_dir, env)
     elif args.action == "uninstall":
         uninstall(args.name, env)
