@@ -80,8 +80,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # mamba_env excluded for the same reason as the update step above.
-          for script in $(printf '%s\n' install/*.py | LC_ALL=C sort | grep -v mamba_env); do
+          # mamba_env IS included here (unlike the update step): reinstall is
+          # uninstall + a fresh `mamba env create`, which — unlike
+          # `mamba env update --prune` — works for the python-less system env.
+          for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
             echo "::group::${script}"
             python3 "${script}" reinstall
             python3 "${script}" test
