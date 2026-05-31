@@ -36,6 +36,23 @@ def test_open_url_retries_transient_http_error() -> None:
     sleep.assert_called_once_with(1)
 
 
+def test_open_url_retries_read_timeout() -> None:
+    # A read timeout while following a redirect surfaces as a bare TimeoutError
+    # (not wrapped in URLError); it must still be retried.
+    response = object()
+
+    with (
+        patch(
+            "bsos.installers._download.urllib.request.urlopen", side_effect=[TimeoutError("read timed out"), response]
+        ) as urlopen,
+        patch("bsos.installers._download.time.sleep") as sleep,
+    ):
+        assert _open_url("https://example.invalid") is response
+
+    assert urlopen.call_count == 2
+    sleep.assert_called_once_with(1)
+
+
 def test_open_url_does_not_retry_non_transient_http_error() -> None:
     error = urllib.error.HTTPError("https://example.invalid", 404, "Not Found", hdrs=None, fp=None)
 

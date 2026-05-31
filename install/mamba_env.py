@@ -62,7 +62,11 @@ def _open_url(url: str):
         except urllib.error.HTTPError as exc:
             if exc.code not in _TRANSIENT_HTTP_STATUS or attempt == _OPEN_URL_ATTEMPTS - 1:
                 raise
-        except urllib.error.URLError:
+        except (urllib.error.URLError, TimeoutError):
+            # URLError covers connection-phase failures; a read timeout while
+            # reading the response (e.g. following the /releases/latest
+            # redirect) surfaces as a bare TimeoutError, not wrapped in
+            # URLError. Both are transient and worth retrying.
             if attempt == _OPEN_URL_ATTEMPTS - 1:
                 raise
         time.sleep(2**attempt)
