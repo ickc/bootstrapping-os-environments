@@ -370,11 +370,7 @@ class CondaPackages:
 
     @cached_property
     def username_package_pairs(self) -> list[tuple[str, str]]:
-        pairs: list[tuple[str, str]] = []
-        for name, row in self.df.iterrows():
-            channel = cast(str, row["channel"]) or self.default_channel
-            pairs.append((channel, str(name)))
-        return pairs
+        return [(cast(str, row["channel"]) or self.default_channel, str(name)) for name, row in self.df.iterrows()]
 
     @cached_property
     def data(self) -> list[dict[str, Any]]:

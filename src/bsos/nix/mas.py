@@ -8,6 +8,7 @@ import argparse
 import re
 import subprocess
 from pathlib import Path
+from typing import cast
 
 
 def mas_list(
@@ -16,16 +17,7 @@ def mas_list(
     """Parse the output of `mas list` and return a list of tuples with the app id, name, and version."""
     out = subprocess.check_output(["/opt/homebrew/bin/mas", "list"], text=True)
     lines = out.split("\n")
-    apps: list[tuple[str, str, str]] = []
-    for line in lines:
-        if not line:
-            continue
-        parts = regex.split(line, maxsplit=2)
-        if len(parts) != 3:
-            raise ValueError(f"Could not parse mas line: {line}")
-        app_id, name, version = parts
-        apps.append((app_id, name, version))
-    return apps
+    return [cast(tuple[str, str, str], tuple(regex.split(line))) for line in lines if line]
 
 
 def format_mas_to_nix(apps: list[tuple[str, str, str]]) -> list[str]:
