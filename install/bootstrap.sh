@@ -376,6 +376,9 @@ main() {
         echo 'Cloning envoy'
         github_clone_git ickc envoy
     fi
+    # TODO(port): when bootstrap is ported to Python, regenerate shell
+    # completions here via `pixi run generate-completions`
+    # (bsos.shell.completion). The old completion/generate.sh was removed.
 
     print_double_line
     echo 'Installing to ~/.ssh'
