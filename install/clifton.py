@@ -280,8 +280,6 @@ class Archive:
     kind: Optional[str]  # "tar" | "zip" | None (raw, not an archive)
 
 
-TAR = Archive("tar.gz", "tar")
-ZIP = Archive("zip", "zip")
 RAW = Archive("", None)
 
 
@@ -542,66 +540,30 @@ def run_cli(recipe: Recipe) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 # Convenience constructor for the common case: one binary from a GitHub release.
 # ─────────────────────────────────────────────────────────────────────────────
-def _infer_archive(asset: str) -> Archive:
-    if asset.endswith((".tar.gz", ".tgz", ".tar")):
-        return TAR
-    if asset.endswith(".zip"):
-        return ZIP
-    return RAW
 
-
-def github_binary(
-    name: str,
-    repo: str,
-    targets: Dict[str, str],
-    asset: str,
-    member: Optional[str] = None,
-    version: Optional[VersionSpec] = None,
-    dest: Optional[Dest] = None,
-    executable: bool = True,
-    verify: Optional[Verify] = None,
-) -> Recipe:
-    """Build a single-binary GitHub-release recipe.
-
-    *repo* is ``owner/name``.  *asset* is the release asset filename (may
-    contain ``{target}``); the archive format is inferred from its extension.
-    *member* is the path of the binary inside the archive (omit for a raw,
-    un-archived asset).  *version* defaults to :class:`GitHubRedirect` (resolve
-    the latest tag without the API); pass :class:`Latest` to use the
-    ``/releases/latest/download/`` redirect, or :class:`Pinned` for a fixed tag.
-    """
-    if version is None:
-        owner, _, repo_name = repo.partition("/")
-        version = GitHubRedirect(owner, repo_name, strip_v=True)
-    archive = _infer_archive(asset)
-    url_template = f"https://github.com/{repo}/releases/download/v{{version}}/{asset}"
-    artifact = Artifact(
-        url_template=url_template,
-        dest=dest if dest is not None else Dest.bin(name),
-        targets=targets,
-        version=version,
-        archive=archive,
-        member=member,
-        executable=executable,
-    )
-    return Recipe(name=name, artifacts=[artifact], verify=verify if verify is not None else Verify())
 
 # --- clifton ---
 
 
-# `clifton --version` prints its version but exits 64 (EX_USAGE) rather than 0,
-# so verify that the binary runs and identifies itself (substring match) rather
-# than gating on its idiosyncratic exit code.
-RECIPE = github_binary(
+# clifton tags have no leading `v` (e.g. "0.3.0"), so we use Recipe/Artifact
+# directly with strip_v=False and no `v` in the URL template.
+# `clifton --version` exits 64 (EX_USAGE), so verify by substring match only.
+RECIPE = Recipe(
     name="clifton",
-    repo="isambard-sc/clifton",
-    asset="{target}",
-    targets={
-        "Darwin-arm64": "clifton-macos-aarch64",
-        "Darwin-x86_64": "clifton-macos-x86_64",
-        "Linux-x86_64": "clifton-linux-musl-x86_64",
-        "Linux-aarch64": "clifton-linux-musl-aarch64",
-    },
+    artifacts=[
+        Artifact(
+            url_template="https://github.com/isambard-sc/clifton/releases/download/{version}/{target}",
+            dest=Dest.bin("clifton"),
+            targets={
+                "Darwin-arm64": "clifton-macos-aarch64",
+                "Darwin-x86_64": "clifton-macos-x86_64",
+                "Linux-x86_64": "clifton-linux-musl-x86_64",
+                "Linux-aarch64": "clifton-linux-musl-aarch64",
+            },
+            version=GitHubRedirect("isambard-sc", "clifton", strip_v=False),
+            archive=RAW,
+        ),
+    ],
     verify=Verify(contains="clifton"),
 )
 
