@@ -20,8 +20,7 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities",
 ]
@@ -39,7 +38,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.10"
 defopt = "^6"
 httpx = "*"
 pandas = "*"
@@ -111,7 +110,7 @@ max-line-length = 120
 
 [tool.black]
 line-length = 120
-target-version = ['py38']
+target-version = ['py310']
 
 [tool.jupytext]
 formats = "ipynb,py:percent"
@@ -128,6 +127,11 @@ pandas = ">=2.2.3,<3"
 platformdirs = ">=4.3.7,<5"
 pyyaml = ">=6.0.2,<7"
 yamlloader = ">=1.5.1,<2"
+pytest = "*"
+ruff = ">=0.9,<1"
+mypy = ">=1.14,<2"
+pyright = ">=1.1,<2"
+vulture = ">=2.14,<3"
 
 [tool.pixi.pypi-dependencies]
 bsos = { path = ".", editable = true}
@@ -162,3 +166,76 @@ nix-format = { cmd = "find nix -name '*.nix' -exec nixfmt '{}' +", description =
 # brew
 brew-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/brews.nix --sort", description = "Annotate a brews.nix file with brew descriptions." }
 brew-cask-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/casks.nix --sort --cask", description = "Annotate a casks.nix file with brew descriptions." }
+
+# installers — generate-*
+generate-env-sh = { cmd = "python -m bsos.installers._env > env.sh", description = "Regenerate env.sh from Python definitions." }
+generate-completions = { cmd = "python -m bsos.shell.completion generate", description = "Generate shell completions for installed tools into XDG_DATA_HOME dirs." }
+
+# installers — compile / install / uninstall / smoke
+# All tasks auto-discover modules (files in src/bsos/installers/ not starting with _).
+# Pass a name after -- to target a single module: e.g. `pixi run compile -- code`
+compile = { cmd = "python -m bsos.installers._compile", description = "Compile all installer modules to standalone scripts in install/." }
+install = { cmd = "python -m bsos.installers install", description = "Install all (or named) tools: `pixi run install -- code gh`." }
+uninstall = { cmd = "python -m bsos.installers uninstall", description = "Uninstall all (or named) tools: `pixi run uninstall -- code gh`." }
+smoke = { cmd = "python -m bsos.installers test", description = "Smoke-test all (or named) installs: `pixi run smoke -- pixi`." }
+
+# lint and format
+format-sh = { cmd = "bash -lc \"find . -path './.git' -prune -o -path './.pixi' -prune -o -type f -name '*.sh' -exec sed -i -E -e 's/\\$([a-zA-Z_][a-zA-Z0-9_]*|[0-9]+)/${\\1}/g' -e 's/([^[])[[] ([^]]+) []]/\\1[[ \\2 ]]/g' {} + -exec shfmt --write --simplify --indent 4 --case-indent --space-redirects {} +\"", description = "Format all shell scripts with sed fixups and shfmt." }
+format-py = { cmd = "ruff check --fix src tests && ruff format src tests", description = "Lint-fix and format Python files with ruff." }
+format = { depends-on = ["format-sh", "format-py"], description = "Run all formatters." }
+lint-sh = { cmd = "bash -lc \"find . -path './.git' -prune -o -path './.pixi' -prune -o -path './install/src' -prune -o -type f -name '*.sh' -exec shellcheck --norc --enable=all --shell=bash --severity=style {} +\"", description = "Lint all shell scripts with shellcheck." }
+lint-mypy = { cmd = "mypy src", description = "Type-check Python files with mypy." }
+lint-pyright = { cmd = "pyright src", description = "Type-check Python files with pyright." }
+lint-ruff = { cmd = "ruff check src tests && ruff format --check src tests", description = "Lint and format-check Python files with ruff." }
+lint-py = { depends-on = ["lint-ruff", "lint-mypy", "lint-pyright"], description = "Run all Python linters."}
+lint-compiled = { cmd = "vulture install/ --min-confidence 80", description = "Detect dead code in compiled installer scripts (install/*.py)." }
+lint = { depends-on = ["lint-sh", "lint-py", "lint-compiled"], description = "Run all linters." }
+
+# unit tests
+test = { cmd = "pytest", description = "Run the pytest unit-test suite." }
+
+# go-shfmt and shellcheck are not available on linux-ppc64le via conda-forge.
+[tool.pixi.target.linux-64.dependencies]
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.pixi.target.linux-aarch64.dependencies]
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.pixi.target.osx-64.dependencies]
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.pixi.target.osx-arm64.dependencies]
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["I", "F401", "F841"]
+
+[tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "standard"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unreachable = true
+show_error_codes = true
+pretty = true
+
+[[tool.mypy.overrides]]
+module = [
+    "defopt",
+    "pandas",
+    "pandas.*",
+    "yaml",
+    "yaml.*",
+    "yamlloader",
+    "yamlloader.*",
+]
+ignore_missing_imports = true

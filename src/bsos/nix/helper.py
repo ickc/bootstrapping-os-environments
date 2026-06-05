@@ -5,6 +5,7 @@ import re
 import subprocess
 from collections import defaultdict
 from pathlib import Path
+from typing import Any, cast
 
 import defopt
 import pandas as pd
@@ -41,10 +42,10 @@ def get_package_install_name(name: str) -> str:
 
 def parse_nix_path(
     path: Path,
-    version_regex: str = re.compile(
+    version_regex: re.Pattern[str] = re.compile(
         r"^(?P<interpreter>(python|perl)[.0-9]+-)?(?P<package>.+?)(?P<version>-[-_.0-9p]+(pre)?)?(?P<date>\+date=[-0-9]+)?(?P<git>\+git[-0-9]+)?(?P<bin>-bin)?$"
     ),
-) -> list[str | Path]:
+) -> list[str | bool | Path | None]:
     """Parse a nix path."""
     command = path.name
     parent = path.parent
@@ -92,23 +93,25 @@ def parse_nix_paths(
     paths = get_executable_paths(nix_bin_dir)
     df = pd.DataFrame(
         (parse_nix_path(path) for path in paths),
-        columns=[
-            "executable",
-            "install",
-            "interpreter",
-            "package",
-            "version",
-            "date",
-            "git",
-            "is_bin",
-            "path",
-        ],
+        columns=pd.Index(
+            [
+                "executable",
+                "install",
+                "interpreter",
+                "package",
+                "version",
+                "date",
+                "git",
+                "is_bin",
+                "path",
+            ]
+        ),
     )
     df.set_index("executable", inplace=True)
     return df
 
 
-def get_package_descriptions() -> dict[str, dict[str, str]]:
+def get_package_descriptions() -> dict[str, dict[str, Any]]:
     """Get a mapping of package names to their descriptions from nix."""
     try:
         result = subprocess.run(
@@ -117,7 +120,7 @@ def get_package_descriptions() -> dict[str, dict[str, str]]:
             text=True,
             check=True,
         )
-        packages = json.loads(result.stdout)
+        packages = cast(dict[str, dict[str, Any]], json.loads(result.stdout))
         # It is currently expecting it to begin with legacyPackages.aarch64-darwin.
         return {".".join(key.split(".")[2:]): value for key, value in packages.items()}
     except (subprocess.CalledProcessError, FileNotFoundError, json.JSONDecodeError) as e:
@@ -125,7 +128,7 @@ def get_package_descriptions() -> dict[str, dict[str, str]]:
         return {}
 
 
-def get_nix_package_meta(name: str) -> dict:
+def get_nix_package_meta(name: str) -> dict[str, Any]:
     """Evaluate and return the Nix package meta as a dict.
 
     Runs:
@@ -133,7 +136,7 @@ def get_nix_package_meta(name: str) -> dict:
     """
     cmd = ["nix", "eval", "--json", f"nixpkgs#{name}.meta"]
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-    return json.loads(result.stdout)
+    return cast(dict[str, Any], json.loads(result.stdout))
 
 
 def read_environment_systemPackages(
@@ -209,23 +212,22 @@ def package2command(
             print(f"\t{i}")
 
     descriptions = get_package_descriptions()
-    res = defaultdict(lambda: {"command": []})
+    commands_by_install: defaultdict[str, list[str]] = defaultdict(list)
     for name, row in df.iterrows():
-        res[row.install]["command"].append(name)
+        commands_by_install[str(row.install)].append(str(name))
 
     # sort dict and its values
-    sorted_res = {}
-    for k, v in sorted(res.items()):
-        temp = {
-            "command": sorted(v["command"]),
+    result: dict[str, dict[str, Any]] = {}
+    for k, commands in sorted(commands_by_install.items()):
+        temp: dict[str, Any] = {
+            "command": sorted(commands),
         }
-        desc = descriptions.get(k, None)
+        desc = descriptions.get(k)
         if desc:
-            temp |= desc
-        sorted_res[k] = temp
-    res = sorted_res
+            temp.update(desc)
+        result[k] = temp
     with path.open("w", encoding="utf-8") as f:
-        yaml.dump(res, f, Dumper=yamlloader.ordereddict.CSafeDumper)
+        yaml.dump(result, f, Dumper=yamlloader.ordereddict.CSafeDumper)
 
 
 def cli() -> None:
