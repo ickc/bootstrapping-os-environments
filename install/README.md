@@ -15,8 +15,8 @@ curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/chezmoi.py 
 # Full system bootstrap
 
 Full bootstrap (all tools + dotfiles + SSH) is orchestrated by the
-[bootstrap repo](https://github.com/ickc/bootstrap):
+[provision repo](https://github.com/ickc/provision):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ickc/bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ickc/provision/main/bootstrap.sh | bash
 ```
