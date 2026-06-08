@@ -37,6 +37,7 @@ with pkgs;
   ffmpeg_7
   file
   findutils
+  fish
   fzf
   gawk
   gh
