@@ -20,6 +20,7 @@ dependencies:
 - ffmpeg
 - file
 - findutils
+- fish
 - fzf
 - gawk
 - gh
@@ -42,6 +43,7 @@ dependencies:
 - juliaup
 - less
 - libarchive
+- lmod
 - lsdeluxe
 - make
 - mediainfo

@@ -19,6 +19,7 @@ dependencies:
 - ffmpeg
 - file
 - findutils
+- fish
 - fzf
 - gawk
 - gh
