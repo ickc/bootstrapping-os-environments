@@ -66,7 +66,7 @@ with pkgs;
   librsvg
   lsd
   lux
-  mactop
+  pkgs-unstable.mactop
   mediainfo
   mediainfo-gui
   mermaid-cli
