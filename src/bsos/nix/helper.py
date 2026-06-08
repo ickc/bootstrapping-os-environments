@@ -32,7 +32,6 @@ def get_package_install_name(name: str) -> str:
         "gcc-wrapper": "gcc14",
         "Image-ExifTool": "exiftool",
         "mpv-with-scripts": "mpv",
-        "nixfmt-unstable": "nixfmt-rfc-style",
         "pam_reattach": "pam-reattach",
         "pandoc-cli": "pandoc",
         "patch": "gnupatch",

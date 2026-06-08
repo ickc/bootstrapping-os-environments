@@ -74,7 +74,7 @@ with pkgs;
   mosh
   nano
   nixd
-  nixfmt-rfc-style
+  nixfmt
   nmap
   onefetch
   # openai-whisper
