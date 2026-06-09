@@ -416,6 +416,13 @@ class CondaPackages:
     def to_csv(self, path: Path) -> None:
         self.df.to_csv(path)
 
+    def supports_platform(self, package_name: str, platform: str) -> bool:
+        if platform in self.df.columns and bool(self.df.at[package_name, platform]):
+            return True
+        if "noarch" in self.df.columns and bool(self.df.at[package_name, "noarch"]):
+            return True
+        return False
+
 
 def generate(
     csv: Path,
@@ -451,7 +458,11 @@ def generate(
                 "dependencies": dependencies,
             }
             for package in packages.packages:
-                if not package.ignored and package.support(arch, python_version):
+                if (
+                    not package.ignored
+                    and packages.supports_platform(package.name, arch)
+                    and package.support(arch, python_version)
+                ):
                     temp: list[str] = []
                     if package.channel:
                         temp.append(f"{package.channel}::")
