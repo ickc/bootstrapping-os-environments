@@ -1,6 +1,7 @@
 channels:
 - conda-forge
 dependencies:
+- actionlint
 - bash
 - bat
 - bat-extras
@@ -38,6 +39,7 @@ dependencies:
 - imagemagick
 - inetutils
 - iperf
+- jj
 - joshuto
 - jq
 - juliaup
@@ -61,6 +63,7 @@ dependencies:
 - bioconda::potrace
 - ripgrep
 - rsync
+- sd
 - sed
 - shellcheck
 - starship

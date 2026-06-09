@@ -1,6 +1,7 @@
 channels:
 - conda-forge
 dependencies:
+- actionlint
 - bash
 - bat
 - bat-extras
@@ -33,6 +34,7 @@ dependencies:
 - hyperfine
 - imagemagick
 - inetutils
+- jj
 - joshuto
 - less
 - libarchive
