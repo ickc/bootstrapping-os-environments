@@ -68,6 +68,7 @@ class EnvConfig:
         self.mamba_root_prefix = Path(env.get("MAMBA_ROOT_PREFIX") or self.opt_root / "miniforge3")
         self.pixi_home = Path(env.get("PIXI_HOME") or self.opt_root / "pixi")
         self.zim_home = Path(env.get("ZIM_HOME") or self.home / ".zim")
+        self.lmod_init = Path(env.get("__LMOD_INIT") or self.opt_root / "system" / "lmod" / "lmod" / "init")
 
         self.xdg_config_home = Path(env.get("XDG_CONFIG_HOME") or self.home / ".config")
         self.xdg_data_home = Path(env.get("XDG_DATA_HOME") or self.local_root / "share")
@@ -86,6 +87,7 @@ class EnvConfig:
             "MAMBA_ROOT_PREFIX": str(self.mamba_root_prefix),
             "PIXI_HOME": str(self.pixi_home),
             "ZIM_HOME": str(self.zim_home),
+            "__LMOD_INIT": str(self.lmod_init),
             "XDG_CONFIG_HOME": str(self.xdg_config_home),
             "XDG_DATA_HOME": str(self.xdg_data_home),
             "XDG_STATE_HOME": str(self.xdg_state_home),
@@ -133,6 +135,7 @@ export __OPT_ROOT="${__OPT_ROOT:-${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}}"
 export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/miniforge3}"
 export PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
 export ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
+export __LMOD_INIT="${__LMOD_INIT:-${__OPT_ROOT}/system/lmod/lmod/init}"
 
 # XDG base dirs
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"

@@ -24,6 +24,7 @@ def test_defaults_from_home():
     assert d["__LOCAL_ROOT"] == "/home/alice/.local"
     assert d["__OPT_ROOT"] == f"/home/alice/.local/opt/{platform_key()}"
     assert d["MAMBA_ROOT_PREFIX"] == f"/home/alice/.local/opt/{platform_key()}/miniforge3"
+    assert d["__LMOD_INIT"] == f"/home/alice/.local/opt/{platform_key()}/system/lmod/lmod/init"
     assert d["XDG_DATA_HOME"] == "/home/alice/.local/share"
 
 
@@ -40,17 +41,20 @@ def test_preexisting_values_respected():
             "HOME": "/home/carol",
             "__OPT_ROOT": "/custom/opt",
             "MAMBA_ROOT_PREFIX": "/custom/mamba",
+            "__LMOD_INIT": "/custom/lmod/init",
         }
     )
     d = env.as_dict()
     assert d["__OPT_ROOT"] == "/custom/opt"
     assert d["MAMBA_ROOT_PREFIX"] == "/custom/mamba"
+    assert d["__LMOD_INIT"] == "/custom/lmod/init"
 
 
 def test_empty_value_treated_as_unset():
     # Mirrors shell ${VAR:-default}: an empty string falls back to default.
-    env = EnvConfig({"HOME": "/home/dave", "__OPT_ROOT": ""})
+    env = EnvConfig({"HOME": "/home/dave", "__OPT_ROOT": "", "__LMOD_INIT": ""})
     assert env.as_dict()["__OPT_ROOT"] == f"/home/dave/.local/opt/{platform_key()}"
+    assert env.as_dict()["__LMOD_INIT"] == f"/home/dave/.local/opt/{platform_key()}/system/lmod/lmod/init"
 
 
 def test_subprocess_env_includes_managed_vars():
