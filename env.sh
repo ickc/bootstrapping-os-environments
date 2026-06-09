@@ -19,6 +19,7 @@ export __OPT_ROOT="${__OPT_ROOT:-${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}}"
 export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/miniforge3}"
 export PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
 export ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
+export __LMOD_INIT="${__LMOD_INIT:-${__OPT_ROOT}/system/lmod/lmod/init}"
 
 # XDG base dirs
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
