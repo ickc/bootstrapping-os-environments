@@ -16,7 +16,6 @@ dependencies:
 - jupyterlab-myst
 - jupytext
 - nbconvert
-- pixi
 - pixi-kernel
 - plotly
 - python-lsp-server

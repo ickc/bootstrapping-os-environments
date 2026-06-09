@@ -43,7 +43,6 @@ dependencies:
 - juliaup
 - less
 - libarchive
-- lmod
 - lsdeluxe
 - make
 - mediainfo

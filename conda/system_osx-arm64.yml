@@ -46,9 +46,7 @@ dependencies:
 - make
 - mediainfo
 - mosh
-- nano
 - navi
-- nvtop
 - onefetch
 - openssh
 - pandoc

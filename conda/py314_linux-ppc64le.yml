@@ -109,7 +109,6 @@ dependencies:
 - requests-futures
 - requests-oauthlib
 - ruamel.yaml
-- ruff
 - schema
 - scipy
 - seaborn

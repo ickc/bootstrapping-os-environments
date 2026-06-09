@@ -63,7 +63,6 @@ dependencies:
 - makefun
 - map_parallel
 - matplotlib
-- mkl
 - mpmath
 - mypy
 - nbconvert
