@@ -16,6 +16,8 @@ from pathlib import Path
 from typing import Iterator
 from unittest.mock import patch
 
+import pytest
+
 import bsos.installers.mamba_env as mamba_env_mod
 from bsos.installers._env import EnvConfig
 from bsos.installers._recipe import (
@@ -86,15 +88,19 @@ def _runscript_recipe(name: str = "tool") -> Recipe:
 
 
 def _mamba_env(tmp_path: Path) -> EnvConfig:
-    """EnvConfig with a fake mamba binary planted so the existence check passes."""
+    """EnvConfig with fake micromamba + mamba binaries planted so either backend's check passes."""
     mamba_prefix = tmp_path / "miniforge3"
     mamba_bin = mamba_prefix / "bin" / "mamba"
     mamba_bin.parent.mkdir(parents=True)
     mamba_bin.touch()
+    opt_root = tmp_path / "opt"
+    micromamba_bin = opt_root / "bin" / "micromamba"
+    micromamba_bin.parent.mkdir(parents=True)
+    micromamba_bin.touch()
     return EnvConfig(
         {
             "HOME": str(tmp_path),
-            "__OPT_ROOT": str(tmp_path / "opt"),
+            "__OPT_ROOT": str(opt_root),
             "MAMBA_ROOT_PREFIX": str(mamba_prefix),
         }
     )
@@ -362,6 +368,36 @@ def test_mamba_env_install_force_creates_when_absent(tmp_path):
     argv = mock_run.call_args[0][0]
     assert "create" in argv
     assert "update" not in argv
+
+
+def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
+    """micromamba creates via top-level ``create``; mamba via ``env create``."""
+    env = _mamba_env(tmp_path)
+    with (
+        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mamba_env_mod.install("testenv", env=env, backend="micromamba")
+    mm_argv = mock_run.call_args[0][0]
+    assert mm_argv[0].endswith("/bin/micromamba")
+    assert mm_argv[1] == "create"
+
+    with (
+        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mamba_env_mod.install("testenv", env=env, backend="mamba")
+    m_argv = mock_run.call_args[0][0]
+    assert m_argv[0].endswith("/bin/mamba")
+    assert m_argv[1:3] == ["env", "create"]
+
+
+def test_mamba_env_missing_backend_binary_errors(tmp_path):
+    """A missing backend binary on a supported platform is a hard failure (exit 1)."""
+    env = _mamba_env(tmp_path)
+    (env.mamba_root_prefix / "bin" / "mamba").unlink()
+    with pytest.raises(SystemExit):
+        mamba_env_mod.install("testenv", env=env, backend="mamba")
 
 
 def test_mamba_env_reinstall_removes_prefix_then_creates(tmp_path):
