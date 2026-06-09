@@ -1,15 +1,16 @@
 """Envoy environment configuration — single source of truth.
 
 Defines all envoy-managed environment variables and their derivation logic,
-and generates the shell ``env.sh`` script from the same definitions.
+and generates shell environment scripts from the same definitions.
 
 stdlib only; targets Python 3.10+.
 """
 
+import argparse
 import os
 import platform
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Sequence, Tuple
 
 # Inherited env vars that are safe/useful to pass to installer subprocesses.
 _INHERIT_KEYS = (
@@ -109,9 +110,8 @@ def generate_env_sh() -> str:
     """Generate the shell ``env.sh`` script from the Python definitions.
 
     Functionally equivalent to the env derivation above: same variable
-    names, same ``${VAR:-default}`` fallback semantics.  This function is
-    the single generator — ``env.sh`` is a derived artifact, so other
-    shells can keep sourcing it while ``_env.py`` is the source of truth.
+    names, same ``${VAR:-default}`` fallback semantics.  ``env.sh`` is a
+    derived artifact, so ``_env.py`` remains the source of truth.
     """
     return """\
 # Shell library: envoy installer path detection.
@@ -145,5 +145,112 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
 """
 
 
+def generate_env_fish() -> str:
+    """Generate the fish ``env.fish`` script from the Python definitions.
+
+    Fish does not support POSIX ``${VAR:-default}`` expansion, so this emits
+    explicit ``set -q`` / non-empty checks for the same fallback semantics as
+    :func:`generate_env_sh`.
+    """
+    return """\
+# Fish shell library: envoy installer path detection.
+# Source from fish startup to set envoy-managed paths.
+# Respects pre-existing values; dotfiles may set __APPDIR, XDG vars, etc. first.
+#
+# GENERATED from bsos.installers._env - do not edit. Regenerate with:
+#   pixi run generate-env-fish
+
+# Platform detection (always re-detected - pure platform facts)
+set -l __envoy_uname (uname -sm | string split ' ')
+set -gx __OSTYPE $__envoy_uname[1]
+set -gx __ARCH $__envoy_uname[2]
+
+# Path derivation (respects __APPDIR if pre-set by dotfiles)
+if not set -q __LOCAL_ROOT; or test -z "$__LOCAL_ROOT"
+    if set -q __APPDIR; and test -n "$__APPDIR"
+        set -gx __LOCAL_ROOT "$__APPDIR/local"
+    else
+        set -gx __LOCAL_ROOT "$HOME/.local"
+    end
+else
+    set -gx __LOCAL_ROOT "$__LOCAL_ROOT"
+end
+
+if not set -q __OPT_ROOT; or test -z "$__OPT_ROOT"
+    set -gx __OPT_ROOT "$__LOCAL_ROOT/opt/$__OSTYPE-$__ARCH"
+else
+    set -gx __OPT_ROOT "$__OPT_ROOT"
+end
+
+# Tool paths
+if not set -q MAMBA_ROOT_PREFIX; or test -z "$MAMBA_ROOT_PREFIX"
+    set -gx MAMBA_ROOT_PREFIX "$__OPT_ROOT/miniforge3"
+else
+    set -gx MAMBA_ROOT_PREFIX "$MAMBA_ROOT_PREFIX"
+end
+
+if not set -q PIXI_HOME; or test -z "$PIXI_HOME"
+    set -gx PIXI_HOME "$__OPT_ROOT/pixi"
+else
+    set -gx PIXI_HOME "$PIXI_HOME"
+end
+
+if not set -q ZIM_HOME; or test -z "$ZIM_HOME"
+    set -gx ZIM_HOME "$HOME/.zim"
+else
+    set -gx ZIM_HOME "$ZIM_HOME"
+end
+
+if not set -q __LMOD_INIT; or test -z "$__LMOD_INIT"
+    set -gx __LMOD_INIT "$__OPT_ROOT/system/lmod/lmod/init"
+else
+    set -gx __LMOD_INIT "$__LMOD_INIT"
+end
+
+# XDG base dirs
+if not set -q XDG_CONFIG_HOME; or test -z "$XDG_CONFIG_HOME"
+    set -gx XDG_CONFIG_HOME "$HOME/.config"
+else
+    set -gx XDG_CONFIG_HOME "$XDG_CONFIG_HOME"
+end
+
+if not set -q XDG_DATA_HOME; or test -z "$XDG_DATA_HOME"
+    set -gx XDG_DATA_HOME "$__LOCAL_ROOT/share"
+else
+    set -gx XDG_DATA_HOME "$XDG_DATA_HOME"
+end
+
+if not set -q XDG_STATE_HOME; or test -z "$XDG_STATE_HOME"
+    set -gx XDG_STATE_HOME "$__LOCAL_ROOT/state"
+else
+    set -gx XDG_STATE_HOME "$XDG_STATE_HOME"
+end
+
+if not set -q XDG_CACHE_HOME; or test -z "$XDG_CACHE_HOME"
+    set -gx XDG_CACHE_HOME "$HOME/.cache"
+else
+    set -gx XDG_CACHE_HOME "$XDG_CACHE_HOME"
+end
+"""
+
+
+def main(argv: Optional[Sequence[str]] = None) -> None:
+    """Print a generated shell environment script."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--shell",
+        choices=("sh", "fish"),
+        default="sh",
+        help="Shell format to generate. Defaults to sh for backwards compatibility.",
+    )
+    args = parser.parse_args(argv)
+
+    generators = {
+        "sh": generate_env_sh,
+        "fish": generate_env_fish,
+    }
+    print(generators[args.shell](), end="")
+
+
 if __name__ == "__main__":
-    print(generate_env_sh(), end="")
+    main()

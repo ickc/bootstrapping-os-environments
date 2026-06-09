@@ -1,21 +1,27 @@
 """Tests for bsos.installers._env.
 
-The headline test pins the checked-in ``env.sh`` to what ``_env.py``
-generates: ``_env.py`` is the source of truth, ``env.sh`` is its derived
-artifact (so non-Python shells can still source it).  If they drift, the
-artifact is stale — regenerate with ``pixi run generate-env-sh``.
+The headline tests pin the checked-in ``env.sh`` and ``env.fish`` to what
+``_env.py`` generates: ``_env.py`` is the source of truth, and shell files are
+derived artifacts.  If they drift, regenerate with the matching pixi task.
 """
 
 from pathlib import Path
 
-from bsos.installers._env import EnvConfig, generate_env_sh, platform_key
+from bsos.installers._env import EnvConfig, generate_env_fish, generate_env_sh, platform_key
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 ENV_SH = REPO_ROOT / "env.sh"
+ENV_FISH = REPO_ROOT / "env.fish"
 
 
 def test_env_sh_matches_generated():
     assert ENV_SH.read_text() == generate_env_sh(), "env.sh is stale; regenerate with `pixi run generate-env-sh`"
+
+
+def test_env_fish_matches_generated():
+    assert ENV_FISH.read_text() == generate_env_fish(), (
+        "env.fish is stale; regenerate with `pixi run generate-env-fish`"
+    )
 
 
 def test_defaults_from_home():

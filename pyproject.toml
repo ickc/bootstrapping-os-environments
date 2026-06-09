@@ -168,7 +168,9 @@ brew-add-description = { cmd = "python -m bsos.brew.helper add-description nix/m
 brew-cask-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/casks.nix --sort --cask", description = "Annotate a casks.nix file with brew descriptions." }
 
 # installers — generate-*
+generate-env =  { depends-on = ["generate-env-sh", "generate-env-fish"], description = "Regenerate all env.* files from Python definitions." }
 generate-env-sh = { cmd = "python -m bsos.installers._env > env.sh", description = "Regenerate env.sh from Python definitions." }
+generate-env-fish = { cmd = "python -m bsos.installers._env --shell fish > env.fish", description = "Regenerate env.fish from Python definitions." }
 generate-completions = { cmd = "python -m bsos.shell.completion generate", description = "Generate shell completions for installed tools into XDG_DATA_HOME dirs." }
 
 # installers — compile / install / uninstall / smoke
