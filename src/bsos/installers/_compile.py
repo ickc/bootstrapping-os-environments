@@ -249,9 +249,32 @@ def _classify(
     return future, stdlib, baked, code, main_block
 
 
-def _render_imports(segments: List[str]) -> List[str]:
+def _referenced_in_lines(code_lines: List[str]) -> Set[str]:
+    """Every ``ast.Name`` id appearing in *code_lines* (annotations included).
+
+    Unlike :func:`_names_referenced`, annotation subtrees are *not* skipped: a
+    stdlib typing name used only inside a retained annotation must stay imported,
+    since the compiled output still emits that annotation and a missing import
+    would trip ruff (F821) / vulture. Import statements bind their symbols via
+    aliases rather than ``ast.Name`` nodes, so every id returned here is a
+    genuine use — a name absent from it appears nowhere in the emitted body and
+    its import is safe to drop.
+    """
+    if not code_lines:
+        return set()
+    tree = ast.parse("\n".join(code_lines))
+    return {node.id for node in ast.walk(tree) if isinstance(node, ast.Name)}
+
+
+def _render_imports(segments: List[str], used: Optional[Set[str]] = None) -> List[str]:
     """Merge import statements: one ``import`` line per name, one
-    ``from M import …`` line per module, names sorted and de-duplicated."""
+    ``from M import …`` line per module, names sorted and de-duplicated.
+
+    When *used* is given, a ``from M import name`` entry whose bound name is not
+    in it is dropped: the name was imported but its only user was tree-shaken out
+    (e.g. ``Sequence``, reached solely via the dropped ``_env.main``). A
+    ``from`` line with no surviving names is omitted entirely. Plain ``import M``
+    statements are always kept — they may be imported for their side effects."""
     plain = set()  # type: Set[str]
     froms = {}  # type: Dict[str, Dict[str, Optional[str]]]
     for seg in segments:
@@ -267,7 +290,10 @@ def _render_imports(segments: List[str]) -> List[str]:
     out = sorted(plain)
     for module in sorted(froms):
         names = froms[module]
-        rendered = [f"{n} as {names[n]}" if names[n] else n for n in sorted(names)]
+        kept = [n for n in sorted(names) if used is None or (names[n] or n) in used]
+        if not kept:
+            continue
+        rendered = [f"{n} as {names[n]}" if names[n] else n for n in kept]
         out.append(f"from {module} import {', '.join(rendered)}")
     return out
 
@@ -357,7 +383,11 @@ def compile_module(target: str) -> str:
     if future_block:
         output.append("")
         output.extend(future_block)
-    stdlib_block = _render_imports(all_stdlib)
+    # Prune stdlib ``from M import …`` names the retained body never references —
+    # their sole user may have been tree-shaken out (e.g. ``Sequence``, reached
+    # only via ``_env.main``, which no installer calls). Left in, such a name
+    # lingers as an unused import and trips vulture (lint-compiled) in CI.
+    stdlib_block = _render_imports(all_stdlib, _referenced_in_lines(all_code + target_main))
     if stdlib_block:
         output.append("")
         output.extend(stdlib_block)

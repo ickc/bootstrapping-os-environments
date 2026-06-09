@@ -59,6 +59,25 @@ def test_checked_in_script_is_up_to_date(module):
 
 
 @pytest.mark.parametrize("module", _COMPILED_MODULES)
+def test_compiled_has_no_unused_from_imports(module):
+    """Tree-shaking must not leave an orphaned ``from M import name``.
+
+    A name imported but never referenced — its sole user shaken out, e.g.
+    ``Sequence`` reached only via the dropped ``_env.main`` — would trip vulture
+    (``lint-compiled``) in CI. Names bound by imports never appear as ``ast.Name``
+    nodes, so any imported name absent from the reference set is genuinely unused.
+    """
+    text = compile_module(module)
+    tree = ast.parse(text)
+    referenced = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module != "__future__":
+            for alias in node.names:
+                bound = alias.asname or alias.name
+                assert bound in referenced, f"{module}: unused import {bound!r} from {node.module}"
+
+
+@pytest.mark.parametrize("module", _COMPILED_MODULES)
 def test_compiled_script_runs(module):
     """The shipped standalone must actually run, not merely parse.
 

@@ -40,7 +40,7 @@ import urllib.request
 import warnings
 import zipfile
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
+from typing import Any, Dict, Iterator, List, Optional, Tuple
 
 # Baked from the bsos package at compile time.
 __version__ = '0.1.0'
