@@ -29,7 +29,7 @@ end
 
 # Tool paths
 if not set -q MAMBA_ROOT_PREFIX; or test -z "$MAMBA_ROOT_PREFIX"
-    set -gx MAMBA_ROOT_PREFIX "$__OPT_ROOT/miniforge3"
+    set -gx MAMBA_ROOT_PREFIX "$__OPT_ROOT/micromamba"
 else
     set -gx MAMBA_ROOT_PREFIX "$MAMBA_ROOT_PREFIX"
 end

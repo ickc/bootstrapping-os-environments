@@ -234,7 +234,7 @@ class EnvConfig:
         self.local_root = Path(env.get("__LOCAL_ROOT") or (f"{appdir}/local" if appdir else self.home / ".local"))
         self.opt_root = Path(env.get("__OPT_ROOT") or self.local_root / "opt" / f"{self.ostype}-{self.arch}")
 
-        self.mamba_root_prefix = Path(env.get("MAMBA_ROOT_PREFIX") or self.opt_root / "miniforge3")
+        self.mamba_root_prefix = Path(env.get("MAMBA_ROOT_PREFIX") or self.opt_root / "micromamba")
         self.pixi_home = Path(env.get("PIXI_HOME") or self.opt_root / "pixi")
         self.zim_home = Path(env.get("ZIM_HOME") or self.home / ".zim")
         self.lmod_init = Path(env.get("__LMOD_INIT") or self.opt_root / "system" / "lmod" / "lmod" / "init")

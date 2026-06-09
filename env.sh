@@ -16,7 +16,7 @@ export __LOCAL_ROOT="${__LOCAL_ROOT:-${HOME}/.local}"
 export __OPT_ROOT="${__OPT_ROOT:-${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}}"
 
 # Tool paths
-export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/miniforge3}"
+export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/micromamba}"
 export PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
 export ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
 export __LMOD_INIT="${__LMOD_INIT:-${__OPT_ROOT}/system/lmod/lmod/init}"

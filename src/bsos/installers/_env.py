@@ -66,7 +66,7 @@ class EnvConfig:
         self.local_root = Path(env.get("__LOCAL_ROOT") or (f"{appdir}/local" if appdir else self.home / ".local"))
         self.opt_root = Path(env.get("__OPT_ROOT") or self.local_root / "opt" / f"{self.ostype}-{self.arch}")
 
-        self.mamba_root_prefix = Path(env.get("MAMBA_ROOT_PREFIX") or self.opt_root / "miniforge3")
+        self.mamba_root_prefix = Path(env.get("MAMBA_ROOT_PREFIX") or self.opt_root / "micromamba")
         self.pixi_home = Path(env.get("PIXI_HOME") or self.opt_root / "pixi")
         self.zim_home = Path(env.get("ZIM_HOME") or self.home / ".zim")
         self.lmod_init = Path(env.get("__LMOD_INIT") or self.opt_root / "system" / "lmod" / "lmod" / "init")
@@ -132,7 +132,7 @@ export __LOCAL_ROOT="${__LOCAL_ROOT:-${HOME}/.local}"
 export __OPT_ROOT="${__OPT_ROOT:-${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}}"
 
 # Tool paths
-export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/miniforge3}"
+export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/micromamba}"
 export PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
 export ZIM_HOME="${ZIM_HOME:-${HOME}/.zim}"
 export __LMOD_INIT="${__LMOD_INIT:-${__OPT_ROOT}/system/lmod/lmod/init}"
@@ -184,7 +184,7 @@ end
 
 # Tool paths
 if not set -q MAMBA_ROOT_PREFIX; or test -z "$MAMBA_ROOT_PREFIX"
-    set -gx MAMBA_ROOT_PREFIX "$__OPT_ROOT/miniforge3"
+    set -gx MAMBA_ROOT_PREFIX "$__OPT_ROOT/micromamba"
 else
     set -gx MAMBA_ROOT_PREFIX "$MAMBA_ROOT_PREFIX"
 end
