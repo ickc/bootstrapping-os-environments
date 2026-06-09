@@ -14,8 +14,8 @@ modules are auto-discovered, so no per-tool pixi tasks are needed. Reach for the
 `Recipe`/`Artifact` form only for quirks: a per-OS archive type, a binary
 nested in a subdirectory, multiple artifacts, or a run-the-downloaded-script
 install (`RunScript`, as `mamba` uses). `mamba_env` and `completion` are
-intentionally *not* recipes — they need a running mamba / already-installed
-tools rather than a download-and-place flow.
+intentionally *not* recipes — they need a running micromamba/mamba /
+already-installed tools rather than a download-and-place flow.
 
 ### Writing a new recipe — three decisions
 

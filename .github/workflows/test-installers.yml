@@ -37,9 +37,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Sort explicitly with C locale to guarantee alphabetical byte order.
-          # This matters because mamba_env.py depends on mamba.py having run first,
-          # and APFS/HFS+ filesystem ordering is not alphabetical.
+          # mamba_env.py defaults to the micromamba backend, so micromamba must be
+          # installed before mamba_env runs. The C-sorted loop below orders
+          # micromamba *after* mamba_env, so install it explicitly first; the loop
+          # then no-ops it ("already installed").
+          python3 install/micromamba.py install
+          # Sort explicitly with C locale to guarantee alphabetical byte order
+          # (APFS/HFS+ filesystem ordering is not alphabetical).
           for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
             echo "::group::${script}"
             python3 "${script}" install
@@ -64,12 +68,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # mamba_env is excluded: `mamba env update --prune` fails when the
-          # target env has no Python (mamba tries to exec Python from the env
-          # for platform detection and gets ENOENT). The update code path is
-          # covered by unit tests; the fresh-install smoke above verifies the
-          # real mamba_env install end-to-end.
-          for script in $(printf '%s\n' install/*.py | LC_ALL=C sort | grep -v mamba_env); do
+          # mamba_env is included now: it defaults to the micromamba backend, and
+          # `micromamba env update --prune` (unlike mamba's) does not exec Python
+          # from the target env for platform detection, so it works even on the
+          # Python-less system env.
+          for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
             echo "::group::${script}"
             python3 "${script}" update
             python3 "${script}" test
@@ -80,9 +83,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # mamba_env IS included here (unlike the update step): reinstall is
-          # uninstall + a fresh `mamba env create`, which — unlike
-          # `mamba env update --prune` — works for the python-less system env.
+          # All installers, mamba_env included. reinstall = uninstall + a fresh
+          # create. micromamba was placed in the fresh-install step and is only
+          # reinstalled later in this same C-sorted loop, so mamba_env's reinstall
+          # (which sorts first) still finds its micromamba backend.
           for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
             echo "::group::${script}"
             python3 "${script}" reinstall
