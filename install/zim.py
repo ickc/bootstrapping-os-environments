@@ -535,8 +535,18 @@ def install(
     env: Optional[EnvConfig] = None,
     version_override: Optional[str] = None,
     force: bool = False,
+    skip_unsupported: bool = False,
 ) -> None:
     env = env or EnvConfig()
+    key = platform_key()
+    supported = _supported_platforms(recipe)
+    if supported is not None and key not in supported:
+        msg = f"Platform {key} unsupported by {recipe.name} installer; skipping"
+        if skip_unsupported:
+            print(msg, file=sys.stderr)
+            return
+        print(msg, file=sys.stderr)
+        sys.exit(1)
     if not force and _is_installed(recipe, env):
         print(f"{recipe.name} already installed; run 'update' to refresh")
         return
@@ -650,6 +660,12 @@ def run_cli(recipe: Recipe) -> None:
         default=None,
         help="git release tag to install (e.g. v1.2.3); default: latest",
     )
+    parser.add_argument(
+        "--skip-unsupported",
+        action="store_true",
+        default=False,
+        help="exit 0 instead of 1 when the current platform is not supported",
+    )
     args = parser.parse_args()
     if args.version_override is not None:
         if not supports_version_override(recipe):
@@ -660,12 +676,12 @@ def run_cli(recipe: Recipe) -> None:
             sys.exit(1)
     env = EnvConfig()
     if args.action == "install":
-        install(recipe, env, args.version_override)
+        install(recipe, env, args.version_override, skip_unsupported=args.skip_unsupported)
     elif args.action == "update":
-        install(recipe, env, args.version_override, force=True)
+        install(recipe, env, args.version_override, force=True, skip_unsupported=args.skip_unsupported)
     elif args.action == "reinstall":
         uninstall(recipe, env)
-        install(recipe, env, args.version_override)
+        install(recipe, env, args.version_override, skip_unsupported=args.skip_unsupported)
     elif args.action == "uninstall":
         uninstall(recipe, env)
     else:
