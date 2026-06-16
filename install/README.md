@@ -10,6 +10,12 @@ python3 install/chezmoi.py install
 
 # Or via curl on a fresh machine:
 curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/chezmoi.py | python3 - install
+
+# Or bootstrap uv on a machine with python version older than 3.7:
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$PATH:$HOME/.local/bin"
+# then run it like this:
+uv run --managed-python https://raw.githubusercontent.com/ickc/envoy/main/install/chezmoi.py install
 ```
 
 # Full system bootstrap
