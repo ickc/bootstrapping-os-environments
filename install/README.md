@@ -17,12 +17,3 @@ export PATH="$PATH:$HOME/.local/bin"
 # then run it like this:
 uv run --managed-python https://raw.githubusercontent.com/ickc/envoy/main/install/chezmoi.py install
 ```
-
-# Full system bootstrap
-
-Full bootstrap (all tools + dotfiles + SSH) is orchestrated by the
-[provision repo](https://github.com/ickc/provision):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/ickc/provision/main/bootstrap.sh | bash
-```
