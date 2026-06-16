@@ -24,7 +24,6 @@ RECIPE = github_binary(
         "Darwin-x86_64": "osx-64",
         "Linux-x86_64": "linux-64",
         "Linux-aarch64": "linux-aarch64",
-        "Linux-ppc64le": "linux-ppc64le",
     },
 )
 

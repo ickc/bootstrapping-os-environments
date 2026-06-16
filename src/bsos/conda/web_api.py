@@ -429,7 +429,7 @@ def generate(
     *,
     out_dir: Path = Path("conda"),
     # https://conda.io/projects/conda/en/latest/commands/env/create.html#named-arguments
-    archs: list[str] = ["linux-64", "linux-aarch64", "linux-ppc64le", "osx-64", "osx-arm64"],
+    archs: list[str] = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"],
     versions: list[str] = ["3.10", "3.11", "3.12", "3.13", "3.14"],
     default_channel: str = "conda-forge",
     name_format: str = "py{version}",

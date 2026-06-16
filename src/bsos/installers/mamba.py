@@ -31,7 +31,6 @@ RECIPE = Recipe(
                 "Darwin-x86_64": "Darwin-x86_64",
                 "Linux-x86_64": "Linux-x86_64",
                 "Linux-aarch64": "Linux-aarch64",
-                "Linux-ppc64le": "Linux-ppc64le",
             },
             archive=RAW,
             dest=_PREFIX,

@@ -118,7 +118,7 @@ formats = "ipynb,py:percent"
 [tool.pixi.workspace]
 name = "bsos"
 channels = ["conda-forge"]
-platforms = ["linux-64", "linux-aarch64", "linux-ppc64le", "osx-64", "osx-arm64"]
+platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"]
 
 [tool.pixi.dependencies]
 defopt = ">=6.4.0,<7"
@@ -132,6 +132,8 @@ ruff = ">=0.9,<1"
 mypy = ">=1.14,<2"
 pyright = ">=1.1,<2"
 vulture = ">=2.14,<3"
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
 
 [tool.pixi.pypi-dependencies]
 bsos = { path = ".", editable = true}
@@ -195,23 +197,6 @@ lint = { depends-on = ["lint-sh", "lint-py", "lint-compiled"], description = "Ru
 
 # unit tests
 test = { cmd = "pytest", description = "Run the pytest unit-test suite." }
-
-# go-shfmt and shellcheck are not available on linux-ppc64le via conda-forge.
-[tool.pixi.target.linux-64.dependencies]
-go-shfmt = ">=3.10,<4"
-shellcheck = ">=0.10,<1"
-
-[tool.pixi.target.linux-aarch64.dependencies]
-go-shfmt = ">=3.10,<4"
-shellcheck = ">=0.10,<1"
-
-[tool.pixi.target.osx-64.dependencies]
-go-shfmt = ">=3.10,<4"
-shellcheck = ">=0.10,<1"
-
-[tool.pixi.target.osx-arm64.dependencies]
-go-shfmt = ">=3.10,<4"
-shellcheck = ">=0.10,<1"
 
 [tool.ruff]
 line-length = 120

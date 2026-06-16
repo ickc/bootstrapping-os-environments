@@ -44,7 +44,6 @@ _CONDA_ARCH = {
     "Darwin-x86_64": "osx-64",
     "Linux-x86_64": "linux-64",
     "Linux-aarch64": "linux-aarch64",
-    "Linux-ppc64le": "linux-ppc64le",
 }
 
 # Canonical remote base, used when no bundled conda/ dir is found (e.g. curl | python3).
