@@ -1,10 +1,12 @@
-# Supported platform
+# Supported platforms
 
-`$(uname -sm)`
-: Darwin arm64
-: Darwin x86_64
-: Linux x86_64
-: Linux aarch64
+- Darwin arm64
+- Darwin x86_64
+- Linux x86_64
+- Linux aarch64
+
+With ocassional recipes for these platforms:
+
 : Linux ppc64le
 : FreeBSD amd64
 
