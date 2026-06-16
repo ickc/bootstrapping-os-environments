@@ -708,8 +708,6 @@ RECIPE = Recipe(
                 "Darwin-x86_64": "darwin-amd64",
                 "Linux-x86_64": "linux-amd64",
                 "Linux-aarch64": "linux-arm64",
-                "Linux-ppc64le": "linux-ppc64le",
-                "FreeBSD-amd64": "freebsd-amd64",
             },
             member="sman-{target}-v{version}",
             dest=Dest.bin("sman"),

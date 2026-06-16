@@ -5,15 +5,6 @@
 - Linux x86_64
 - Linux aarch64
 
-With ocassional recipes for these platforms:
-
-: Linux ppc64le
-: FreeBSD amd64
-
-ppc64le and FreeBSD are not bootstrap targets (no pixi binary) and are
-not covered by every installer — e.g. the VS Code CLI installer has no
-upstream build for them.
-
 ## Installers
 
 `bsos.installers` is a stdlib-only toolkit (Python 3.10+). Each module
