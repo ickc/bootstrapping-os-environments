@@ -40,12 +40,6 @@ else
     set -gx PIXI_HOME "$PIXI_HOME"
 end
 
-if not set -q ZIM_HOME; or test -z "$ZIM_HOME"
-    set -gx ZIM_HOME "$HOME/.zim"
-else
-    set -gx ZIM_HOME "$ZIM_HOME"
-end
-
 if not set -q __LMOD_INIT; or test -z "$__LMOD_INIT"
     set -gx __LMOD_INIT "$__OPT_ROOT/system/lmod/lmod/init"
 else
