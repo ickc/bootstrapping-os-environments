@@ -91,16 +91,4 @@
       TrackpadThreeFingerTapGesture = 0;
     };
   };
-
-  # https://gist.github.com/tkafka/e3eb63a5ec448e9be6701bfd1f1b1e58
-  launchd.user.agents.environment-fix-electron-resource-hog-bug.serviceConfig = {
-    Label = "environment.fix-electron-resource-hog-bug";
-    ProgramArguments = [
-      "/bin/launchctl"
-      "setenv"
-      "CHROME_HEADLESS"
-      "1"
-    ];
-    RunAtLoad = true;
-  };
 }
