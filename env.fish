@@ -70,3 +70,15 @@ if not set -q XDG_CACHE_HOME; or test -z "$XDG_CACHE_HOME"
 else
     set -gx XDG_CACHE_HOME "$XDG_CACHE_HOME"
 end
+
+if not set -q XDG_DATA_DIRS; or test -z "$XDG_DATA_DIRS"
+    set -gx XDG_DATA_DIRS "/usr/local/share/:/usr/share/"
+else
+    set -gx XDG_DATA_DIRS "$XDG_DATA_DIRS"
+end
+
+if not set -q XDG_CONFIG_DIRS; or test -z "$XDG_CONFIG_DIRS"
+    set -gx XDG_CONFIG_DIRS "/etc/xdg/"
+else
+    set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS"
+end
