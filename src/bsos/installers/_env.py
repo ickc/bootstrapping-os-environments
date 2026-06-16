@@ -74,6 +74,8 @@ class EnvConfig:
         self.xdg_data_home = Path(env.get("XDG_DATA_HOME") or self.local_root / "share")
         self.xdg_state_home = Path(env.get("XDG_STATE_HOME") or self.local_root / "state")
         self.xdg_cache_home = Path(env.get("XDG_CACHE_HOME") or self.home / ".cache")
+        self.xdg_data_dirs = env.get("XDG_DATA_DIRS") or "/usr/local/share/:/usr/share/"
+        self.xdg_config_dirs = env.get("XDG_CONFIG_DIRS") or "/etc/xdg/"
 
         self.bin_dir = self.opt_root / "bin"
 
@@ -91,6 +93,8 @@ class EnvConfig:
             "XDG_DATA_HOME": str(self.xdg_data_home),
             "XDG_STATE_HOME": str(self.xdg_state_home),
             "XDG_CACHE_HOME": str(self.xdg_cache_home),
+            "XDG_DATA_DIRS": self.xdg_data_dirs,
+            "XDG_CONFIG_DIRS": self.xdg_config_dirs,
         }
 
     def subprocess_env(self) -> Dict[str, str]:
@@ -139,6 +143,8 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-${__LOCAL_ROOT}/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-${__LOCAL_ROOT}/state}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"
+export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg/}"
 """
 
 
@@ -221,6 +227,18 @@ if not set -q XDG_CACHE_HOME; or test -z "$XDG_CACHE_HOME"
     set -gx XDG_CACHE_HOME "$HOME/.cache"
 else
     set -gx XDG_CACHE_HOME "$XDG_CACHE_HOME"
+end
+
+if not set -q XDG_DATA_DIRS; or test -z "$XDG_DATA_DIRS"
+    set -gx XDG_DATA_DIRS "/usr/local/share/:/usr/share/"
+else
+    set -gx XDG_DATA_DIRS "$XDG_DATA_DIRS"
+end
+
+if not set -q XDG_CONFIG_DIRS; or test -z "$XDG_CONFIG_DIRS"
+    set -gx XDG_CONFIG_DIRS "/etc/xdg/"
+else
+    set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS"
 end
 """
 
