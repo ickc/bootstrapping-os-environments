@@ -412,6 +412,12 @@ def main() -> None:
         default=_DEFAULT_BACKEND,
         help=f"package manager driving env create/update (default: {_DEFAULT_BACKEND})",
     )
+    parser.add_argument(
+        "--skip-unsupported",
+        action="store_true",
+        default=False,
+        help="no-op flag for CI compatibility; mamba_env is always platform-supported",
+    )
     args = parser.parse_args()
     env = EnvConfig()
     if args.action == "install":
