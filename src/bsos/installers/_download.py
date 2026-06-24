@@ -124,7 +124,7 @@ def fetch_text(url: str) -> str:
     (e.g. Claude Code's ``.../latest``) rather than via GitHub releases.
     """
     with _open_url(url) as resp:
-        return resp.read().decode("utf-8").strip()
+        return str(resp.read().decode("utf-8").strip())
 
 
 def resolve_latest_github_tag(owner: str, repo: str) -> str:
