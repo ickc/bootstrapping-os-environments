@@ -33,6 +33,7 @@ from typing import Dict, List, Optional, Set, Union
 from bsos.installers._download import (
     download_file,
     download_to_tempdir,
+    fetch_text,
     resolve_latest_github_tag,
 )
 from bsos.installers._env import EnvConfig, platform_key
@@ -111,6 +112,27 @@ class GitHubRedirect(VersionSpec):
 
     def resolve_both(self, override: Optional[str] = None) -> "tuple[str, str]":
         tag = override if override is not None else resolve_latest_github_tag(self.owner, self.repo)
+        version = tag.lstrip("v") if self.strip_v else tag
+        return tag, version
+
+
+@dataclass
+class HttpVersion(VersionSpec):
+    """Resolve the version from a plain-text HTTP endpoint.
+
+    GETs *url* and uses the response body (stripped) as the version — for
+    release channels that publish a bare version string at a stable URL (e.g.
+    Claude Code's ``.../latest``) rather than via GitHub releases.  ``{tag}``
+    and ``{version}`` both resolve to the fetched string, with a leading ``v``
+    stripped from ``{version}`` when *strip_v* is set.  ``--version`` overrides
+    the lookup entirely (the override is treated as the tag).
+    """
+
+    url: str
+    strip_v: bool = True
+
+    def resolve_both(self, override: Optional[str] = None) -> "tuple[str, str]":
+        tag = override if override is not None else fetch_text(self.url)
         version = tag.lstrip("v") if self.strip_v else tag
         return tag, version
 

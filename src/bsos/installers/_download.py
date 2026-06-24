@@ -117,6 +117,16 @@ def download_and_extract_zip(url: str, dest_dir: PathLike) -> None:
         zf.extractall(dest_dir)
 
 
+def fetch_text(url: str) -> str:
+    """GET *url* and return the response body as stripped UTF-8 text.
+
+    For release channels that publish a bare version string at a stable URL
+    (e.g. Claude Code's ``.../latest``) rather than via GitHub releases.
+    """
+    with _open_url(url) as resp:
+        return resp.read().decode("utf-8").strip()
+
+
 def resolve_latest_github_tag(owner: str, repo: str) -> str:
     """Return the latest release tag for a GitHub repo without calling the GitHub API.
 
