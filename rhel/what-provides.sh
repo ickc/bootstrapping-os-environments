@@ -39,19 +39,19 @@ while IFS= read -r executable || [ -n "$executable" ]; do
     if [ -z "$executable" ]; then
         continue
     fi
-    
+
     ((current_line++))
     echo "Processing ($current_line/$total_lines): $executable"
-    
+
     # Try to find package providing the executable
     # We'll check both direct executable name and full path variants
     package_info=""
-    
+
     # Try different path patterns where the executable might be found
     for path_pattern in "$executable" "*/$executable" "/usr/bin/$executable" "/bin/$executable" "/usr/sbin/$executable" "/sbin/$executable"; do
         # Use dnf provides to find the package
-        result=$(dnf provides "$path_pattern" 2>/dev/null | grep -E "^[^[:space:]]+\s+:" | head -n1)
-        
+        result=$(dnf provides "$path_pattern" 2> /dev/null | grep -E "^[^[:space:]]+\s+:" | head -n1)
+
         if [ -n "$result" ]; then
             # Extract package name (everything before the first colon and space)
             package_name=$(echo "$result" | cut -d':' -f1 | awk '{print $1}')
@@ -61,7 +61,7 @@ while IFS= read -r executable || [ -n "$executable" ]; do
             fi
         fi
     done
-    
+
     # Write result to appropriate file
     if [ -n "$package_info" ]; then
         # Extract just the package name without version/arch info
@@ -73,7 +73,7 @@ while IFS= read -r executable || [ -n "$executable" ]; do
         echo "$executable" >> "$MISSING_FILE"
         echo "  → Not found"
     fi
-    
+
 done < "$INPUT_FILE"
 
 echo

@@ -43,13 +43,13 @@ DO_ZFS=0
 DO_MOUNT=0
 ASSUME_YES=0
 CACHE_MOUNTPOINT="/var/cache"
-TARGET_PREFIX="/mnt/target"   # Where to mount if DO_MOUNT=1
-CREATE_CACHE=1                # Set to 0 to skip formatting/mounting p5
-EFI_ON_BOTH=1                 # If 1, format EFI on BOTH disks. If 0, only on larger disk.
+TARGET_PREFIX="/mnt/target" # Where to mount if DO_MOUNT=1
+CREATE_CACHE=1              # Set to 0 to skip formatting/mounting p5
+EFI_ON_BOTH=1               # If 1, format EFI on BOTH disks. If 0, only on larger disk.
 
 #############################################
 usage() {
-  cat <<EOF
+    cat << EOF
 Usage: $0 [options] [SMALL_DEV LARGE_DEV]
 
 Options:
@@ -76,48 +76,51 @@ SMALL_DEV="$SMALL_DEV_DEFAULT"
 LARGE_DEV="$LARGE_DEV_DEFAULT"
 
 while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --yes) ASSUME_YES=1 ;;
-    --zfs) DO_ZFS=1 ;;
-    --no-cache) CREATE_CACHE=0 ;;
-    --mount) DO_MOUNT=1 ;;
-    --efi-one) EFI_ON_BOTH=0 ;;
-    --help) usage; exit 0 ;;
-    /dev/*)
-      if [[ "$SMALL_DEV" == "$SMALL_DEV_DEFAULT" && "$LARGE_DEV" == "$LARGE_DEV_DEFAULT" ]]; then
-        SMALL_DEV="$1"
-      elif [[ "$SMALL_DEV" != "$1" && "$LARGE_DEV" == "$LARGE_DEV_DEFAULT" ]]; then
-        LARGE_DEV="$1"
-      else
-        echo "Unexpected extra device argument: $1" >&2
-        exit 1
-      fi
-      ;;
-    *)
-      echo "Unknown argument: $1" >&2
-      usage
-      exit 1
-      ;;
-  esac
-  shift
+    case "$1" in
+        --yes) ASSUME_YES=1 ;;
+        --zfs) DO_ZFS=1 ;;
+        --no-cache) CREATE_CACHE=0 ;;
+        --mount) DO_MOUNT=1 ;;
+        --efi-one) EFI_ON_BOTH=0 ;;
+        --help)
+            usage
+            exit 0
+            ;;
+        /dev/*)
+            if [[ $SMALL_DEV == "$SMALL_DEV_DEFAULT" && $LARGE_DEV == "$LARGE_DEV_DEFAULT" ]]; then
+                SMALL_DEV="$1"
+            elif [[ $SMALL_DEV != "$1" && $LARGE_DEV == "$LARGE_DEV_DEFAULT" ]]; then
+                LARGE_DEV="$1"
+            else
+                echo "Unexpected extra device argument: $1" >&2
+                exit 1
+            fi
+            ;;
+        *)
+            echo "Unknown argument: $1" >&2
+            usage
+            exit 1
+            ;;
+    esac
+    shift
 done
 
 #############################################
 # Root check
 #############################################
 if [[ $EUID -ne 0 ]]; then
-  echo "Must run as root." >&2
-  exit 1
+    echo "Must run as root." >&2
+    exit 1
 fi
 
 #############################################
 # Validate block devices
 #############################################
 for d in "$SMALL_DEV" "$LARGE_DEV"; do
-  if [[ ! -b "$d" ]]; then
-    echo "Device $d not found or not a block device." >&2
-    exit 1
-  fi
+    if [[ ! -b $d ]]; then
+        echo "Device $d not found or not a block device." >&2
+        exit 1
+    fi
 done
 
 #############################################
@@ -126,13 +129,13 @@ done
 size_small=$(blockdev --getsize64 "$SMALL_DEV")
 size_large=$(blockdev --getsize64 "$LARGE_DEV")
 
-if (( size_small > size_large )); then
-  echo "Swapping devices: provided 'small' is actually larger."
-  tmp="$SMALL_DEV"
-  SMALL_DEV="$LARGE_DEV"
-  LARGE_DEV="$tmp"
-  size_small=$(blockdev --getsize64 "$SMALL_DEV")
-  size_large=$(blockdev --getsize64 "$LARGE_DEV")
+if ((size_small > size_large)); then
+    echo "Swapping devices: provided 'small' is actually larger."
+    tmp="$SMALL_DEV"
+    SMALL_DEV="$LARGE_DEV"
+    LARGE_DEV="$tmp"
+    size_small=$(blockdev --getsize64 "$SMALL_DEV")
+    size_large=$(blockdev --getsize64 "$LARGE_DEV")
 fi
 
 echo "Detected smaller device: $SMALL_DEV ($(numfmt --to=iec "$size_small"))"
@@ -142,11 +145,11 @@ echo "Detected larger  device: $LARGE_DEV ($(numfmt --to=iec "$size_large"))"
 # Confirm destructive action
 #############################################
 if [[ $ASSUME_YES -ne 1 ]]; then
-  read -rp "About to DESTROY ALL DATA on $SMALL_DEV and $LARGE_DEV. Continue? [yes/NO] " ans
-  if [[ "$ans" != "yes" ]]; then
-    echo "Aborted."
-    exit 1
-  fi
+    read -rp "About to DESTROY ALL DATA on $SMALL_DEV and $LARGE_DEV. Continue? [yes/NO] " ans
+    if [[ $ans != "yes" ]]; then
+        echo "Aborted."
+        exit 1
+    fi
 fi
 
 #############################################
@@ -154,10 +157,10 @@ fi
 #############################################
 echo "Stopping existing md arrays referencing the target devices (if any)..."
 mdadm --detail --scan | awk '/ARRAY/ {print $2}' | while read -r arr; do
-  if grep -qE "$(basename "$SMALL_DEV")|$(basename "$LARGE_DEV")" "/proc/mdstat" 2>/dev/null || mdadm --detail "$arr" 2>/dev/null | grep -qE "$(basename "$SMALL_DEV")|$(basename "$LARGE_DEV")"; then
-    echo "Stopping array $arr"
-    mdadm --stop "$arr" || true
-  fi
+    if grep -qE "$(basename "$SMALL_DEV")|$(basename "$LARGE_DEV")" "/proc/mdstat" 2> /dev/null || mdadm --detail "$arr" 2> /dev/null | grep -qE "$(basename "$SMALL_DEV")|$(basename "$LARGE_DEV")"; then
+        echo "Stopping array $arr"
+        mdadm --stop "$arr" || true
+    fi
 done
 
 # Wipe superblocks (whole disk)
@@ -167,8 +170,8 @@ mdadm --zero-superblock "${LARGE_DEV}" || true
 
 # Also wipe partition-level superblocks (if partitions exist from prior runs)
 for p in {1..6}; do
-  mdadm --zero-superblock "${SMALL_DEV}p$p" 2>/dev/null || true
-  mdadm --zero-superblock "${LARGE_DEV}p$p" 2>/dev/null || true
+    mdadm --zero-superblock "${SMALL_DEV}p$p" 2> /dev/null || true
+    mdadm --zero-superblock "${LARGE_DEV}p$p" 2> /dev/null || true
 done
 
 #############################################
@@ -219,11 +222,11 @@ parted "$LARGE_DEV" unit MiB print
 #############################################
 echo "Creating RAID1 for /boot ($MD_BOOT)..."
 mdadm --create "$MD_BOOT" --metadata=1.0 --level=1 --raid-devices=2 \
-  "${SMALL_DEV}p2" "${LARGE_DEV}p2"
+    "${SMALL_DEV}p2" "${LARGE_DEV}p2"
 
 echo "Creating RAID1 for root ($MD_ROOT)..."
 mdadm --create "$MD_ROOT" --level=1 --raid-devices=2 \
-  "${SMALL_DEV}p3" "${LARGE_DEV}p3"
+    "${SMALL_DEV}p3" "${LARGE_DEV}p3"
 
 # Wait for arrays to become active
 udevadm settle
@@ -234,10 +237,10 @@ cat /proc/mdstat
 #############################################
 echo "Setting up LUKS on $MD_ROOT ..."
 if [[ $ASSUME_YES -eq 1 ]]; then
-  echo "Using --batch-mode for cryptsetup."
-  cryptsetup luksFormat --batch-mode "$MD_ROOT"
+    echo "Using --batch-mode for cryptsetup."
+    cryptsetup luksFormat --batch-mode "$MD_ROOT"
 else
-  cryptsetup luksFormat "$MD_ROOT"
+    cryptsetup luksFormat "$MD_ROOT"
 fi
 
 cryptsetup open "$MD_ROOT" "$LUKS_NAME"
@@ -253,12 +256,12 @@ ROOT_MAPPER="/dev/mapper/$LUKS_NAME"
 
 # EFI: Format on one or both
 if [[ $EFI_ON_BOTH -eq 1 ]]; then
-  echo "Formatting BOTH EFI partitions as FAT32."
-  mkfs.vfat -F32 -n "${EFI_LABEL}A" "$SMALL_P1"
-  mkfs.vfat -F32 -n "${EFI_LABEL}B" "$LARGE_P1"
+    echo "Formatting BOTH EFI partitions as FAT32."
+    mkfs.vfat -F32 -n "${EFI_LABEL}A" "$SMALL_P1"
+    mkfs.vfat -F32 -n "${EFI_LABEL}B" "$LARGE_P1"
 else
-  echo "Formatting ONLY large disk EFI partition."
-  mkfs.vfat -F32 -n "$EFI_LABEL" "$LARGE_P1"
+    echo "Formatting ONLY large disk EFI partition."
+    mkfs.vfat -F32 -n "$EFI_LABEL" "$LARGE_P1"
 fi
 
 echo "Formatting /boot (XFS)..."
@@ -268,48 +271,48 @@ echo "Formatting root (XFS inside LUKS)..."
 mkfs.xfs -f -L "$ROOT_LABEL" "$ROOT_MAPPER"
 
 if [[ $CREATE_CACHE -eq 1 ]]; then
-  echo "Formatting cache partition (XFS)..."
-  mkfs.xfs -f -L "$CACHE_LABEL" "$CACHE_PART"
+    echo "Formatting cache partition (XFS)..."
+    mkfs.xfs -f -L "$CACHE_LABEL" "$CACHE_PART"
 fi
 
 #############################################
 # Optional ZFS
 #############################################
 if [[ $DO_ZFS -eq 1 ]]; then
-  if ! command -v zpool >/dev/null 2>&1; then
-    echo "zpool command not found. Install ZFS tools first." >&2
-    exit 1
-  fi
-  echo "Creating ZFS mirror pool ($ZFS_POOL) on p4 partitions..."
-  zpool create -f -o ashift=12 "$ZFS_POOL" mirror "${SMALL_DEV}p4" "${LARGE_DEV}p4"
-  zpool status "$ZFS_POOL"
+    if ! command -v zpool > /dev/null 2>&1; then
+        echo "zpool command not found. Install ZFS tools first." >&2
+        exit 1
+    fi
+    echo "Creating ZFS mirror pool ($ZFS_POOL) on p4 partitions..."
+    zpool create -f -o ashift=12 "$ZFS_POOL" mirror "${SMALL_DEV}p4" "${LARGE_DEV}p4"
+    zpool status "$ZFS_POOL"
 fi
 
 #############################################
 # Mount (optional)
 #############################################
 if [[ $DO_MOUNT -eq 1 ]]; then
-  echo "Mounting filesystems under $TARGET_PREFIX ..."
-  mkdir -p "$TARGET_PREFIX"
-  mount "$ROOT_MAPPER" "$TARGET_PREFIX"
-  mkdir -p "$TARGET_PREFIX/boot"
-  mount "$BOOT_MD" "$TARGET_PREFIX/boot"
+    echo "Mounting filesystems under $TARGET_PREFIX ..."
+    mkdir -p "$TARGET_PREFIX"
+    mount "$ROOT_MAPPER" "$TARGET_PREFIX"
+    mkdir -p "$TARGET_PREFIX/boot"
+    mount "$BOOT_MD" "$TARGET_PREFIX/boot"
 
-  # Decide which EFI to mount (choose larger)
-  mkdir -p "$TARGET_PREFIX/boot/efi"
-  if [[ $EFI_ON_BOTH -eq 1 ]]; then
-    mount "$LARGE_P1" "$TARGET_PREFIX/boot/efi"
-  else
-    mount "$LARGE_P1" "$TARGET_PREFIX/boot/efi"
-  fi
+    # Decide which EFI to mount (choose larger)
+    mkdir -p "$TARGET_PREFIX/boot/efi"
+    if [[ $EFI_ON_BOTH -eq 1 ]]; then
+        mount "$LARGE_P1" "$TARGET_PREFIX/boot/efi"
+    else
+        mount "$LARGE_P1" "$TARGET_PREFIX/boot/efi"
+    fi
 
-  if [[ $CREATE_CACHE -eq 1 ]]; then
-    mkdir -p "$TARGET_PREFIX/$CACHE_MOUNTPOINT"
-    mount "$CACHE_PART" "$TARGET_PREFIX/$CACHE_MOUNTPOINT"
-  fi
+    if [[ $CREATE_CACHE -eq 1 ]]; then
+        mkdir -p "$TARGET_PREFIX/$CACHE_MOUNTPOINT"
+        mount "$CACHE_PART" "$TARGET_PREFIX/$CACHE_MOUNTPOINT"
+    fi
 
-  echo "Mount layout:"
-  findmnt -R "$TARGET_PREFIX"
+    echo "Mount layout:"
+    findmnt -R "$TARGET_PREFIX"
 fi
 
 #############################################
