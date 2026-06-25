@@ -1,0 +1,46 @@
+"""sman snippet manager installer.
+
+Installs the ``sman`` binary and its shell-integration file ``sman.rc``.  The
+sman-snippets repository is managed separately (clone it to
+``$XDG_DATA_HOME/sman/snippets`` via git).
+"""
+
+from bsos.installers._recipe import (
+    RAW,
+    TAR,
+    Artifact,
+    Dest,
+    GitHubRedirect,
+    Recipe,
+    Verify,
+    run_cli,
+)
+
+RECIPE = Recipe(
+    name="sman",
+    artifacts=[
+        Artifact(
+            url_template="https://github.com/ickc/sman/releases/download/{tag}/sman-{target}-v{version}.tgz",
+            version=GitHubRedirect("ickc", "sman", strip_v=True),
+            archive=TAR,
+            targets={
+                "Darwin-arm64": "darwin-arm64",
+                "Darwin-x86_64": "darwin-amd64",
+                "Linux-x86_64": "linux-amd64",
+                "Linux-aarch64": "linux-arm64",
+            },
+            member="sman-{target}-v{version}",
+            dest=Dest.bin("sman"),
+        ),
+        Artifact(
+            url_template="https://raw.githubusercontent.com/ickc/sman/refs/heads/main/sman.rc",
+            archive=RAW,
+            dest=Dest("xdg_data_home", "sman/sman.rc"),
+            executable=False,
+        ),
+    ],
+    verify=Verify(args=["-h"]),
+)
+
+if __name__ == "__main__":
+    run_cli(RECIPE)

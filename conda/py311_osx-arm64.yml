@@ -4,6 +4,7 @@ dependencies:
 - python=3.11
 - adbc-driver-postgresql
 - adbc-driver-sqlite
+- anywidget
 - archspec
 - asdf-astropy
 - astropy
@@ -22,9 +23,7 @@ dependencies:
 - colorama
 - coloredlogs
 - compilers
-- contextily
 - coverage
-- cuda-python
 - custom-inherit
 - cvxopt
 - dautilpy
@@ -36,10 +35,11 @@ dependencies:
 - feedgen
 - fire
 - folium
+- gdb
 - geojson
-- geopandas
 - geopy
 - ghapi
+- ghp-import
 - glom
 - graphviz
 - h5py
@@ -95,7 +95,6 @@ dependencies:
 - pyotp
 - pyreadstat
 - pyrss2gen
-- pysm3
 - pytables
 - pytest
 - pytest-cov
@@ -127,13 +126,16 @@ dependencies:
 - sympy
 - tabulate
 - tbb
+- tbb-devel
 - tikzplotlib
+- tokenize-rt
 - toml
 - typeguard
 - types-pyyaml
 - tzwhere
 - uncertainties
 - urlpath
+- uvloop
 - watchdog
 - wheel
 - wolframclient

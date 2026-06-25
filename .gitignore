@@ -1,3 +1,5 @@
+.pixi
+*.egg-info
 *.ipynb
-dist/
-setup.py
+nix/command2package.csv
+nix/package2command.yml

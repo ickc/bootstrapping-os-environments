@@ -4,6 +4,7 @@ dependencies:
 - python=3.9
 - adbc-driver-postgresql
 - adbc-driver-sqlite
+- anywidget
 - archspec
 - asdf-astropy
 - astropy
@@ -24,7 +25,6 @@ dependencies:
 - compilers
 - contextily
 - coverage
-- cuda-python
 - custom-inherit
 - cvxopt
 - dautilpy
