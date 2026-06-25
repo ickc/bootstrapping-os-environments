@@ -1,0 +1,228 @@
+[build-system]
+requires = ["setuptools", "poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "bsos"
+version = "0.1.0"
+description = "bsos—bootstraping OS environments"
+license = "BSD-3-Clause"
+keywords = [
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Utilities",
+]
+homepage = "https://github.com/ickc/bsos"
+repository = "https://github.com/ickc/bsos"
+documentation = "https://ickc.github.io/bsos"
+authors = ["Kolen Cheung <christian.kolen@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "bsos", from = "src" },
+]
+include = [
+    'LICENSE',
+    'README.md',
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+defopt = "^6"
+httpx = "*"
+pandas = "*"
+platformdirs = "*"
+pyyaml = "*"
+yamlloader = "*"
+
+# extras
+coloredlogs = { optional = true, version = ">=14,<16" }
+
+[tool.poetry.extras]
+extras = [
+    "coloredlogs",
+]
+
+[tool.poetry.scripts]
+conda_web_api = 'bsos.conda.web_api:cli'
+
+[tool.coverage.paths]
+source = [
+    'src',
+    '*/site-packages',
+]
+
+[tool.coverage.run]
+branch = true
+# concurrency = ["thread", "multiprocessing"]
+source = [
+    'src',
+    'tests',
+]
+parallel = true
+relative_files = true
+
+[tool.coverage.report]
+show_missing = true
+precision = 2
+
+[tool.pytest.ini_options]
+
+addopts = [
+    '-ra',
+    '--strict-markers',
+    '--tb=auto',
+]
+
+testpaths = [
+    'tests',
+]
+
+[tool.isort]
+line_length = 120
+known_first_party = 'bsos'
+default_section = 'THIRDPARTY'
+forced_separate = 'tests'
+profile = 'black'
+skip = [
+    '.eggs',
+    'ci/templates',
+    'build',
+    'dist',
+]
+
+[tool.pylint.messages_control]
+disable = "C0330, C0326"
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+
+[tool.jupytext]
+formats = "ipynb,py:percent"
+
+[tool.pixi.workspace]
+name = "bsos"
+channels = ["conda-forge"]
+platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"]
+
+[tool.pixi.dependencies]
+defopt = ">=6.4.0,<7"
+httpx = ">=0.28.1,<0.29"
+pandas = ">=2.2.3,<3"
+platformdirs = ">=4.3.7,<5"
+pyyaml = ">=6.0.2,<7"
+yamlloader = ">=1.5.1,<2"
+pytest = "*"
+ruff = ">=0.9,<1"
+mypy = ">=1.14,<2"
+pyright = ">=1.1,<2"
+vulture = ">=2.14,<3"
+go-shfmt = ">=3.10,<4"
+shellcheck = ">=0.10,<1"
+
+[tool.pixi.pypi-dependencies]
+bsos = { path = ".", editable = true}
+
+[tool.pixi.tasks]
+# conda
+## generate
+conda-generate = { depends-on = [{ task = "conda-generate-conda" }, { task = "conda-generate-jupyterlab" }, { task = "conda-generate-system" }], description = "Generate conda environment files." }
+conda-generate-conda = { cmd = "python -m bsos.conda.web_api generate conda/conda.csv", description = "Generate conda/conda.csv" }
+conda-generate-jupyterlab = { cmd = "python -m bsos.conda.web_api generate conda/jupyterlab.csv -v 3.14 --name-format jupyterlab", description = "Generate conda/jupyterlab.csv" }
+conda-generate-system = { cmd = "python -m bsos.conda.web_api generate conda/system.csv -v 3.14 --name-format system --no-python", description = "Generate conda/system.csv" }
+
+## clean
+conda-clean = { cmd = "python -m bsos.conda.web_api clean", description = "Remove the bsos cache when using conda.web_api." }
+conda-update = { depends-on = [{ task = "conda-clean"}, { task = "conda-generate" }], description = "Update conda environment files by cleaning the cache and regenerating them." }
+
+## misc
+conda-list-depended = { cmd = "tail -n +2 conda/conda.csv | cut -d, -f6 | tr '/' '\n' | sort -u", description = "List all depended packages in conda/conda.csv" }
+
+# nix
+## update
+nix-update-config = { cmd = "nix flake update", cwd = "nix", description = "Update nix flake inputs." }
+nix-update-all = { cmd = "sudo darwin-rebuild switch --flake .", cwd = "nix", description = "Update all nix modules by rebuilding." }
+
+## helpers
+nix-mas-update = { cmd = "python -m bsos.nix.mas nix/modules/darwin/masApps.nix", description = "List all installed apps from the Mac App Store in nix flake format." }
+nix-command2package = { cmd = "python -m bsos.nix.helper command2package nix/command2package.csv", description = "Write the command to package mapping to a file." }
+nix-package2command = { cmd = "python -m bsos.nix.helper package2command nix/package2command.yml --flake-path nix/modules/systemPackages.nix", description = "Write the package to command mapping to a file." }
+nix-check-package-supported = { cmd = "python -m bsos.nix.helper check-package-supported nix/modules/systemPackages.nix", description = "Check if all packages in the package to command mapping are supported." }
+nix-format = { cmd = "find nix -name '*.nix' -exec nixfmt '{}' +", description = "Format all nix files in the project" }
+
+# brew
+brew-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/brews.nix --sort", description = "Annotate a brews.nix file with brew descriptions." }
+brew-cask-add-description = { cmd = "python -m bsos.brew.helper add-description nix/modules/darwin/casks.nix --sort --cask", description = "Annotate a casks.nix file with brew descriptions." }
+
+# installers — generate-*
+generate-env =  { depends-on = ["generate-env-sh", "generate-env-fish"], description = "Regenerate all env.* files from Python definitions." }
+generate-env-sh = { cmd = "python -m bsos.installers._env > env.sh", description = "Regenerate env.sh from Python definitions." }
+generate-env-fish = { cmd = "python -m bsos.installers._env --shell fish > env.fish", description = "Regenerate env.fish from Python definitions." }
+generate-completions = { cmd = "python -m bsos.shell.completion generate", description = "Generate shell completions for installed tools into XDG_DATA_HOME dirs." }
+
+# installers — compile / install / uninstall / smoke
+# All tasks auto-discover modules (files in src/bsos/installers/ not starting with _).
+# Pass a name after -- to target a single module: e.g. `pixi run compile -- code`
+compile = { cmd = "python -m bsos.installers._compile", description = "Compile all installer modules to standalone scripts in install/." }
+install = { cmd = "python -m bsos.installers install", description = "Install all (or named) tools: `pixi run install -- code gh`." }
+uninstall = { cmd = "python -m bsos.installers uninstall", description = "Uninstall all (or named) tools: `pixi run uninstall -- code gh`." }
+smoke = { cmd = "python -m bsos.installers test", description = "Smoke-test all (or named) installs: `pixi run smoke -- pixi`." }
+
+# lint and format
+format-sh = { cmd = "bash -lc \"find . -path './.git' -prune -o -path './.pixi' -prune -o -type f -name '*.sh' -exec sed -i -E -e 's/\\$([a-zA-Z_][a-zA-Z0-9_]*|[0-9]+)/${\\1}/g' -e 's/([^[])[[] ([^]]+) []]/\\1[[ \\2 ]]/g' {} + -exec shfmt --write --simplify --indent 4 --case-indent --space-redirects {} +\"", description = "Format all shell scripts with sed fixups and shfmt." }
+format-py = { cmd = "ruff check --fix src tests && ruff format src tests", description = "Lint-fix and format Python files with ruff." }
+format = { depends-on = ["format-sh", "format-py"], description = "Run all formatters." }
+lint-sh = { cmd = "bash -lc \"find . -path './.git' -prune -o -path './.pixi' -prune -o -path './install/src' -prune -o -type f -name '*.sh' -exec shellcheck --norc --enable=all --shell=bash --severity=style {} +\"", description = "Lint all shell scripts with shellcheck." }
+lint-mypy = { cmd = "mypy src", description = "Type-check Python files with mypy." }
+lint-pyright = { cmd = "pyright src", description = "Type-check Python files with pyright." }
+lint-ruff = { cmd = "ruff check src tests && ruff format --check src tests", description = "Lint and format-check Python files with ruff." }
+lint-py = { depends-on = ["lint-ruff", "lint-mypy", "lint-pyright"], description = "Run all Python linters."}
+lint-compiled = { cmd = "vulture install/ --min-confidence 80", description = "Detect dead code in compiled installer scripts (install/*.py)." }
+lint = { depends-on = ["lint-sh", "lint-py", "lint-compiled"], description = "Run all linters." }
+
+# unit tests
+test = { cmd = "pytest", description = "Run the pytest unit-test suite." }
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["I", "F401", "F841"]
+
+[tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "standard"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unreachable = true
+show_error_codes = true
+pretty = true
+
+[[tool.mypy.overrides]]
+module = [
+    "defopt",
+    "pandas",
+    "pandas.*",
+    "yaml",
+    "yaml.*",
+    "yamlloader",
+    "yamlloader.*",
+]
+ignore_missing_imports = true

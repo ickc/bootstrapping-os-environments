@@ -1,0 +1,5 @@
+.pixi
+*.egg-info
+*.ipynb
+nix/command2package.csv
+nix/package2command.yml
