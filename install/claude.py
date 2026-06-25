@@ -158,7 +158,7 @@ def fetch_text(url: str) -> str:
     (e.g. Claude Code's ``.../latest``) rather than via GitHub releases.
     """
     with _open_url(url) as resp:
-        return resp.read().decode("utf-8").strip()
+        return str(resp.read().decode("utf-8").strip())
 
 
 def download_to_tempdir(url: str, extract: str = "tar") -> Path:
