@@ -1,1 +1,0 @@
-../brew-cask-fonts.txt

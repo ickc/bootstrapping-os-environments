@@ -1,3 +1,0 @@
-pymupdf
-# * see https://github.com/conda-forge/pandasgui-feedstock/issues/1
-pandasgui

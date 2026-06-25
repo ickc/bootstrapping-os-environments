@@ -1,6 +1,0 @@
-uglify-js
-cssnano-cli
-csso-cli
-html-minifier
-bundler
-grunt

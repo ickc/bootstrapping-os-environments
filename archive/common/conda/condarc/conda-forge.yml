@@ -1,4 +1,0 @@
-channels:
-  - conda-forge
-channel_priority: strict
-pip_interop_enabled: false

@@ -1,5 +1,0 @@
-unison
-opencc
-atool
-iperf3
-neofetch
