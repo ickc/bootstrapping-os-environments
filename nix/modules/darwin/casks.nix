@@ -5,7 +5,7 @@
   "adobe-creative-cloud"
   # Automatic tiling window manager similar to xmonad
   "amethyst"
-  # AI Coding Agent IDE
+  # Agent orchestration platform
   "antigravity"
   # Application uninstaller
   "appcleaner"
@@ -29,6 +29,8 @@
   "codex"
   # OpenAI's Codex desktop app for managing coding agents
   "codex-app"
+  # Virtual monitor for screen sharing
+  "deskpad"
   # Drivers for DisplayLink docks, adapters and monitors
   "displaylink"
   # Client for the Dropbox cloud storage service
