@@ -5,8 +5,6 @@
 { pkgs, pkgs-unstable }:
 with pkgs;
 [
-  pkgs-unstable.macmon
-  pkgs-unstable.pandoc
   bashInteractive
   bat
   bat-extras.batdiff
@@ -24,7 +22,7 @@ with pkgs;
   # diffoscope
   difftastic
   diffutils
-  pkgs-unstable.direnv
+  direnv
   dua
   duti
   entr
@@ -66,7 +64,6 @@ with pkgs;
   librsvg
   lsd
   lux
-  pkgs-unstable.mactop
   mediainfo
   mediainfo-gui
   mermaid-cli
