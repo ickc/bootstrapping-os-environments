@@ -5,7 +5,6 @@
 { pkgs, pkgs-unstable }:
 with pkgs;
 [
-  pkgs-unstable.github-copilot-cli
   pkgs-unstable.macmon
   pkgs-unstable.pandoc
   bashInteractive
