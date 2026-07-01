@@ -5,8 +5,6 @@
   "adobe-creative-cloud"
   # Automatic tiling window manager similar to xmonad
   "amethyst"
-  # Agent orchestration platform
-  "antigravity"
   # Multi-track audio editor and recorder
   "audacity"
   # E-books management software
@@ -17,10 +15,6 @@
   "chatgpt-atlas"
   # Anthropic's official Claude AI desktop app
   "claude"
-  # Terminal-based AI coding assistant
-  "claude-code"
-  # OpenAI's coding agent that runs in your terminal
-  "codex"
   # OpenAI's Codex desktop app for managing coding agents
   "codex-app"
   # Virtual monitor for screen sharing
