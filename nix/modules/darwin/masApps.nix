@@ -5,7 +5,6 @@
   "Canary Mail" = 1236045954;
   "Compressor" = 424390742;
   "Drafts" = 1435957248;
-  "EasyRes" = 688211836;
   "Final Cut Pro" = 424389933;
   "forScore" = 363738376;
   "GarageBand" = 682658836;
@@ -17,7 +16,6 @@
   "Logic Pro" = 634148309;
   "MainStage" = 634159523;
   "Microsoft Excel" = 462058435;
-  "Microsoft OneNote" = 784801555;
   "Microsoft Outlook" = 985367838;
   "Microsoft PowerPoint" = 462062816;
   "Microsoft Word" = 462054704;
