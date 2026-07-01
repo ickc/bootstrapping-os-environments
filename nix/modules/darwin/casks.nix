@@ -7,14 +7,8 @@
   "amethyst"
   # Agent orchestration platform
   "antigravity"
-  # Application uninstaller
-  "appcleaner"
   # Multi-track audio editor and recorder
   "audacity"
-  # Audio utility
-  "background-music"
-  # Display management tool
-  "betterdisplay"
   # E-books management software
   "calibre"
   # OpenAI's official ChatGPT desktop app
@@ -31,8 +25,6 @@
   "codex-app"
   # Virtual monitor for screen sharing
   "deskpad"
-  # Drivers for DisplayLink docks, adapters and monitors
-  "displaylink"
   # Client for the Dropbox cloud storage service
   "dropbox"
   # Web browser
@@ -109,10 +101,6 @@
   "microsoft-teams"
   # Open-source music notation software
   "musescore"
-  # Music tagger
-  "musicbrainz-picard"
-  # Rename a list of files quickly
-  "namechanger"
   # App to write, plan, collaborate, and get organised
   "notion"
   # Knowledge base that works on top of a local folder of plain text Markdown files
@@ -125,16 +113,12 @@
   "rstudio"
   # Tool to format memory cards complying with the SD File System spec
   "sdformatter"
-  # App that enables mouse-free UI interaction
-  "shortcat"
   # Instant messaging application focusing on security
   "signal"
   # Virtual machines UI using QEMU
   "utm"
   # Open-source code editor
   "visual-studio-code"
-  # Multimedia player
-  "vlc"
   # Native desktop client for WhatsApp
   "whatsapp"
   # Multiplayer code editor
