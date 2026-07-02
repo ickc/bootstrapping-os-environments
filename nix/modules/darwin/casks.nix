@@ -65,6 +65,8 @@
   "ghostty"
   # Desktop client for GitHub repositories
   "github"
+  # Native client for GitHub Copilot
+  "github-copilot-app"
   # Web browser
   "google-chrome"
   # Client for the Google Drive storage service
