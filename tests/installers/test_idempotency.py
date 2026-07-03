@@ -144,11 +144,23 @@ def test_supported_platforms_intersects_platform_specific_artifacts():
 
 
 @contextlib.contextmanager
-def _fake_env_yaml(base: str, filename: str) -> Iterator[Path]:
-    """Drop-in replacement for mamba_env._env_yaml — yields a real temp file."""
+def _fake_env_spec(base: str, filenames: list) -> Iterator[Path]:
+    """Drop-in replacement for mamba_env._env_spec — yields the lockfile candidate."""
     tmp = Path(tempfile.mkdtemp(prefix="bsos-test-"))
     try:
-        spec = tmp / filename
+        spec = tmp / filenames[0]
+        spec.write_text("version: 1\n")
+        yield spec
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+@contextlib.contextmanager
+def _fake_env_spec_yml(base: str, filenames: list) -> Iterator[Path]:
+    """Drop-in replacement for mamba_env._env_spec — yields the per-platform YAML fallback."""
+    tmp = Path(tempfile.mkdtemp(prefix="bsos-test-"))
+    try:
+        spec = tmp / filenames[-1]
         spec.write_text("name: test\ndependencies: []\n")
         yield spec
     finally:
@@ -319,10 +331,29 @@ def test_mamba_env_default_env_dir_uses_remote_when_piped_from_stdin(monkeypatch
     assert mamba_env_mod._default_env_dir() == mamba_env_mod._REMOTE_ENV_DIR
 
 
+def test_mamba_env_spec_prefers_lockfile_over_platform_yml(tmp_path):
+    (tmp_path / "system-lock.yml").write_text("version: 1\n")
+    (tmp_path / "system_linux-64.yml").write_text("dependencies: []\n")
+    with mamba_env_mod._env_spec(str(tmp_path), ["system-lock.yml", "system_linux-64.yml"]) as spec:
+        assert spec.name == "system-lock.yml"
+
+
+def test_mamba_env_spec_falls_back_to_platform_yml(tmp_path):
+    (tmp_path / "system_linux-64.yml").write_text("dependencies: []\n")
+    with mamba_env_mod._env_spec(str(tmp_path), ["system-lock.yml", "system_linux-64.yml"]) as spec:
+        assert spec.name == "system_linux-64.yml"
+
+
+def test_mamba_env_spec_missing_exits(tmp_path):
+    with pytest.raises(SystemExit):
+        with mamba_env_mod._env_spec(str(tmp_path), ["system-lock.yml", "system_linux-64.yml"]):
+            pass
+
+
 def test_mamba_env_install_creates_when_absent(tmp_path):
     env = _mamba_env(tmp_path)
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env)
@@ -343,25 +374,45 @@ def test_mamba_env_install_skips_when_present(tmp_path, capsys):
     assert "already exists" in capsys.readouterr().out
 
 
-def test_mamba_env_install_force_updates_when_present(tmp_path):
+def test_mamba_env_install_force_with_lockfile_recreates(tmp_path):
+    """Lockfile update = remove prefix + fresh create (env update can't read lockfiles)."""
+    env = _mamba_env(tmp_path)
+    prefix = env.opt_root / "testenv"
+    prefix.mkdir(parents=True)
+    sentinel = prefix / "sentinel"
+    sentinel.touch()
+
+    with (
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mamba_env_mod.install("testenv", env=env, force=True)
+    argv = mock_run.call_args[0][0]
+    assert "create" in argv
+    assert "update" not in argv
+    assert not sentinel.exists()
+
+
+def test_mamba_env_install_force_with_yml_updates_when_present(tmp_path):
     env = _mamba_env(tmp_path)
     prefix = env.opt_root / "testenv"
     prefix.mkdir(parents=True)
 
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec_yml),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, force=True)
     argv = mock_run.call_args[0][0]
     assert "update" in argv
     assert "create" not in argv
+    assert prefix.exists()
 
 
 def test_mamba_env_install_force_creates_when_absent(tmp_path):
     env = _mamba_env(tmp_path)
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, force=True)
@@ -374,7 +425,7 @@ def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
     """micromamba creates via top-level ``create``; mamba via ``env create``."""
     env = _mamba_env(tmp_path)
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, backend="micromamba")
@@ -383,7 +434,7 @@ def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
     assert mm_argv[1] == "create"
 
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, backend="mamba")
@@ -412,7 +463,7 @@ def test_mamba_env_reinstall_removes_prefix_then_creates(tmp_path):
     assert not prefix.exists()
 
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env)

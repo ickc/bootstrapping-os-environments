@@ -2,6 +2,22 @@
 
 Guidance for Claude Code when working in this repository.
 
+## Conda env pipeline (`conda/`)
+
+`pixi run conda-generate-system` refreshes `conda/system.csv` from the
+anaconda.org web API, writes a pixi manifest at `conda/system/pixi.toml`
+(platform-selective dependencies via `[feature.*.target.<arch>]`), solves it
+with `pixi lock` (no env is created), and converts the resulting
+`conda/system/pixi.lock` to the unified multi-platform conda-lock file
+`conda/system-lock.yml` via `pixi-to-conda-lock`. All three generated files
+are committed, pinning the environment in git. `mamba_env.py` consumes
+`<name>-lock.yml` when present (micromamba/mamba read conda-lock files
+directly, recognized by the `-lock.yml` suffix) and falls back to the
+per-platform `<name>_<arch>.yml` for envs not yet migrated (`conda.csv`,
+`jupyterlab.csv`). Because `env update` cannot parse conda-lock files, the
+`update` action recreates lockfile-based envs instead — equivalent, since the
+lock pins every package.
+
 ## Installer conventions (`src/bsos/installers/`)
 
 ### Add installers as recipes

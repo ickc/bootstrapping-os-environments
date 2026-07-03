@@ -1,16 +1,22 @@
 """Conda environment installer (micromamba or mamba backend).
 
-Creates or updates a named conda environment from an environment YAML file,
+Creates or updates a named conda environment from an environment spec file,
 installed to ``$__OPT_ROOT/$NAME`` (default: ``system``).
 
 ``--backend`` selects the package manager (default ``micromamba``):
 ``micromamba`` is the standalone binary at ``$__OPT_ROOT/bin/micromamba``;
-``mamba`` is the Miniforge build at ``$MAMBA_ROOT_PREFIX/bin/mamba``. Both
-support ``env update --prune``, so the YAML stays authoritative on update.
+``mamba`` is the Miniforge build at ``$MAMBA_ROOT_PREFIX/bin/mamba``.
+On update, a lockfile-based env is removed and recreated (``env update``
+cannot consume conda-lock files; the pinned lockfile makes recreation exactly
+reproduce the target state), while a YAML-based env uses ``env update
+--prune`` so the spec stays authoritative.
 
-The YAML file is selected by *name* + detected platform —
-``<env-dir>/<name>_<conda-arch>.yml`` (e.g. ``system_linux-64.yml``) — so only
-the directory (or base URL) is given; the filename is derived.  ``--env-dir``
+The spec file is derived from *name*: the version-pinned multi-platform
+conda-lock file ``<env-dir>/<name>-lock.yml`` (e.g. ``system-lock.yml``) is
+preferred; environments not yet migrated to lockfiles fall back to the
+per-platform ``<env-dir>/<name>_<conda-arch>.yml`` (e.g.
+``system_linux-64.yml``). Both backends consume conda-lock files directly,
+recognized by the ``-lock.yml`` suffix.  ``--env-dir``
 defaults to the bundled ``conda/`` directory when running from a repo clone,
 and to the canonical remote base otherwise (e.g. piped through ``curl``)::
 
@@ -31,8 +37,9 @@ import contextlib
 import shutil
 import sys
 import tempfile
+import urllib.error
 from pathlib import Path
-from typing import Iterator, Optional
+from typing import Iterator, List, Optional
 
 from bsos.installers._download import download_file
 from bsos.installers._env import EnvConfig, platform_key
@@ -109,27 +116,48 @@ def _require_backend(backend: str, env: EnvConfig) -> Optional[Path]:
     return tool
 
 
+def _env_filenames(name: str) -> List[str]:
+    """Candidate spec filenames for *name*, most preferred first.
+
+    The unified conda-lock file pins versions for all platforms; the
+    per-platform YAML is the fallback for envs not yet migrated to lockfiles.
+    """
+    return [f"{name}-lock.yml", f"{name}_{_conda_arch()}.yml"]
+
+
 @contextlib.contextmanager
-def _env_yaml(base: str, filename: str) -> Iterator[Path]:
-    """Yield a local path to ``<base>/<filename>``.
+def _env_spec(base: str, filenames: List[str]) -> Iterator[Path]:
+    """Yield a local path to the first of ``<base>/<filename>`` that exists.
 
     *base* is a local directory or an ``http(s)://`` base URL; a remote file is
-    downloaded into a temp directory that is removed on exit.
+    downloaded into a temp directory that is removed on exit.  The local
+    filename is preserved so the backends still see the ``-lock.yml`` suffix
+    that marks a conda-lock file.
     """
     if base.startswith(("http://", "https://")):
         tmp = Path(tempfile.mkdtemp(prefix="bsos-env-"))
         try:
-            dest = tmp / filename
-            download_file(f"{base.rstrip('/')}/{filename}", dest)
-            yield dest
+            for i, filename in enumerate(filenames):
+                dest = tmp / filename
+                try:
+                    download_file(f"{base.rstrip('/')}/{filename}", dest)
+                except urllib.error.HTTPError as exc:
+                    if exc.code == 404 and i < len(filenames) - 1:
+                        continue
+                    raise
+                yield dest
+                return
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
     else:
-        path = Path(base) / filename
-        if not path.is_file():
-            print(f"Env file not found: {path}", file=sys.stderr)
-            sys.exit(1)
-        yield path
+        for filename in filenames:
+            path = Path(base) / filename
+            if path.is_file():
+                yield path
+                return
+        tried = ", ".join(str(Path(base) / filename) for filename in filenames)
+        print(f"Env spec not found: tried {tried}", file=sys.stderr)
+        sys.exit(1)
 
 
 def install(
@@ -142,10 +170,12 @@ def install(
     """Create a named conda environment, or skip if it already exists.
 
     With *force=True* (the ``update`` action), an existing env is updated via
-    ``env update --prune``; a missing env is created as normal. *backend*
-    selects the package manager (``micromamba`` or ``mamba``).
+    ``env update --prune`` (YAML spec) or removed and recreated (lockfile
+    spec); a missing env is created as normal. *backend* selects the package
+    manager (``micromamba`` or ``mamba``).
 
-    The env YAML is ``<env_dir>/<name>_<conda-arch>.yml``; *env_dir* may be a
+    The env spec is ``<env_dir>/<name>-lock.yml`` (preferred, version-pinned)
+    or ``<env_dir>/<name>_<conda-arch>.yml`` (fallback); *env_dir* may be a
     local directory or an ``http(s)://`` base URL (default: the bundled
     ``conda/`` dir, else the canonical remote base).
     """
@@ -160,9 +190,15 @@ def install(
         print(f"Conda env {name!r} already exists at {prefix}; run 'update' to refresh")
         return
 
-    filename = f"{name}_{_conda_arch()}.yml"
     base = env_dir if env_dir is not None else _default_env_dir()
-    with _env_yaml(base, filename) as spec:
+    with _env_spec(base, _env_filenames(name)) as spec:
+        if prefix.exists() and spec.name.endswith("-lock.yml"):
+            # `env update` cannot consume conda-lock files (libmamba fails to
+            # parse the pinned entries). The lockfile pins every package, so
+            # removing and recreating reproduces exactly the state that
+            # `env update --prune` would converge to.
+            print(f"Recreating conda env {name!r} at {prefix} from lockfile via {backend} ...")
+            shutil.rmtree(prefix)
         if prefix.exists():
             print(f"Updating conda env {name!r} at {prefix} via {backend} ...")
             argv = [str(tool), "env", "update", "-y", "-p", str(prefix), "-f", str(spec), "--prune"]
@@ -230,7 +266,7 @@ def main() -> None:
         "--env-dir",
         default=None,
         metavar="PATH_OR_URL",
-        help="directory or base URL holding <name>_<arch>.yml "
+        help="directory or base URL holding <name>-lock.yml (or the <name>_<arch>.yml fallback) "
         "(default: bundled conda/, else the canonical remote base)",
     )
     parser.add_argument(

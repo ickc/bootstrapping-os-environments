@@ -25,7 +25,9 @@ def _dependencies(path: Path) -> list[str]:
     return yaml.safe_load(path.read_text())["dependencies"]
 
 
-def test_generate_honors_latest_platform_columns(monkeypatch, tmp_path: Path) -> None:
+def _fake_lmod_setup(monkeypatch, tmp_path: Path) -> Path:
+    """CSV + stubbed API data: lmod's latest version only exists on linux-64."""
+
     async def fake_get_package_info(username_package_pairs: list[tuple[str, str]]) -> list[dict[str, Any]]:
         assert username_package_pairs == [("conda-forge", "lmod")]
         return [
@@ -59,6 +61,11 @@ def test_generate_honors_latest_platform_columns(monkeypatch, tmp_path: Path) ->
     csv = tmp_path / "system.csv"
     csv.write_text("name,channel,ignored,version,depended,notes\nlmod,,False,,,\n")
     monkeypatch.setattr(web_api, "get_package_info", fake_get_package_info)
+    return csv
+
+
+def test_generate_honors_latest_platform_columns(monkeypatch, tmp_path: Path) -> None:
+    csv = _fake_lmod_setup(monkeypatch, tmp_path)
 
     web_api.generate(
         csv,
@@ -71,3 +78,36 @@ def test_generate_honors_latest_platform_columns(monkeypatch, tmp_path: Path) ->
 
     assert "lmod" in _dependencies(tmp_path / "system_linux-64.yml")
     assert "lmod" not in _dependencies(tmp_path / "system_osx-64.yml")
+
+
+def test_generate_lock_writes_platform_targets(monkeypatch, tmp_path: Path) -> None:
+    csv = _fake_lmod_setup(monkeypatch, tmp_path)
+    called: dict[str, Any] = {}
+    monkeypatch.setattr(
+        web_api,
+        "_lock_and_convert",
+        lambda manifest, env_names, out_dir: called.update(manifest=manifest, env_names=env_names, out_dir=out_dir),
+    )
+
+    web_api.generate(
+        csv,
+        out_dir=tmp_path,
+        archs=["linux-64", "osx-64"],
+        versions=["3.14"],
+        name_format="system",
+        python=False,
+        lock=True,
+    )
+
+    manifest = tmp_path / "system" / "pixi.toml"
+    text = manifest.read_text()
+    # lmod is linux-64-only, so it must be under a platform target, not common deps
+    assert '[feature."system".target."linux-64".dependencies]\n"lmod" = "*"' in text
+    assert '[feature."system".target."osx-64".dependencies]' not in text
+    assert 'platforms = ["linux-64", "osx-64"]' in text
+    assert '"system" = { features = ["system"], no-default-feature = true }' in text
+    assert called["manifest"] == manifest
+    assert called["env_names"] == ["system"]
+    assert called["out_dir"] == tmp_path
+    # no per-arch yml files in lock mode
+    assert not (tmp_path / "system_linux-64.yml").exists()
