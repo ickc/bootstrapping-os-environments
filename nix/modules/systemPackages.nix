@@ -70,6 +70,7 @@ with pkgs;
   minify
   mosh
   nano
+  nil
   nixd
   nixfmt
   nmap
