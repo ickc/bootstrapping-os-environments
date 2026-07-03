@@ -102,10 +102,10 @@ def test_generate_lock_writes_platform_targets(monkeypatch, tmp_path: Path) -> N
     manifest = tmp_path / "system" / "pixi.toml"
     text = manifest.read_text()
     # lmod is linux-64-only, so it must be under a platform target, not common deps
-    assert '[feature."system".target."linux-64".dependencies]\n"lmod" = "*"' in text
-    assert '[feature."system".target."osx-64".dependencies]' not in text
+    assert '[feature.system.target.linux-64.dependencies]\nlmod = "*"' in text
+    assert "target.osx-64" not in text
     assert 'platforms = ["linux-64", "osx-64"]' in text
-    assert '"system" = { features = ["system"], no-default-feature = true }' in text
+    assert 'system = {features = ["system"], no-default-feature = true}' in text
     assert called["manifest"] == manifest
     assert called["env_names"] == ["system"]
     assert called["out_dir"] == tmp_path

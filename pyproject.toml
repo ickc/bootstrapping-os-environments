@@ -44,6 +44,7 @@ httpx = "*"
 pandas = "*"
 platformdirs = "*"
 pyyaml = "*"
+tomlkit = "*"
 yamlloader = "*"
 
 # extras
@@ -135,6 +136,7 @@ vulture = ">=2.14,<3"
 go-shfmt = ">=3.10,<4"
 shellcheck = ">=0.10,<1"
 pixi-to-conda-lock = ">=0.4.5,<0.5"
+tomlkit = ">=0.15.0,<0.16"
 
 [tool.pixi.pypi-dependencies]
 bsos = { path = ".", editable = true}
