@@ -9,7 +9,9 @@ installed to ``$__OPT_ROOT/$NAME`` (default: ``system``).
 On update, a lockfile-based env is removed and recreated (``env update``
 cannot consume conda-lock files; the pinned lockfile makes recreation exactly
 reproduce the target state), while a YAML-based env uses ``env update
---prune`` so the spec stays authoritative.
+--prune`` so the spec stays authoritative.  The lockfile's sha256 is stamped
+into ``conda-meta/`` on create, so an update whose lockfile is unchanged
+skips the recreate entirely (no writes).
 
 The spec file is derived from *name*: the version-pinned multi-platform
 conda-lock file ``<env-dir>/<name>-lock.yml`` (e.g. ``system-lock.yml``) is
@@ -34,6 +36,7 @@ and to the canonical remote base otherwise (e.g. piped through ``curl``)::
 
 import argparse
 import contextlib
+import hashlib
 import shutil
 import sys
 import tempfile
@@ -116,6 +119,17 @@ def _require_backend(backend: str, env: EnvConfig) -> Optional[Path]:
     return tool
 
 
+# Records the sha256 of the lockfile an env was created from, so a forced
+# update can skip the recreate when the lockfile is unchanged (the lockfile
+# fully determines the env, so an equal hash means the env is already
+# converged). Lives in conda-meta/ so it travels with the env.
+_LOCK_STAMP = ".bsos-lock-sha256"
+
+
+def _lock_stamp_path(prefix: Path) -> Path:
+    return prefix / "conda-meta" / _LOCK_STAMP
+
+
 def _env_filenames(name: str) -> List[str]:
     """Candidate spec filenames for *name*, most preferred first.
 
@@ -171,8 +185,9 @@ def install(
 
     With *force=True* (the ``update`` action), an existing env is updated via
     ``env update --prune`` (YAML spec) or removed and recreated (lockfile
-    spec); a missing env is created as normal. *backend* selects the package
-    manager (``micromamba`` or ``mamba``).
+    spec — skipped when the stamped lockfile hash is unchanged); a missing
+    env is created as normal. *backend* selects the package manager
+    (``micromamba`` or ``mamba``).
 
     The env spec is ``<env_dir>/<name>-lock.yml`` (preferred, version-pinned)
     or ``<env_dir>/<name>_<conda-arch>.yml`` (fallback); *env_dir* may be a
@@ -192,7 +207,12 @@ def install(
 
     base = env_dir if env_dir is not None else _default_env_dir()
     with _env_spec(base, _env_filenames(name)) as spec:
-        if prefix.exists() and spec.name.endswith("-lock.yml"):
+        digest = hashlib.sha256(spec.read_bytes()).hexdigest() if spec.name.endswith("-lock.yml") else None
+        if prefix.exists() and digest is not None:
+            stamp = _lock_stamp_path(prefix)
+            if stamp.is_file() and stamp.read_text().strip() == digest:
+                print(f"Conda env {name!r} at {prefix} already matches {spec.name}; skipping")
+                return
             # `env update` cannot consume conda-lock files (libmamba fails to
             # parse the pinned entries). The lockfile pins every package, so
             # removing and recreating reproduces exactly the state that
@@ -209,6 +229,10 @@ def install(
             print(f"Creating conda env {name!r} at {prefix} via mamba ...")
             argv = [str(tool), "env", "create", "-y", "-p", str(prefix), "-f", str(spec)]
         run(argv, env=env.subprocess_env())
+        if digest is not None:
+            stamp = _lock_stamp_path(prefix)
+            stamp.parent.mkdir(parents=True, exist_ok=True)
+            stamp.write_text(digest + "\n")
     print(f"Conda env {name!r} ready at {prefix}")
 
 

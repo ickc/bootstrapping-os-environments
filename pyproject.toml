@@ -143,8 +143,8 @@ bsos = { path = ".", editable = true}
 # conda
 ## generate
 conda-generate = { depends-on = [{ task = "conda-generate-conda" }, { task = "conda-generate-jupyterlab" }, { task = "conda-generate-system" }], description = "Generate conda environment files." }
-conda-generate-conda = { cmd = "python -m bsos.conda.web_api generate conda/conda.csv", description = "Generate conda/conda.csv" }
-conda-generate-jupyterlab = { cmd = "python -m bsos.conda.web_api generate conda/jupyterlab.csv -v 3.14 --name-format jupyterlab", description = "Generate conda/jupyterlab.csv" }
+conda-generate-conda = { cmd = "python -m bsos.conda.web_api generate conda/conda.csv --lock", description = "Generate conda/conda.csv, conda/conda/pixi.{toml,lock} and conda/py3*-lock.yml" }
+conda-generate-jupyterlab = { cmd = "python -m bsos.conda.web_api generate conda/jupyterlab.csv -v 3.14 --name-format jupyterlab --lock", description = "Generate conda/jupyterlab.csv, conda/jupyterlab/pixi.{toml,lock} and conda/jupyterlab-lock.yml" }
 conda-generate-system = { cmd = "python -m bsos.conda.web_api generate conda/system.csv -v 3.14 --name-format system --no-python --lock", description = "Generate conda/system.csv, conda/system/pixi.{toml,lock} and conda/system-lock.yml" }
 
 ## clean

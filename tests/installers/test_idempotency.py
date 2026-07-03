@@ -5,11 +5,12 @@ Each installer type has two code paths:
   install (force=True)  — always run (the "update" action)
 
 Tests use tmp_path to construct an isolated EnvConfig and mock out any
-network I/O (_install_artifact for recipe installers, _env_yaml + run for
+network I/O (_install_artifact for recipe installers, _env_spec + run for
 mamba_env), so nothing is downloaded or executed on the real system.
 """
 
 import contextlib
+import hashlib
 import shutil
 import tempfile
 from pathlib import Path
@@ -393,6 +394,40 @@ def test_mamba_env_install_force_with_lockfile_recreates(tmp_path):
     assert not sentinel.exists()
 
 
+def _fake_lock_digest() -> str:
+    """sha256 of the lockfile content _fake_env_spec writes."""
+    return hashlib.sha256(b"version: 1\n").hexdigest()
+
+
+def test_mamba_env_install_force_with_lockfile_skips_when_stamp_matches(tmp_path):
+    """An unchanged lockfile (matching sha256 stamp) makes update a no-op."""
+    env = _mamba_env(tmp_path)
+    prefix = env.opt_root / "testenv"
+    (prefix / "conda-meta").mkdir(parents=True)
+    (prefix / "conda-meta" / ".bsos-lock-sha256").write_text(_fake_lock_digest() + "\n")
+    sentinel = prefix / "sentinel"
+    sentinel.touch()
+
+    with (
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mamba_env_mod.install("testenv", env=env, force=True)
+    mock_run.assert_not_called()
+    assert sentinel.exists()
+
+
+def test_mamba_env_create_from_lockfile_writes_stamp(tmp_path):
+    env = _mamba_env(tmp_path)
+    with (
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env.run"),
+    ):
+        mamba_env_mod.install("testenv", env=env)
+    stamp = env.opt_root / "testenv" / "conda-meta" / ".bsos-lock-sha256"
+    assert stamp.read_text().strip() == _fake_lock_digest()
+
+
 def test_mamba_env_install_force_with_yml_updates_when_present(tmp_path):
     env = _mamba_env(tmp_path)
     prefix = env.opt_root / "testenv"
@@ -433,6 +468,9 @@ def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
     assert mm_argv[0].endswith("/bin/micromamba")
     assert mm_argv[1] == "create"
 
+    # the stamp write materializes the prefix; clear it so the mamba-backend
+    # install exercises the create path instead of the already-exists skip
+    shutil.rmtree(env.opt_root / "testenv")
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
