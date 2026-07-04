@@ -488,10 +488,11 @@ def _toposort_lock_packages(packages: list[dict[str, Any]]) -> list[dict[str, An
     micromamba installs a conda-lock file in file order (there is no solve, so
     no transaction sorting), and pixi-to-conda-lock emits alphabetical order —
     which runs post-link scripts before their libraries are linked (e.g.
-    gdk-pixbuf's cache update failing to load libglib). A stable depth-first
-    topological sort per platform restores the order a solver-driven install
-    would use; dependency cycles in conda metadata are broken at the
-    back-edge, keeping the original relative order for the cycle members.
+    gdk-pixbuf's cache update failing to load libglib). A depth-first
+    topological sort per platform (visiting packages in their original order)
+    restores the order a solver-driven install would use; dependency cycles
+    in conda metadata (e.g. sphinx <-> sphinxcontrib-*) are broken at the
+    back-edge, so members of a cycle may emerge in either order.
     """
     by_platform: dict[str, list[dict[str, Any]]] = {}
     for package in packages:
