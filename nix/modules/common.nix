@@ -10,6 +10,10 @@
     casks = import ./darwin/casks.nix;
   };
 
+  # For Jupyter Notebook in Zed
+  # https://github.com/zed-industries/zed/discussions/25936
+  launchd.user.envVariables.LOCAL_NOTEBOOK_DEV = "1";
+
   nix.settings = {
     download-buffer-size = 256 * 1024 * 1024;
     # Necessary for using flakes on this system.
