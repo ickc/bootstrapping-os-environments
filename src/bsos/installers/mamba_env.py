@@ -165,12 +165,16 @@ def _write_lock_stamp(prefix: Path, spec: Path) -> None:
 
 
 def _create_env(tool: Path, backend: str, name: str, prefix: Path, spec: Path, env: EnvConfig, lock: bool) -> None:
-    """Create *prefix* from *spec*, stamping the lockfile hash on success."""
+    """Create *prefix* from *spec*, stamping the lockfile hash on success.
+
+    Always uses ``env create`` (not the bare ``create`` subcommand): mamba
+    (conda-based) only parses the full environment.yml/conda-lock schema
+    through its ``env`` module — plain ``create -f`` there expects an
+    explicit spec list instead. micromamba's ``env create`` is a documented
+    alias of its ``create``, so this is a no-op change for that backend.
+    """
     print(f"Creating conda env {name!r} at {prefix} via {backend} ...")
-    if backend == "micromamba":
-        argv = [str(tool), "create", "-y", "-p", str(prefix), "-f", str(spec)]
-    else:
-        argv = [str(tool), "env", "create", "-y", "-p", str(prefix), "-f", str(spec)]
+    argv = [str(tool), "env", "create", "-y", "-p", str(prefix), "-f", str(spec)]
     run(argv, env=env.subprocess_env())
     if lock:
         _write_lock_stamp(prefix, spec)

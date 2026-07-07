@@ -452,7 +452,7 @@ def test_mamba_env_install_force_creates_when_absent(tmp_path):
 
 
 def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
-    """micromamba creates via top-level ``create``; mamba via ``env create``."""
+    """Both backends create via ``env create`` (micromamba's alias of ``create``)."""
     env = _mamba_env(tmp_path)
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
@@ -461,7 +461,7 @@ def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
         mamba_env_mod.install("testenv", env=env, backend="micromamba")
     mm_argv = mock_run.call_args[0][0]
     assert mm_argv[0].endswith("/bin/micromamba")
-    assert mm_argv[1] == "create"
+    assert mm_argv[1:3] == ["env", "create"]
 
     # the stamp write materializes the prefix; clear it so the mamba-backend
     # install exercises the create path instead of the already-exists skip
