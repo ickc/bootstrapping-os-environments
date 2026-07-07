@@ -5,11 +5,12 @@ Each installer type has two code paths:
   install (force=True)  — always run (the "update" action)
 
 Tests use tmp_path to construct an isolated EnvConfig and mock out any
-network I/O (_install_artifact for recipe installers, _env_yaml + run for
+network I/O (_install_artifact for recipe installers, _env_spec + run for
 mamba_env), so nothing is downloaded or executed on the real system.
 """
 
 import contextlib
+import hashlib
 import shutil
 import tempfile
 from pathlib import Path
@@ -144,15 +145,20 @@ def test_supported_platforms_intersects_platform_specific_artifacts():
 
 
 @contextlib.contextmanager
-def _fake_env_yaml(base: str, filename: str) -> Iterator[Path]:
-    """Drop-in replacement for mamba_env._env_yaml — yields a real temp file."""
+def _fake_env_spec(base: str, filename: str) -> Iterator[Path]:
+    """Drop-in replacement for mamba_env._env_spec — yields a real temp file."""
     tmp = Path(tempfile.mkdtemp(prefix="bsos-test-"))
     try:
         spec = tmp / filename
-        spec.write_text("name: test\ndependencies: []\n")
+        spec.write_text("version: 1\n")
         yield spec
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+
+def _fake_lock_digest() -> str:
+    """sha256 of the spec content _fake_env_spec writes."""
+    return hashlib.sha256(b"version: 1\n").hexdigest()
 
 
 # ── _is_installed: plain artifact ─────────────────────────────────────────────
@@ -319,16 +325,30 @@ def test_mamba_env_default_env_dir_uses_remote_when_piped_from_stdin(monkeypatch
     assert mamba_env_mod._default_env_dir() == mamba_env_mod._REMOTE_ENV_DIR
 
 
+def test_mamba_env_filename_lock_vs_yml():
+    assert mamba_env_mod._env_filename("system", lock=True) == "system-lock.yml"
+    assert mamba_env_mod._env_filename("system", lock=False).startswith("system_")
+
+
+def test_mamba_env_spec_missing_exits(tmp_path):
+    with pytest.raises(SystemExit):
+        with mamba_env_mod._env_spec(str(tmp_path), "system-lock.yml"):
+            pass
+
+
 def test_mamba_env_install_creates_when_absent(tmp_path):
     env = _mamba_env(tmp_path)
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env)
     argv = mock_run.call_args[0][0]
     assert "create" in argv
     assert "update" not in argv
+    # the lockfile hash is stamped so a later unchanged update is a no-op
+    stamp = env.opt_root / "testenv" / "conda-meta" / ".bsos-lock-sha256"
+    assert stamp.read_text().strip() == _fake_lock_digest()
 
 
 def test_mamba_env_install_skips_when_present(tmp_path, capsys):
@@ -343,25 +363,86 @@ def test_mamba_env_install_skips_when_present(tmp_path, capsys):
     assert "already exists" in capsys.readouterr().out
 
 
-def test_mamba_env_install_force_updates_when_present(tmp_path):
+def test_mamba_env_update_in_place_when_backend_supports_it(tmp_path):
+    """force=True tries `env update --prune` first; on success the env stays."""
+    env = _mamba_env(tmp_path)
+    prefix = env.opt_root / "testenv"
+    prefix.mkdir(parents=True)
+    sentinel = prefix / "sentinel"
+    sentinel.touch()
+
+    with (
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mock_run.return_value.returncode = 0
+        mamba_env_mod.install("testenv", env=env, force=True)
+    argv = mock_run.call_args[0][0]
+    assert "update" in argv
+    assert "create" not in argv
+    assert sentinel.exists()
+    stamp = prefix / "conda-meta" / ".bsos-lock-sha256"
+    assert stamp.read_text().strip() == _fake_lock_digest()
+
+
+def test_mamba_env_update_failure_with_matching_stamp_is_noop(tmp_path):
+    """A failed in-place update is fine when the stamped lockfile hash matches."""
+    env = _mamba_env(tmp_path)
+    prefix = env.opt_root / "testenv"
+    (prefix / "conda-meta").mkdir(parents=True)
+    (prefix / "conda-meta" / ".bsos-lock-sha256").write_text(_fake_lock_digest() + "\n")
+    sentinel = prefix / "sentinel"
+    sentinel.touch()
+
+    with (
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mock_run.return_value.returncode = 1
+        mamba_env_mod.install("testenv", env=env, force=True)
+    assert mock_run.call_count == 1  # only the attempted env update
+    assert sentinel.exists()
+
+
+def test_mamba_env_update_failure_without_stamp_recreates(tmp_path):
+    """A failed in-place update on a changed/unstamped lockfile env recreates it."""
+    env = _mamba_env(tmp_path)
+    prefix = env.opt_root / "testenv"
+    prefix.mkdir(parents=True)
+    sentinel = prefix / "sentinel"
+    sentinel.touch()
+
+    with (
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mock_run.return_value.returncode = 1
+        mamba_env_mod.install("testenv", env=env, force=True)
+    assert mock_run.call_count == 2
+    assert "update" in mock_run.call_args_list[0][0][0]
+    assert "create" in mock_run.call_args_list[1][0][0]
+    assert not sentinel.exists()
+
+
+def test_mamba_env_update_failure_with_yml_exits(tmp_path):
+    """Without a lockfile there is no recreate fallback: a failed update is fatal."""
     env = _mamba_env(tmp_path)
     prefix = env.opt_root / "testenv"
     prefix.mkdir(parents=True)
 
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
-        mamba_env_mod.install("testenv", env=env, force=True)
-    argv = mock_run.call_args[0][0]
-    assert "update" in argv
-    assert "create" not in argv
+        mock_run.return_value.returncode = 3
+        with pytest.raises(SystemExit):
+            mamba_env_mod.install("testenv", env=env, force=True, lock=False)
 
 
 def test_mamba_env_install_force_creates_when_absent(tmp_path):
     env = _mamba_env(tmp_path)
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, force=True)
@@ -371,19 +452,22 @@ def test_mamba_env_install_force_creates_when_absent(tmp_path):
 
 
 def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
-    """micromamba creates via top-level ``create``; mamba via ``env create``."""
+    """Both backends create via ``env create`` (micromamba's alias of ``create``)."""
     env = _mamba_env(tmp_path)
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, backend="micromamba")
     mm_argv = mock_run.call_args[0][0]
     assert mm_argv[0].endswith("/bin/micromamba")
-    assert mm_argv[1] == "create"
+    assert mm_argv[1:3] == ["env", "create"]
 
+    # the stamp write materializes the prefix; clear it so the mamba-backend
+    # install exercises the create path instead of the already-exists skip
+    shutil.rmtree(env.opt_root / "testenv")
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, backend="mamba")
@@ -412,7 +496,7 @@ def test_mamba_env_reinstall_removes_prefix_then_creates(tmp_path):
     assert not prefix.exists()
 
     with (
-        patch("bsos.installers.mamba_env._env_yaml", new=_fake_env_yaml),
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env)

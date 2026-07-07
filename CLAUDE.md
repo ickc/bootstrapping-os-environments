@@ -2,6 +2,35 @@
 
 Guidance for Claude Code when working in this repository.
 
+## Conda env pipeline (`conda/`)
+
+`pixi run conda-generate` refreshes each `conda/<stem>.csv` from the
+anaconda.org web API, writes a pixi manifest at `conda/<stem>/pixi.toml`
+(one feature/environment per name — `conda.csv` yields py310–py314;
+platform-selective dependencies via `[feature.*.target.<arch>]`; package
+versions are never pinned in the manifest — the lockfile is what pins; the
+sole exception is `python`, pinned per env to produce python-version
+variants), solves it with `pixi lock` (no env is created), and converts each
+environment to a unified multi-platform conda-lock file `conda/<name>-lock.yml`
+via `pixi-to-conda-lock`. Non-default channels are declared per package
+(`potrace = {version = "*", channel = "bioconda"}`); pixi additionally
+requires those channels in the workspace channel list, appended after
+conda-forge. Package entries in each conda-lock file are topologically
+sorted per platform — micromamba installs them in file order (no solve, no
+transaction sorting), and alphabetical order runs post-link scripts before
+their libraries are linked (e.g. gdk-pixbuf's cache update failing on
+libglib). All generated files are committed, pinning the environments in git.
+
+`mamba_env.py` consumes `<name>-lock.yml` by default (micromamba/mamba read
+conda-lock files directly, recognized by the `-lock.yml` suffix — misnamed,
+they silently create an *empty* env); `--no-lock` selects the per-platform
+`<name>_<arch>.yml` instead (e.g. the legacy `py39`). On `update`,
+`env update --prune` is tried first; when it fails on a lockfile spec
+(current libmamba cannot re-solve against conda-lock files), the env is left
+alone if its stamped lockfile sha256 (`conda-meta/.bsos-lock-sha256`) already
+matches, else removed and recreated — equivalent, since the lock pins every
+package.
+
 ## Installer conventions (`src/bsos/installers/`)
 
 ### Add installers as recipes
