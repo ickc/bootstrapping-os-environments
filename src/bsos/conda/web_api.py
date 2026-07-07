@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from functools import cached_property
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Iterable, cast
 
 import defopt
 import httpx
@@ -21,6 +21,8 @@ import platformdirs
 import tomlkit
 import yaml
 import yamlloader
+
+from bsos.util.toposort import toposort
 
 CACHE_DIR: Path = Path(platformdirs.user_cache_dir(appname="bsos", ensure_exists=True))
 
@@ -482,6 +484,11 @@ def _write_pixi_manifest(
     manifest.write_text(tomlkit.dumps(doc), encoding="utf-8")
 
 
+def _dependency_names(package: dict[str, Any]) -> Iterable[str]:
+    # keys are matchspec-ish; the first token is the package name
+    return (dep.split(" ")[0] for dep in package.get("dependencies") or {})
+
+
 def _toposort_lock_packages(packages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Order each platform's packages so dependencies precede their dependents.
 
@@ -498,24 +505,8 @@ def _toposort_lock_packages(packages: list[dict[str, Any]]) -> list[dict[str, An
     for package in packages:
         by_platform.setdefault(package["platform"], []).append(package)
     result: list[dict[str, Any]] = []
-    for platform in by_platform:
-        plist = by_platform[platform]
-        by_name = {p["name"]: p for p in plist}
-        seen: set[str] = set()
-
-        def visit(package: dict[str, Any], by_name: dict[str, dict[str, Any]] = by_name, seen: set[str] = seen) -> None:
-            if package["name"] in seen:
-                return
-            seen.add(package["name"])
-            for dep in package.get("dependencies") or {}:
-                # keys are matchspec-ish; the first token is the package name
-                target = by_name.get(dep.split(" ")[0])
-                if target is not None:
-                    visit(target)
-            result.append(package)
-
-        for package in plist:
-            visit(package)
+    for plist in by_platform.values():
+        result.extend(toposort(plist, key=lambda p: cast(str, p["name"]), depends_on=_dependency_names))
     return result
 
 
