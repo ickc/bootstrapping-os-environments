@@ -1,9 +1,32 @@
 from __future__ import annotations
 
-from typing import Callable, Hashable, Iterable, Mapping, TypeVar
+import json
+from typing import Any, Callable, Hashable, Iterable, Mapping, TypeVar
 
 K = TypeVar("K", bound=Hashable)
 T = TypeVar("T")
+
+
+def deep_sort(obj: Any) -> Any:
+    """Recursively rebuild a nested dict/list/scalar structure in canonical order.
+
+    Dicts are rebuilt with keys sorted; lists are rebuilt with elements
+    recursively canonicalized first, then sorted by their JSON-serialized form
+    (a total order across the mixed scalar/dict/list elements that parsed
+    YAML/JSON produces — dicts have no native ``<``). Scalars pass through
+    unchanged. Pure: returns a new structure, never mutates *obj*.
+
+    Intended for normalizing output from tools whose own list/dict ordering
+    is not guaranteed stable across runs (e.g. iteration over a Rust
+    ``HashMap`` with a randomized per-process seed), so that a second pass
+    produces byte-identical results given identical content.
+    """
+    if isinstance(obj, dict):
+        return {k: deep_sort(obj[k]) for k in sorted(obj)}
+    if isinstance(obj, list):
+        items = [deep_sort(item) for item in obj]
+        return sorted(items, key=lambda item: json.dumps(item, sort_keys=True))
+    return obj
 
 
 def toposort_keys(keys: Iterable[K], edges: Mapping[K, Iterable[K]]) -> list[K]:

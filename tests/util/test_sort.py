@@ -1,4 +1,4 @@
-from bsos.util.toposort import toposort, toposort_keys
+from bsos.util.sort import deep_sort, toposort, toposort_keys
 
 
 def test_linear_chain_scrambled_input() -> None:
@@ -77,3 +77,30 @@ def test_toposort_wrapper_sorts_arbitrary_items_by_key() -> None:
     ]
     result = toposort(items, key=lambda item: item["name"], depends_on=lambda item: item["deps"])
     assert [item["name"] for item in result] == ["a", "b", "c"]
+
+
+def test_deep_sort_dict_keys_are_ordered() -> None:
+    assert list(deep_sort({"b": 1, "a": 2, "c": 3}).keys()) == ["a", "b", "c"]
+
+
+def test_deep_sort_list_of_scalars() -> None:
+    assert deep_sort([3, 1, 2]) == [1, 2, 3]
+
+
+def test_deep_sort_list_of_dicts_is_order_independent() -> None:
+    a = [{"name": "b", "x": 1}, {"name": "a", "x": 2}]
+    b = [{"name": "a", "x": 2}, {"name": "b", "x": 1}]
+    assert deep_sort(a) == deep_sort(b)
+
+
+def test_deep_sort_is_recursive_and_pure() -> None:
+    original = {"platforms": ["linux", "osx"], "package": [{"z": 1, "a": [3, 1, 2]}]}
+    result = deep_sort(original)
+    assert result == {"package": [{"a": [1, 2, 3], "z": 1}], "platforms": ["linux", "osx"]}
+    assert original == {"platforms": ["linux", "osx"], "package": [{"z": 1, "a": [3, 1, 2]}]}
+
+
+def test_deep_sort_scrambled_platform_order_converges() -> None:
+    run1 = {"platforms": ["osx-arm64", "linux-64", "osx-64", "linux-aarch64"]}
+    run2 = {"platforms": ["linux-aarch64", "osx-64", "osx-arm64", "linux-64"]}
+    assert deep_sort(run1) == deep_sort(run2)

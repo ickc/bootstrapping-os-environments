@@ -22,7 +22,7 @@ import tomlkit
 import yaml
 import yamlloader
 
-from bsos.util.toposort import toposort
+from bsos.util.sort import deep_sort, toposort
 
 CACHE_DIR: Path = Path(platformdirs.user_cache_dir(appname="bsos", ensure_exists=True))
 
@@ -493,10 +493,13 @@ def _toposort_lock_packages(packages: list[dict[str, Any]]) -> list[dict[str, An
     """Order each platform's packages so dependencies precede their dependents.
 
     micromamba installs a conda-lock file in file order (there is no solve, so
-    no transaction sorting), and pixi-to-conda-lock emits alphabetical order —
-    which runs post-link scripts before their libraries are linked (e.g.
-    gdk-pixbuf's cache update failing to load libglib). A depth-first
-    topological sort per platform (visiting packages in their original order)
+    no transaction sorting), and pixi-to-conda-lock emits packages in
+    whatever order py-rattler's Rust HashMaps iterate them (randomized per
+    process) — which can run post-link scripts before their libraries are
+    linked (e.g. gdk-pixbuf's cache update failing to load libglib). *packages*
+    is expected to already be in canonical order (see :func:`deep_sort`) so
+    that this tie-break is deterministic across runs. A depth-first
+    topological sort per platform (visiting packages in that canonical order)
     restores the order a solver-driven install would use; dependency cycles
     in conda metadata (e.g. sphinx <-> sphinxcontrib-*) are broken at the
     back-edge, so members of a cycle may emerge in either order.
@@ -505,8 +508,8 @@ def _toposort_lock_packages(packages: list[dict[str, Any]]) -> list[dict[str, An
     for package in packages:
         by_platform.setdefault(package["platform"], []).append(package)
     result: list[dict[str, Any]] = []
-    for plist in by_platform.values():
-        result.extend(toposort(plist, key=lambda p: cast(str, p["name"]), depends_on=_dependency_names))
+    for platform in sorted(by_platform):
+        result.extend(toposort(by_platform[platform], key=lambda p: cast(str, p["name"]), depends_on=_dependency_names))
     return result
 
 
@@ -517,7 +520,11 @@ def _lock_and_convert(manifest: Path, env_names: list[str], out_dir: Path) -> No
     environment; ``pixi-to-conda-lock`` then converts each named environment
     to ``<out_dir>/<env>-lock.yml``, the unified multi-platform conda-lock
     format that micromamba/mamba consume directly (the ``-lock.yml`` suffix is
-    how they recognize it). Package entries are topologically sorted per
+    how they recognize it). ``pixi-to-conda-lock`` is backed by py-rattler,
+    whose Rust ``HashMap``\\ s iterate in a randomized per-process order, so its
+    raw output is not byte-stable across runs even for identical input;
+    :func:`deep_sort` canonicalizes the whole structure first so the pipeline
+    is deterministic. Package entries are then topologically sorted per
     platform so install order respects dependencies.
     """
     subprocess.run(["pixi", "lock", "--manifest-path", str(manifest)], check=True)
@@ -533,6 +540,7 @@ def _lock_and_convert(manifest: Path, env_names: list[str], out_dir: Path) -> No
                 raise RuntimeError(f"Expected exactly one conda-lock file for {env_name!r}, got {produced}")
             with produced[0].open(encoding="utf-8") as f:
                 lock_data = yaml.safe_load(f)
+        lock_data = deep_sort(lock_data)
         lock_data["package"] = _toposort_lock_packages(lock_data["package"])
         with (out_dir / f"{env_name}-lock.yml").open("w", encoding="utf-8") as f:
             yaml.dump(lock_data, f, Dumper=yamlloader.ordereddict.CSafeDumper)
