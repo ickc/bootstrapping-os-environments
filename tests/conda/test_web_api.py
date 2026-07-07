@@ -105,6 +105,7 @@ def test_generate_lock_writes_platform_targets(monkeypatch, tmp_path: Path) -> N
     assert '[feature.system.target.linux-64.dependencies]\nlmod = "*"' in text
     assert "target.osx-64" not in text
     assert 'platforms = ["linux-64", "osx-64"]' in text
+    assert 'exclude-newer = "7d"' in text
     assert 'system = {features = ["system"], no-default-feature = true}' in text
     assert called["manifest"] == manifest
     assert called["env_names"] == ["system"]

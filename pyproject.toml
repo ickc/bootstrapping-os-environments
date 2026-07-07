@@ -120,6 +120,7 @@ formats = "ipynb,py:percent"
 name = "bsos"
 channels = ["conda-forge"]
 platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"]
+exclude-newer = "7d"
 
 [tool.pixi.dependencies]
 defopt = ">=6.4.0,<7"
