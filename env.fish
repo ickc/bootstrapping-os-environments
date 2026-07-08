@@ -40,6 +40,18 @@ else
     set -gx PIXI_HOME "$PIXI_HOME"
 end
 
+if not set -q RUSTUP_HOME; or test -z "$RUSTUP_HOME"
+    set -gx RUSTUP_HOME "$__OPT_ROOT/rustup"
+else
+    set -gx RUSTUP_HOME "$RUSTUP_HOME"
+end
+
+if not set -q CARGO_HOME; or test -z "$CARGO_HOME"
+    set -gx CARGO_HOME "$__OPT_ROOT/cargo"
+else
+    set -gx CARGO_HOME "$CARGO_HOME"
+end
+
 if not set -q __LMOD_INIT; or test -z "$__LMOD_INIT"
     set -gx __LMOD_INIT "$__OPT_ROOT/system/lmod/lmod/init"
 else
