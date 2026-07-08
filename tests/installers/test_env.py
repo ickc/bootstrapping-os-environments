@@ -30,6 +30,8 @@ def test_defaults_from_home():
     assert d["__LOCAL_ROOT"] == "/home/alice/.local"
     assert d["__OPT_ROOT"] == f"/home/alice/.local/opt/{platform_key()}"
     assert d["MAMBA_ROOT_PREFIX"] == f"/home/alice/.local/opt/{platform_key()}/micromamba"
+    assert d["RUSTUP_HOME"] == f"/home/alice/.local/opt/{platform_key()}/rustup"
+    assert d["CARGO_HOME"] == f"/home/alice/.local/opt/{platform_key()}/cargo"
     assert d["__LMOD_INIT"] == f"/home/alice/.local/opt/{platform_key()}/system/lmod/lmod/init"
     assert d["XDG_DATA_HOME"] == "/home/alice/.local/share"
 

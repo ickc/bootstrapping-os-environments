@@ -180,7 +180,10 @@ class RunScript:
 
     *fresh_args* / *update_args* are argv templates (each element may reference
     ``{script}`` and ``{dest}``); *update_marker* is a path under *dest* whose
-    presence selects *update_args* over *fresh_args*.
+    presence selects *update_args* over *fresh_args*.  The downloaded file
+    keeps the URL's own basename (not a generic name) — some installers (e.g.
+    ``rustup-init``, a multiplexed binary that dispatches on its own argv[0]
+    filename) rely on it to identify themselves.
     """
 
     fresh_args: List[str]
@@ -190,7 +193,7 @@ class RunScript:
     def execute(self, url: str, dest: Path, env: "EnvConfig") -> None:
         tmp = Path(tempfile.mkdtemp(prefix="bsos-"))
         try:
-            script = tmp / "installer.sh"
+            script = tmp / (url.rsplit("/", 1)[-1] or "installer.sh")
             download_file(url, script)
             script.chmod(script.stat().st_mode | stat.S_IEXEC)
             marker = dest / self.update_marker
@@ -247,11 +250,13 @@ class Verify:
 class Remove:
     """How ``uninstall`` removes an install.
 
-    Default (``tree=None``) unlinks every artifact's destination.  Set *tree*
-    to ``rmtree`` a directory the install created instead (e.g. a conda prefix).
+    Default (``trees=[]``) unlinks every artifact's destination.  Set *trees*
+    to ``rmtree`` one or more directories the install created instead (e.g. a
+    conda prefix, or — for installers with more than one root, like rustup's
+    separate ``RUSTUP_HOME``/``CARGO_HOME`` — several).
     """
 
-    tree: Optional[Dest] = None
+    trees: List[Dest] = field(default_factory=list)
 
 
 @dataclass
@@ -377,13 +382,14 @@ def install(
 
 def uninstall(recipe: Recipe, env: Optional[EnvConfig] = None) -> None:
     env = env or EnvConfig()
-    if recipe.remove.tree is not None:
-        target = recipe.remove.tree.path(env)
-        if target.exists():
-            shutil.rmtree(target)
-            print(f"Removed {target}")
-        else:
-            print(f"{target} not found", file=sys.stderr)
+    if recipe.remove.trees:
+        for dest in recipe.remove.trees:
+            target = dest.path(env)
+            if target.exists():
+                shutil.rmtree(target)
+                print(f"Removed {target}")
+            else:
+                print(f"{target} not found", file=sys.stderr)
         return
     for art in recipe.artifacts:
         target = art.dest.path(env)

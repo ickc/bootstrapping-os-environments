@@ -43,7 +43,7 @@ RECIPE = Recipe(
         )
     ],
     verify=Verify(path=Dest("mamba_root_prefix", "bin/mamba")),
-    remove=Remove(tree=_PREFIX),
+    remove=Remove(trees=[_PREFIX]),
 )
 
 if __name__ == "__main__":

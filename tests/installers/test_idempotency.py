@@ -84,7 +84,7 @@ def _runscript_recipe(name: str = "tool") -> Recipe:
             )
         ],
         verify=Verify(args=None),
-        remove=Remove(tree=dest),  # RunScript installs to a directory, not a single file
+        remove=Remove(trees=[dest]),  # RunScript installs to a directory, not a single file
     )
 
 
@@ -294,6 +294,37 @@ def test_reinstall_plain_removes_then_installs(tmp_path, capsys):
         mock_ia.assert_called_once()
 
     assert not dest.exists() or mock_ia.called  # file was removed then re-placed
+
+
+def test_uninstall_removes_multiple_trees(tmp_path, capsys):
+    """Remove.trees rmtrees every listed root (e.g. rustup's CARGO_HOME + RUSTUP_HOME)."""
+    env = _env(tmp_path)
+    primary = Dest("opt_root", "cargo")
+    secondary = Dest("opt_root", "rustup")
+    recipe = Recipe(
+        name="tool",
+        artifacts=[
+            Artifact(
+                url_template="https://example.com/tool.sh",
+                dest=primary,
+                targets=None,
+                version=Latest(),
+                archive=RAW,
+                action=RunScript(fresh_args=["{script}"], update_args=["{script}"], update_marker="bin/tool"),
+            )
+        ],
+        verify=Verify(args=None),
+        remove=Remove(trees=[primary, secondary]),
+    )
+    primary.path(env).mkdir(parents=True)
+    secondary.path(env).mkdir(parents=True)
+
+    from bsos.installers._recipe import uninstall
+
+    uninstall(recipe, env)
+
+    assert not primary.path(env).exists()
+    assert not secondary.path(env).exists()
 
 
 def test_reinstall_runscript_marker_gone_uses_fresh_path(tmp_path):
