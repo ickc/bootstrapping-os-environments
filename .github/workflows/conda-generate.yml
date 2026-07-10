@@ -22,6 +22,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
         with:
+          add-paths: conda/**
           branch: automation/conda-generate
           delete-branch: true
           title: "chore: regenerate conda environment files"

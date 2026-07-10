@@ -1,4 +1,6 @@
 .pixi
+__pycache__/
+*.py[cod]
 *.egg-info
 *.ipynb
 nix/command2package.csv
