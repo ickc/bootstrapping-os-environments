@@ -5,6 +5,8 @@
   "adobe-creative-cloud"
   # Automatic tiling window manager similar to xmonad
   "amethyst"
+  # Agent orchestration platform
+  "antigravity"
   # Multi-track audio editor and recorder
   "audacity"
   # E-books management software
@@ -71,6 +73,8 @@
   "google-chrome"
   # Client for the Google Drive storage service
   "google-drive"
+  # Native desktop AI assistant from Google
+  "google-gemini"
   # Graphically shows disk usage within a file system
   "grandperspective"
   # Free and open-source media player
