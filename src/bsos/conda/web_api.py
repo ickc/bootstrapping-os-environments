@@ -21,10 +21,20 @@ import platformdirs
 import tomlkit
 import yaml
 import yamlloader
+from rattler import Version
 
 from bsos.util.sort import deep_sort, toposort
 
 CACHE_DIR: Path = Path(platformdirs.user_cache_dir(appname="bsos", ensure_exists=True))
+
+# Trailing prerelease marker, matched at a separator or a digit boundary so it
+# catches both `3.6b` and `4.7.0a0`. A bare trailing letter counts as a
+# prerelease because conda version ordering says so (`3.6b < 3.6`); `p` is
+# deliberately absent so openssh's `10.2p1` patch suffix is kept.
+PRERELEASE: re.Pattern[str] = re.compile(
+    r"(?:^|[._-]|(?<=\d))(alpha|beta|preview|pre|dev|rc|[abc])[._-]?\d*$",
+    re.IGNORECASE,
+)
 
 CSV_SOURCE_PACKAGE_COLUMNS: tuple[str, ...] = (
     "channel",
@@ -176,13 +186,43 @@ class CondaPackage:
         return (self.data.get("dev_url") or "").strip()
 
     @cached_property
-    def latest_uploaded_file(self) -> dict[str, Any]:
-        files = [file for file in cast(list[dict[str, Any]], self.data.get("files", [])) if file.get("upload_time")]
-        return max(files, key=lambda file: file["upload_time"]) if files else {}
-
-    @cached_property
     def latest_version(self) -> str:
-        return cast(str, self.latest_uploaded_file.get("version") or self.data["latest_version"])
+        """The highest stable version among the uploaded files.
+
+        Deliberately derives this from the file list rather than trusting
+        either of the two obvious shortcuts, both of which are wrong in
+        practice:
+
+        - ``data["latest_version"]`` (the Anaconda API's own field) is
+          unreliable: it returns ``master`` for jupytext, a stale ``9.8p1``
+          for openssh, and prereleases such as numpy's ``2.5.0rc1``.
+        - the most recently *uploaded* file is not the newest version.
+          Prereleases land after the release they follow (jupyterlab
+          uploaded ``4.7.0a0`` 23 minutes after ``4.6.1``), and backports to
+          an older series land after the newer one (pydot ``3.0.4`` after
+          ``4.0.1``, watchdog ``4.0.2`` after ``6.0.0``).
+
+        So: filter prereleases, then take the max under conda version
+        ordering (``rattler.Version``, which knows ``4.7.0a0 < 4.7.0`` and
+        ``3.6b < 3.6``). Falls back to the API field only when nothing
+        parses.
+        """
+        versions = {
+            cast(str, file["version"])
+            for file in cast(list[dict[str, Any]], self.data.get("files", []))
+            if file.get("upload_time")
+        }
+        # a package whose every upload looks like a prerelease still needs a version
+        stable = [version for version in versions if not PRERELEASE.search(version)] or list(versions)
+        parsed: list[tuple[Version, str]] = []
+        for version in stable:
+            try:
+                parsed.append((Version(version), version))
+            except Exception:
+                continue
+        if parsed:
+            return max(parsed)[1]
+        return cast(str, self.data["latest_version"])
 
     @property
     def license(self) -> str:
@@ -229,9 +269,11 @@ class CondaPackage:
 
     @property
     def latest_upload_time(self) -> str:
-        upload_time = self.latest_uploaded_file.get("upload_time")
-        if upload_time:
-            return format_upload_date(upload_time)
+        """When :attr:`latest_version` was uploaded.
+
+        Scoped to that version's files, so a later-uploaded prerelease or
+        backport does not date the release (see :attr:`latest_version`).
+        """
         upload_times = [
             file["upload_time"] for file in self.latest_files_with_latest_build_number if file.get("upload_time")
         ]

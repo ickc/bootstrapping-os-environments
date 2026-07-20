@@ -21,6 +21,65 @@ def _package_data(name: str, files: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _file(version: str, upload_time: str) -> dict[str, Any]:
+    return {
+        "version": version,
+        "upload_time": upload_time,
+        "attrs": {"subdir": "noarch", "build": "pyhd8ed1ab_0", "build_number": 0, "depends": []},
+    }
+
+
+def test_latest_version_ignores_prereleases_and_upload_order() -> None:
+    """The real jupyterlab shape: an alpha uploaded minutes after the release."""
+    data = _package_data(
+        "jupyterlab",
+        [
+            _file("4.6.0", "2026-06-18T14:49:02.370Z"),
+            _file("4.6.1", "2026-06-29T13:26:10.707Z"),
+            _file("4.7.0a0", "2026-06-29T13:49:24.920Z"),
+        ],
+    )
+    package = web_api.CondaPackage(data)
+    assert package.latest_version == "4.6.1"
+    assert package.latest_upload_time == "2026-06-29"
+
+
+def test_latest_version_ignores_backport_uploaded_last() -> None:
+    """pydot's shape: a 3.x backport uploaded after 4.0.1."""
+    data = _package_data(
+        "pydot",
+        [
+            _file("4.0.1", "2025-04-01T00:00:00.000Z"),
+            _file("3.0.4", "2025-05-01T00:00:00.000Z"),
+        ],
+    )
+    assert web_api.CondaPackage(data).latest_version == "4.0.1"
+
+
+def test_latest_version_keeps_patch_suffix() -> None:
+    """openssh's `p1` is a patch level, not a prerelease marker."""
+    data = _package_data(
+        "openssh",
+        [
+            _file("9.8p1", "2024-07-01T00:00:00.000Z"),
+            _file("10.2p1", "2025-10-01T00:00:00.000Z"),
+        ],
+    )
+    assert web_api.CondaPackage(data).latest_version == "10.2p1"
+
+
+def test_latest_version_falls_back_when_unparseable() -> None:
+    """jupytext's shape: the API field is garbage, so a real version wins."""
+    data = _package_data(
+        "jupytext",
+        [
+            _file("1.19.3", "2026-01-01T00:00:00.000Z"),
+            _file("master", "2026-02-01T00:00:00.000Z"),
+        ],
+    )
+    assert web_api.CondaPackage(data).latest_version == "1.19.3"
+
+
 def _dependencies(path: Path) -> list[str]:
     return yaml.safe_load(path.read_text())["dependencies"]
 
