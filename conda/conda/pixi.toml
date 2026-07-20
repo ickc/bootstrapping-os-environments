@@ -4,6 +4,7 @@
 name = "conda"
 channels = ["conda-forge", "rapidsai"]
 platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"]
+exclude-newer = "7d"
 
 [feature.py310.dependencies]
 python = "3.10.*"

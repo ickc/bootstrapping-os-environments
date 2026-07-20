@@ -1,9 +1,27 @@
 version: 7
 platforms:
 - name: linux-64
+  virtual-packages:
+  - __unix=0=0
+  - __linux=4.18
+  - __glibc=2.28
+  - __archspec=0=x86_64
 - name: linux-aarch64
+  virtual-packages:
+  - __unix=0=0
+  - __linux=4.18
+  - __glibc=2.28
+  - __archspec=0=aarch64
 - name: osx-64
+  virtual-packages:
+  - __unix=0=0
+  - __osx=13.0
+  - __archspec=0=x86_64
 - name: osx-arm64
+  virtual-packages:
+  - __unix=0=0
+  - __osx=13.0
+  - __archspec=0=m1
 environments:
   default:
     channels:
@@ -1093,6 +1111,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mediainfo-26.01-h7d962ec_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mosh-1.4.0-pl5321he91fb9b_15.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mpfr-4.2.2-h6bc93b0_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/nano-9.1-he73aa91_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/navi-2.24.0-h7c6681d_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.6-h1d4f5a5_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/nspr-4.38-heaf21c2_0.conda
@@ -15980,6 +15999,17 @@ packages:
     - mpfr >=4.2.2,<5.0a0
   size: 348767
   timestamp: 1773414111071
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/nano-9.1-he73aa91_0.conda
+  sha256: f8fc08118ed8260d65a9cf63cc27d0d7b2bdd78419d52015e4a106cac48e1c43
+  md5: f4e996b6fe38fc6c3ceb5115127cbb77
+  depends:
+  - __osx >=11.0
+  - ncurses >=6.6,<7.0a0
+  license: GPL-3.0-or-later
+  license_family: GPL
+  run_exports: {}
+  size: 291874
+  timestamp: 1782225187880
 - conda: https://conda.anaconda.org/conda-forge/osx-arm64/navi-2.24.0-h7c6681d_1.conda
   sha256: 567576959cad3af03d767b11eaf4470e3f872393ac447b6a23589d97b5ea7233
   md5: 794431abf12e0356a2f6990477b5c45b
