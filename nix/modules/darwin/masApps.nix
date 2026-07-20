@@ -30,7 +30,7 @@
   "Save to Raindrop.io" = 1549370672;
   "Slack" = 803453959;
   "SMARTReporter" = 509148961;
-  "Spark" = 1176895641;
+  "Spark Desktop" = 6445813049;
   "Speedtest" = 1153157709;
   "Strongbox" = 897283731;
   "Surfshark" = 1437809329;
