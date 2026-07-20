@@ -16276,6 +16276,19 @@ package:
 - category: main
   dependencies:
     __osx: '>=11.0'
+    ncurses: '>=6.6,<7.0a0'
+  hash:
+    md5: f4e996b6fe38fc6c3ceb5115127cbb77
+    sha256: f8fc08118ed8260d65a9cf63cc27d0d7b2bdd78419d52015e4a106cac48e1c43
+  manager: conda
+  name: nano
+  optional: false
+  platform: osx-arm64
+  url: https://conda.anaconda.org/conda-forge/osx-arm64/nano-9.1-he73aa91_0.conda
+  version: '9.1'
+- category: main
+  dependencies:
+    __osx: '>=11.0'
   hash:
     md5: 045afd0b8e35a71bfbe95345146592c4
     sha256: cedcd880e316240cbb35a1275990bfed1da36dba4a4f714edf95237f03d48665
