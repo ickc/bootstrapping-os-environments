@@ -4,6 +4,7 @@
 name = "system"
 channels = ["conda-forge", "bioconda"]
 platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"]
+exclude-newer = "7d"
 
 [feature.system.dependencies]
 actionlint = "*"
@@ -54,6 +55,7 @@ lsdeluxe = "*"
 make = "*"
 mediainfo = "*"
 mosh = "*"
+nano = "*"
 navi = "*"
 onefetch = "*"
 openssh = "*"
@@ -86,18 +88,15 @@ zstd = "*"
 [feature.system.target.linux-64.dependencies]
 iperf = "*"
 lmod = "*"
-nano = "*"
 nvtop = "*"
 potrace = {version = "*", channel = "bioconda"}
 w3m = "*"
 
 [feature.system.target.linux-aarch64.dependencies]
-nano = "*"
 nvtop = "*"
 
 [feature.system.target.osx-64.dependencies]
 iperf = "*"
-nano = "*"
 nvtop = "*"
 potrace = {version = "*", channel = "bioconda"}
 w3m = "*"
