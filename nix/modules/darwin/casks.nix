@@ -13,12 +13,10 @@
   "calibre"
   # OpenAI's official ChatGPT desktop app
   "chatgpt"
-  # OpenAI's official browser with ChatGPT built in
-  "chatgpt-atlas"
+  # OpenAI's previous ChatGPT desktop app
+  "chatgpt-classic"
   # Anthropic's official Claude AI desktop app
   "claude"
-  # OpenAI's Codex desktop app for managing coding agents
-  "codex-app"
   # Virtual monitor for screen sharing
   "deskpad"
   # Client for the Dropbox cloud storage service
