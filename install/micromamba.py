@@ -346,15 +346,25 @@ class GitHubRedirect(VersionSpec):
     ``--version`` overrides the auto-resolved tag; *strip_v* is applied to the
     override identically to the resolved tag, so ``{version}`` is consistent
     whether the user supplies the ``v`` or not.
+
+    The lookup is memoized, so a recipe whose artifacts share one instance
+    (e.g. ``codex``) follows the redirect once and pins every artifact to the
+    same release even if a new one is published mid-install.
     """
 
     owner: str
     repo: str
     strip_v: bool = True
+    _cache: Dict[str, "tuple[str, str]"] = field(default_factory=dict, repr=False, compare=False)
 
     def resolve_both(self, override: Optional[str] = None) -> "tuple[str, str]":
+        key = override if override is not None else ""
+        cached = self._cache.get(key)
+        if cached is not None:
+            return cached
         tag = override if override is not None else resolve_latest_github_tag(self.owner, self.repo)
         version = tag.lstrip("v") if self.strip_v else tag
+        self._cache[key] = (tag, version)
         return tag, version
 
 
