@@ -10,9 +10,11 @@ anaconda.org web API, writes a pixi manifest at `conda/<stem>/pixi.toml`
 platform-selective dependencies via `[feature.*.target.<arch>]`; package
 versions are never pinned in the manifest — the lockfile is what pins; the
 sole exception is `python`, pinned per env to produce python-version
-variants), solves it with `pixi lock` (no env is created), and converts each
-environment to a unified multi-platform conda-lock file `conda/<name>-lock.yml`
-via `pixi-to-conda-lock`. Non-default channels are declared per package
+variants), solves it with `pixi update --no-install` (no env is created; it
+must be `update` rather than `lock` — with every spec unpinned, `pixi lock`
+finds the old lockfile still satisfies the manifest and never re-solves), and
+converts each environment to a unified multi-platform conda-lock file
+`conda/<name>-lock.yml` via `pixi-to-conda-lock`. Non-default channels are declared per package
 (`potrace = {version = "*", channel = "bioconda"}`); pixi additionally
 requires those channels in the workspace channel list, appended after
 conda-forge. Package entries in each conda-lock file are topologically

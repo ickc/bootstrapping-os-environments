@@ -564,8 +564,15 @@ def _toposort_lock_packages(packages: list[dict[str, Any]]) -> list[dict[str, An
 def _lock_and_convert(manifest: Path, env_names: list[str], out_dir: Path) -> None:
     """Solve the pixi manifest and emit one conda-lock file per environment.
 
-    ``pixi lock`` writes ``pixi.lock`` next to *manifest* without creating any
-    environment; ``pixi-to-conda-lock`` then converts each named environment
+    ``pixi update`` re-solves and writes ``pixi.lock`` next to *manifest*
+    (``--no-install`` keeps it from building any environment for pypi
+    solving; there are no pypi dependencies here anyway). It must be
+    ``update``, not ``lock``: ``pixi lock`` only re-solves when the existing
+    lockfile no longer *satisfies* the manifest, and since
+    :func:`_pixi_dependency` writes every package as ``"*"`` any existing
+    lockfile satisfies it forever — regenerating would refresh the CSVs while
+    silently leaving the pins frozen at whenever the manifest last changed
+    shape. ``pixi-to-conda-lock`` then converts each named environment
     to ``<out_dir>/<env>-lock.yml``, the unified multi-platform conda-lock
     format that micromamba/mamba consume directly (the ``-lock.yml`` suffix is
     how they recognize it). ``pixi-to-conda-lock`` is backed by py-rattler,
@@ -575,7 +582,7 @@ def _lock_and_convert(manifest: Path, env_names: list[str], out_dir: Path) -> No
     is deterministic. Package entries are then topologically sorted per
     platform so install order respects dependencies.
     """
-    subprocess.run(["pixi", "lock", "--manifest-path", str(manifest)], check=True)
+    subprocess.run(["pixi", "update", "--no-install", "--manifest-path", str(manifest)], check=True)
     pixi_lock = manifest.parent / "pixi.lock"
     for env_name in env_names:
         with tempfile.TemporaryDirectory(prefix="bsos-conda-lock-") as tmp:
@@ -613,7 +620,7 @@ def generate(
 
     With *lock*, instead of per-arch ``<name>_<arch>.yml`` files, write a pixi
     manifest at ``<out_dir>/<csv-stem>/pixi.toml`` (one feature/environment
-    per name), solve it with ``pixi lock``, and convert each environment to a
+    per name), solve it with ``pixi update``, and convert each environment to a
     unified multi-platform ``<out_dir>/<name>-lock.yml`` via
     ``pixi-to-conda-lock``. Both the pixi.lock and the conda-lock files are
     meant to be committed, pinning the environments in git.
