@@ -575,9 +575,13 @@ def install(
     if not force and _is_installed(recipe, env):
         print(f"{recipe.name} already installed; run 'update' to refresh")
         return
+    # A multi-artifact recipe places several distinct payloads (e.g. codex ships
+    # both `codex` and `codex-code-mode-host`), so each line names what actually
+    # landed rather than repeating the recipe name.
+    multi = len(recipe.artifacts) > 1
     for art in recipe.artifacts:
         dest = _install_artifact(art, env, version_override)
-        print(f"Installed {recipe.name} → {dest}")
+        print(f"Installed {dest.name if multi else recipe.name} → {dest}")
 
 
 def uninstall(recipe: Recipe, env: Optional[EnvConfig] = None) -> None:
