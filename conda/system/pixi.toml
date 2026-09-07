@@ -31,7 +31,6 @@ findutils = "*"
 fish = "*"
 fzf = "*"
 gawk = "*"
-gh = "*"
 ghostscript = "*"
 git = "*"
 git-delta = "*"
@@ -93,13 +92,18 @@ potrace = {version = "*", channel = "bioconda"}
 w3m = "*"
 
 [feature.system.target.linux-aarch64.dependencies]
+gh = "*"
 nvtop = "*"
 
 [feature.system.target.osx-64.dependencies]
+gh = "*"
 iperf = "*"
 nvtop = "*"
 potrace = {version = "*", channel = "bioconda"}
 w3m = "*"
+
+[feature.system.target.osx-arm64.dependencies]
+gh = "*"
 
 [environments]
 system = {features = ["system"], no-default-feature = true}
