@@ -77,7 +77,6 @@ tmux = "*"
 tokei = "*"
 tree = "*"
 unzip = "*"
-uv = "*"
 watch = "*"
 wget = "*"
 which = "*"
@@ -90,16 +89,21 @@ iperf = "*"
 lmod = "*"
 nvtop = "*"
 potrace = {version = "*", channel = "bioconda"}
+uv = "*"
 w3m = "*"
 
 [feature.system.target.linux-aarch64.dependencies]
 nvtop = "*"
+uv = "*"
 
 [feature.system.target.osx-64.dependencies]
 iperf = "*"
 nvtop = "*"
 potrace = {version = "*", channel = "bioconda"}
 w3m = "*"
+
+[feature.system.target.osx-arm64.dependencies]
+uv = "*"
 
 [environments]
 system = {features = ["system"], no-default-feature = true}
