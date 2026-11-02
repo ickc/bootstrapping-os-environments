@@ -40,7 +40,6 @@ fastparquet = "*"
 feedgen = "*"
 fire = "*"
 folium = "*"
-gdb = "*"
 geojson = "*"
 geopy = "*"
 ghapi = "*"
@@ -154,6 +153,7 @@ zstandard = "*"
 [feature.py310.target.linux-64.dependencies]
 cubinlinker = {version = "*", channel = "rapidsai"}
 fastcluster = "*"
+gdb = "*"
 intel-cmplr-lib-rt = "*"
 mkl = "*"
 ptxcompiler = "*"
@@ -161,10 +161,12 @@ pymediainfo = "*"
 
 [feature.py310.target.linux-aarch64.dependencies]
 cubinlinker = {version = "*", channel = "rapidsai"}
+gdb = "*"
 ptxcompiler = "*"
 
 [feature.py310.target.osx-64.dependencies]
 fastcluster = "*"
+gdb = "*"
 pymediainfo = "*"
 
 [feature.py310.target.osx-arm64.dependencies]
@@ -205,7 +207,6 @@ fastparquet = "*"
 feedgen = "*"
 fire = "*"
 folium = "*"
-gdb = "*"
 geojson = "*"
 geopy = "*"
 ghapi = "*"
@@ -319,6 +320,7 @@ zstandard = "*"
 [feature.py311.target.linux-64.dependencies]
 cubinlinker = {version = "*", channel = "rapidsai"}
 fastcluster = "*"
+gdb = "*"
 intel-cmplr-lib-rt = "*"
 mkl = "*"
 ptxcompiler = "*"
@@ -326,10 +328,12 @@ pymediainfo = "*"
 
 [feature.py311.target.linux-aarch64.dependencies]
 cubinlinker = {version = "*", channel = "rapidsai"}
+gdb = "*"
 ptxcompiler = "*"
 
 [feature.py311.target.osx-64.dependencies]
 fastcluster = "*"
+gdb = "*"
 pymediainfo = "*"
 
 [feature.py311.target.osx-arm64.dependencies]
@@ -370,7 +374,6 @@ fastparquet = "*"
 feedgen = "*"
 fire = "*"
 folium = "*"
-gdb = "*"
 geojson = "*"
 geopy = "*"
 ghapi = "*"
@@ -484,6 +487,7 @@ zstandard = "*"
 [feature.py312.target.linux-64.dependencies]
 cubinlinker = {version = "*", channel = "rapidsai"}
 fastcluster = "*"
+gdb = "*"
 intel-cmplr-lib-rt = "*"
 mkl = "*"
 ptxcompiler = "*"
@@ -491,10 +495,12 @@ pymediainfo = "*"
 
 [feature.py312.target.linux-aarch64.dependencies]
 cubinlinker = {version = "*", channel = "rapidsai"}
+gdb = "*"
 ptxcompiler = "*"
 
 [feature.py312.target.osx-64.dependencies]
 fastcluster = "*"
+gdb = "*"
 pymediainfo = "*"
 
 [feature.py312.target.osx-arm64.dependencies]
@@ -535,7 +541,6 @@ fastparquet = "*"
 feedgen = "*"
 fire = "*"
 folium = "*"
-gdb = "*"
 geojson = "*"
 geopy = "*"
 ghapi = "*"
@@ -649,6 +654,7 @@ zstandard = "*"
 [feature.py313.target.linux-64.dependencies]
 cubinlinker = {version = "*", channel = "rapidsai"}
 fastcluster = "*"
+gdb = "*"
 intel-cmplr-lib-rt = "*"
 mkl = "*"
 ptxcompiler = "*"
@@ -656,10 +662,12 @@ pymediainfo = "*"
 
 [feature.py313.target.linux-aarch64.dependencies]
 cubinlinker = {version = "*", channel = "rapidsai"}
+gdb = "*"
 ptxcompiler = "*"
 
 [feature.py313.target.osx-64.dependencies]
 fastcluster = "*"
+gdb = "*"
 pymediainfo = "*"
 
 [feature.py313.target.osx-arm64.dependencies]
@@ -700,7 +708,6 @@ fastparquet = "*"
 feedgen = "*"
 fire = "*"
 folium = "*"
-gdb = "*"
 geojson = "*"
 geopy = "*"
 ghapi = "*"
@@ -813,12 +820,17 @@ zstandard = "*"
 
 [feature.py314.target.linux-64.dependencies]
 fastcluster = "*"
+gdb = "*"
 intel-cmplr-lib-rt = "*"
 mkl = "*"
 pymediainfo = "*"
 
+[feature.py314.target.linux-aarch64.dependencies]
+gdb = "*"
+
 [feature.py314.target.osx-64.dependencies]
 fastcluster = "*"
+gdb = "*"
 pymediainfo = "*"
 
 [feature.py314.target.osx-arm64.dependencies]
