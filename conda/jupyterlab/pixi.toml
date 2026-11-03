@@ -7,14 +7,13 @@ platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"]
 exclude-newer = "7d"
 
 [feature.jupyterlab.dependencies]
-python = "3.14.*"
+python = "3.15.*"
 anywidget = "*"
 bash_kernel = "*"
 ipympl = "*"
 ipywidgets = "*"
 jedi-language-server = "*"
 jupyter-lsp = "*"
-jupyter-lsp-python = "*"
 jupyter_bokeh = "*"
 jupyterlab = "*"
 jupyterlab-geojson = "*"
@@ -27,8 +26,7 @@ pixi = "*"
 pixi-kernel = "*"
 playwright = "*"
 plotly = "*"
-pyqtwebengine = "*"
-python-lsp-server = "*"
+python-lsp-server-base = "*"
 pyviz_comms = "*"
 
 [environments]
