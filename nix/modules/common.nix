@@ -1,4 +1,9 @@
-{ pkgs, pkgs-unstable, self, ... }:
+{
+  pkgs,
+  pkgs-unstable,
+  self,
+  ...
+}:
 {
   # nixpkgs.config.allowUnfree = true;
   environment.systemPackages = import ./systemPackages.nix { inherit pkgs pkgs-unstable; };
