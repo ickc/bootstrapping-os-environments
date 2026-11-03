@@ -17,6 +17,7 @@ with pkgs;
   btop
   # code2prompt
   coreutils-full
+  cloudflared
   delta
   devbox
   # diffoscope
