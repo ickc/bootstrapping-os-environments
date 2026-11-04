@@ -350,8 +350,15 @@ class CondaPackage:
                         break
                 if not depends_on_python:
                     return True
-                # matching python version
-                if python_version == parse_conda_build(file["attrs"]["build"]):
+                # matching python version; a python-dependent build whose
+                # string carries no pyXY tag (e.g. mpi_openmpi_h…) can't be
+                # attributed to a python version, so it neither confirms nor
+                # rules out support — keep scanning older files
+                try:
+                    build_python_version = parse_conda_build(file["attrs"]["build"])
+                except ValueError:
+                    continue
+                if python_version == build_python_version:
                     return True
         return False
 
@@ -607,7 +614,7 @@ def generate(
     out_dir: Path = Path("conda"),
     # https://conda.io/projects/conda/en/latest/commands/env/create.html#named-arguments
     archs: list[str] = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"],
-    versions: list[str] = ["3.10", "3.11", "3.12", "3.13", "3.14"],
+    versions: list[str] = ["3.11", "3.12", "3.13", "3.14", "3.15"],
     default_channel: str = "conda-forge",
     exclude_newer: str = "7d",
     name_format: str = "py{version}",

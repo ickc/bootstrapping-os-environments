@@ -29,6 +29,22 @@ def _file(version: str, upload_time: str) -> dict[str, Any]:
     }
 
 
+def _arch_file(build: str) -> dict[str, Any]:
+    return {
+        "version": "1.0",
+        "upload_time": "2026-01-01T00:00:00.000Z",
+        "attrs": {"subdir": "linux-64", "build": build, "build_number": 0, "depends": ["python >=3.11"]},
+    }
+
+
+def test_support_skips_python_builds_without_pyxy_tag() -> None:
+    """An old python-dependent build like ``mpi_openmpi_h…`` must not crash the scan."""
+    data = _package_data("mpi4py", [_arch_file("py314h1234567_0"), _arch_file("mpi_openmpi_hc1ffa35_1001")])
+    package = web_api.CondaPackage(data)
+    assert package.support("linux-64", (3, 14))
+    assert not package.support("linux-64", (3, 15))
+
+
 def test_latest_version_ignores_prereleases_and_upload_order() -> None:
     """The real jupyterlab shape: an alpha uploaded minutes after the release."""
     data = _package_data(

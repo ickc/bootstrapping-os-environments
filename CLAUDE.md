@@ -6,7 +6,7 @@ Guidance for Claude Code when working in this repository.
 
 `pixi run conda-generate` refreshes each `conda/<stem>.csv` from the
 anaconda.org web API, writes a pixi manifest at `conda/<stem>/pixi.toml`
-(one feature/environment per name — `conda.csv` yields py310–py314;
+(one feature/environment per name — `conda.csv` yields py311–py315;
 platform-selective dependencies via `[feature.*.target.<arch>]`; package
 versions are never pinned in the manifest — the lockfile is what pins; the
 sole exception is `python`, pinned per env to produce python-version

@@ -22,7 +22,7 @@ sophisticated ones; the rest range from solid to scratch-pad.
 
 | Directory | Target | What it does |
 |-----------|--------|--------------|
-| **`conda/`** | Any UNIX, **no root** (HPC, shared servers) | The main event. Version-pinned conda environments (`system`, per-Python `py310`–`py314`, `jupyterlab`) as multi-platform conda-lock files, generated from CSV package lists and committed to git. Installs sudo-lessly into `$HOME` via micromamba. |
+| **`conda/`** | Any UNIX, **no root** (HPC, shared servers) | The main event. Version-pinned conda environments (`system`, per-Python `py311`–`py315`, `jupyterlab`) as multi-platform conda-lock files, generated from CSV package lists and committed to git. Installs sudo-lessly into `$HOME` via micromamba. |
 | **`nix/`** | macOS (primarily) | A `nix-darwin` flake — declarative system + Homebrew + Mac App Store management. The most reproducible path where Nix is available. |
 | **`rhel/`** | RHEL / Fedora Linux servers | `dnf` package lists, `what-provides` helpers, a ZFS install script — for machines where you have root and a real package manager. |
 | **`windows/`** | Windows | A `winget` package manifest (`winget import`). |
