@@ -57,6 +57,7 @@ mediainfo = "*"
 mosh = "*"
 nano = "*"
 navi = "*"
+nvtop = "*"
 onefetch = "*"
 openssh = "*"
 pandoc = "*"
@@ -88,16 +89,11 @@ zstd = "*"
 [feature.system.target.linux-64.dependencies]
 iperf = "*"
 lmod = "*"
-nvtop = "*"
 potrace = {version = "*", channel = "bioconda"}
 w3m = "*"
 
-[feature.system.target.linux-aarch64.dependencies]
-nvtop = "*"
-
 [feature.system.target.osx-64.dependencies]
 iperf = "*"
-nvtop = "*"
 potrace = {version = "*", channel = "bioconda"}
 w3m = "*"
 
