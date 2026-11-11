@@ -1,20 +1,14 @@
 [
-  # Scientific and technical publishing system built on Pandoc
-  "Quarto"
   # Collection of apps and services for photography, design, video, web, and UX
   "adobe-creative-cloud"
   # Automatic tiling window manager similar to xmonad
   "amethyst"
-  # Agent orchestration platform
-  "antigravity"
   # Multi-track audio editor and recorder
   "audacity"
   # E-books management software
   "calibre"
   # OpenAI's official ChatGPT desktop app
   "chatgpt"
-  # OpenAI's previous ChatGPT desktop app
-  "chatgpt-classic"
   # Anthropic's official Claude AI desktop app
   "claude"
   # Virtual monitor for screen sharing
@@ -80,17 +74,15 @@
   # Vector graphics editor
   "inkscape"
   # Jellyfin desktop client
-  "jellyfin-media-player"
+  # "jellyfin-media-player"
   # Menu bar manager
   "jordanbaird-ice"
   # ZSA keyboard firmware flasher
   "keymapp"
   # App providing offline access to Wikipedia and many other web sites
-  "kiwix"
+  # "kiwix"
   # Free cross-platform office suite, fresh version
   "libreoffice"
-  # Discover, download, and run local LLMs
-  "lm-studio"
   # Bible study software
   "logos"
   # Full TeX Live distribution with GUI applications
@@ -98,17 +90,17 @@
   # Meet, chat, call, and collaborate in just one place
   "microsoft-teams"
   # Open-source music notation software
-  "musescore"
+  # "musescore"
   # App to write, plan, collaborate, and get organised
   "notion"
   # Knowledge base that works on top of a local folder of plain text Markdown files
   "obsidian"
   # Environment for statistical computing and graphics
-  "r-app"
+  # "r-app"
   # Move and resize windows using keyboard shortcuts or snap areas
   "rectangle"
   # Data science software focusing on R and Python
-  "rstudio"
+  # "rstudio"
   # Tool to format memory cards complying with the SD File System spec
   "sdformatter"
   # Instant messaging application focusing on security
