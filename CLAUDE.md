@@ -31,7 +31,12 @@ they silently create an *empty* env); `--no-lock` selects the per-platform
 (current libmamba cannot re-solve against conda-lock files), the env is left
 alone if its stamped lockfile sha256 (`conda-meta/.bsos-lock-sha256`) already
 matches, else removed and recreated — equivalent, since the lock pins every
-package.
+package. `test` checks more than that the env exists: on Linux it runs `ldd`
+over every ELF executable in the env's `bin/` and fails if a shared library
+does not resolve. A lock can solve and install cleanly and still pin a binary
+that cannot start — when a feedstock stops being rebuilt the solver walks back
+to an old build (w3m's from 2017, wanting `libssl.so.1.0.0`) — and only the
+dynamic loader shows it.
 
 ## Installer conventions (`src/bsos/installers/`)
 

@@ -52,7 +52,7 @@ import urllib.request
 import warnings
 import zipfile
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Tuple
+from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
 
 # Baked from the bsos package at compile time.
 __version__ = '0.1.0'
@@ -204,6 +204,11 @@ class EnvConfig:
 
 
 # --- _subprocess ---
+
+
+def find_command(name: str) -> Optional[str]:
+    """Locate an executable on ``PATH``, like ``which``."""
+    return shutil.which(name)
 
 
 def run(
@@ -439,11 +444,52 @@ def uninstall(name: str = "system", env: Optional[EnvConfig] = None) -> None:
         print(f"{prefix} not found", file=sys.stderr)
 
 
+def _unresolved_libraries(prefix: Path, env: EnvConfig) -> List[str]:
+    """ELF executables in ``<prefix>/bin`` with a shared library that fails to resolve.
+
+    An env can solve and install cleanly and still ship a binary that cannot
+    start: when a feedstock stops being rebuilt, the solver falls back to an
+    old build linked against libraries the env no longer provides (w3m's 2017
+    build wanting ``libssl.so.1.0.0``).  Neither the lockfile nor ``env list``
+    shows that; asking the dynamic loader does.
+
+    Linux only, via ``ldd``.  Returns one ``"<name>: <lib>, <lib>"`` entry per
+    broken executable — empty when everything loads, and also when the check
+    does not apply (another OS, or no ``ldd`` on PATH).
+    """
+    if env.ostype != "Linux":
+        return []
+    ldd = find_command("ldd")
+    bin_dir = prefix / "bin"
+    if ldd is None or not bin_dir.is_dir():
+        return []
+    broken: List[str] = []
+    seen: Set[Path] = set()
+    for entry in sorted(bin_dir.iterdir()):
+        try:
+            real = entry.resolve()
+            if real in seen or not real.is_file():
+                continue
+            seen.add(real)
+            with real.open("rb") as f:
+                if f.read(4) != b"\x7fELF":
+                    continue
+        except OSError:
+            continue
+        # ldd exits non-zero for static binaries; only its report matters here.
+        result = run([ldd, str(real)], env=env.subprocess_env(), check=False, capture_output=True, text=True)
+        missing = [line.split("=>")[0].strip() for line in (result.stdout or "").splitlines() if "not found" in line]
+        if missing:
+            broken.append(f"{entry.name}: {', '.join(missing)}")
+    return broken
+
+
 def test_install(name: str = "system", env: Optional[EnvConfig] = None, backend: str = _DEFAULT_BACKEND) -> int:
-    """Validate that the named conda env exists on the current platform.
+    """Validate that the named conda env exists and its executables can load.
 
     Skips cleanly (exit 0) on unsupported platforms.  Fails (exit 1) if the
-    chosen *backend* is absent — a missing prerequisite, not a platform limit.
+    chosen *backend* is absent — a missing prerequisite, not a platform limit —
+    or if an executable in the env has unresolved shared libraries (Linux).
     """
     env = env or EnvConfig()
     key = platform_key()
@@ -458,7 +504,15 @@ def test_install(name: str = "system", env: Optional[EnvConfig] = None, backend:
         print(f"Conda env {name!r} not found at {prefix}; run install first", file=sys.stderr)
         return 1
     result = run([str(tool), "env", "list"], env=env.subprocess_env(), check=False)
-    return result.returncode
+    if result.returncode != 0:
+        return int(result.returncode)
+    broken = _unresolved_libraries(prefix, env)
+    if broken:
+        print(f"Conda env {name!r} at {prefix} has executables that cannot load:", file=sys.stderr)
+        for line in broken:
+            print(f"  {line}", file=sys.stderr)
+        return 1
+    return 0
 
 
 def main() -> None:
