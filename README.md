@@ -88,6 +88,12 @@ Scheduled workflows keep the pinned environments honest:
 - **`conda-generate`** (weekly) regenerates the conda locks, runs the
   `test-installers` jobs against the result, and fast-forwards `main` when they
   pass — no pull request to merge unless something fails.
+- **`audit`** (weekly) runs `pixi run audit`, which looks for abandoned or
+  rotting dependencies: upstreams archived on GitHub, casks Homebrew
+  deprecated, apps delisted from the App Store, packages with no build for a
+  current Python, locks that stopped being refreshed. It fails when something
+  needs a decision; fix it or acknowledge it, with an expiry, in
+  [`audit-ack.toml`](audit-ack.toml).
 - **`flake-update`** (weekly) bumps `nix/flake.lock`, evaluates every
   `darwinConfiguration`, and lands the bump on `main`. Pull requests that touch
   `nix/` get the same evaluation.
