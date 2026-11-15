@@ -6,6 +6,17 @@ on:
       - main
   pull_request:
   workflow_dispatch:
+  # Called by conda-generate to test freshly generated environment files
+  # before they land on main.
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit to test; defaults to the ref that triggered the workflow.
+        type: string
+        default: ''
+
+permissions:
+  contents: read
 
 jobs:
   # Run the compiled curl|python3 installers end-to-end on every supported
@@ -29,6 +40,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-python@v7
         with:
           python-version: '3.x'
@@ -100,6 +113,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
       - uses: prefix-dev/setup-pixi@v0.11.2
       - run: pixi run test
 
@@ -107,6 +122,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
       - uses: prefix-dev/setup-pixi@v0.11.2
       - run: pixi run format
       - run: pixi run compile
@@ -117,6 +134,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
       - uses: prefix-dev/setup-pixi@v0.11.2
       - run: pixi run lint
 
@@ -126,5 +145,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
       - uses: prefix-dev/setup-pixi@v0.11.2
       - run: pixi run lint-compiled

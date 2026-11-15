@@ -83,6 +83,12 @@ The `test-installers` workflow runs the compiled installers end-to-end
 `test` skips cleanly (exit 0) on a platform an installer doesn't support, so the
 same matrix scales as more installers are added.
 
+Scheduled workflows keep the pinned environments honest:
+
+- **`conda-generate`** (weekly) regenerates the conda locks, runs the
+  `test-installers` jobs against the result, and fast-forwards `main` when they
+  pass — no pull request to merge unless something fails.
+
 ## License
 
 See [LICENSE](LICENSE).

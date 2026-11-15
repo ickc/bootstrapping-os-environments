@@ -38,6 +38,14 @@ that cannot start — when a feedstock stops being rebuilt the solver walks back
 to an old build (w3m's from 2017, wanting `libssl.so.1.0.0`) — and only the
 dynamic loader shows it.
 
+The `conda-generate` workflow refreshes the locks weekly and unattended:
+generate, commit to `automation/conda-generate`, run the `test-installers`
+jobs against that exact commit (as a reusable workflow), then fast-forward
+`main` on green. A pull request is opened only when the tests fail or `main`
+moved meanwhile. Do not go back to opening a PR with the default token: such
+a PR never gets CI and needs someone to merge it, which is how the locks once
+went two months stale.
+
 ## Installer conventions (`src/bsos/installers/`)
 
 ### Add installers as recipes
