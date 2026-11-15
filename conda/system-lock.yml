@@ -3633,20 +3633,20 @@ package:
 - category: main
   dependencies:
     __glibc: '>=2.17,<3.0.a0'
-    libdrm: '>=2.4.125,<2.5.0a0'
-    libgcc: '>=14'
-    libstdcxx: '>=14'
-    libsystemd0: '>=257.10'
-    ncurses: '>=6.5,<7.0a0'
+    libdrm: '>=2.4.129,<2.5.0a0'
+    libgcc: '>=15'
+    libstdcxx: '>=15'
+    libsystemd0: '>=257.13'
+    ncurses: '>=6.6,<7.0a0'
   hash:
-    md5: 683cee1477fd8b9ab484695a44e2bca3
-    sha256: 1f0964618a5bd39e46551605716f88b43f5a2cdcefc62a2078093ce1e48c0c78
+    md5: 04f84220f7d3cae0937f7b46cbedfa5f
+    sha256: 445fef6666aae8a6e44c80e5cd7c8335e0fbd5db67c387e4962225757a0c4807
   manager: conda
   name: nvtop
   optional: false
   platform: linux-64
-  url: https://conda.anaconda.org/conda-forge/linux-64/nvtop-3.3.2-h5433ab2_0.conda
-  version: 3.3.2
+  url: https://conda.anaconda.org/conda-forge/linux-64/nvtop-3.4.0-hc866c39_0.conda
+  version: 3.4.0
 - category: main
   dependencies:
     __glibc: '>=2.17,<3.0.a0'
@@ -8110,20 +8110,20 @@ package:
   version: '26.10'
 - category: main
   dependencies:
-    libdrm: '>=2.4.125,<2.5.0a0'
-    libgcc: '>=14'
-    libstdcxx: '>=14'
-    libsystemd0: '>=257.10'
-    ncurses: '>=6.5,<7.0a0'
+    libdrm: '>=2.4.129,<2.5.0a0'
+    libgcc: '>=15'
+    libstdcxx: '>=15'
+    libsystemd0: '>=257.13'
+    ncurses: '>=6.6,<7.0a0'
   hash:
-    md5: 8b01e5f13fef8924d0a7d7c56cc51964
-    sha256: dc594d1f9ba88ac04dbb2b0298ba8cdf05c0b416e38bfed3eed53040dcaaeeab
+    md5: c67fd8928a3e715a291f21df8027a783
+    sha256: 71c6bf51e10b962a47523aa556b359fff886ccdbe3564d13420ab26f5b691a43
   manager: conda
   name: nvtop
   optional: false
   platform: linux-aarch64
-  url: https://conda.anaconda.org/conda-forge/linux-aarch64/nvtop-3.3.2-h27c8ade_0.conda
-  version: 3.3.2
+  url: https://conda.anaconda.org/conda-forge/linux-aarch64/nvtop-3.4.0-h46cf1a8_0.conda
+  version: 3.4.0
 - category: main
   dependencies:
     libgcc: '>=15'
@@ -9821,32 +9821,6 @@ package:
   version: '3.20'
 - category: main
   dependencies:
-    __osx: '>=11.0'
-  hash:
-    md5: 88a79390f87c8f3334b9999a892e78d4
-    sha256: 12c1d676b9a0e8109b576672519312c5428308f3f3d7706f8717e2f536d5d9e7
-  manager: conda
-  name: ncurses
-  optional: false
-  platform: osx-64
-  url: https://conda.anaconda.org/conda-forge/osx-64/ncurses-6.6-hcc0dc9a_1.conda
-  version: '6.6'
-- category: main
-  dependencies:
-    __osx: '>=10.15'
-    libcxx: '>=19'
-    ncurses: '>=6.5,<7.0a0'
-  hash:
-    md5: cb94584635bbb2d510683641517e9566
-    sha256: ff0a2809c4b65e76a25ddcee80e348ef5a3f7546a2782b81f3846a01b7726d6c
-  manager: conda
-  name: nvtop
-  optional: false
-  platform: osx-64
-  url: https://conda.anaconda.org/conda-forge/osx-64/nvtop-3.3.2-hcacca2f_0.conda
-  version: 3.3.2
-- category: main
-  dependencies:
     __osx: '>=10.15'
   hash:
     md5: d7d4bceef449225a1d29e5d326e576e1
@@ -10858,6 +10832,18 @@ package:
 - category: main
   dependencies:
     __osx: '>=11.0'
+  hash:
+    md5: 88a79390f87c8f3334b9999a892e78d4
+    sha256: 12c1d676b9a0e8109b576672519312c5428308f3f3d7706f8717e2f536d5d9e7
+  manager: conda
+  name: ncurses
+  optional: false
+  platform: osx-64
+  url: https://conda.anaconda.org/conda-forge/osx-64/ncurses-6.6-hcc0dc9a_1.conda
+  version: '6.6'
+- category: main
+  dependencies:
+    __osx: '>=11.0'
     ncurses: '>=6.6,<7.0a0'
   hash:
     md5: f9fefe52ca6fa0cdb62806f626b70d98
@@ -11353,6 +11339,20 @@ package:
   platform: osx-64
   url: https://conda.anaconda.org/conda-forge/osx-64/fastfetch-2.71.0-hb6864c4_1.conda
   version: 2.71.0
+- category: main
+  dependencies:
+    __osx: '>=11.0'
+    libcxx: '>=21'
+    ncurses: '>=6.6,<7.0a0'
+  hash:
+    md5: c855865cfb108597f9b9bd80662f4167
+    sha256: 117094a89576926c184d6b98813c04c75e8cfa24edeec4e5d66ca203643ca0bd
+  manager: conda
+  name: nvtop
+  optional: false
+  platform: osx-64
+  url: https://conda.anaconda.org/conda-forge/osx-64/nvtop-3.4.0-hee3ac17_0.conda
+  version: 3.4.0
 - category: main
   dependencies:
     __osx: '>=11.0'
@@ -14752,20 +14752,6 @@ package:
   dependencies:
     __osx: '>=11.0'
     libcxx: '>=19'
-    ncurses: '>=6.5,<7.0a0'
-  hash:
-    md5: e13fde8b75f23617a27b6ff0de2d62df
-    sha256: e64bb6411bc227eb10c1f16e7a2360a69c8a134f2f14475fd047d7bfff26a6b2
-  manager: conda
-  name: nvtop
-  optional: false
-  platform: osx-arm64
-  url: https://conda.anaconda.org/conda-forge/osx-arm64/nvtop-3.3.1-hb0e7612_0.conda
-  version: 3.3.1
-- category: main
-  dependencies:
-    __osx: '>=11.0'
-    libcxx: '>=19'
   hash:
     md5: cfb790530767cdb997ce59aa2819cf75
     sha256: fb83c8b947c26d07ffeb1f84cdf7dd1eb2fe08cedb683893b8febac3d9738f15
@@ -14805,6 +14791,20 @@ package:
   platform: osx-arm64
   url: https://conda.anaconda.org/conda-forge/osx-arm64/fastfetch-2.71.0-hadc8185_1.conda
   version: 2.71.0
+- category: main
+  dependencies:
+    __osx: '>=11.0'
+    libcxx: '>=21'
+    ncurses: '>=6.6,<7.0a0'
+  hash:
+    md5: b55850eec35732cd3122de035c15c8de
+    sha256: 9df28347102ad73bf541b3af695833b9da7b2c00048aaf2f6d7613fdebc19546
+  manager: conda
+  name: nvtop
+  optional: false
+  platform: osx-arm64
+  url: https://conda.anaconda.org/conda-forge/osx-arm64/nvtop-3.4.0-h94ed934_0.conda
+  version: 3.4.0
 - category: main
   dependencies:
     __osx: '>=11.0'
