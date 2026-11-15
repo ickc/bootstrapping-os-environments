@@ -23,6 +23,7 @@ import yaml
 import yamlloader
 from rattler import Version
 
+from bsos.util.http import gather_limited, get_with_retry
 from bsos.util.sort import deep_sort, toposort
 
 CACHE_DIR: Path = Path(platformdirs.user_cache_dir(appname="bsos", ensure_exists=True))
@@ -126,7 +127,7 @@ async def get_package_info(
         list[dict]: A list of dictionaries containing package information.
     """
 
-    async def fetch_package_info(owner: str, name: str) -> dict[str, Any]:
+    async def fetch_package_info(client: httpx.AsyncClient, owner: str, name: str) -> dict[str, Any]:
         cache_dir: Path = CACHE_DIR
         file_path: Path = cache_dir / owner / f"{name}.json"
 
@@ -135,24 +136,29 @@ async def get_package_info(
             with file_path.open("r") as f:
                 return cast(dict[str, Any], json.load(f))
 
-        # Fetch from API and cache
+        # Fetch from API and cache. A single transient failure (the API does
+        # answer 503 now and then) must not sink a run of hundreds of requests.
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        async with httpx.AsyncClient(timeout=None) as client:
-            try:
-                response = await client.get(url_format.format(owner=owner, name=name))
-                response.raise_for_status()
-                data = cast(dict[str, Any], response.json())
-            except Exception as e:
-                print(f"Failed to fetch {owner}/{name}: {e}")
-                raise e
+        try:
+            response = await get_with_retry(client, url_format.format(owner=owner, name=name))
+            response.raise_for_status()
+            data = cast(dict[str, Any], response.json())
+        except Exception as e:
+            print(f"Failed to fetch {owner}/{name}: {e}")
+            raise e
 
         with file_path.open("w", encoding="utf-8") as f:
             f.write(response.text)
 
         return data
 
-    tasks = [fetch_package_info(owner, name) for owner, name in username_package_pairs]
-    return await asyncio.gather(*tasks)
+    # One shared client with a bounded fan-out, rather than a connection and
+    # a request per package all at once.
+    async with httpx.AsyncClient(timeout=120.0) as client:
+        return await gather_limited(
+            username_package_pairs,
+            lambda pair: fetch_package_info(client, *pair),
+        )
 
 
 @dataclass

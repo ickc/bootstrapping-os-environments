@@ -534,3 +534,76 @@ def test_mamba_env_reinstall_removes_prefix_then_creates(tmp_path):
     argv = mock_run.call_args[0][0]
     assert "create" in argv
     assert "update" not in argv
+
+
+# ── mamba_env test action: executables must be able to load ──────────────────
+
+
+def _elf(path: Path) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"\x7fELF" + b"\0" * 12)
+    return path
+
+
+def _ldd_result(stdout: str, returncode: int = 0):
+    return type("Result", (), {"stdout": stdout, "returncode": returncode})()
+
+
+def test_unresolved_libraries_reports_only_broken_elf_binaries(tmp_path):
+    """A stale build shows up as `not found`; scripts and healthy binaries do not."""
+    env = _mamba_env(tmp_path)
+    env.ostype = "Linux"
+    prefix = env.opt_root / "testenv"
+    _elf(prefix / "bin" / "good")
+    _elf(prefix / "bin" / "w3m")
+    (prefix / "bin" / "script").write_text("#!/bin/sh\n")
+    (prefix / "bin" / "alias").symlink_to(prefix / "bin" / "good")  # same file: checked once
+
+    def fake_run(argv, **kwargs):
+        if argv[-1].endswith("/w3m"):
+            return _ldd_result("\tlibssl.so.1.0.0 => not found\n\tlibc.so.6 => /lib64/libc.so.6 (0x0)\n")
+        return _ldd_result("\tlibc.so.6 => /lib64/libc.so.6 (0x0)\n")
+
+    with (
+        patch("bsos.installers.mamba_env.find_command", return_value="/usr/bin/ldd"),
+        patch("bsos.installers.mamba_env.run", side_effect=fake_run) as mock_run,
+    ):
+        broken = mamba_env_mod._unresolved_libraries(prefix, env)
+    assert broken == ["w3m: libssl.so.1.0.0"]
+    assert mock_run.call_count == 2  # good + w3m; not the script, not the symlink
+
+
+@pytest.mark.parametrize("ostype, ldd", [("Darwin", "/usr/bin/ldd"), ("Linux", None)])
+def test_unresolved_libraries_skips_where_it_does_not_apply(tmp_path, ostype, ldd):
+    env = _mamba_env(tmp_path)
+    env.ostype = ostype
+    prefix = env.opt_root / "testenv"
+    _elf(prefix / "bin" / "tool")
+    with (
+        patch("bsos.installers.mamba_env.find_command", return_value=ldd),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        assert mamba_env_mod._unresolved_libraries(prefix, env) == []
+    mock_run.assert_not_called()
+
+
+def test_mamba_env_test_fails_on_unloadable_executable(tmp_path, capsys):
+    """An env that lists fine but ships a binary that cannot start fails `test`."""
+    env = _mamba_env(tmp_path)
+    (env.opt_root / "testenv").mkdir(parents=True)
+    with (
+        patch("bsos.installers.mamba_env.platform_key", return_value="Linux-x86_64"),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+        patch("bsos.installers.mamba_env._unresolved_libraries", return_value=["w3m: libnsl.so.1"]),
+    ):
+        mock_run.return_value.returncode = 0
+        assert mamba_env_mod.test_install("testenv", env=env) == 1
+    assert "w3m: libnsl.so.1" in capsys.readouterr().err
+
+    with (
+        patch("bsos.installers.mamba_env.platform_key", return_value="Linux-x86_64"),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+        patch("bsos.installers.mamba_env._unresolved_libraries", return_value=[]),
+    ):
+        mock_run.return_value.returncode = 0
+        assert mamba_env_mod.test_install("testenv", env=env) == 0

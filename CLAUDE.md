@@ -31,7 +31,53 @@ they silently create an *empty* env); `--no-lock` selects the per-platform
 (current libmamba cannot re-solve against conda-lock files), the env is left
 alone if its stamped lockfile sha256 (`conda-meta/.bsos-lock-sha256`) already
 matches, else removed and recreated — equivalent, since the lock pins every
-package.
+package. `test` checks more than that the env exists: on Linux it runs `ldd`
+over every ELF executable in the env's `bin/` and fails if a shared library
+does not resolve. A lock can solve and install cleanly and still pin a binary
+that cannot start — when a feedstock stops being rebuilt the solver walks back
+to an old build (w3m's from 2017, wanting `libssl.so.1.0.0`) — and only the
+dynamic loader shows it.
+
+The `conda-generate` workflow refreshes the locks weekly and unattended:
+generate, commit to `automation/conda-generate`, run the `test-installers`
+jobs against that exact commit (as a reusable workflow), then fast-forward
+`main` on green. A pull request is opened only when the tests fail or `main`
+moved meanwhile. Do not go back to opening a PR with the default token: such
+a PR never gets CI and needs someone to merge it, which is how the locks once
+went two months stale.
+
+## Dependency audit (`src/bsos/audit/`)
+
+`pixi run audit` (weekly in CI, `audit.yml`) looks for abandoned or rotting
+dependencies. It deliberately does not use "time since last release" —
+`bzip2` and `make` are old and fine. The signals are explicit declarations
+(upstream repository archived on GitHub, cask deprecated by Homebrew, app
+delisted from the App Store) and failure to keep up (no build for a Python
+released over a year ago, a package the generator silently dropped, locks or
+`flake.lock` that stopped being refreshed). Those are *action* findings and
+make the audit exit 1; "held back by another pin" and "pinned build over
+three years old" are informational.
+
+A finding is dealt with by fixing it or by acknowledging it in
+`audit-ack.toml`, keyed as printed, with a `reason` and a required `until`
+date — acknowledgements expire so they get revisited. A green audit therefore
+means nothing new. A check that cannot run reports `check-failed` rather than
+passing silently.
+
+Keep new checks to signals that hold without a tuned threshold; a check that
+needs acknowledging on most runs is noise. `bsos.audit` may use third-party
+dependencies (like `bsos.conda`; unlike `bsos.installers`).
+
+## Nix flake (`nix/`)
+
+The `flake-update` workflow bumps `nix/flake.lock` weekly and lands it on
+`main` after evaluating every `darwinConfigurations.<host>.system` down to its
+derivation, on a macOS runner. Pull requests touching `nix/` run the same
+evaluation. It is evaluation only — nothing is built — which catches what a
+bump usually breaks (an attribute removed or renamed, a dropped option, a
+package newly marked insecure). The Linux dev machines have no nix, so that
+workflow is the only place the flake is checked; a change under `nix/` is
+verified by its pull request, not locally.
 
 ## Installer conventions (`src/bsos/installers/`)
 
@@ -86,6 +132,11 @@ rate-limited at 60 req/hour for unauthenticated clients; shared CI runners hit
 this limit routinely and get a 403. Instead, `GitHubRedirect` follows the
 `/releases/latest` redirect to read the final URL and extract the tag name —
 one cheap HTTP request, no API key, no rate limit.
+
+This rule is about installers, which run unauthenticated on end-user machines.
+The audit (`bsos.audit.upstream`) does query GitHub — a few batched GraphQL
+calls through `gh`, authenticated with the workflow token in CI — and that is
+intended.
 
 ### Fail hard on missing prerequisites
 `test` actions may exit 0 to skip cleanly on *unsupported platforms* (the

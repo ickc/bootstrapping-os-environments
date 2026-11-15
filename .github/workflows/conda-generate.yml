@@ -1,17 +1,48 @@
 name: conda-generate
 
+# Weekly, unattended refresh of the pinned conda environments:
+#
+#   generate  ->  test the result  ->  fast-forward main
+#
+# Nothing here waits on a person when the tests pass. The previous design
+# opened a draft pull request with the default token; such a PR never gets CI
+# (GitHub does not start workflows for events caused by GITHUB_TOKEN) and
+# needs someone to merge it, and the locks once went two months without a
+# refresh that way. Instead the installer test suite runs in this workflow,
+# against the exact commit that will land.
+#
+# When the tests fail — or main moved in the meantime — the commit stays on
+# the automation branch, a pull request is opened for a human, and this run
+# fails so it gets noticed.
+#
+# Only a run on main lands anything. Started by hand from another branch it
+# is a dry run: generate and test, then stop (otherwise it would fast-forward
+# main to that branch).
+
 on:
   schedule:
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+
+# Shared with flake-update: both land on main by fast-forward, so they must
+# not overlap — whichever starts second waits, then works from the new main.
+concurrency:
+  group: lands-on-main
+  cancel-in-progress: false
+
+env:
+  BRANCH: automation/conda-generate
 
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
     steps:
       - uses: actions/checkout@v7
       - uses: prefix-dev/setup-pixi@v0.11.2
@@ -19,16 +50,70 @@ jobs:
       - name: Generate conda environment files
         run: pixi run conda-generate
 
-      - name: Create pull request
-        uses: peter-evans/create-pull-request@v8
-        with:
-          add-paths: conda/**
-          branch: automation/conda-generate
-          delete-branch: true
-          title: "chore: regenerate conda environment files"
-          commit-message: "chore: regenerate conda environment files"
-          draft: true
-          body: |
-            Regenerated conda environment files with `pixi run conda-generate`.
+      - name: Commit to the automation branch
+        id: commit
+        run: |
+          set -euo pipefail
+          git add conda
+          if git diff --cached --quiet; then
+            echo "Nothing changed; nothing to land."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --message "chore: regenerate conda environment files"
+          git push --force origin "HEAD:refs/heads/${BRANCH}"
+          echo "sha=$(git rev-parse HEAD)" >> "${GITHUB_OUTPUT}"
 
-            This PR is opened automatically by the weekly conda-generate workflow.
+  # The same jobs as a push to main, run against the generated commit. The
+  # smoke job creates the `system` env from the new lock on all four platforms
+  # and checks that its executables can load.
+  test:
+    needs: generate
+    if: needs.generate.outputs.sha != ''
+    uses: ./.github/workflows/test-installers.yml
+    with:
+      ref: ${{ needs.generate.outputs.sha }}
+
+  land:
+    needs: [generate, test]
+    if: always() && needs.generate.outputs.sha != '' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      SHA: ${{ needs.generate.outputs.sha }}
+    steps:
+      - name: Fast-forward main
+        id: land
+        if: needs.test.result == 'success'
+        run: |
+          # Fast-forward only (force=false): if main moved while the tests
+          # ran, the update is rejected and the change goes to a pull request.
+          if gh api --method PATCH "repos/${GH_REPO}/git/refs/heads/main" -f sha="${SHA}" -F force=false; then
+            gh api --method DELETE "repos/${GH_REPO}/git/refs/heads/${BRANCH}"
+            echo "landed=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Hand over to a human
+        if: steps.land.outputs.landed != 'true'
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TESTS: ${{ needs.test.result }}
+        run: |
+          set -euo pipefail
+          open="$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[0].number')"
+          if [[ -z "${open}" ]]; then
+            {
+              echo "The weekly \`conda-generate\` run could not land this on its own (tests: ${TESTS})."
+              echo
+              echo "Pull requests opened by this workflow get no CI of their own; the results are in ${RUN_URL}."
+            } > body.md
+            gh pr create --base main --head "${BRANCH}" \
+              --title "chore: regenerate conda environment files" --body-file body.md
+          fi
+          echo "::error::Regenerated conda files were not landed (tests: ${TESTS}); see the pull request for ${BRANCH}."
+          exit 1

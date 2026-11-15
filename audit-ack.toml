@@ -1,0 +1,37 @@
+# Audit findings that were reviewed and accepted (`pixi run audit`).
+#
+# One table per finding, keyed exactly as the audit prints it. Both fields are
+# required: `reason` says why it is fine, and `until` makes the acknowledgement
+# expire so the decision is revisited rather than forgotten.
+#
+#   ["archived:example/project"]
+#   reason = "finished software; no replacement needed"
+#   until = 2027-06-01
+
+["mas-unlisted:JPEGmini Pro"]
+reason = "delisted, but still downloadable from the purchase history"
+until = 2027-11-15
+
+["mas-unlisted:Keynote"]
+reason = "delisted, but still downloadable from the purchase history"
+until = 2027-11-15
+
+["mas-unlisted:Numbers"]
+reason = "delisted, but still downloadable from the purchase history"
+until = 2027-11-15
+
+["mas-unlisted:Pages"]
+reason = "delisted, but still downloadable from the purchase history"
+until = 2027-11-15
+
+["mas-unlisted:SMARTReporter"]
+reason = "delisted, but still downloadable from the purchase history"
+until = 2027-11-15
+
+["mas-unlisted:Virtual Intranet Access"]
+reason = "delisted, but still downloadable from the purchase history"
+until = 2027-11-15
+
+["mas-unlisted:iThoughtsX"]
+reason = "delisted, but still downloadable from the purchase history"
+until = 2027-11-15

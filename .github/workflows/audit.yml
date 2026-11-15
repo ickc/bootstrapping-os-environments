@@ -1,0 +1,26 @@
+name: audit
+
+# Weekly dependency audit (`pixi run audit`): abandoned upstreams, delisted
+# apps, pins that have stopped moving. It fails when something needs a
+# decision — fix it, or acknowledge it in audit-ack.toml — so a green run
+# means nothing new. The full report is in the job summary.
+
+on:
+  schedule:
+    # Two hours after conda-generate, so it sees the refreshed locks.
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: prefix-dev/setup-pixi@v0.11.2
+      - run: pixi run audit
+        env:
+          # The upstream check asks GitHub which repositories are archived.
+          GH_TOKEN: ${{ github.token }}

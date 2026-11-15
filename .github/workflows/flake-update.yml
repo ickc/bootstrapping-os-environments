@@ -1,0 +1,85 @@
+name: flake-update
+
+# Weekly, unattended bump of nix/flake.lock, in the same spirit as
+# conda-generate: update -> check -> land on main.
+#
+# The check evaluates every darwinConfiguration down to its system
+# derivation. That is what a bump usually breaks — a package removed or
+# renamed in nixpkgs, an option nix-darwin dropped, a package newly marked
+# insecure — and it takes about a minute. Nothing is built, so a package that
+# fails to compile would still get through; the nixpkgs release channel only
+# advances once its own builds pass, which makes that rare.
+#
+# Pull requests that touch nix/ get the same evaluation (without the update),
+# so changes to the flake are checked before they merge.
+
+on:
+  schedule:
+    - cron: "30 6 * * 1"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - nix/**
+      - .github/workflows/flake-update.yml
+
+permissions:
+  contents: read
+
+# Shared with conda-generate: both land on main by fast-forward, so they must
+# not overlap — whichever starts second waits, then works from the new main.
+# (Pull-request checks land nothing and get a group of their own.)
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('flake-check-{0}', github.ref) || 'lands-on-main' }}
+  cancel-in-progress: false
+
+jobs:
+  # Pull requests: evaluate the flake as proposed.
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ github.token }}
+      - name: Evaluate every darwinConfiguration
+        working-directory: nix
+        run: |
+          nix eval --json .#darwinConfigurations \
+            --apply 'configs: builtins.mapAttrs (_: config: config.system.drvPath) configs'
+
+  # Schedule or manual run: update the lock, evaluate, land.
+  update:
+    if: github.event_name != 'pull_request'
+    runs-on: macos-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ github.token }}
+      - name: Update flake.lock
+        working-directory: nix
+        run: nix flake update
+      - name: Evaluate every darwinConfiguration
+        working-directory: nix
+        run: |
+          nix eval --json .#darwinConfigurations \
+            --apply 'configs: builtins.mapAttrs (_: config: config.system.drvPath) configs'
+      - name: Land on main
+        # Started by hand from another branch this is a dry run.
+        if: github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- nix/flake.lock; then
+            echo "flake.lock is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --message "chore: update flake.lock" -- nix/flake.lock
+          # A plain push: rejected if main moved meanwhile, and next week's run retries.
+          git push origin HEAD:main

@@ -204,6 +204,9 @@ lint = { depends-on = ["lint-sh", "lint-py", "lint-compiled"], description = "Ru
 # unit tests
 test = { cmd = "pytest", description = "Run the pytest unit-test suite." }
 
+# audit
+audit = { cmd = "python -m bsos.audit", description = "Audit pinned envs and package lists for abandoned or rotting dependencies: `pixi run audit -- --checks conda`." }
+
 [tool.ruff]
 line-length = 120
 
