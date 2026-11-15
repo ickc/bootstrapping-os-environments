@@ -45,6 +45,11 @@ jobs:
       sha: ${{ steps.commit.outputs.sha }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The branch as it is now, not the commit that triggered the run. A
+          # run that waited its turn behind the other landing workflow must
+          # build on what that one landed, or its own fast-forward is refused.
+          ref: ${{ github.ref }}
       - uses: prefix-dev/setup-pixi@v0.11.2
 
       - name: Generate conda environment files
