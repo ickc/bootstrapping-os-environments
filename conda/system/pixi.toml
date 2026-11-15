@@ -90,12 +90,10 @@ zstd = "*"
 iperf = "*"
 lmod = "*"
 potrace = {version = "*", channel = "bioconda"}
-w3m = "*"
 
 [feature.system.target.osx-64.dependencies]
 iperf = "*"
 potrace = {version = "*", channel = "bioconda"}
-w3m = "*"
 
 [environments]
 system = {features = ["system"], no-default-feature = true}
