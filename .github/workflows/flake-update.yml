@@ -58,6 +58,11 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The branch as it is now, not the commit that triggered the run. A
+          # run that waited its turn behind the other landing workflow must
+          # build on what that one landed, or its own fast-forward is refused.
+          ref: ${{ github.ref }}
       - uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ github.token }}
