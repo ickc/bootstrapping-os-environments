@@ -88,6 +88,9 @@ Scheduled workflows keep the pinned environments honest:
 - **`conda-generate`** (weekly) regenerates the conda locks, runs the
   `test-installers` jobs against the result, and fast-forwards `main` when they
   pass — no pull request to merge unless something fails.
+- **`flake-update`** (weekly) bumps `nix/flake.lock`, evaluates every
+  `darwinConfiguration`, and lands the bump on `main`. Pull requests that touch
+  `nix/` get the same evaluation.
 
 ## License
 

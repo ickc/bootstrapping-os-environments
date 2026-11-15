@@ -46,6 +46,17 @@ moved meanwhile. Do not go back to opening a PR with the default token: such
 a PR never gets CI and needs someone to merge it, which is how the locks once
 went two months stale.
 
+## Nix flake (`nix/`)
+
+The `flake-update` workflow bumps `nix/flake.lock` weekly and lands it on
+`main` after evaluating every `darwinConfigurations.<host>.system` down to its
+derivation, on a macOS runner. Pull requests touching `nix/` run the same
+evaluation. It is evaluation only — nothing is built — which catches what a
+bump usually breaks (an attribute removed or renamed, a dropped option, a
+package newly marked insecure). The Linux dev machines have no nix, so that
+workflow is the only place the flake is checked; a change under `nix/` is
+verified by its pull request, not locally.
+
 ## Installer conventions (`src/bsos/installers/`)
 
 ### Add installers as recipes

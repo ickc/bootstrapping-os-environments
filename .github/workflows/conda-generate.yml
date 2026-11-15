@@ -27,8 +27,10 @@ on:
 permissions:
   contents: read
 
+# Shared with flake-update: both land on main by fast-forward, so they must
+# not overlap — whichever starts second waits, then works from the new main.
 concurrency:
-  group: conda-generate
+  group: lands-on-main
   cancel-in-progress: false
 
 env:
