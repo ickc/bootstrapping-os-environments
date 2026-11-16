@@ -41,6 +41,7 @@ with pkgs;
   gh
   ghostscript
   git
+  git-lfs
   gnugrep
   gnumake
   gnupatch
