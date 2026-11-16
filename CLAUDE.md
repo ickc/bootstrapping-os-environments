@@ -40,11 +40,14 @@ dynamic loader shows it.
 
 The `conda-generate` workflow refreshes the locks weekly and unattended:
 generate, commit to `automation/conda-generate`, run the `test-installers`
-jobs against that exact commit (as a reusable workflow), then fast-forward
-`main` on green. A pull request is opened only when the tests fail or `main`
-moved meanwhile. Do not go back to opening a PR with the default token: such
-a PR never gets CI and needs someone to merge it, which is how the locks once
-went two months stale.
+and `test-bootstrap` jobs against that exact commit (as reusable workflows),
+then fast-forward `main` when both are green. The bootstrap is the lock's real
+consumer — it creates the `system` env from it on a bare machine and then
+relies on the tools it provides — so a lock that installs but breaks the
+bootstrap must not land. A pull request is opened only when the tests fail or
+`main` moved meanwhile. Do not go back to opening a PR with the default token:
+such a PR never gets CI and needs someone to merge it, which is how the locks
+once went two months stale.
 
 ## Dependency audit (`src/bsos/audit/`)
 

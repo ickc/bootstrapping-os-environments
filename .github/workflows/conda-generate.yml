@@ -8,8 +8,9 @@ name: conda-generate
 # opened a draft pull request with the default token; such a PR never gets CI
 # (GitHub does not start workflows for events caused by GITHUB_TOKEN) and
 # needs someone to merge it, and the locks once went two months without a
-# refresh that way. Instead the installer test suite runs in this workflow,
-# against the exact commit that will land.
+# refresh that way. Instead the installer test suite and an end-to-end
+# bootstrap run in this workflow, against the exact commit that will land;
+# both must pass.
 #
 # When the tests fail — or main moved in the meantime — the commit stays on
 # the automation branch, a pull request is opened for a human, and this run
@@ -80,8 +81,19 @@ jobs:
     with:
       ref: ${{ needs.generate.outputs.sha }}
 
+  # bootstrap.sh from the generated commit: env.sh, the new system lock and the
+  # envoy clone all at that commit, on all four platforms, then the smoke test.
+  # It catches what the installer tests cannot, such as a lock that no longer
+  # provides a tool a later bootstrap stage or the smoke test needs.
+  test-bootstrap:
+    needs: generate
+    if: needs.generate.outputs.sha != ''
+    uses: ./.github/workflows/test-bootstrap.yml
+    with:
+      ref: ${{ needs.generate.outputs.sha }}
+
   land:
-    needs: [generate, test]
+    needs: [generate, test, test-bootstrap]
     if: always() && needs.generate.outputs.sha != '' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
@@ -94,7 +106,7 @@ jobs:
     steps:
       - name: Fast-forward main
         id: land
-        if: needs.test.result == 'success'
+        if: needs.test.result == 'success' && needs.test-bootstrap.result == 'success'
         run: |
           # Fast-forward only (force=false): if main moved while the tests
           # ran, the update is rejected and the change goes to a pull request.
@@ -108,17 +120,18 @@ jobs:
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           TESTS: ${{ needs.test.result }}
+          BOOTSTRAP: ${{ needs.test-bootstrap.result }}
         run: |
           set -euo pipefail
           open="$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[0].number')"
           if [[ -z "${open}" ]]; then
             {
-              echo "The weekly \`conda-generate\` run could not land this on its own (tests: ${TESTS})."
+              echo "The weekly \`conda-generate\` run could not land this on its own (tests: ${TESTS}, bootstrap: ${BOOTSTRAP})."
               echo
               echo "Pull requests opened by this workflow get no CI of their own; the results are in ${RUN_URL}."
             } > body.md
             gh pr create --base main --head "${BRANCH}" \
               --title "chore: regenerate conda environment files" --body-file body.md
           fi
-          echo "::error::Regenerated conda files were not landed (tests: ${TESTS}); see the pull request for ${BRANCH}."
+          echo "::error::Regenerated conda files were not landed (tests: ${TESTS}, bootstrap: ${BOOTSTRAP}); see the pull request for ${BRANCH}."
           exit 1
