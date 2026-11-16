@@ -30,7 +30,9 @@ It runs in stages, each relying on what the previous one installed:
 
 1. **micromamba and the `system` env** — the static micromamba binary into
    `$__OPT_ROOT/bin`, then the conda `system` env (pixi, git, gh, zsh, chezmoi,
-   …) from this repo's pinned [`conda/system-lock.yml`](conda/system-lock.yml).
+   …) from this repo's pinned `system-lock.yml`, downloaded from the release
+   that [`conda/locks.sha256`](conda/locks.sha256) names and checked against
+   the sha256 recorded there.
 2. **envoy** — a clone of this repo at `$XDG_DATA_HOME/envoy`; the tools that
    are not conda packages (the VS Code CLI, sman) are installed by its
    installers, run in its pixi env.
@@ -42,8 +44,8 @@ It runs in stages, each relying on what the previous one installed:
    passphrase and skips the login, for unattended runs.
 
 It finishes by generating shell completions. Running it again is safe: the
-`system` env is left alone while the lock is unchanged, and the clones are
-re-synced to their remotes.
+`system` env is left alone while the lock is unchanged (without downloading
+it again), and the clones are re-synced to their remotes.
 
 To check the result, run the smoke test that matches the path, from any clone of
 this repo (for example the one the bootstrap made):
@@ -61,7 +63,7 @@ sophisticated ones; the rest range from solid to scratch-pad.
 
 | Directory | Target | What it does |
 |-----------|--------|--------------|
-| **`conda/`** | Any UNIX, **no root** (HPC, shared servers) | The main event. Version-pinned conda environments (`system`, per-Python `py311`–`py315`, `jupyterlab`) as multi-platform conda-lock files, generated from CSV package lists and committed to git. Installs sudo-lessly into `$HOME` via micromamba. |
+| **`conda/`** | Any UNIX, **no root** (HPC, shared servers) | The main event. Version-pinned conda environments (`system`, per-Python `py311`–`py315`, `jupyterlab`) as multi-platform conda-lock files, generated from CSV package lists. The locks are published as assets of dated GitHub Releases (`conda-YYYY.MM.DD`); git keeps the CSVs, the pixi manifests and `conda/locks.sha256`, which names the release and the sha256 of each lock, so a commit still pins the environments exactly. Installs sudo-lessly into `$HOME` via micromamba. |
 | **`nix/`** | macOS (primarily) | A `nix-darwin` flake — declarative system + Homebrew + Mac App Store management. The most reproducible path where Nix is available. |
 | **`rhel/`** | RHEL / Fedora Linux servers | `dnf` package lists, `what-provides` helpers, a ZFS install script — for machines where you have root and a real package manager. |
 | **`windows/`** | Windows | A `winget` package manifest (`winget import`). |
@@ -129,10 +131,16 @@ nothing. It bootstraps from the commit under test (through the `ENVOY_REPO` and
 
 Scheduled workflows keep the pinned environments honest:
 
-- **`conda-generate`** (weekly) regenerates the conda locks, runs the
-  `test-installers` and `test-bootstrap` jobs against the result, and
-  fast-forwards `main` when they pass — no pull request to merge unless
-  something fails.
+- **`conda-generate`** (weekly, and on a push to `main` that edits a
+  `conda/*.csv`) regenerates the conda locks and, when they changed, publishes
+  them as a prerelease and points `conda/locks.sha256` at it. It runs the
+  `test-installers` and `test-bootstrap` jobs against that commit — they
+  download the locks from the prerelease like any user — and fast-forwards
+  `main` and promotes the release when they pass: no pull request to merge
+  unless something fails. Started by hand from a branch it is a dry run that
+  lands nothing and deletes its prerelease afterwards, which is how to test a
+  CSV change before merging it. Reverting a pointer commit rolls the locks
+  back.
 - **`audit`** (weekly) runs `pixi run audit`, which looks for abandoned or
   rotting dependencies: upstreams archived on GitHub, casks Homebrew
   deprecated, apps delisted from the App Store, packages with no build for a
