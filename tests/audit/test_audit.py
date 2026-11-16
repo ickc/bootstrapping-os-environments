@@ -1,15 +1,18 @@
 """Unit tests for the dependency audit — synthetic data only, no network."""
 
+import hashlib
 import json
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
+from unittest.mock import patch
 
 import pytest
 
 from bsos.audit import conda, darwin, upstream
 from bsos.audit.conda import Locked, audit_group, python_release
 from bsos.audit.report import Ack, Finding, load_acks, render, triage
+from bsos.installers._locks import LockChecksumError, LockPointer, format_pointer
 
 TODAY = date(2026, 11, 15)
 
@@ -151,6 +154,41 @@ def test_load_lock_indexes_by_name_and_platform(tmp_path: Path) -> None:
     index = conda.load_lock(lock)
     assert index["less"]["linux-64"] == Locked("710", "https://x/linux-64/less-710-h0_0.conda")
     assert set(index["less"]) == {"linux-64", "osx-arm64"}
+
+
+def _pointed_conda_dir(tmp_path: Path, content: bytes) -> Path:
+    conda_dir = tmp_path / "conda"
+    conda_dir.mkdir()
+    pointer = LockPointer(
+        "conda-2026.11.16",
+        "https://x/releases/download/conda-2026.11.16",
+        {"system-lock.yml": hashlib.sha256(content).hexdigest()},
+    )
+    (conda_dir / "locks.sha256").write_text(format_pointer(pointer))
+    return conda_dir
+
+
+def test_lock_path_prefers_a_local_lock(tmp_path: Path) -> None:
+    conda_dir = _pointed_conda_dir(tmp_path, b"pinned")
+    (conda_dir / "system-lock.yml").write_bytes(b"fresh from conda-generate")
+    with patch("bsos.installers._locks.download_file") as download:
+        assert conda.lock_path(conda_dir, "system", tmp_path / "dl") == conda_dir / "system-lock.yml"
+    download.assert_not_called()
+
+
+def test_lock_path_fetches_the_pinned_lock_and_verifies_it(tmp_path: Path) -> None:
+    conda_dir = _pointed_conda_dir(tmp_path, b"pinned")
+    (tmp_path / "dl").mkdir()
+
+    def serve(content: bytes):
+        return lambda url, dest: Path(dest).write_bytes(content)
+
+    with patch("bsos.installers._locks.download_file", side_effect=serve(b"pinned")):
+        path = conda.lock_path(conda_dir, "system", tmp_path / "dl")
+    assert path == tmp_path / "dl" / "system-lock.yml" and path.read_bytes() == b"pinned"
+    with patch("bsos.installers._locks.download_file", side_effect=serve(b"tampered")):
+        with pytest.raises(LockChecksumError):
+            conda.lock_path(conda_dir, "system", tmp_path / "dl")
 
 
 # ── upstream ──────────────────────────────────────────────────────────────────
