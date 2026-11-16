@@ -5,8 +5,8 @@ Each installer type has two code paths:
   install (force=True)  — always run (the "update" action)
 
 Tests use tmp_path to construct an isolated EnvConfig and mock out any
-network I/O (_install_artifact for recipe installers, _env_spec + run for
-mamba_env), so nothing is downloaded or executed on the real system.
+network I/O (_install_artifact for recipe installers, _env_spec/_pinned_lock +
+run for mamba_env), so nothing is downloaded or executed on the real system.
 """
 
 import contextlib
@@ -14,13 +14,14 @@ import hashlib
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Iterator
+from typing import Iterator, Optional
 from unittest.mock import patch
 
 import pytest
 
 import bsos.installers.mamba_env as mamba_env_mod
 from bsos.installers._env import EnvConfig
+from bsos.installers._locks import LockPointer, format_pointer
 from bsos.installers._recipe import (
     RAW,
     Artifact,
@@ -154,6 +155,13 @@ def _fake_env_spec(base: str, filename: str) -> Iterator[Path]:
         yield spec
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+
+@contextlib.contextmanager
+def _fake_pinned_lock(name: str, stamp: Optional[Path]) -> Iterator[Path]:
+    """Drop-in replacement for mamba_env._pinned_lock — always yields a lock, never downloads."""
+    with _fake_env_spec("", f"{name}-lock.yml") as spec:
+        yield spec
 
 
 def _fake_lock_digest() -> str:
@@ -371,6 +379,7 @@ def test_mamba_env_install_creates_when_absent(tmp_path):
     env = _mamba_env(tmp_path)
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env)
@@ -404,6 +413,7 @@ def test_mamba_env_update_in_place_when_backend_supports_it(tmp_path):
 
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mock_run.return_value.returncode = 0
@@ -427,6 +437,7 @@ def test_mamba_env_update_failure_with_matching_stamp_is_noop(tmp_path):
 
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mock_run.return_value.returncode = 1
@@ -445,6 +456,7 @@ def test_mamba_env_update_failure_without_stamp_recreates(tmp_path):
 
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mock_run.return_value.returncode = 1
@@ -463,6 +475,7 @@ def test_mamba_env_update_failure_with_yml_exits(tmp_path):
 
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mock_run.return_value.returncode = 3
@@ -474,6 +487,7 @@ def test_mamba_env_install_force_creates_when_absent(tmp_path):
     env = _mamba_env(tmp_path)
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, force=True)
@@ -487,6 +501,7 @@ def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
     env = _mamba_env(tmp_path)
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, backend="micromamba")
@@ -499,6 +514,7 @@ def test_mamba_env_backend_selects_tool_and_create_verb(tmp_path):
     shutil.rmtree(env.opt_root / "testenv")
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env, backend="mamba")
@@ -528,12 +544,239 @@ def test_mamba_env_reinstall_removes_prefix_then_creates(tmp_path):
 
     with (
         patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env._pinned_lock", new=_fake_pinned_lock),
         patch("bsos.installers.mamba_env.run") as mock_run,
     ):
         mamba_env_mod.install("testenv", env=env)
     argv = mock_run.call_args[0][0]
     assert "create" in argv
     assert "update" not in argv
+
+
+# ── mamba_env: the pinned lock (conda/locks.sha256 → release asset) ──────────
+
+_LOCK = b"version: 1\n"  # what the fake release serves
+_RELEASE = "https://github.com/owner/repo/releases/download/conda-2026.11.16"
+
+
+def _write_pointer(conda_dir: Path, **locks: bytes) -> None:
+    conda_dir.mkdir(parents=True, exist_ok=True)
+    pointer = LockPointer(
+        "conda-2026.11.16", _RELEASE, {f"{n}-lock.yml": hashlib.sha256(c).hexdigest() for n, c in locks.items()}
+    )
+    (conda_dir / "locks.sha256").write_text(format_pointer(pointer))
+
+
+@contextlib.contextmanager
+def _release(content: bytes = _LOCK) -> Iterator[list]:
+    """Serve *content* for every release download; yields the URLs requested."""
+    urls: list = []
+
+    def fake_download(url: str, dest: Path) -> None:
+        urls.append(url)
+        Path(dest).write_bytes(content)
+
+    with patch("bsos.installers._locks.download_file", side_effect=fake_download):
+        yield urls
+
+
+def _clone(tmp_path: Path) -> Path:
+    """A fake clone's conda/ dir, which mamba_env then takes as its bundled one."""
+    return tmp_path / "clone" / "conda"
+
+
+def test_pinned_lock_downloads_from_the_release_and_verifies(tmp_path):
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, system=_LOCK)
+    seen = []
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        _release() as urls,
+        mamba_env_mod._pinned_lock("system", None) as spec,
+    ):
+        seen.append((spec.name, spec.read_bytes()))
+    assert urls == [f"{_RELEASE}/system-lock.yml"]
+    assert seen == [("system-lock.yml", _LOCK)]  # the -lock.yml name is what the backends key on
+    assert not spec.exists()  # the temp download is cleaned up
+
+
+def test_pinned_lock_checksum_mismatch_fails_hard(tmp_path, capsys):
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, system=_LOCK)
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        _release(b"tampered\n"),
+        pytest.raises(SystemExit) as exc,
+    ):
+        with mamba_env_mod._pinned_lock("system", None):
+            pytest.fail("a lock that does not match the pointer must never be yielded")
+    assert exc.value.code == 1
+    assert "refusing to use it" in capsys.readouterr().err
+
+
+def test_install_with_mismatched_release_never_creates_the_env(tmp_path):
+    env = _mamba_env(tmp_path)
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, testenv=_LOCK)
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        _release(b"tampered\n"),
+        patch("bsos.installers.mamba_env.run") as mock_run,
+        pytest.raises(SystemExit),
+    ):
+        mamba_env_mod.install("testenv", env=env)
+    mock_run.assert_not_called()
+    assert not (env.opt_root / "testenv").exists()
+
+
+def test_update_with_stamp_matching_the_pointer_downloads_nothing(tmp_path, capsys):
+    """The stamp is the lock's sha256, so an equal pointer entry means converged."""
+    env = _mamba_env(tmp_path)
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, testenv=_LOCK)
+    prefix = env.opt_root / "testenv"
+    (prefix / "conda-meta").mkdir(parents=True)
+    (prefix / "conda-meta" / ".bsos-lock-sha256").write_text(hashlib.sha256(_LOCK).hexdigest() + "\n")
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        _release() as urls,
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mamba_env_mod.install("testenv", env=env, force=True)
+    assert urls == []
+    mock_run.assert_not_called()
+    assert "nothing to do" in capsys.readouterr().out
+
+
+def test_update_with_stale_stamp_downloads_and_converges(tmp_path):
+    env = _mamba_env(tmp_path)
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, testenv=_LOCK)
+    prefix = env.opt_root / "testenv"
+    (prefix / "conda-meta").mkdir(parents=True)
+    (prefix / "conda-meta" / ".bsos-lock-sha256").write_text("0" * 64 + "\n")
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        _release() as urls,
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mock_run.return_value.returncode = 1  # env update cannot consume a lock: recreate
+        mamba_env_mod.install("testenv", env=env, force=True)
+    assert urls == [f"{_RELEASE}/testenv-lock.yml"]
+    assert "create" in mock_run.call_args_list[-1][0][0]
+    assert (prefix / "conda-meta" / ".bsos-lock-sha256").read_text().strip() == hashlib.sha256(_LOCK).hexdigest()
+
+
+def test_local_lock_matching_the_pointer_wins_quietly(tmp_path, capsys):
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, system=_LOCK)
+    (conda_dir / "system-lock.yml").write_bytes(_LOCK)
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        _release() as urls,
+        mamba_env_mod._pinned_lock("system", None) as spec,
+    ):
+        assert spec == conda_dir / "system-lock.yml"
+    assert urls == []
+    assert capsys.readouterr().err == ""
+
+
+def test_local_lock_differing_from_the_pointer_wins_with_a_warning(tmp_path, capsys):
+    """Fresh from conda-generate, or forgotten: used, but never silently."""
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, system=_LOCK)
+    (conda_dir / "system-lock.yml").write_bytes(b"regenerated\n")
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        _release() as urls,
+        mamba_env_mod._pinned_lock("system", None) as spec,
+    ):
+        assert spec == conda_dir / "system-lock.yml"
+    assert urls == []
+    err = capsys.readouterr().err
+    assert "WARNING" in err and "not the pinned lock" in err and hashlib.sha256(_LOCK).hexdigest() in err
+
+
+def test_local_lock_ignores_the_stamp(tmp_path):
+    """The stamp short-circuit is for the pinned release only; a local lock goes the usual way."""
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, system=_LOCK)
+    (conda_dir / "system-lock.yml").write_bytes(_LOCK)
+    stamp = tmp_path / "stamp"
+    stamp.write_text(hashlib.sha256(_LOCK).hexdigest())
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        mamba_env_mod._pinned_lock("system", stamp) as spec,
+    ):
+        assert spec == conda_dir / "system-lock.yml"
+
+
+def test_pinned_lock_without_a_clone_reads_mains_pointer(tmp_path):
+    """curl | python3: no bundled conda/, so the pointer comes from main."""
+    pointer = LockPointer("conda-2026.11.16", _RELEASE, {"system-lock.yml": hashlib.sha256(_LOCK).hexdigest()})
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=None),
+        patch("bsos.installers.mamba_env.fetch_text", return_value=format_pointer(pointer)) as fetch,
+        _release() as urls,
+        mamba_env_mod._pinned_lock("system", None) as spec,
+    ):
+        assert spec.read_bytes() == _LOCK
+    fetch.assert_called_once_with(mamba_env_mod.REMOTE_POINTER_URL)
+    assert urls == [f"{_RELEASE}/system-lock.yml"]
+
+
+@pytest.mark.parametrize("pointer", [None, "garbage\n"])
+def test_pinned_lock_without_a_usable_pointer_exits(tmp_path, capsys, pointer):
+    conda_dir = _clone(tmp_path)
+    conda_dir.mkdir(parents=True)
+    if pointer is not None:
+        (conda_dir / "locks.sha256").write_text(pointer)
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        pytest.raises(SystemExit) as exc,
+    ):
+        with mamba_env_mod._pinned_lock("system", None):
+            pass
+    assert exc.value.code == 1
+    assert "lock pointer" in capsys.readouterr().err
+
+
+def test_pinned_lock_for_an_unpinned_name_exits(tmp_path, capsys):
+    conda_dir = _clone(tmp_path)
+    _write_pointer(conda_dir, system=_LOCK)
+    with (
+        patch("bsos.installers.mamba_env._find_bundled_conda_dir", return_value=conda_dir),
+        pytest.raises(SystemExit) as exc,
+    ):
+        with mamba_env_mod._pinned_lock("py39", None):
+            pass
+    assert exc.value.code == 1
+    assert "has no py39-lock.yml" in capsys.readouterr().err
+
+
+def test_explicit_env_dir_bypasses_the_pointer(tmp_path):
+    env = _mamba_env(tmp_path)
+    spec_dir = tmp_path / "specs"
+    spec_dir.mkdir()
+    (spec_dir / "testenv-lock.yml").write_bytes(b"anything\n")
+    with (
+        patch("bsos.installers.mamba_env._pinned_lock") as pinned,
+        patch("bsos.installers.mamba_env.run") as mock_run,
+    ):
+        mamba_env_mod.install("testenv", env_dir=str(spec_dir), env=env)
+    pinned.assert_not_called()
+    assert mock_run.call_args[0][0][-1] == str(spec_dir / "testenv-lock.yml")
+
+
+def test_no_lock_bypasses_the_pointer(tmp_path):
+    env = _mamba_env(tmp_path)
+    with (
+        patch("bsos.installers.mamba_env._pinned_lock") as pinned,
+        patch("bsos.installers.mamba_env._env_spec", new=_fake_env_spec),
+        patch("bsos.installers.mamba_env.run"),
+    ):
+        mamba_env_mod.install("testenv", env=env, lock=False)
+    pinned.assert_not_called()
 
 
 # ── mamba_env test action: executables must be able to load ──────────────────

@@ -8,41 +8,65 @@ installed to ``$__OPT_ROOT/$NAME`` (default: ``system``).
 ``mamba`` is the Miniforge build at ``$MAMBA_ROOT_PREFIX/bin/mamba``.
 
 The spec file is derived from *name*: by default the version-pinned
-multi-platform conda-lock file ``<env-dir>/<name>-lock.yml`` (e.g.
-``system-lock.yml``), which both backends consume directly (recognized by the
-``-lock.yml`` suffix); with ``--no-lock``, the per-platform
-``<env-dir>/<name>_<conda-arch>.yml`` (e.g. ``system_linux-64.yml``) instead.
-On update, ``env update --prune`` is tried first; if it fails on a lockfile
-spec (current libmamba cannot re-solve against conda-lock files), the env is
+multi-platform conda-lock file ``<name>-lock.yml`` (e.g. ``system-lock.yml``),
+which both backends consume directly (recognized by the ``-lock.yml``
+suffix); with ``--no-lock``, the per-platform ``<name>_<conda-arch>.yml``
+(e.g. ``system_linux-64.yml``) instead.
+
+The conda-lock files are not in git: they are assets of a dated GitHub
+Release, and git keeps ``conda/locks.sha256``, which names that release and
+the sha256 of each lock.  Without ``--env-dir`` the lock is resolved in this
+order:
+
+1. from a repo clone, a local ``conda/<name>-lock.yml`` if present (what
+   ``pixi run conda-generate`` just wrote), with a warning when it is not the
+   lock the pointer pins;
+2. otherwise the release the pointer names — the clone's
+   ``conda/locks.sha256``, or main's when piped through ``curl`` — downloaded
+   and verified against the pointer's sha256; a mismatch is fatal.
+
+On update, an env whose stamped lockfile sha256 already equals the pointer's
+entry is converged, and nothing is downloaded.  Otherwise
+``env update --prune`` is tried first; if it fails on a lockfile spec
+(current libmamba cannot re-solve against conda-lock files), the env is
 either left as-is when its stamped lockfile sha256 already matches (nothing
 to do) or removed and recreated (the pinned lockfile makes recreation exactly
-reproduce the target state).  ``--env-dir``
-defaults to the bundled ``conda/`` directory when running from a repo clone,
-and to the canonical remote base otherwise (e.g. piped through ``curl``)::
+reproduce the target state).  ``--env-dir`` (a directory or base URL) skips
+the pointer and takes ``<env-dir>/<name>-lock.yml`` as is, unverified::
 
-    # bundled conda/ (repo clone), current platform:
+    # pinned release (repo clone: its pointer; curl | python3: main's):
     python3 install/mamba_env.py install --name system
 
     # explicit local directory:
     python3 install/mamba_env.py install --name py312 --env-dir /path/to/conda
 
-    # explicit remote base (curl | python3 variant):
+    # explicit remote base, e.g. one particular release:
     curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/install/mamba_env.py | \\
         python3 - install --name system \\
-        --env-dir https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/conda
+        --env-dir https://github.com/ickc/bootstrapping-os-environments/releases/download/conda-2026.11.16
 """
 
 import argparse
 import contextlib
-import hashlib
 import shutil
 import sys
 import tempfile
 from pathlib import Path
 from typing import Iterator, List, Optional, Set
 
-from bsos.installers._download import download_file
+from bsos.installers._download import download_file, fetch_text
 from bsos.installers._env import EnvConfig, platform_key
+from bsos.installers._locks import (
+    POINTER_NAME,
+    REMOTE_POINTER_URL,
+    LockChecksumError,
+    LockPointer,
+    LockPointerError,
+    fetch_lock,
+    parse_pointer,
+    read_pointer,
+    sha256_file,
+)
 from bsos.installers._subprocess import find_command, run
 
 # platform_key() -> conda subdir token (this installer's analog of Artifact.targets).
@@ -53,7 +77,9 @@ _CONDA_ARCH = {
     "Linux-aarch64": "linux-aarch64",
 }
 
-# Canonical remote base, used when no bundled conda/ dir is found (e.g. curl | python3).
+# Canonical remote base for the --no-lock specs, used when no bundled conda/ dir
+# is found (e.g. curl | python3). The conda-lock files come from the release the
+# lock pointer names instead (see _pinned_lock).
 _REMOTE_ENV_DIR = "https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/conda"
 
 
@@ -84,7 +110,7 @@ def _find_bundled_conda_dir() -> Optional[Path]:
 
 
 def _default_env_dir() -> str:
-    """Bundled ``conda/`` dir when running from a clone, else the remote base."""
+    """Bundled ``conda/`` dir when running from a clone, else the remote base (``--no-lock``)."""
     local = _find_bundled_conda_dir()
     return str(local) if local is not None else _REMOTE_ENV_DIR
 
@@ -158,10 +184,82 @@ def _env_spec(base: str, filename: str) -> Iterator[Path]:
         yield path
 
 
+def _load_pointer(conda_dir: Optional[Path]) -> LockPointer:
+    """The lock pointer of the clone's *conda_dir*, or main's without a clone; exit 1 if unreadable."""
+    try:
+        if conda_dir is not None:
+            return read_pointer(conda_dir / POINTER_NAME)
+        return parse_pointer(fetch_text(REMOTE_POINTER_URL), REMOTE_POINTER_URL)
+    except (OSError, LockPointerError) as exc:
+        print(f"Cannot read the conda lock pointer: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+
+def _warn_if_unpinned(local: Path, conda_dir: Path) -> None:
+    """Say so on stderr when *local* is not the lock the pointer pins.
+
+    A local lock wins over the pinned release — it is what
+    ``pixi run conda-generate`` just wrote — so a forgotten one would
+    otherwise shadow the release silently.
+    """
+    try:
+        expected: Optional[str] = read_pointer(conda_dir / POINTER_NAME).expected(local.name)
+    except (OSError, LockPointerError):
+        expected = None
+    actual = sha256_file(local)
+    if actual == expected:
+        return
+    pinned = f"pins {expected}" if expected else "has no usable entry for it"
+    print(
+        f"WARNING: using the local {local} (sha256 {actual}), not the pinned lock: "
+        f"{conda_dir / POINTER_NAME} {pinned}. Delete the local file to install the pinned release.",
+        file=sys.stderr,
+    )
+
+
+@contextlib.contextmanager
+def _pinned_lock(name: str, stamp: Optional[Path]) -> Iterator[Optional[Path]]:
+    """Yield a local path to the conda-lock file for *name* (default ``--env-dir``).
+
+    A local ``conda/<name>-lock.yml`` in the clone wins (see
+    :func:`_warn_if_unpinned`); otherwise the lock is downloaded from the
+    release the pointer names and verified against its sha256 — a mismatch
+    exits 1.  When *stamp* (an existing env's lock stamp) already records the
+    pointer's sha256, the env is converged: yield ``None``, download nothing.
+    """
+    filename = _env_filename(name, lock=True)
+    conda_dir = _find_bundled_conda_dir()
+    if conda_dir is not None and (conda_dir / filename).is_file():
+        local = conda_dir / filename
+        _warn_if_unpinned(local, conda_dir)
+        yield local
+        return
+    pointer = _load_pointer(conda_dir)
+    try:
+        expected = pointer.expected(filename)
+    except LockPointerError as exc:
+        print(f"Cannot install {name!r}: {exc}", file=sys.stderr)
+        sys.exit(1)
+    if stamp is not None and stamp.is_file() and stamp.read_text().strip() == expected:
+        yield None
+        return
+    tmp = Path(tempfile.mkdtemp(prefix="bsos-env-"))
+    try:
+        print(f"Fetching {filename} from release {pointer.tag} ...")
+        try:
+            spec = fetch_lock(pointer, filename, tmp)
+        except (OSError, LockChecksumError) as exc:
+            print(f"Cannot fetch the pinned {filename}: {exc}", file=sys.stderr)
+            sys.exit(1)
+        yield spec
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def _write_lock_stamp(prefix: Path, spec: Path) -> None:
     stamp = _lock_stamp_path(prefix)
     stamp.parent.mkdir(parents=True, exist_ok=True)
-    stamp.write_text(hashlib.sha256(spec.read_bytes()).hexdigest() + "\n")
+    stamp.write_text(sha256_file(spec) + "\n")
 
 
 def _create_env(tool: Path, backend: str, name: str, prefix: Path, spec: Path, env: EnvConfig, lock: bool) -> None:
@@ -201,7 +299,7 @@ def _update_env(tool: Path, backend: str, name: str, prefix: Path, spec: Path, e
     if not lock:
         sys.exit(result.returncode)
     stamp = _lock_stamp_path(prefix)
-    if stamp.is_file() and stamp.read_text().strip() == hashlib.sha256(spec.read_bytes()).hexdigest():
+    if stamp.is_file() and stamp.read_text().strip() == sha256_file(spec):
         print(f"Conda env {name!r} at {prefix} already matches {spec.name}; nothing to do")
         return
     print(
@@ -226,10 +324,12 @@ def install(
     onto the spec (see ``_update_env``); a missing env is created as normal.
     *backend* selects the package manager (``micromamba`` or ``mamba``).
 
-    The env spec is ``<env_dir>/<name>-lock.yml`` (version-pinned, default)
-    or, with *lock=False*, ``<env_dir>/<name>_<conda-arch>.yml``; *env_dir*
-    may be a local directory or an ``http(s)://`` base URL (default: the
-    bundled ``conda/`` dir, else the canonical remote base).
+    The env spec is ``<name>-lock.yml`` (version-pinned, default) or, with
+    *lock=False*, ``<name>_<conda-arch>.yml``.  An explicit *env_dir* (a
+    local directory or an ``http(s)://`` base URL) is used as is.  Without
+    one, a lock comes from the release the lock pointer names, unless the
+    clone has a local copy (see :func:`_pinned_lock`), and a ``--no-lock``
+    spec from the bundled ``conda/`` dir, else the canonical remote base.
     """
     env = env or EnvConfig()
 
@@ -242,9 +342,16 @@ def install(
         print(f"Conda env {name!r} already exists at {prefix}; run 'update' to refresh")
         return
 
-    base = env_dir if env_dir is not None else _default_env_dir()
-    with _env_spec(base, _env_filename(name, lock)) as spec:
-        if prefix.exists():
+    spec_source: "contextlib.AbstractContextManager[Optional[Path]]"
+    if env_dir is None and lock:
+        spec_source = _pinned_lock(name, _lock_stamp_path(prefix) if prefix.exists() else None)
+    else:
+        base = env_dir if env_dir is not None else _default_env_dir()
+        spec_source = _env_spec(base, _env_filename(name, lock))
+    with spec_source as spec:
+        if spec is None:
+            print(f"Conda env {name!r} at {prefix} already matches the pinned {name}-lock.yml; nothing to do")
+        elif prefix.exists():
             _update_env(tool, backend, name, prefix, spec, env, lock)
         else:
             _create_env(tool, backend, name, prefix, spec, env, lock)
@@ -354,8 +461,9 @@ def main() -> None:
         "--env-dir",
         default=None,
         metavar="PATH_OR_URL",
-        help="directory or base URL holding <name>-lock.yml (or <name>_<arch>.yml with --no-lock) "
-        "(default: bundled conda/, else the canonical remote base)",
+        help="directory or base URL holding <name>-lock.yml (or <name>_<arch>.yml with --no-lock), used "
+        "unverified (default: a local conda/<name>-lock.yml in the clone, else the release named by "
+        "conda/locks.sha256, verified)",
     )
     parser.add_argument(
         "--no-lock",
