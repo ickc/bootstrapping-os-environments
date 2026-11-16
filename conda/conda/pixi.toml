@@ -2,7 +2,7 @@
 
 [workspace]
 name = "conda"
-channels = ["conda-forge", "rapidsai"]
+channels = ["conda-forge"]
 platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64"]
 exclude-newer = "7d"
 
@@ -147,7 +147,6 @@ zlib = "*"
 zstandard = "*"
 
 [feature.py311.target.linux-64.dependencies]
-cubinlinker = {version = "*", channel = "rapidsai"}
 fastcluster = "*"
 gdb = "*"
 intel-cmplr-lib-rt = "*"
@@ -155,7 +154,6 @@ mkl = "*"
 pymediainfo = "*"
 
 [feature.py311.target.linux-aarch64.dependencies]
-cubinlinker = {version = "*", channel = "rapidsai"}
 gdb = "*"
 
 [feature.py311.target.osx-64.dependencies]
@@ -308,7 +306,6 @@ zlib = "*"
 zstandard = "*"
 
 [feature.py312.target.linux-64.dependencies]
-cubinlinker = {version = "*", channel = "rapidsai"}
 fastcluster = "*"
 gdb = "*"
 intel-cmplr-lib-rt = "*"
@@ -316,7 +313,6 @@ mkl = "*"
 pymediainfo = "*"
 
 [feature.py312.target.linux-aarch64.dependencies]
-cubinlinker = {version = "*", channel = "rapidsai"}
 gdb = "*"
 
 [feature.py312.target.osx-64.dependencies]
@@ -469,7 +465,6 @@ zlib = "*"
 zstandard = "*"
 
 [feature.py313.target.linux-64.dependencies]
-cubinlinker = {version = "*", channel = "rapidsai"}
 fastcluster = "*"
 gdb = "*"
 intel-cmplr-lib-rt = "*"
@@ -477,7 +472,6 @@ mkl = "*"
 pymediainfo = "*"
 
 [feature.py313.target.linux-aarch64.dependencies]
-cubinlinker = {version = "*", channel = "rapidsai"}
 gdb = "*"
 
 [feature.py313.target.osx-64.dependencies]
