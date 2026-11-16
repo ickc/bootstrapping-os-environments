@@ -27,9 +27,9 @@ and to the canonical remote base otherwise (e.g. piped through ``curl``)::
     python3 install/mamba_env.py install --name py312 --env-dir /path/to/conda
 
     # explicit remote base (curl | python3 variant):
-    curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/mamba_env.py | \\
+    curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/install/mamba_env.py | \\
         python3 - install --name system \\
-        --env-dir https://raw.githubusercontent.com/ickc/envoy/main/conda
+        --env-dir https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/conda
 """
 
 import argparse
@@ -54,7 +54,7 @@ _CONDA_ARCH = {
 }
 
 # Canonical remote base, used when no bundled conda/ dir is found (e.g. curl | python3).
-_REMOTE_ENV_DIR = "https://raw.githubusercontent.com/ickc/envoy/main/conda"
+_REMOTE_ENV_DIR = "https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/conda"
 
 
 def _conda_arch() -> str:

@@ -15,7 +15,7 @@ python3 install/chezmoi.py install
 Method 2: via curl on a fresh machine:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/chezmoi.py | python3 - install
+curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/install/chezmoi.py | python3 - install
 ```
 
 Method 3: via curl, but on a fresh machine with Python <3.7:
@@ -27,5 +27,5 @@ export PIXI_BIN_DIR="${PIXI_HOME}/bin"
 export PIXI_NO_PATH_UPDATE=1
 curl -fsSL https://pixi.sh/install.sh | sh
 # then run it like this:
-curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/chezmoi.py | "${PIXI_BIN_DIR}/pixi" exec --spec python python3 - install
+curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/install/chezmoi.py | "${PIXI_BIN_DIR}/pixi" exec --spec python python3 - install
 ```

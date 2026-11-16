@@ -1,0 +1,98 @@
+name: test-bootstrap
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+  # Called by conda-generate to bootstrap from freshly generated environment
+  # files before they land on main.
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit to test; defaults to the commit that triggered the workflow.
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  # End-to-end public bootstrap on every supported platform, then assert the
+  # resulting environment. Public path only: fully non-interactive, no secrets,
+  # no private repos — so it runs on forks and PRs unchanged. Native runners
+  # (not Docker) give real macOS coverage and a throwaway $HOME. Nothing is
+  # preinstalled: the bootstrap's only dependency is curl, and it brings its own
+  # pixi (from the conda `system` env) and Python (from envoy's pixi env), so a
+  # setup-python or setup-pixi step would only hide a missing piece. The runner
+  # matrix is the one test-installers.yml uses.
+  public:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - macos-latest
+          - macos-26-intel
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    env:
+      # bootstrap.sh's testing hook: bootstrap from the commit under test, not
+      # from main. The script itself is run from a checkout of that same commit.
+      #   workflow_call (conda-generate): inputs.ref, the generated commit.
+      #   pull_request: the PR head. Not github.sha, which for a PR is the
+      #     synthetic merge commit refs/pull/N/merge — GitHub recreates it as
+      #     the base moves and drops it on a conflict, while the head is the
+      #     commit that was pushed and stays fetchable.
+      #   push, workflow_dispatch: github.sha, the commit that was pushed or
+      #     the tip of the branch the run was started from.
+      ENVOY_REPO: ${{ github.repository }}
+      ENVOY_REF: ${{ inputs.ref || github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.ENVOY_REF }}
+
+      - name: bootstrap (public) — fresh install
+        shell: bash
+        run: bash bootstrap.sh --public
+
+      # The ref hook is what makes this job test anything: without it the
+      # bootstrap would clone main and pass or fail on main's merits.
+      - name: the envoy clone is the commit under test
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(git rev-parse HEAD)"
+          actual="$(git -C "${XDG_DATA_HOME:-${HOME}/.local/share}/envoy" rev-parse HEAD)"
+          echo "ENVOY_REF=${ENVOY_REF}"
+          echo "checkout:    ${expected}"
+          echo "envoy clone: ${actual}"
+          [[ "${actual}" == "${expected}" ]]
+
+      - name: smoke test
+        shell: bash
+        run: bash tests/bootstrap/smoke.sh --public
+
+      # Re-run end-to-end: the system env is left alone (its lock stamp
+      # matches), clones are re-synced to the same commit, chezmoi re-applies
+      # cleanly. The clone must still be on the commit under test, and the
+      # second smoke must still pass.
+      - name: idempotency — second run is a no-op and still passes
+        shell: bash
+        run: |
+          bash bootstrap.sh --public
+          bash tests/bootstrap/smoke.sh --public
+
+      - name: the envoy clone is still the commit under test
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(git rev-parse HEAD)"
+          actual="$(git -C "${XDG_DATA_HOME:-${HOME}/.local/share}/envoy" rev-parse HEAD)"
+          echo "ENVOY_REF=${ENVOY_REF}"
+          echo "checkout:    ${expected}"
+          echo "envoy clone: ${actual}"
+          [[ "${actual}" == "${expected}" ]]
