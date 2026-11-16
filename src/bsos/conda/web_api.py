@@ -635,8 +635,9 @@ def generate(
     manifest at ``<out_dir>/<csv-stem>/pixi.toml`` (one feature/environment
     per name), solve it with ``pixi update``, and convert each environment to a
     unified multi-platform ``<out_dir>/<name>-lock.yml`` via
-    ``pixi-to-conda-lock``. Both the pixi.lock and the conda-lock files are
-    meant to be committed, pinning the environments in git.
+    ``pixi-to-conda-lock``. Neither the pixi.lock nor the conda-lock files are
+    committed: they are published as release assets, and the environments are
+    pinned in git by ``conda/locks.sha256`` (see :mod:`bsos.conda.locks`).
     """
     packages = CondaPackages.read_csv(csv)
 
