@@ -49,6 +49,80 @@ bootstrap must not land. A pull request is opened only when the tests fail or
 such a PR never gets CI and needs someone to merge it, which is how the locks
 once went two months stale.
 
+## Bootstrap (`bootstrap.sh`)
+
+`bootstrap.sh` is the single entry point for provisioning a fresh machine
+(`curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/bootstrap.sh | bash`,
+`… | bash -s -- --public`). It is a self-contained bash script whose only
+external dependency is `curl`. It needs no Python of any version, because the
+targets include machines without a usable one: everything is bootstrapped from
+micromamba, **micromamba → conda `system` env (pixi, git, gh, zsh, chezmoi, …)
+→ the rest**, and the Python installers then run through `pixi run` in the
+envoy clone, which brings its own Python. Do not add a step that needs a tool
+before the stage that installs it.
+
+- **Stage 0** downloads `env.sh` to a temp file and sources it for
+  `__OSTYPE`/`__ARCH`/`__OPT_ROOT`/the XDG dirs, so every later path agrees
+  with what envoy's installers use. It also drops non-directories from
+  `XDG_CONFIG_DIRS`, which chezmoi otherwise trips over.
+- **Stage 1** refuses an unsupported platform (micromamba would create an
+  *empty* env rather than fail) and a `__OPT_ROOT` that is not an absolute
+  path below `/` (the stage `rm -rf`s `$__OPT_ROOT/system`). It installs the
+  micromamba static binary into `$__OPT_ROOT/bin` with the official
+  `micro.mamba.pm/install.sh` (`BIN_FOLDER` pre-set, `INIT_YES=no`,
+  `CONDA_FORGE_YES=no`, stdin from `/dev/null`: no prompts, no shell-rc or
+  `~/.mambarc` edits), then creates the `system` env at `$__OPT_ROOT/system`
+  from `conda/system-lock.yml`. The env is left alone when the lockfile's
+  sha256 matches `conda-meta/.bsos-lock-sha256`, and removed and recreated
+  otherwise, because `env update` cannot consume conda-lock files. The stamp
+  is the same one `mamba_env.py` writes and reads, so a later
+  `mamba_env update` on an unchanged lock is a no-op too. Where the lockfile
+  comes from lives only in `fetch_system_lock`; change it there.
+- **Stage 2** clones envoy into `$XDG_DATA_HOME/envoy` and installs the tools
+  that are not conda packages, `pixi run python -m bsos.installers update code
+  sman`, in that clone.
+- **Stage 3** runs `chezmoi init --apply` of `ickc/dotfiles` and clones
+  sman-snippets and navi-cheatsheets. The personal path also clones ssh-dir
+  into `~/.ssh` and runs `make permission`; a failure there only warns.
+- **Stage 4** (personal path only) generates `~/.ssh/id_ed25519` and runs
+  `gh auth login`. `--no-identity`, implied by `CI=true`, uses an empty
+  passphrase and skips the login, so the personal path can run unattended.
+- **Final**: `pixi run generate-completions` in the envoy clone.
+
+The personal path (default) clones over SSH and assumes SSH agent forwarding;
+`--public` uses HTTPS and skips ssh-dir and Stage 4. Host keys accepted before
+ssh-dir exists go to a throwaway known_hosts file, because git refuses to clone
+ssh-dir into a non-empty `~/.ssh`.
+
+Every clone is a managed runtime copy, not a dev checkout: re-running
+hard-syncs it to its remote's default branch, discarding local changes to
+tracked files and keeping untracked ones (the private keys in `~/.ssh`). That
+is what makes a second run idempotent, and it is checked in CI.
+
+### Testing hook: `ENVOY_REPO` and `ENVOY_REF`
+
+Unset, envoy comes from `main` of `ickc/bootstrapping-os-environments`.
+`ENVOY_REPO` (owner/name) and `ENVOY_REF` (branch, tag or full sha) select
+another source: `env.sh` and the lockfile are fetched from
+`raw.githubusercontent.com/$ENVOY_REPO/$ENVOY_REF`, and the clone is fetched
+at that ref and checked out detached instead of hard-synced to `main`. All
+three must come from one commit — the smoke test compares the env's stamp with
+the clone's lockfile. `ENVOY_REF=main` takes the default path.
+
+`test-bootstrap.yml` sets the hook so CI tests the commit under test rather
+than `main`: the input `ref` when called from `conda-generate`, the PR head
+for a pull request (not the merge commit `github.sha` names, which GitHub
+recreates as the base moves), and `github.sha` for a push or a manual run. It
+checks out the same commit, runs the public path, the smoke test
+(`tests/bootstrap/smoke.sh`, also `pixi run test-bootstrap[-public]`), both
+again for idempotency, and asserts the clone is on that commit. Without that
+assertion a broken hook would silently test `main`.
+
+Do not run `bootstrap.sh` or the smoke test on a dev machine to try a change:
+they work on the real home directory (recreate the `system` env, hard-reset
+clones, apply dotfiles). Lint locally (`bash -n`, `pixi run lint`) and let the
+pull request's `test-bootstrap` jobs do the end-to-end run.
+
 ## Dependency audit (`src/bsos/audit/`)
 
 `pixi run audit` (weekly in CI, `audit.yml`) looks for abandoned or rotting

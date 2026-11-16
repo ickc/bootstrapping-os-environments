@@ -4,15 +4,54 @@
 
 Tooling to bootstrap and provision a personal UNIX-like environment across the
 machines I actually use — HPC login nodes without root, Linux servers, macOS
-laptops, and the occasional Windows box. It is the reusable, standalone toolbox;
-[**provision**](https://github.com/ickc/provision) is the orchestrator that
-composes it with dotfiles and other repos into a one-line `curl | bash`
-bootstrap.
+laptops, and the occasional Windows box. It is both the toolbox and the
+one-line `curl | bash` bootstrap that composes it with my dotfiles and data
+repos.
 
 The guiding constraint is **no `sudo`**. The primary path installs everything
 into your home directory via a static micromamba binary and conda packages, so
 it works on a shared cluster where you'll never be root. Other backends
 (nix, dnf, winget) handle the systems where you *are* admin.
+
+## Bootstrap
+
+[`bootstrap.sh`](bootstrap.sh) provisions a fresh machine. It needs nothing but
+`curl` — no root, and no Python of any version:
+
+```bash
+# Personal: SSH clones (assumes SSH agent forwarding), ssh-dir as ~/.ssh, a new SSH key
+curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/bootstrap.sh | bash
+
+# Public: HTTPS clones, no ssh-dir, no SSH key
+curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/bootstrap.sh | bash -s -- --public
+```
+
+It runs in stages, each relying on what the previous one installed:
+
+1. **micromamba and the `system` env** — the static micromamba binary into
+   `$__OPT_ROOT/bin`, then the conda `system` env (pixi, git, gh, zsh, chezmoi,
+   …) from this repo's pinned [`conda/system-lock.yml`](conda/system-lock.yml).
+2. **envoy** — a clone of this repo at `$XDG_DATA_HOME/envoy`; the tools that
+   are not conda packages (the VS Code CLI, sman) are installed by its
+   installers, run in its pixi env.
+3. **dotfiles and data repos** — `chezmoi init --apply` of
+   [dotfiles](https://github.com/ickc/dotfiles), the sman snippets and navi
+   cheatsheets; on the personal path also ssh-dir as `~/.ssh`.
+4. **identity** (personal path only) — an SSH key for this machine and
+   `gh auth login`. `--no-identity` (implied by `CI=true`) uses an empty
+   passphrase and skips the login, for unattended runs.
+
+It finishes by generating shell completions. Running it again is safe: the
+`system` env is left alone while the lock is unchanged, and the clones are
+re-synced to their remotes.
+
+To check the result, run the smoke test that matches the path, from any clone of
+this repo (for example the one the bootstrap made):
+
+```bash
+pixi run test-bootstrap          # personal path
+pixi run test-bootstrap-public   # public path
+```
 
 ## What's inside
 
@@ -82,6 +121,11 @@ The `test-installers` workflow runs the compiled installers end-to-end
 
 `test` skips cleanly (exit 0) on a platform an installer doesn't support, so the
 same matrix scales as more installers are added.
+
+The `test-bootstrap` workflow runs `bootstrap.sh --public` end to end on the same
+runners, then the smoke test, then both again to show a second run changes
+nothing. It bootstraps from the commit under test (through the `ENVOY_REPO` and
+`ENVOY_REF` hook documented in the script) rather than from `main`.
 
 Scheduled workflows keep the pinned environments honest:
 
