@@ -43,7 +43,7 @@ Every module compiles to a self-contained single-file script under `install/`,
 runnable with nothing but a system Python:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/code.py | python3 - install
+curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/install/code.py | python3 - install
 ```
 
 With [pixi](https://pixi.sh) available, use the tasks instead:
