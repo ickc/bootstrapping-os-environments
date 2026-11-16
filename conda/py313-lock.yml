@@ -2,8 +2,6 @@ metadata:
   channels:
   - url: conda-forge/
     used_env_vars: []
-  - url: rapidsai/
-    used_env_vars: []
   content_hash:
     linux-64: generated-from-pixi-lock
     linux-aarch64: generated-from-pixi-lock
@@ -4323,39 +4321,6 @@ package:
   platform: linux-64
   url: https://conda.anaconda.org/conda-forge/linux-64/fastparquet-2026.5.0-py313h29aa505_0.conda
   version: 2026.5.0
-- category: main
-  dependencies:
-    __glibc: '>=2.17,<3.0.a0'
-    libgcc-ng: '>=12'
-    libstdcxx-ng: '>=12'
-  hash:
-    md5: eb43f5f1f16e2fad2eba22219c3e499b
-    sha256: 1797bacaf5350f272413c7f50787c01aef0e8eb955df0f0db144b10be2819752
-  manager: conda
-  name: cudatoolkit
-  optional: false
-  platform: linux-64
-  url: https://conda.anaconda.org/conda-forge/linux-64/cudatoolkit-11.8.0-h4ba93d1_13.conda
-  version: 11.8.0
-- category: main
-  dependencies:
-    __glibc: '>=2.17,<3.0.a0'
-    cudatoolkit: '>=11.0,<=11.8'
-    libgcc: '*'
-    libgcc-ng: '>=12'
-    libstdcxx: '*'
-    libstdcxx-ng: '>=12'
-    python: '>=3.13.0rc2,<3.14.0a0'
-    python_abi 3.13.* *_cp313: '*'
-  hash:
-    md5: f1c1636c167d81e1529637cc727d57e9
-    sha256: 8d304aafabb6a766e01691a1175a77ef5bcc072f2ae078ccb5d906a2bf716597
-  manager: conda
-  name: ptxcompiler
-  optional: false
-  platform: linux-64
-  url: https://conda.anaconda.org/conda-forge/linux-64/ptxcompiler-0.8.1-py313hb190672_4.conda
-  version: 0.8.1
 - category: main
   dependencies:
     libblas: '>=3.8.0,<4.0a0'
@@ -8982,24 +8947,6 @@ package:
   platform: linux-64
   url: https://conda.anaconda.org/conda-forge/noarch/anywidget-0.11.0-pyhd8ed1ab_0.conda
   version: 0.11.0
-- category: main
-  dependencies:
-    libgcc: '*'
-    libgcc-ng: '>=12'
-    libstdcxx: '*'
-    libstdcxx-ng: '>=12'
-    ptxcompiler: '>=0.5.0'
-    python: '>=3.13,<3.14.0a0'
-    python_abi 3.13.* *_cp313: '*'
-  hash:
-    md5: 60202f6bc3018358c55a8a3d49aa0da0
-    sha256: 57107077256a91387943822fae2ca569ec641b296f67ffd3c9af71553bb59924
-  manager: conda
-  name: cubinlinker
-  optional: false
-  platform: linux-64
-  url: https://conda.anaconda.org/rapidsai/linux-64/cubinlinker-0.3.0-cuda_11_py313_g161fd9c_3.conda
-  version: 0.3.0
 - category: main
   dependencies:
     libmediainfo: '*'
@@ -17142,37 +17089,6 @@ package:
   version: 2026.5.0
 - category: main
   dependencies:
-    libgcc-ng: '>=12'
-    libstdcxx-ng: '>=12'
-  hash:
-    md5: e22cf7ae5bf45d1795161958496682a4
-    sha256: f5eb476060aaefcd1cd66c1862291289f510a842a68ad9d4ff20c50be85fc83e
-  manager: conda
-  name: cudatoolkit
-  optional: false
-  platform: linux-aarch64
-  url: https://conda.anaconda.org/conda-forge/linux-aarch64/cudatoolkit-11.8.0-hdd48f4a_13.conda
-  version: 11.8.0
-- category: main
-  dependencies:
-    cudatoolkit: '>=11.0,<=11.8'
-    libgcc: '*'
-    libgcc-ng: '>=12'
-    libstdcxx: '*'
-    libstdcxx-ng: '>=12'
-    python: '>=3.13.0rc2,<3.14.0a0 *_cp313'
-    python_abi 3.13.* *_cp313: '*'
-  hash:
-    md5: 0c2d76910f8b3fd1d99e8032258120e6
-    sha256: 7ab8b3f640c20e43aa3e3442a2a83ba0fe8b5728880b04f2d8ce5fefbcec47a6
-  manager: conda
-  name: ptxcompiler
-  optional: false
-  platform: linux-aarch64
-  url: https://conda.anaconda.org/conda-forge/linux-aarch64/ptxcompiler-0.8.1-py313h8cf1621_4.conda
-  version: 0.8.1
-- category: main
-  dependencies:
     python: '>=3.10'
   hash:
     md5: 61dcf784d59ef0bd62c57d982b154ace
@@ -18018,24 +17934,6 @@ package:
   platform: linux-aarch64
   url: https://conda.anaconda.org/conda-forge/linux-aarch64/pyside6-6.11.3-py313hd49fd96_0.conda
   version: 6.11.3
-- category: main
-  dependencies:
-    libgcc: '*'
-    libgcc-ng: '>=12'
-    libstdcxx: '*'
-    libstdcxx-ng: '>=12'
-    ptxcompiler: '>=0.5.0'
-    python: '>=3.13,<3.14.0a0'
-    python_abi 3.13.* *_cp313: '*'
-  hash:
-    md5: 8508741c69c497d458eebca67458745d
-    sha256: 3ace8d9480dcbd43f591fe06eedd291e640445b2c51b4fb9bdb26b4e583be0c7
-  manager: conda
-  name: cubinlinker
-  optional: false
-  platform: linux-aarch64
-  url: https://conda.anaconda.org/rapidsai/linux-aarch64/cubinlinker-0.3.0-cuda_11_py313_g161fd9c_3.conda
-  version: 0.3.0
 - category: main
   dependencies:
     libgcc: '>=14'

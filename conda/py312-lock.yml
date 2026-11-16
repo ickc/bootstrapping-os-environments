@@ -2,8 +2,6 @@ metadata:
   channels:
   - url: conda-forge/
     used_env_vars: []
-  - url: rapidsai/
-    used_env_vars: []
   content_hash:
     linux-64: generated-from-pixi-lock
     linux-aarch64: generated-from-pixi-lock
@@ -4339,39 +4337,6 @@ package:
   platform: linux-64
   url: https://conda.anaconda.org/conda-forge/linux-64/fastparquet-2026.5.0-py312h4f23490_0.conda
   version: 2026.5.0
-- category: main
-  dependencies:
-    __glibc: '>=2.17,<3.0.a0'
-    libgcc-ng: '>=12'
-    libstdcxx-ng: '>=12'
-  hash:
-    md5: eb43f5f1f16e2fad2eba22219c3e499b
-    sha256: 1797bacaf5350f272413c7f50787c01aef0e8eb955df0f0db144b10be2819752
-  manager: conda
-  name: cudatoolkit
-  optional: false
-  platform: linux-64
-  url: https://conda.anaconda.org/conda-forge/linux-64/cudatoolkit-11.8.0-h4ba93d1_13.conda
-  version: 11.8.0
-- category: main
-  dependencies:
-    __glibc: '>=2.17,<3.0.a0'
-    cudatoolkit: '>=11.0,<=11.8'
-    libgcc: '*'
-    libgcc-ng: '>=12'
-    libstdcxx: '*'
-    libstdcxx-ng: '>=12'
-    python: '>=3.12,<3.13.0a0'
-    python_abi 3.12.* *_cp312: '*'
-  hash:
-    md5: 14c040a52bbe42e2d5eaab455bd8f61d
-    sha256: afb931b23b219ccdee0e24de9bd347260d324f12861e217f53073135dd782acf
-  manager: conda
-  name: ptxcompiler
-  optional: false
-  platform: linux-64
-  url: https://conda.anaconda.org/conda-forge/linux-64/ptxcompiler-0.8.1-py312h32b3722_4.conda
-  version: 0.8.1
 - category: main
   dependencies:
     libblas: '>=3.8.0,<4.0a0'
@@ -9013,22 +8978,6 @@ package:
   platform: linux-64
   url: https://conda.anaconda.org/conda-forge/noarch/anywidget-0.11.0-pyhd8ed1ab_0.conda
   version: 0.11.0
-- category: main
-  dependencies:
-    libgcc-ng: '>=12'
-    libstdcxx-ng: '>=12'
-    ptxcompiler: '>=0.8.1'
-    python: '>=3.12,<3.13.0a0'
-    python_abi 3.12.* *_cp312: '*'
-  hash:
-    md5: dfcc0290228dea89c22e642f7b7b5ee9
-    sha256: 9b2ef00613896e741a88c7fdf8ac151fb1502603c454d767a94be5b3e64e5a1d
-  manager: conda
-  name: cubinlinker
-  optional: false
-  platform: linux-64
-  url: https://conda.anaconda.org/rapidsai/linux-64/cubinlinker-0.3.0-py312hbe86355_1.conda
-  version: 0.3.0
 - category: main
   dependencies:
     libmediainfo: '*'
@@ -17188,37 +17137,6 @@ package:
   version: 2026.5.0
 - category: main
   dependencies:
-    libgcc-ng: '>=12'
-    libstdcxx-ng: '>=12'
-  hash:
-    md5: e22cf7ae5bf45d1795161958496682a4
-    sha256: f5eb476060aaefcd1cd66c1862291289f510a842a68ad9d4ff20c50be85fc83e
-  manager: conda
-  name: cudatoolkit
-  optional: false
-  platform: linux-aarch64
-  url: https://conda.anaconda.org/conda-forge/linux-aarch64/cudatoolkit-11.8.0-hdd48f4a_13.conda
-  version: 11.8.0
-- category: main
-  dependencies:
-    cudatoolkit: '>=11.0,<=11.8'
-    libgcc: '*'
-    libgcc-ng: '>=12'
-    libstdcxx: '*'
-    libstdcxx-ng: '>=12'
-    python: '>=3.12,<3.13.0a0 *_cpython'
-    python_abi 3.12.* *_cp312: '*'
-  hash:
-    md5: f811706ba6921e90abfa3c83b52f8490
-    sha256: ab6be1b966081a03c22f2493ff9a231541d9cd023b5684bf2255a3e17d7157f4
-  manager: conda
-  name: ptxcompiler
-  optional: false
-  platform: linux-aarch64
-  url: https://conda.anaconda.org/conda-forge/linux-aarch64/ptxcompiler-0.8.1-py312h3cedb5a_4.conda
-  version: 0.8.1
-- category: main
-  dependencies:
     python: '>=3.10'
   hash:
     md5: 61dcf784d59ef0bd62c57d982b154ace
@@ -18238,22 +18156,6 @@ package:
   platform: linux-aarch64
   url: https://conda.anaconda.org/conda-forge/linux-aarch64/ruff-0.17.4-h328a733_0.conda
   version: 0.17.4
-- category: main
-  dependencies:
-    libgcc-ng: '>=12'
-    libstdcxx-ng: '>=12'
-    ptxcompiler: '>=0.8.1'
-    python: '>=3.12,<3.13.0a0'
-    python_abi 3.12.* *_cp312: '*'
-  hash:
-    md5: 05e3a014da98808b10de9b37ca87431a
-    sha256: 0528c2a4103b68580d99756b3877f84bfdd19bd0931656c660f1748531917eec
-  manager: conda
-  name: cubinlinker
-  optional: false
-  platform: linux-aarch64
-  url: https://conda.anaconda.org/rapidsai/linux-aarch64/cubinlinker-0.3.0-py312h8f48c6b_1.conda
-  version: 0.3.0
 - category: main
   dependencies:
     lxml: '>=4.2.5'

@@ -2,8 +2,6 @@ metadata:
   channels:
   - url: conda-forge/
     used_env_vars: []
-  - url: rapidsai/
-    used_env_vars: []
   content_hash:
     linux-64: generated-from-pixi-lock
     linux-aarch64: generated-from-pixi-lock
