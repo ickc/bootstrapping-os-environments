@@ -1,10 +1,10 @@
 # conda-lock files pinned by this commit, published as release assets.
-# tag: conda-2026.11.16
-# url: https://github.com/ickc/bootstrapping-os-environments/releases/download/conda-2026.11.16
+# tag: conda-2026.11.16.2
+# url: https://github.com/ickc/bootstrapping-os-environments/releases/download/conda-2026.11.16.2
 08109170bc77bae4233b93cd307317f052591975237f36226b268317ac51057b  jupyterlab-lock.yml
-a598fd719f0bade1734ace01f57435b38d6a4084848f0f2bc7283bea8e7cf521  py311-lock.yml
-c4b55fe291c0a334563303650a0b40da5ee2040c4a97e210f29730255439af6e  py312-lock.yml
-37ae9b277f9f8af845b8e67b354695b510b87118eec38cc87a9548375e33ab41  py313-lock.yml
-00bc20fb1214ba06ef0db5fd14d6c81f79527619146d4116cf7ff0f938c92d44  py314-lock.yml
-20ac120e3b5de098655bea3c3318a06055f37493a9b9f20efdfc9ce40e3894c3  py315-lock.yml
-fd04b6ada9617b2b393d2aa4459cd4e54e9dd2642d175794cdae176522d20305  system-lock.yml
+8a27b19fcfb961cd6ee77f0dc102f2d37eea00ad118c234708b5794dcbfb0f34  py311-lock.yml
+9860b5621a04e0e0d70bfe688600e78a8cd9a2beda12903307d605cd7e81724d  py312-lock.yml
+f0c0878ce8a50f1e2ae37bba0fe165b41fbdd1a91a1a96cec52c74fb46075917  py313-lock.yml
+b4d366d9dfd334150c3236c4d42f33e1ca1c9335d978e55f1b40c99b0dead0a5  py314-lock.yml
+a175bd587495c4a1bad528570a8942a32aba264e3b331acf47a574b5a1cf243c  py315-lock.yml
+5374fbcbf129cfd7e1163fde54d9ee9f247b67fecfc586f8ba35d4746016e1a5  system-lock.yml
