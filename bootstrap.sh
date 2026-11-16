@@ -27,8 +27,10 @@
 # the commit under test rather than whatever main is:
 #   ENVOY_REPO  GitHub owner/name (default: ickc/bootstrapping-os-environments)
 #   ENVOY_REF   branch, tag or full commit sha (default: main). env.sh and the
-#               system lockfile are fetched at this ref, and the envoy clone is
-#               checked out at it, detached, instead of synced to main.
+#               lock pointer (conda/locks.sha256) are fetched at this ref, the
+#               system lockfile from the release that pointer names, and the
+#               envoy clone is checked out at the ref, detached, instead of
+#               synced to main.
 # Running from a local clone does not change this: the bootstrap still fetches
 # envoy from GitHub, never from the clone it was started from.
 
@@ -49,7 +51,8 @@ done
 [[ ${CI:-} == "true" ]] && NO_IDENTITY=1
 
 # Where envoy comes from (see "Testing hook" above). Every raw file is fetched
-# from ENVOY_RAW, so env.sh, the lockfile and the clone all agree on one commit.
+# from ENVOY_RAW, so env.sh, the lock pointer and the clone all agree on one
+# commit — and through the pointer's checksum, so does the lockfile.
 ENVOY_REPO="${ENVOY_REPO:-ickc/bootstrapping-os-environments}"
 ENVOY_REF="${ENVOY_REF:-main}"
 ENVOY_RAW="https://raw.githubusercontent.com/${ENVOY_REPO}/${ENVOY_REF}"
@@ -139,7 +142,7 @@ title "Stage 0: env setup"
 # Download env.sh temporarily to derive __OSTYPE/__ARCH, __OPT_ROOT,
 # MAMBA_ROOT_PREFIX, XDG_DATA_HOME, etc. (it runs `uname -sm` for platform facts).
 _tmpenv="$(mktemp)"
-_tmpdir="$(mktemp -d)" # holds the system env lockfile (needs a `-lock.yml` name — see Stage 1)
+_tmpdir="$(mktemp -d)" # holds the lock pointer and the system env lockfile (needs a `-lock.yml` name — see Stage 1)
 _known_hosts_tmp=""
 trap 'rm -rf "${_tmpenv}" "${_tmpdir}" "${_known_hosts_tmp}"' EXIT
 curl -fsSL "${ENVOY_RAW}/env.sh" -o "${_tmpenv}"
@@ -218,32 +221,71 @@ fi
 # git, gh, zsh, chezmoi, … come into existence; every later stage assumes them.
 # MAMBA_ROOT_PREFIX (exported by env.sh) is micromamba's package cache.
 #
-# The spec is envoy's version-pinned multi-platform conda-lock file. The local
-# copy MUST keep the `-lock.yml` suffix — that suffix (not content sniffing) is
-# how micromamba recognizes a conda-lock file; misnamed, it would silently
-# create an EMPTY env. `env update` cannot consume conda-lock files (libmamba
-# fails re-solving exact-pin specs), so an out-of-date env is removed and
-# recreated instead — the lock pins every package, so recreation converges
-# exactly, and the files are re-hardlinked from the package cache rather than
-# rewritten. The sha256 stamp is the same file envoy's mamba_env.py writes and
-# reads, so an unchanged lockfile is a no-op here *and* in a later
-# `mamba_env update`: re-running the bootstrap does not touch the env at all.
+# The spec is envoy's version-pinned multi-platform conda-lock file. It is not
+# in git but an asset of a GitHub Release; envoy's conda/locks.sha256 (the lock
+# pointer) names that release and the sha256 of each lock, so the commit at
+# ENVOY_REF still determines the env exactly, and the download is verified
+# against a checksum from that commit. The local copy MUST keep the `-lock.yml`
+# suffix — that suffix (not content sniffing) is how micromamba recognizes a
+# conda-lock file; misnamed, it would silently create an EMPTY env. `env update`
+# cannot consume conda-lock files (libmamba fails re-solving exact-pin specs),
+# so an out-of-date env is removed and recreated instead — the lock pins every
+# package, so recreation converges exactly, and the files are re-hardlinked
+# from the package cache rather than rewritten. The sha256 stamp is the same
+# file envoy's mamba_env.py writes and reads, and it equals the pointer's
+# entry, so an unchanged lock is a no-op here *and* in a later
+# `mamba_env update`, without even downloading it: re-running the bootstrap
+# does not touch the env at all.
 
-# The one place that knows where the system lockfile comes from: envoy's
-# conda/system-lock.yml at ENVOY_REF. Writes it to the path given.
+# The one place that knows where the system lockfile comes from. The pointer is
+# envoy's conda/locks.sha256 at ENVOY_REF:
+#   # tag: conda-YYYY.MM.DD
+#   # url: https://github.com/<repo>/releases/download/conda-YYYY.MM.DD
+#   <sha256>  system-lock.yml
+# (the body is `sha256sum -c` compatible). fetch_lock_pointer downloads it to
+# the path given; system_lock_sha256 prints its entry for system-lock.yml;
+# fetch_system_lock downloads that lock from the release the pointer names to
+# the path given, and refuses (returns 1) unless it matches the entry.
+fetch_lock_pointer() {
+    curl -fsSL "${ENVOY_RAW}/conda/locks.sha256" -o "${1}"
+}
+system_lock_sha256() {
+    local sha
+    sha="$(awk '$2 == "system-lock.yml" { print $1 }' "${1}")"
+    if [[ ! ${sha} =~ ^[0-9a-f]{64}$ ]]; then
+        echo "${ENVOY_RAW}/conda/locks.sha256 has no valid entry for system-lock.yml." >&2
+        return 1
+    fi
+    printf '%s\n' "${sha}"
+}
 fetch_system_lock() {
-    curl -fsSL "${ENVOY_RAW}/conda/system-lock.yml" -o "${1}"
+    local pointer="${1}" dest="${2}" expected="${3}" url actual
+    url="$(sed -n 's/^# url: //p' "${pointer}")"
+    if [[ ! ${url} =~ ^https:// ]]; then
+        echo "${ENVOY_RAW}/conda/locks.sha256 has no '# url: https://…' line." >&2
+        return 1
+    fi
+    echo "Fetching ${url%/}/system-lock.yml"
+    curl -fsSL "${url%/}/system-lock.yml" -o "${dest}"
+    actual="$(sha256_of "${dest}")"
+    if [[ ${actual} != "${expected}" ]]; then
+        echo "${url%/}/system-lock.yml has sha256 ${actual}, but the lock pointer pins ${expected}; refusing to use it." >&2
+        return 1
+    fi
 }
 
+_pointer="${_tmpdir}/locks.sha256"
 _syslock="${_tmpdir}/system-lock.yml"
 _sysstamp="${__OPT_ROOT}/system/conda-meta/.bsos-lock-sha256"
-fetch_system_lock "${_syslock}"
-_lockhash="$(sha256_of "${_syslock}")"
+fetch_lock_pointer "${_pointer}"
+_lockhash="$(system_lock_sha256 "${_pointer}")"
 if [[ -f ${_sysstamp} ]] && [[ "$(< "${_sysstamp}")" == "${_lockhash}" ]]; then
-    echo "system env already matches system-lock.yml; skipping"
+    echo "system env already matches the pinned system-lock.yml; skipping"
 else
+    fetch_system_lock "${_pointer}" "${_syslock}" "${_lockhash}"
     rm -rf "${__OPT_ROOT}/system"
     "${MICROMAMBA}" env create -y -p "${__OPT_ROOT}/system" -f "${_syslock}"
+    # The lock's own sha256: verified equal to the pointer's entry above.
     printf '%s\n' "${_lockhash}" > "${_sysstamp}"
 fi
 
@@ -261,8 +303,8 @@ if [[ ${PUBLIC} == "1" ]]; then
 else
     _envoy_url="git@github.com:${ENVOY_REPO}.git"
 fi
-# The clone must sit on the same commit env.sh and the lockfile came from: the
-# smoke test compares the env's stamp with the clone's conda/system-lock.yml.
+# The clone must sit on the same commit env.sh and the lock pointer came from:
+# the smoke test compares the env's stamp with the clone's conda/locks.sha256.
 if [[ ${ENVOY_REF} == "main" ]]; then
     git_clone_or_pull "${_envoy_url}" "${ENVOY_DIR}"
 else
