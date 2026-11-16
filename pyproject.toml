@@ -152,6 +152,10 @@ conda-generate-conda = { cmd = "python -m bsos.conda.web_api generate conda/cond
 conda-generate-jupyterlab = { cmd = "python -m bsos.conda.web_api generate conda/jupyterlab.csv -v 3.15 --name-format jupyterlab --lock", description = "Generate conda/jupyterlab.csv, conda/jupyterlab/pixi.{toml,lock} and conda/jupyterlab-lock.yml" }
 conda-generate-system = { cmd = "python -m bsos.conda.web_api generate conda/system.csv -v 3.15 --name-format system --no-python --lock", description = "Generate conda/system.csv, conda/system/pixi.{toml,lock} and conda/system-lock.yml" }
 
+## publish: the locks are release assets, pinned by conda/locks.sha256 (see bsos.conda.locks)
+conda-locks-pointer = { cmd = "python -m bsos.conda.locks pointer", description = "Point conda/locks.sha256 at a new release if the generated locks changed; prints the new tag, or nothing." }
+conda-locks-stage = { cmd = "python -m bsos.conda.locks stage", description = "Copy the release assets (conda-lock files, pixi.lock as <stem>-pixi.lock) into a directory: `pixi run conda-locks-stage -- DIR`." }
+
 ## clean
 conda-clean = { cmd = "python -m bsos.conda.web_api clean", description = "Remove the bsos cache when using conda.web_api." }
 conda-update = { depends-on = [{ task = "conda-clean"}, { task = "conda-generate" }], description = "Update conda environment files by cleaning the cache and regenerating them." }

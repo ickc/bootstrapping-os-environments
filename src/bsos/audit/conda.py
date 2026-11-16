@@ -1,14 +1,18 @@
 """Checks on the pinned conda environments.
 
 Everything here is computed from two things the generator already has: the
-committed ``conda/<env>-lock.yml`` files and the anaconda.org package JSON
-(read through the same cache as ``conda-generate``, so right after a
-generate run this makes no network requests).
+``conda/<env>-lock.yml`` files and the anaconda.org package JSON (read through
+the same cache as ``conda-generate``, so right after a generate run this makes
+no network requests). The locks are not in git: a local file, fresh from
+``conda-generate``, is used when present; otherwise the lock is downloaded from
+the release that ``conda/locks.sha256`` pins and verified against it, exactly
+as the installers do.
 """
 
 from __future__ import annotations
 
 import re
+import tempfile
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from functools import lru_cache
@@ -21,6 +25,7 @@ from rattler import Version
 
 from bsos.audit.report import Finding
 from bsos.conda.web_api import PRERELEASE, CondaPackages
+from bsos.installers._locks import POINTER_NAME, fetch_lock, read_pointer
 
 #: A lock whose newest pinned build is older than this has stopped being
 #: refreshed (weekly bot + 7-day cooldown, plus slack for a missed week).
@@ -66,6 +71,18 @@ def load_lock(path: Path) -> LockIndex:
     for package in data["package"]:
         index.setdefault(package["name"], {})[package["platform"]] = Locked(str(package["version"]), package["url"])
     return index
+
+
+def lock_path(conda_dir: Path, env: str, download_dir: Path) -> Path:
+    """``conda_dir/<env>-lock.yml`` if present, else the pinned one, downloaded into *download_dir*.
+
+    The download is verified against the pointer's sha256 and raises on a
+    mismatch, which the audit reports as ``check-failed``.
+    """
+    local = conda_dir / f"{env}-lock.yml"
+    if local.is_file():
+        return local
+    return fetch_lock(read_pointer(conda_dir / POINTER_NAME), local.name, download_dir)
 
 
 @lru_cache(maxsize=None)
@@ -252,19 +269,22 @@ def audit_group(
 def audit(conda_dir: Path, today: date) -> list[Finding]:
     """Audit every ``conda/<stem>.csv`` against the environments generated from it."""
     findings: list[Finding] = []
-    for stem, table in load_tables(conda_dir).items():
-        manifest = conda_dir / stem / "pixi.toml"
-        if not manifest.is_file():
-            raise FileNotFoundError(f"{manifest} not found; run `pixi run conda-generate` first")
-        doc: dict[str, Any] = tomlkit.parse(manifest.read_text(encoding="utf-8")).unwrap()
-        pythons: dict[str, int] = {}
-        locks: dict[str, LockIndex] = {}
-        for env in doc["environments"]:
-            locks[env] = load_lock(conda_dir / f"{env}-lock.yml")
-            spec = doc["feature"][env]["dependencies"].get("python")
-            match = re.match(r"3\.(\d+)", spec) if isinstance(spec, str) else None
-            if match:
-                pythons[env] = int(match.group(1))
-        packages = {package.name: package.data.get("files", []) for package in table.packages if not package.ignored}
-        findings += audit_group(stem, packages, locks, pythons=pythons, today=today)
+    with tempfile.TemporaryDirectory(prefix="bsos-audit-") as download_dir:
+        for stem, table in load_tables(conda_dir).items():
+            manifest = conda_dir / stem / "pixi.toml"
+            if not manifest.is_file():
+                raise FileNotFoundError(f"{manifest} not found; run `pixi run conda-generate` first")
+            doc: dict[str, Any] = tomlkit.parse(manifest.read_text(encoding="utf-8")).unwrap()
+            pythons: dict[str, int] = {}
+            locks: dict[str, LockIndex] = {}
+            for env in doc["environments"]:
+                locks[env] = load_lock(lock_path(conda_dir, env, Path(download_dir)))
+                spec = doc["feature"][env]["dependencies"].get("python")
+                match = re.match(r"3\.(\d+)", spec) if isinstance(spec, str) else None
+                if match:
+                    pythons[env] = int(match.group(1))
+            packages = {
+                package.name: package.data.get("files", []) for package in table.packages if not package.ignored
+            }
+            findings += audit_group(stem, packages, locks, pythons=pythons, today=today)
     return findings

@@ -68,33 +68,22 @@ nonempty_dir() {
 # source modules the compiled scripts are generated from.
 envoy_test() { (cd "${ENVOY_DIR}" && pixi run python -m bsos.installers test "${1}"); }
 
-# sha256 of a file, portable across Linux (coreutils) and macOS (perl shasum).
-# Returns non-zero when neither exists, so stamp_matches_lock reports a failed
-# check rather than silently comparing against empty output.
-sha256_of() {
-    if command -v sha256sum > /dev/null 2>&1; then
-        sha256sum "${1}" | cut -d' ' -f1
-    elif command -v shasum > /dev/null 2>&1; then
-        shasum -a 256 "${1}" | cut -d' ' -f1
-    else
-        echo "Need sha256sum (coreutils) or shasum (perl)." >&2
-        return 1
-    fi
-}
-
 # The `system` env carries a sha256 stamp of the conda-lock file it was created
 # from. It is the contract between bootstrap.sh (which writes it) and envoy's
-# mamba_env.py (which reads it): equal hashes mean a later `mamba_env update`
-# leaves the env alone instead of removing and recreating it. A missing or stale
-# stamp still yields a working env, so nothing else here would catch the drift.
+# mamba_env.py (which reads it): a stamp equal to the lock pointer's entry means
+# a later `mamba_env update` leaves the env alone instead of removing and
+# recreating it. The lock itself is not in the clone (it is a release asset);
+# the pointer, conda/locks.sha256, is, and records the same sha256. A missing or
+# stale stamp still yields a working env, so nothing else here would catch the
+# drift.
 stamp_matches_lock() {
     local stamp="${__OPT_ROOT}/system/conda-meta/.bsos-lock-sha256"
-    local lock="${ENVOY_DIR}/conda/system-lock.yml"
+    local pointer="${ENVOY_DIR}/conda/locks.sha256"
     local recorded expected
-    [[ -f ${stamp} ]] && [[ -f ${lock} ]] || return 1
+    [[ -f ${stamp} ]] && [[ -f ${pointer} ]] || return 1
     recorded="$(< "${stamp}")"
-    expected="$(sha256_of "${lock}")" || return 1
-    [[ ${recorded} == "${expected}" ]]
+    expected="$(awk '$2 == "system-lock.yml" { print $1 }' "${pointer}")"
+    [[ -n ${expected} ]] && [[ ${recorded} == "${expected}" ]]
 }
 
 echo "== core toolchain =="
@@ -117,7 +106,7 @@ for _t in git gh task zsh navi starship direnv chezmoi pixi; do
 done
 check "git --version" "${SYSTEM_BIN}/git" --version
 check "task --version" "${SYSTEM_BIN}/task" --version
-check "env stamped from envoy's system-lock.yml" stamp_matches_lock
+check "env stamped with the pinned system-lock.yml" stamp_matches_lock
 
 echo "== dotfiles (chezmoi) =="
 check "config dir exists" test -d "${HOME}/.config"

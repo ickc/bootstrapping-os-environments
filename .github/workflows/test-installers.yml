@@ -81,10 +81,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # mamba_env is included now: it defaults to the micromamba backend, and
-          # `micromamba env update --prune` (unlike mamba's) does not exec Python
-          # from the target env for platform detection, so it works even on the
-          # Python-less system env.
+          # mamba_env is included: the env it just created is stamped with the
+          # sha256 conda/locks.sha256 pins, so its update finishes without
+          # downloading the lock or touching the env. On a changed lock it tries
+          # `micromamba env update --prune` (the default backend), which unlike
+          # mamba's does not exec Python from the target env for platform
+          # detection, so it works even on the Python-less system env.
           for script in $(printf '%s\n' install/*.py | LC_ALL=C sort); do
             echo "::group::${script}"
             python3 "${script}" update --skip-unsupported
