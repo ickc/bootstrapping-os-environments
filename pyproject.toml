@@ -24,9 +24,9 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities",
 ]
-homepage = "https://github.com/ickc/bsos"
-repository = "https://github.com/ickc/bsos"
-documentation = "https://ickc.github.io/bsos"
+homepage = "https://github.com/ickc/bootstrapping-os-environments"
+repository = "https://github.com/ickc/bootstrapping-os-environments"
+documentation = "https://github.com/ickc/bootstrapping-os-environments#readme"
 authors = ["Kolen Cheung <christian.kolen@gmail.com>"]
 readme = "README.md"
 packages = [
